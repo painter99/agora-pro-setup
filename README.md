@@ -74,6 +74,26 @@ a moving international train. **This is what a mobile AI Dev-Ops
 
 ---
 
+## 💡 Another Real-World Example: Full GitHub Push from a Phone
+
+This second example shows the same setup applied to a **tighter constraint: only my phone, no laptop, no local shell** — and a 10-file documentation push as the target.
+
+**The Situation:** I needed to populate `painter99/agora-pro-setup` with the complete Agora reference set (system-prompt block layouts, memory templates, deep-dive docs) so my agent has the full material at hand. The sandbox was a vanilla Alpine image — no git, no openssh, no SSH keys. **Constraint:** I refused to open a laptop. The whole pipeline had to run through a chat from my phone.
+
+**How my agent handled it (≈15 min, ~6 round-trips):**
+
+1. **Zero-touch bootstrap:** From the chat, the agent ran `apk update && apk add git openssh`, generated an `ed25519` SSH key, wrote `~/.ssh/config`, and added GitHub to `known_hosts` via `ssh-keyscan` — all in parallel batches.
+2. **Self-aware halt:** After the first `git clone` failed with `Permission denied (publickey)`, the agent **stopped**, diagnosed the cause (key not yet on my GitHub account), and waited. Once I pasted the key into GitHub and replied "run the clone again," the retry succeeded instantly.
+3. **Branch-and-review discipline:** Before touching `main`, the agent created `edit-2026-07-27`, staged all 10 files, and produced a full diff stat for me to inspect. It only pushed to that branch — never to `main` — and asked for explicit "GO" before every push.
+4. **Atomic batch writes:** All 10 files were written in a single parallel tool-call batch, then committed as one logical change (`f23fbf7`).
+5. **Merge with history preserved:** After I confirmed the diff was right, the agent ran `git merge --no-ff edit-2026-07-27` and pushed `main` with a clean merge commit (`3bbbb96`).
+
+**Result:** A complete repository documented hands-free, from a phone, in 15 minutes. The repo is now a living reference — and the workflow that built it is documented here as proof.
+
+See the full breakdown in [`docs/5-mobile-git-workflow.md`](docs/5-mobile-git-workflow.md).
+
+---
+
 ## 🚀 Quick Start (4 Steps)
 
 1. **Configure Prompt Blocks:** Open Agora → Edit System Prompt. Follow my exact block-by-block layout in [`system-prompt/1-system-tab-blocks.md`](system-prompt/1-system-tab-blocks.md).
