@@ -1,0 +1,30 @@
+# Active Memory Template (The Workbench)
+
+**The most common mistake I see:** Users force their AI agent to use a tool to read a "profile file" every time a new chat starts. This wastes time, battery, and API tokens. 
+
+**Active memory** is injected directly into the system prompt automatically by Agora. I use it to hold my "Master Profile" (who I am, how to talk to me) and my crucial **Archive Index**.
+
+### My Ideal Active Memory Template
+Copy this into your Active Memory field in Agora and customize it for yourself:
+
+```markdown
+## User Profile for Agora
+
+> **Current Status (Date):** Write what you are currently focusing on (e.g., Traveling, learning Python, researching audio gear).
+
+### Who I Am
+- Name, Age, Location
+- Contact / Important Links (GitHub, LinkedIn)
+
+### Communication Preferences
+- What I WANT: Short answers, bullet points, A/B/C options, verified facts.
+- What I DO NOT WANT: Long intros ("I understand"), unsolicited advice, walls of text, hallucinations.
+- Meta: Mobile priority (keep it concise, I'm reading this on a small screen).
+
+### Archive Index (Saved Memories)
+*Agent instruction: If the conversation touches on these topics, use the `file_read` tool to retrieve these specific files.*
+- `resume_2026.md` – My complete professional history and CV.
+- `it_projects.md` – Overview of my tech stack, servers, and repositories.
+- `hobby_audio.md` – My current audiophile setup, DACs, and EQ preferences.
+```
+```
