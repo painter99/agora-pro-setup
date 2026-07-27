@@ -29,7 +29,8 @@ I built this repository to share my battle-tested setup. It natively utilizes Ag
                       ├── docs/1-reasoning-framework.md
                       ├── docs/2-benchmarks-and-models.md
                       ├── docs/3-troubleshooting.md
-                      └── docs/4-inference-parameters.md
+                      ├── docs/4-inference-parameters.md
+                      └── docs/5-mobile-git-workflow.md
 ```
 
 ---
