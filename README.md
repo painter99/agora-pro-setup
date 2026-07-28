@@ -10,27 +10,29 @@ I built this repository to share my battle-tested setup. It natively utilizes Ag
 
 ## 🗺️ Repository Map & Architecture
 
-```text
-               +-----------------------------------+
-               |         MY AGORA SETUP            |
-               +-----------------------------------+
-                                 |
-         +-----------------------+-----------------------+
-         |                                               |
-[ 🛠️ System Configuration ]                     [ 🧠 Memory System ]
- ├── system-prompt/                              ├── memory-management/
- │    ├── 1-system-tab-blocks.md                  │    ├── 1-active-memory-template.md
- │    ├── 2-prefix-tab-blocks.md                  │    └── 2-saved-memories-guide.md
- │    └── 3-suffix-tab-blocks.md                  
-         |                                               |
-         +-----------------------+-----------------------+
-                                 |
-                     [ 📚 Deep Dive Docs ]
-                      ├── docs/1-reasoning-framework.md
-                      ├── docs/2-benchmarks-and-models.md
-                      ├── docs/3-troubleshooting.md
-                      ├── docs/4-inference-parameters.md
-                      └── docs/5-mobile-git-workflow.md
+```mermaid
+graph TD
+    A["🏠 <b>MY AGORA SETUP</b>"] --> B["🛠️ <b>System Configuration</b><br/>system-prompt/"]
+    A --> C["🧠 <b>Memory System</b><br/>memory-management/"]
+    A --> D["📚 <b>Deep Dive Docs</b><br/>docs/"]
+
+    B --> B1["1-system-tab-blocks.md"]
+    B --> B2["2-prefix-tab-blocks.md"]
+    B --> B3["3-suffix-tab-blocks.md"]
+
+    C --> C1["1-active-memory-template.md"]
+    C --> C2["2-saved-memories-guide.md"]
+
+    D --> D1["1-reasoning-framework.md"]
+    D --> D2["2-benchmarks-and-models.md"]
+    D --> D3["3-troubleshooting.md"]
+    D --> D4["4-inference-parameters.md"]
+    D --> D5["5-mobile-git-workflow.md"]
+
+    style A fill:#1a1a2e,stroke:#e94560,color:#fff
+    style B fill:#16213e,stroke:#0f3460,color:#fff
+    style C fill:#16213e,stroke:#0f3460,color:#fff
+    style D fill:#16213e,stroke:#0f3460,color:#fff
 ```
 
 ---
