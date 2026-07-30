@@ -74,9 +74,9 @@ WHEN to load — do not pre-load unnecessarily.*
   operations. **Load when:** user asks to create/update/delete a
   memory file or patch Active Memory, or when AM and a file
   disagree.
-- `deep-research-agent.md` – Web research framework. **Load when:**
-  user asks for a deep dive, market analysis, model comparison, or
-  any fact-check requiring 2+ sources.
+- `deep-research-framework.md` – Web research framework. **Load
+  when:** user asks for a deep dive, market analysis, model
+  comparison, or any fact-check requiring 2+ sources.
 
 ---
 

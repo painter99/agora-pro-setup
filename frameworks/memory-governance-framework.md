@@ -1,5 +1,21 @@
 # Memory Management Framework for Agora
 
+> **INSTALLATION:** This file is an **agent skill**. Save it to
+> Agora's Saved Memories (menu → **Saved Memories** → `+` →
+> **Add File**), then add the Archive Index entry below to your
+> Active Memory.
+>
+> **Archive Index entry to add to Active Memory:**
+> ```
+> - `memory-management-framework.md` – Governance for memory
+>   operations (write/update/delete/AM patches, audit cycles).
+>   **Load when:** creating, updating, or deleting a memory
+>   file, patching Active Memory, auditing memory, or when AM
+>   and a Saved Memory disagree.
+> ```
+>
+> Full installation walkthrough → [`frameworks/README.md`](README.md).
+
 > **Purpose:** Comprehensive governance for Active Memory (Core) and
 > Saved Memories (Archival) in Agora. Defines when/how to write,
 > update, delete, and patch memory.
@@ -130,7 +146,7 @@ AM is the highest-cost tier. Patches must be **surgical and rare.**
 | No spaces, no diacritics in filenames | Encoding safety |
 | One topic per file | Strict specialization → easier triggers |
 | Descriptive name > generic | `audiophile_journey.md` > `audio.md` |
-| For frameworks: `<thing>-<role>.md` | `deep-research-agent.md`, not `dr_prompt.md` |
+| For frameworks: `<thing>-framework.md` | `deep-research-framework.md`, not `dr_prompt.md` |
 
 ---
 
