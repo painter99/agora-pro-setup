@@ -9,19 +9,37 @@ referenced from the **Archive Index** in Active Memory.
 
 ## 📲 Installation Guide
 
-For each skill in this directory:
+Each skill in this directory goes into Agora's **Saved Memories**.
+Agora stores files **without** the `.md` extension and prepends it
+automatically when the agent reads them back. Steps:
 
-1. **Open Agora** → top-right menu → **Saved Memories**
-2. Tap the **`+`** button → **Add File**
-3. **Copy the entire content** of the skill file from GitHub
-4. **Name it in Agora exactly as the filename** (e.g.
-   `deep-research-framework.md`)
-5. **Open Agora** → top-right menu → **Active Memory**
-6. In your **Archive Index**, add the entry shown in the skill's
-   `INSTALLATION` header (each skill file includes the exact line
-   to paste)
-7. **Save**. The agent will now `file_read` the skill automatically
-   when a matching topic comes up in conversation.
+### Step A — Save the file in Agora
+
+1. **Open the menu** — tap the **≡** icon in the top-left corner
+   of the main chat screen
+2. Tap **Settings** — the gear-icon row at the bottom of the menu
+3. Scroll down to the **Memory & Data** section and tap **Memory**
+4. In the Memory screen, scroll down to the **Saved Memories**
+   section
+5. Tap the **`+`** button at the bottom
+6. In the new-file dialog:
+   - **Name field**: type the filename *without* `.md`
+     (e.g. `deep-research-framework`, **not**
+     `deep-research-framework.md`)
+   - **Content field**: paste the full text of the skill file
+     from GitHub
+7. Tap **Save**
+
+### Step B — Register the skill in Active Memory
+
+1. Back in the Memory screen, scroll up to the **Active Memory**
+   card and tap it to edit
+2. In your **Archive Index**, add the entry shown at the top of
+   each skill file in this directory
+3. Tap **Save**
+
+The agent will now `file_read` the skill automatically whenever a
+matching trigger keyword comes up in conversation.
 
 **Tip:** the trigger keywords in the Archive Index entry are what
 the agent uses to decide *when* to load the skill. Be specific —
