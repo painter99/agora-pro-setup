@@ -27,4 +27,16 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
 - `it_projects.md` – Overview of my tech stack, servers, and repositories.
 - `hobby_audio.md` – My current audiophile setup, DACs, and EQ preferences.
 ```
+
+---
+
+### Companion Resources
+
+- **[3-quality-am-example.md](3-quality-am-example.md)** — a fully
+  filled-in, anonymized example of a high-quality Active Memory.
+  Use it as a reference for *how much detail* and *how to organize*
+  each section.
+- **[4-memory-governance-framework.md](4-memory-governance-framework.md)** —
+  governance rules for when to create, update, or delete memory
+  files, and how to patch Active Memory safely.
 ```

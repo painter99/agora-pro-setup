@@ -23,8 +23,15 @@ flowchart TD
     subgraph mem ["🧠 Memory System — memory-management/"]
         C1["1-active-memory-template.md"]
         C2["2-saved-memories-guide.md"]
+        C3["3-quality-am-example.md"]
+        C4["4-memory-governance-framework.md"]
     end
-    
+
+    subgraph fwk ["🎯 Agent Frameworks — frameworks/"]
+        F1["README.md"]
+        F2["deep-research-agent.md"]
+    end
+
     subgraph doc ["📚 Deep Dive Docs — docs/"]
         D1["1-reasoning-framework.md"]
         D2["2-benchmarks-and-models.md"]
@@ -32,14 +39,16 @@ flowchart TD
         D4["4-inference-parameters.md"]
         D5["5-mobile-git-workflow.md"]
     end
-    
+
     A --> sys
     A --> mem
+    A --> fwk
     A --> doc
     
     style A fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:3px
     style sys fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
     style mem fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
+    style fwk fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
     style doc fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
 ```
 
@@ -109,8 +118,9 @@ See the full breakdown in [`docs/5-mobile-git-workflow.md`](docs/5-mobile-git-wo
 
 1. **Configure Prompt Blocks:** Open Agora → Edit System Prompt. Follow my exact block-by-block layout in [`system-prompt/1-system-tab-blocks.md`](system-prompt/1-system-tab-blocks.md).
 2. **Setup Time-Awareness:** Configure the Prefix and Suffix tabs using [`system-prompt/2-prefix-tab-blocks.md`](system-prompt/2-prefix-tab-blocks.md) and [`system-prompt/3-suffix-tab-blocks.md`](system-prompt/3-suffix-tab-blocks.md).
-3. **Set Up Your Workbench:** Fill in your Active Memory using my template in [`memory-management/1-active-memory-template.md`](memory-management/1-active-memory-template.md).
+3. **Set Up Your Workbench:** Fill in your Active Memory using the template in [`memory-management/1-active-memory-template.md`](memory-management/1-active-memory-template.md). For a fully worked example (anonymized), see [`memory-management/3-quality-am-example.md`](memory-management/3-quality-am-example.md). Governance rules for memory operations live in [`memory-management/4-memory-governance-framework.md`](memory-management/4-memory-governance-framework.md).
 4. **Tune Inference Parameters:** Set sampling values in Agora's model settings — see my recommended config in [`docs/4-inference-parameters.md`](docs/4-inference-parameters.md).
+5. **Add Agent Skills (Optional):** For multi-source web-research workflows, load [`frameworks/deep-research-agent.md`](frameworks/deep-research-agent.md) into Saved Memories and add the Archive Index trigger from [`frameworks/README.md`](frameworks/README.md).
 
 ---
 
