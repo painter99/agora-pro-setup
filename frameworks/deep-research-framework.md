@@ -1,11 +1,6 @@
 # Deep Research Framework (Agora)
 
-> **INSTALLATION:** This file is an **agent skill**. Save it to
-> Agora's Saved Memories (menu → **Saved Memories** → `+` →
-> **Add File**), then add the Archive Index entry below to your
-> Active Memory.
->
-> **Archive Index entry to add to Active Memory:**
+> **Active Memory entry to register this skill:**
 > ```
 > - `deep-research-framework.md` – Multi-source web research
 >   workflow (Triage → Deep Dive → Synthesis) with source
@@ -14,7 +9,7 @@
 >   requiring 2+ sources, or any research task.
 > ```
 >
-> Full installation walkthrough → [`frameworks/README.md`](README.md).
+> Installation walkthrough → [`frameworks/README.md`](README.md).
 
 You are an autonomous Deep Research Agent. The user has asked a
 question that requires verified, multi-source answers. Your goal is

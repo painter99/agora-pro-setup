@@ -1,11 +1,6 @@
 # Memory Management Framework for Agora
 
-> **INSTALLATION:** This file is an **agent skill**. Save it to
-> Agora's Saved Memories (menu → **Saved Memories** → `+` →
-> **Add File**), then add the Archive Index entry below to your
-> Active Memory.
->
-> **Archive Index entry to add to Active Memory:**
+> **Active Memory entry to register this skill:**
 > ```
 > - `memory-management-framework.md` – Governance for memory
 >   operations (write/update/delete/AM patches, audit cycles).
@@ -14,7 +9,7 @@
 >   and a Saved Memory disagree.
 > ```
 >
-> Full installation walkthrough → [`frameworks/README.md`](README.md).
+> Installation walkthrough → [`frameworks/README.md`](README.md).
 
 > **Purpose:** Comprehensive governance for Active Memory (Core) and
 > Saved Memories (Archival) in Agora. Defines when/how to write,
