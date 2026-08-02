@@ -29,7 +29,7 @@ flowchart TD
     subgraph fwk ["🎯 Agent Frameworks — frameworks/"]
         F1["README.md"]
         F2["deep-research-framework.md"]
-        F3["memory-governance-framework.md"]
+        F3["memory-management-framework.md"]
     end
 
     subgraph doc ["📚 Deep Dive Docs — docs/"]
@@ -118,7 +118,7 @@ See the full breakdown in [`docs/5-mobile-git-workflow.md`](docs/5-mobile-git-wo
 
 1. **Configure Prompt Blocks:** Open Agora → Edit System Prompt. Follow my exact block-by-block layout in [`system-prompt/1-system-tab-blocks.md`](system-prompt/1-system-tab-blocks.md).
 2. **Setup Time-Awareness:** Configure the Prefix and Suffix tabs using [`system-prompt/2-prefix-tab-blocks.md`](system-prompt/2-prefix-tab-blocks.md) and [`system-prompt/3-suffix-tab-blocks.md`](system-prompt/3-suffix-tab-blocks.md).
-3. **Set Up Your Workbench:** Fill in your Active Memory using the template in [`memory-management/1-active-memory-template.md`](memory-management/1-active-memory-template.md). For a fully worked example (anonymized), see [`memory-management/3-quality-am-example.md`](memory-management/3-quality-am-example.md). Memory governance rules live in [`frameworks/memory-governance-framework.md`](frameworks/memory-governance-framework.md).
+3. **Set Up Your Workbench:** Fill in your Active Memory using the template in [`memory-management/1-active-memory-template.md`](memory-management/1-active-memory-template.md). For a fully worked example (anonymized), see [`memory-management/3-quality-am-example.md`](memory-management/3-quality-am-example.md). Memory governance rules live in [`frameworks/memory-management-framework.md`](frameworks/memory-management-framework.md).
 4. **Tune Inference Parameters:** Set sampling values in Agora's model settings — see my recommended config in [`docs/4-inference-parameters.md`](docs/4-inference-parameters.md).
 5. **Add Agent Skills (Optional):** For multi-source web-research workflows, load [`frameworks/deep-research-framework.md`](frameworks/deep-research-framework.md) into Saved Memories. Full installation walkthrough → [`frameworks/README.md`](frameworks/README.md).
 

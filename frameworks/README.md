@@ -86,7 +86,7 @@ In practice:
 | File | Purpose | Trigger keywords |
 |---|---|---|
 | `deep-research-framework.md` | Multi-source web research with source evaluation, quality gates, and synthesis | deep dive, research, market analysis, model comparison, fact-check 2+ sources |
-| `memory-governance-framework.md` | Governance for memory operations (write/update/delete/AM patches, audit cycles) | memory operations, create file, update file, delete file, AM patch, memory audit, AM vs file disagreement |
+| `memory-management-framework.md` | Governance for memory operations (write/update/delete/AM patches, audit cycles) | memory operations, create file, update file, delete file, AM patch, memory audit, AM vs file disagreement |
 
 ## When to Add a New Skill
 

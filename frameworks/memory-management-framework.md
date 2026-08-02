@@ -28,7 +28,7 @@
 |---|---|---|---|---|
 | **Core** (in-context) | Active Memory widget | Always injected in every prompt | Paid every turn (~tokens) | `update_active_memory` (patch only) |
 | **Recall** | Conversation history (searchable) | Indefinite, search-indexed | Free to query | `search_conversations`, `read_conversation` |
-| **Archival** | Saved Memories (file-based) | Indefinite, file-read on demand | Free unless loaded | `create_memory_file`, `read_memory_file`, `edit_memory_file`, `delete_memory_file` |
+| **Archival** | Saved Memories (file-based) | Indefinite, file-read on demand | Free unless loaded | `list_memory_files`, `create_memory_file`, `read_memory_file`, `edit_memory_file`, `delete_memory_file` |
 
 **Critical asymmetry:** Core memory costs tokens every turn. Archival
 is free until loaded. This asymmetry drives most of the rules below.
@@ -130,6 +130,79 @@ AM is the highest-cost tier. Patches must be **surgical and rare.**
 ```
 - `<file>.md` – <What it is>. **Load when:** <trigger keywords>.
 ```
+
+---
+
+## 5.5 Tool Reference Card (verified against Agora master, 2026-08-02)
+
+This card mirrors Agora's actual tool definitions 1:1 — verified against
+`MemoryToolProvider.kt`, `RagToolProvider.kt`, `ShellToolProvider.kt`,
+`WebSearchToolProvider.kt`, and `ImageGenToolProvider.kt` in the official
+Agora repository. **Use the exact tool names and argument keys below** —
+invented names will silently fail (the model never sees a tool error,
+just a no-op or "Unknown tool" response).
+
+### Memory tools (`MemoryToolProvider`)
+
+| Tool | Args (required* / optional) | When to use | DO NOT |
+|---|---|---|---|
+| `list_memory_files` | none | Audit; find file by trigger | n/a |
+| `read_memory_file` | `name` OR `names[]` | Confirm before patch; batch load | Repeat without reason |
+| `create_memory_file` | `name`*, `content`*, opt `description` | New persistent topic | Ephemeral data |
+| `edit_memory_file` | `name`* + (`old_string`+`new_string` exact-match) **OR** `content` (full rewrite); opt `new_name`, opt `description` | Surgical fix | Use `content` unless >500 tok |
+| `delete_memory_file` | `name`* | User explicit request | NEVER auto-delete (Rule 9) |
+| `update_active_memory` | `content`*; opt `mode` (`patch`/`append`/`prepend`/`replace`), opt `old_string`/`new_string` (for patch) | Identity / status / index change | `mode="replace"` unless full reconstruction |
+
+**`update_active_memory` modes** (canonical, in priority order):
+
+1. **`patch`** — find `old_string` exactly once, replace with `new_string`. **Default-preferred** — directly enforces Failure Mode #1 prevention (AM hijack).
+2. **`append`** — add `content` to end (e.g. new section header)
+3. **`prepend`** — add `content` to beginning
+4. **`replace`** — overwrite full AM. **Avoid unless reconstructing from verified template** (Failure Mode #1: AM hijack).
+
+**`edit_memory_file` invariants** (enforced by Agora code):
+
+- `content` and `old_string` are **mutually exclusive** (Error otherwise)
+- `old_string` requires `new_string` (use `""` to delete matched text)
+- `old_string` must match **exactly once** (else Error)
+- At least one of `content`, `old_string`, `new_name`, `description` must be present
+
+### Shell + File tools (`ShellToolProvider`)
+
+| Tool | Args | When |
+|---|---|---|
+| `list_shells` | none | Server target ambiguous (>1 shell configured) |
+| `execute_shell_command` | `command`*; opt `server`, `timeout_ms` (≤120 s fg / ≤86 400 s bg), `workdir`, `background` (Conch only) | Shell op on local sandbox or remote |
+| `list_shell_jobs` / `get_shell_job` / `stop_shell_job` | Conch only | Durable background jobs |
+| `file_read` | `path`*; opt `server`, `offset`, `limit` (default 1 MB) | Inspect before edit |
+| `file_write` | `path`*, `content`*; opt `server` | New file / full overwrite |
+| `file_edit` | `path`*, `old_string`*, `new_string`; opt `server`, `replace_all` | Surgical fix (replaces 1 by default; `replace_all=true` for many) |
+| `file_glob` | `pattern`*; opt `server`, `path`, `depth` | Find files by glob |
+| `file_grep` | `pattern`*; opt `server`, `path`, `glob` | Regex search |
+
+`server` is required only when >1 shell device is configured; otherwise omit
+(or use `"Local Sandbox"` for the on-device Alpine rootfs).
+
+### RAG / conversation-history tools (`RagToolProvider`)
+
+| Tool | Args | When |
+|---|---|---|
+| `search_conversations` | `query`*; opt `limit` (1–20, default 10) | Recall prior context (semantic + keyword) |
+| `list_conversations` | opt `order` (`asc`/`desc`), `limit` (1–50), `offset` | Browse history |
+| `read_conversation` | `conversation_id`*; opt `offset`, `limit` (1–100) | After `list_conversations` or `search_conversations` |
+
+### Web tools (`WebSearchToolProvider`)
+
+| Tool | Args | When |
+|---|---|---|
+| `web_search` | `query` | Fact verification; current info |
+| `web_fetch` | URL | Primary-source deep read |
+
+### Image generation (`ImageGenToolProvider`, BYOK)
+
+| Tool | Args | When |
+|---|---|---|
+| `generate_image` | `prompt`; opt `size` | User asks for an image (BYOK key configured) |
 
 ---
 

@@ -22,10 +22,11 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
 - Meta: Mobile priority (keep it concise, I'm reading this on a small screen).
 
 ### Archive Index (Saved Memories)
-*Agent instruction: If the conversation touches on these topics, use the `file_read` tool to retrieve these specific files.*
-- `resume_2026.md` – My complete professional history and CV.
-- `it_projects.md` – Overview of my tech stack, servers, and repositories.
-- `hobby_audio.md` – My current audiophile setup, DACs, and EQ preferences.
+*Agent instruction: If the conversation touches on these topics, use the `read_memory_file` tool to retrieve these specific files. Each entry has a `**Load when:**` trigger — only load when conversation matches.*
+- `resume_2026.md` – My complete professional history and CV. **Load when:** user asks about CV, jobs, or career-application context.
+- `it_projects.md` – Overview of my tech stack, servers, and repositories. **Load when:** user asks about servers, repositories, deployment, or infrastructure.
+- `hobby_audio.md` – My current audiophile setup, DACs, and EQ preferences. **Load when:** user asks about audio gear, EQ, headphones, DAC, or audiophile workflow.
+- `memory-management-framework.md` – Governance for memory operations (write/update/delete, AM patches, audit cycles). **Load when:** user asks to create, update, or delete a memory file, patch Active Memory, audit memory, or when AM and a file disagree.
 ```
 
 ---
@@ -36,7 +37,7 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
   filled-in, anonymized example of a high-quality Active Memory.
   Use it as a reference for *how much detail* and *how to organize*
   each section.
-- **[memory-governance-framework.md](../frameworks/memory-governance-framework.md)** —
+- **[memory-management-framework.md](../frameworks/memory-management-framework.md)** —
   governance rules for when to create, update, or delete memory
   files, and how to patch Active Memory safely.
 ```
