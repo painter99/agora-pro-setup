@@ -70,10 +70,7 @@ WHEN to load — do not pre-load unnecessarily.*
   gear, lenses, lighting, editing, technique.
 - `resume_2026.md` – Professional history and skills. **Load when:**
   user asks about CV, jobs, or career application context.
-- `memory-management-framework.md` – Governance rules for memory
-  operations. **Load when:** user asks to create/update/delete a
-  memory file or patch Active Memory, or when AM and a file
-  disagree.
+- `memory-management/00-master-index.md` – Governance rules for memory operations (modular split: master + 5 sub-files). **Load when:** user asks to create/update/delete a memory file or patch Active Memory, or when AM and a Saved Memory disagree. Start with master, then load the specialized file the Decision Guide suggests.
 - `deep-research-framework.md` – Web research framework. **Load
   when:** user asks for a deep dive, market analysis, model
   comparison, or any fact-check requiring 2+ sources.

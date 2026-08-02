@@ -26,7 +26,7 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
 - `resume_2026.md` – My complete professional history and CV. **Load when:** user asks about CV, jobs, or career-application context.
 - `it_projects.md` – Overview of my tech stack, servers, and repositories. **Load when:** user asks about servers, repositories, deployment, or infrastructure.
 - `hobby_audio.md` – My current audiophile setup, DACs, and EQ preferences. **Load when:** user asks about audio gear, EQ, headphones, DAC, or audiophile workflow.
-- `memory-management-framework.md` – Governance for memory operations (write/update/delete, AM patches, audit cycles). **Load when:** user asks to create, update, or delete a memory file, patch Active Memory, audit memory, or when AM and a file disagree.
+- `memory-management/00-master-index.md` – Master index for memory governance (modular split). **Load when:** creating, updating, or deleting a memory file, patching Active Memory, auditing memory, or when AM and a Saved Memory disagree. For sub-topics, follow the Decision Guide to load the right specialized file (01–05).
 ```
 
 ---
@@ -37,7 +37,5 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
   filled-in, anonymized example of a high-quality Active Memory.
   Use it as a reference for *how much detail* and *how to organize*
   each section.
-- **[memory-management-framework.md](../frameworks/memory-management-framework.md)** —
-  governance rules for when to create, update, or delete memory
-  files, and how to patch Active Memory safely.
+- **[memory-management-framework.md (modular split)](memory-management/)** — comprehensive governance for Active Memory + Saved Memories. Six specialized files: a master index plus dedicated files for file operations, AM anatomy, AM authority, tool reference card, and audit/failure modes. Start with `00-master-index.md` (Decision Guide), then load only the file relevant to the current operation — saves ~50% tokens vs. loading one big file.
 ```

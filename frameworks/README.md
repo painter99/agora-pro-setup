@@ -86,7 +86,34 @@ In practice:
 | File | Purpose | Trigger keywords |
 |---|---|---|
 | `deep-research-framework.md` | Multi-source web research with source evaluation, quality gates, and synthesis | deep dive, research, market analysis, model comparison, fact-check 2+ sources |
-| `memory-management-framework.md` | Governance for memory operations (write/update/delete/AM patches, audit cycles) | memory operations, create file, update file, delete file, AM patch, memory audit, AM vs file disagreement |
+| `memory-management/` (6 files) | **Modular** governance for memory operations — master index + 5 specialized files | memory operations, create file, update file, delete file, AM patch, memory audit, AM vs file disagreement |
+
+### Memory Management Skill (Modular)
+
+Unlike `deep-research-framework.md` (single file), the memory management
+skill is **split into 6 specialized files** for token efficiency.
+Start with the master index, then follow the decision guide to load
+only the file you need:
+
+| File | Purpose |
+|---|---|
+| `memory-management/00-master-index.md` | Master index + Decision Guide + cross-refs (start here) |
+| `memory-management/01-file-operations.md` | Write / Update / Delete / Naming / Proactive for Saved Memories |
+| `memory-management/02-am-anatomy.md` | AM structure, quotas, content anti-patterns, AM ↔ System Prompt integration |
+| `memory-management/03-am-authority.md` | Who can change AM, hard rules, recovery protocol, confirmation protocol |
+| `memory-management/04-tool-reference-card.md` | Tool reference 1:1 with Agora (memory, file, shell, RAG, web, image) |
+| `memory-management/05-audit-failure-modes.md` | Audit cycles, contradictions, failure modes, execution contract |
+
+**In Agora Saved Memories:** create the 6 files without the `.md`
+extension (e.g. `memory-management/00-master-index`). Note: Agora's
+"Saved Memory" view is flat — the directory structure shown in the
+table is for `painter99/agora-pro-setup` only. When you install these
+in Agora, all 6 files live at the flat top level of Saved Memories.
+
+**In your Active Memory Archive Index:** add the master entry
+(matching the pattern shown at the top of `00-master-index.md`),
+then add specific entries for the 5 specialized files with narrower
+`**Load when:**` triggers.
 
 ## When to Add a New Skill
 
