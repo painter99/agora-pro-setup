@@ -206,6 +206,120 @@ just a no-op or "Unknown tool" response).
 
 ---
 
+## 5.6 Active Memory — Anatomy, Content & Structure Rules
+
+Active Memory is the highest-cost tier (paid every turn in tokens).
+Every line must earn its place. This section codifies the rules
+that keep AM healthy and prevent drift.
+
+### 5.6.1 Anatomy — required and optional sections
+
+| Section | Purpose | Target lines | Owner |
+|---|---|---|---|
+| `> **Status (YYYY-MM-DD):**` | One-liner: current focus right now | 1 | Shared (passive date refresh OK) |
+| `### Who I Am` | Name, age, location, contact | 3–5 | User only |
+| `### Life Focus` | Priority, job, primary hobby anchor | 3–5 | User only |
+| `### Communication Preferences` | Want / don't want / meta | 3–5 | User only |
+| `### Archive Index (Saved Memories)` | 1 line per file with `**Load when:**` trigger | 1 per file | Shared (auto on create/delete) |
+| `### Active Hobbies` *(optional)* | Anchor only; full detail in Saved Memory | 2–3 | User only |
+| `### AI Models in Use` *(optional)* | Primary / Alternative / Avoid | 3–5 | User only |
+| `### Dormant Background` *(optional)* | Past jobs, education; read-only on request | 3–5 | User only |
+
+**Order matters.** Status blockquote on top (immediate read),
+identity/communication anchors next (load-bearing context),
+Archive Index last (look-up structure).
+
+### 5.6.2 Quotas (verified against Agora performance cliff)
+
+- **Total AM target**: ~350 tokens (matches `3-quality-am-example.md` compact pattern)
+- **Total AM hard limit**: 1500 tokens (beyond this, recall and quality degrade — observed in mobile agent apps)
+- **Per-patch budget**: ≤ 50 tokens, **unless structural fix** (rebuild from template, recovery from corruption)
+- **Patches per session**: ≤ 1, **unless user explicitly requests multiple** in one message
+- **Archive Index entries**: strictly 1 per file, must include `**Load when:**` trigger
+
+### 5.6.3 Static vs Dynamic rule (the cardinal allocation rule)
+
+| Tier | What goes there | Why |
+|---|---|---|
+| **Active Memory** | **Dynamic** facts: current status, active preferences, life focus, hobby anchors, communication style | "What I am doing right now" |
+| **Saved Memories** | **Static** facts: CV, past jobs, completed courses, gear lists, static specs, project histories | "What I have done" |
+| **Conversation Recall** | **Ephemeral** facts: what was discussed today, single-session decisions, work-in-progress notes | "What we talked about" |
+
+If a fact could go in two tiers, **prefer the cheaper tier**.
+Cost: Core > Archival (when loaded) > Recall (free).
+
+### 5.6.4 Content anti-patterns (do not put these in AM)
+
+| Anti-pattern | Example | Fix |
+|---|---|---|
+| **Session log** | "User mentioned X today at 14:30" | Push to Recall, not AM |
+| **Spec dumps** | Tool definitions, framework rules copied into AM | Reference via Archive Index |
+| **Status fragmentation** | 5 different `## Current` sections | Consolidate to 1 `> Status` blockquote |
+| **Identity drift** | New sections added without `Who I Am` / `Life Focus` anchor | Add under existing anchor, don't create parallel section |
+| **Archive Index bloat** | Entry without `**Load when:**` trigger | Patch trigger BEFORE adding new file |
+| **Work-in-progress notes** | "TODO: discuss X tomorrow" | Saved Memory or session context |
+| **Tool output dumps** | Copy-paste from `web_search` results into AM | AM has only what user decided to keep |
+| **Doubletalk** | Same fact in both AM and a Saved Memory file | One source of truth — keep in file, reference only in AM |
+
+---
+
+## 5.7 Active Memory — Authority Model: Who Can Change What
+
+The cardinal problem this section prevents: **agent drift** — the agent
+makes AM changes that were never authorized, fragmenting identity and
+preferences over time. Authority must be explicit.
+
+### 5.7.1 Three roles, three scopes
+
+| Role | May change | Must not change |
+|---|---|---|
+| **User explicit** | Anything in AM (full authority) | — |
+| **Agent proactive** | Archive Index only: add entry on `create_memory_file`, remove entry on `delete_memory_file`, refresh `Status` date when conversation context makes it stale | Identity, preferences, life focus, hobby anchor, communication style, AI model choices, dormant background |
+| **Agent passive** | Date refresh in `> Status (YYYY-MM-DD):`, fix obvious typo if old_string is unambiguous, add missing `**Load when:**` trigger to existing Archive Index entry | Substantive content, identity claims, preferences, anchors |
+
+### 5.7.2 Decision flow before any AM patch
+
+```
+1. Is the change user-explicit?
+   YES → proceed (any scope)
+   NO ↓
+2. Is the change to Archive Index (add/remove entry) or Status date?
+   YES → proceed (agent proactive)
+   NO ↓
+3. Is the change a date refresh, typo fix, or missing trigger?
+   YES → proceed (agent passive)
+   NO ↓
+4. STOP. Propose the change to user; await approval.
+```
+
+### 5.7.3 Hard rules (override any agent inclination)
+
+1. **AM is sacred.** Identity, communication preferences, life focus, and hobby anchors are **user-only**. Agent must propose, never act.
+2. **Archive Index is shared.** Entries appear automatically when files are created/deleted. No manual scrubbing.
+3. **`Status` blockquote is dated.** Format `> **Status (YYYY-MM-DD):**` is required. Agent may refresh the date when conversation context makes status stale (e.g., user says "I just started learning Python" — update Status from "researching audio gear" to "learning Python" with today's date).
+4. **No full replace without template.** `mode="replace"` is permitted **only** when the agent has a verified template in hand (e.g., from `1-active-memory-template.md`) and the AM is demonstrably corrupted beyond patch recovery.
+5. **Conflicts defer to user message.** Per Agora `DefaultSystemPrompt.kt`: *"If [active memory] conflicts with the current user message, the current user message wins."* When in doubt, do not patch — ask.
+
+### 5.7.4 Recovery protocol (when AM is broken)
+
+If AM appears corrupt, fragmented, or has grown beyond 1500 tokens:
+
+1. **Read** current AM in full (the system injects it as `<active_memory_context>`; surface it for analysis).
+2. **Compare** with `1-active-memory-template.md` and `3-quality-am-example.md`. Identify drifted sections, orphaned content, anti-pattern violations.
+3. **Categorize** drift:
+   - Zombie markers, typos, date drift → patch
+   - Duplicated facts (doubletalk) → delete from AM, ensure Saved Memory file has them
+   - Bloated sections → split into Saved Memory file, replace with anchor
+   - Identity drift → patch back to user-stated facts; flag for user confirmation
+4. **Propose** recovery plan with diff summary (no silent rebuild).
+5. **Wait** for user approval.
+6. **Execute** with `mode="replace"` ONLY after explicit user GO. New content sourced from template + user-confirmed facts.
+7. **Verify** post-rebuild: total token count, hierarchy integrity, no orphaned sections.
+
+**Recovery is the one case where `mode="replace"` is appropriate.**
+
+---
+
 ## 6. Naming Conventions
 
 | Rule | Reason |
