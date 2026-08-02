@@ -54,7 +54,7 @@ Permissions: `chmod 600 ~/.ssh/config`.
 `cd /tmp/repo && git checkout -b edit-YYYY-MM-DD`
 
 ### 6. Batch writes
-A good agent supports many `file_write` calls per turn. Use it. One logical change per commit, many files per commit.
+A good agent supports many file operation calls per turn. Use `file_write` for new files and full overwrites; use `file_edit` (exact `old_string` + `new_string` match) for surgical fixes to existing files. One logical change per commit, many files per commit.
 
 ### 7. Commit + push branch (NOT `main` yet)
 `git add . && git commit -m "..." && git push -u origin edit-YYYY-MM-DD`
