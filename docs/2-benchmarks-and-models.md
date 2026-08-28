@@ -2,21 +2,28 @@
 
 Choosing the right model for Agora isn't about raw general benchmark scores (like MMLU). For me, it's entirely about **Agentic Tool Calling Stability**, mobile streaming latency, and cost-efficiency.
 
-## The Benchmark That Matters: MCP Atlas
-Developed by Scale AI, **MCP Atlas** (Model Context Protocol Atlas) tests an AI's ability to discover APIs, chain tools, recover from execution errors, and complete multi-step tasks over long horizons.
+## The Benchmark That Matters: Artificial Analysis
 
-### Verified Benchmark Data (Independent Sources)
+**MCP Atlas is not published** for GLM-5.3-Flash or GPT-5.6 Luna Pro, so I do not invent a score. The independent source I use is the **Artificial Analysis Intelligence Index** (agentic work, terminal use, coding, science, long context) plus measured **output speed**, **TTFT**, and **list price**.
 
-| Metric / Feature | 🥇 MiniMax M3 (Primary) | 🥈 Qwen 3.7 Plus (Alternative) |
+### Verified Benchmark Data
+
+Read 2026-08-28 from Artificial Analysis model pages. Terminal-Bench / DeepSWE are **vendor launch numbers** (Z.ai vs OpenAI) — mixed sources, not a head-to-head lab run. Luna Pro = GPT-5.6 Luna with `reasoning.mode=pro`; AA reports **Luna (max)** as the independent proxy.
+
+| Metric / Feature | 🥇 GLM-5.3-Flash (Primary) | 🥈 GPT-5.6 Luna Pro (Alternative) |
 | :--- | :--- | :--- |
-| **MCP Atlas (Tool Use)** | **74.2%** (#13) | 73.2% (#16) |
-| **Output Speed** | **~80 tok/s** | ~54 tok/s |
-| **Time To First Token** | **1.62s** | 2.87s |
-| **Average Pricing (1M)** | **$0.24 in / $0.96 out** | $0.32 in / $1.28 out |
-| **SWE-Bench Verified** | **80.5%** | 77.7% |
-| **Terminal-Bench 2.0** | 66.0% | **70.3%** |
-| **Large Context Decode** | **Ultra-fast (MSA)** | Standard Attention |
-| **Licensing** | **Open-Weight** | Proprietary |
+| **AA Intelligence Index** | **57** | 52 (Luna max) |
+| **Output Speed** | ~50 tok/s (AA median) | **~126 tok/s** (AA Luna max) |
+| **Time To First Chunk** | ~1.5 s (Z.ai, AA providers) | ~0.86 s (Luna non-reasoning, AA) |
+| **List Pricing (1M)** | **$0.15 in / $0.50 out** | $0.20 in / $1.20 out |
+| **Cost per AA Index task** | $0.09 | **$0.05** (Luna max) |
+| **Terminal-Bench 2.1** | 84.3 (Z.ai) | 84.7 (OpenAI Luna) |
+| **DeepSWE v1.1** | 63.4 (Z.ai) | 67.2 (OpenAI Luna) |
+| **Context Window** | 1M | 1.05M |
+| **Input modalities** | Text, image, **video** | Text, image, PDF |
+| **Licensing** | **MIT open-weight** | Proprietary |
+
+Sources: [AA GLM-5.3-Flash](https://artificialanalysis.ai/models/glm-5-3-flash), [AA GPT-5.6 Luna](https://artificialanalysis.ai/models/gpt-5-6-luna), [OpenRouter Luna Pro](https://openrouter.ai/openai/gpt-5.6-luna-pro) ($0.20 / $1.20). GLM list price is $0.15 / $0.50; a 50% Z.ai promo runs through 2026-09-09 — I quote **list**, not the discount.
 
 ---
 
@@ -24,9 +31,15 @@ Developed by Scale AI, **MCP Atlas** (Model Context Protocol Atlas) tests an AI'
 
 I stopped looking for one "perfect" model and instead use these two interchangeably depending on my current task:
 
-### 1. My Primary Workhorse: MiniMax M3
-MiniMax M3 is my overall winner for daily mobile agentic workflows. It is ~48% faster than Qwen 3.7 Plus, has a 77% faster TTFT, and costs about 25% less. Its MiniMax Sparse Attention (MSA) architecture is the real game-changer—it allows the model to decode 1M token contexts up to 15x faster than standard attention models. When I load massive memory files, M3 doesn't stutter.
+### 1. My Primary Workhorse: GLM-5.3-Flash
 
-### 2. My A/B Testing & Vision Partner: Qwen 3.7 Plus
-Qwen 3.7 Plus is my ideal companion model. It excels in Terminal/CLI benchmarks (70.3% on Terminal-Bench 2.0) and features native multimodal capabilities (image and video analysis). I switch to Qwen 3.7 Plus specifically when I need my agent to inspect screenshots, debug mobile UI mockups, or perform heavy terminal automations.
+GLM-5.3-Flash (Z.ai, Aug 2026; formerly the Ox Alpha stealth listing) is my overall winner for daily mobile agentic workflows. Independent Intelligence Index **57** at **$0.15 / $0.50** per 1M tokens is the price/performance pair I actually feel on a phone bill. 320B total / 18B active MoE, MIT weights, 1M context, native image **and video**.
+
+Caveat I do not hide: AA calls it **notably slow** (~50 tok/s median) and somewhat verbose. Fast third-party hosts exist (Databricks ~267 tok/s on AA's provider page), but I plan around the median, not the peak.
+
+### 2. My A/B Testing & Speed Partner: GPT-5.6 Luna Pro
+
+GPT-5.6 Luna Pro is the same Luna weights with OpenAI `reasoning.mode=pro`. AA Luna (max) sits at Intelligence Index **52** but **~126 tok/s** — about 2.5× the GLM median — and **$0.05 per AA task** because it burns fewer tokens. I switch to it when streaming feel matters, when I need PDF/image in the OpenAI stack, or when I want a higher-compute pass on a hard terminal/debug job.
+
+Caveat: Pro thinking raises time-to-first-**answer** (OpenRouter P50 latency on Pro is tens of seconds). Non-reasoning Luna is the snappy one (~0.86 s TTFT).
 ```
