@@ -57,7 +57,7 @@ To understand the difference between a standard "chatbot" and this **Autonomous 
 
 **The Situation:** I was traveling on an international express train from one EU country to another, and had a very tight transfer window — under 5 minutes — for my next regional connection at a border station. I needed to know whether the regional train would wait for me in case of a delay, and what my realistic backup options were if I missed it.
 
-**How My Agent Handled It (GLM-5.3-Flash):**
+**How My Agent Handled It (MiniMax M3 — the model I ran at the time, July 2026):**
 
 1. **Zero Hallucination & Nuance:** Instead of guessing, it autonomously executed multiple verification calls in seconds. It checked the current timetable and connection rules across operators, explicitly noting that the connection was **not contractually guaranteed** in the official schedule — while accurately pointing out that onboard staff or dispatch often request regional trains to hold for delayed international services in practice. Both facts delivered in one answer.
 2. **Context Awareness:** When I corrected my departure time mid-conversation, the agent instantly recalculated my exact timeline and upcoming milestones along the route — border crossing, transfer point, final destination — without breaking flow.
@@ -66,6 +66,8 @@ To understand the difference between a standard "chatbot" and this **Autonomous 
 I got a complete, verified logistical rescue plan while sitting on a moving international train.
 
 **This is what a mobile AI Dev-Ops & Life assistant looks like.**
+
+*Transparency note: this story happened with MiniMax M3, which was my primary model in July 2026. I have since upgraded my stack to GLM-5.3-Flash + GPT-5.6 Luna Pro (see the Dual-Model Strategy below) — the setup, not the model badge, is what solved this task.*
 
 ---
 
