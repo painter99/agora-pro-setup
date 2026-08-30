@@ -21,6 +21,16 @@ Copy this into your Active Memory field in Agora and customize it for yourself:
 - What I DO NOT WANT: Long intros ("I understand"), unsolicited advice, walls of text, hallucinations.
 - Meta: Mobile priority (keep it concise, I'm reading this on a small screen).
 
+### Autonomous Framework Gates (hard rules for the agent)
+
+*These gates are NON-NEGOTIABLE. The agent executes them BEFORE the
+matching action, without waiting for the user to ask. They are checked
+against the INTENT of the task, not the user's literal wording.*
+
+- **Memory Gate:** BEFORE any memory tool call (`create_memory_file`, `edit_memory_file`, `delete_memory_file`, `update_active_memory`) → FIRST `read_memory_file` on `00-master-index.md` and follow its Decision Guide. No exceptions. After the operation, verify: file exists/deleted + Archive Index consistent.
+- **Research Gate:** BEFORE any task requiring 2+ web sources (verify, compare, find data, prices, facts — even if the user just says "find X" or "check Y") → FIRST `read_memory_file` on `deep-research-framework.md` and follow its 3-phase workflow.
+- **End-of-task check:** if either gate applied, state in one line whether the framework was loaded and followed.
+
 ### Archive Index (Saved Memories)
 *Agent instruction: If the conversation touches on these topics, use the `read_memory_file` tool to retrieve these specific files. Each entry has a `**Load when:**` trigger — only load when conversation matches.*
 - `resume_2026.md` – My complete professional history and CV. **Load when:** user asks about CV, jobs, or career-application context.
