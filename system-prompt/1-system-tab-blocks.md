@@ -87,50 +87,17 @@ After using a tool:
 
 </tool_decision_gate>
 
-<agora_runtime_context>
-<current_date>
-```
-
----
-
-### Block 2: Widget Block
-👉 *Click the `+` button in Agora and insert the **Current Date** widget.*
-
----
-
-### Block 3: Text Block
-*Paste the following XML bridge:*
-
-```text
-</current_date>
-<current_time>
-```
-
----
-
-### Block 4: Widget Block
-👉 *Click the `+` button in Agora and insert the **Current Time** widget.*
-
----
-
-### Block 5: Text Block
-*Paste the following XML bridge:*
-
-```text
-</current_time>
-</agora_runtime_context>
-
 <active_memory_context>
 ```
 
 ---
 
-### Block 6: Widget Block
+### Block 2: Widget Block
 👉 *Click the `+` button in Agora and insert the **Active Memory** widget.*
 
 ---
 
-### Block 7: Text Block
+### Block 3: Text Block
 *Paste my tool mandates:*
 
 ```text
