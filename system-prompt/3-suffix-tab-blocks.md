@@ -13,4 +13,3 @@ Here is the single block I use:
 
 </agora_user_message>
 ```
-```
