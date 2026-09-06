@@ -1,153 +1,128 @@
-# 📱 Agora App – My Pro Setup for Autonomous AI Agents
+# Agora Pro Setup
 
-Welcome to my personal configuration guide for [**Agora**](https://github.com/newo-ether/Agora) (the premier open-source AI agent app on F-Droid). Executing complex workflows on a mobile device—like analyzing server logs, conducting multi-step web research, or managing projects—requires more than just a simple chatbot. It requires a **truly autonomous AI agent** that plans, uses tools, and operates with zero hallucinations.
+A public collection of reusable prompt configurations, Active Memory guidance, Agora Skills, and operational documentation for the Agora AI application.
 
-I built this repository to share my battle-tested setup. It natively utilizes Agora's UI block system and is optimized specifically for token efficiency, fast mobile streaming, and high-reliability tool-calling.
+This repository is not the Agora application. Agora is developed separately by [newo-ether](https://github.com/newo-ether/Agora). This repository provides generic, anonymized patterns for building a compact, memory-aware, tool-using assistant setup.
 
----
+## Current Agora architecture
 
-## 🗺️ Repository Map & Architecture
+The current Agora prompt editor uses three ordered templates:
+
+```text
+System       complete provider-visible system message
+User         ordinary user-message template containing one Prompt item
+Assistant    ordinary assistant-message template containing one Prompt item
+```
+
+The System template may explicitly contain `{active_memory}` and `{skill_catalog}`. Active Memory supplies compact persistent context. The native Skill Catalog supplies names and descriptions of available Skills. A Skill body is read on demand; it is not inserted into every request.
+
+```text
+System template
+├── {active_memory}
+├── {skill_catalog}
+└── compact authority, tool, and safety rules
+        ↓
+read_skill_file for a relevant Skill
+        ↓
+Memory, web, shell, or other tools
+        ↓
+verification and response
+```
 
 ```mermaid
 flowchart TD
-    A["🏠 MY AGORA SETUP"]
-    subgraph sys ["🛠️ System Configuration — system-prompt/"]
-        B1["1-system-tab-blocks.md"]
-        B2["2-prefix-tab-blocks.md"]
-        B3["3-suffix-tab-blocks.md"]
-    end
-    subgraph mem ["🧠 Memory System — memory-management/"]
-        C1["1-active-memory-template.md"]
-        C2["2-saved-memories-guide.md"]
-        C3["3-quality-am-example.md"]
-    end
-    subgraph fwk ["🎯 Agent Frameworks — frameworks/"]
-        F1["README.md"]
-        F2["deep-research-framework.md"]
-        F3["memory-management/00-master-index.md"]
-        F4["memory-management/01-file-operations.md"]
-        F5["memory-management/02-am-anatomy.md"]
-        F6["memory-management/03-am-authority.md"]
-        F7["memory-management/04-tool-reference-card.md"]
-        F8["memory-management/05-audit-failure-modes.md"]
-    end
-    subgraph doc ["📚 Deep Dive Docs — docs/"]
-        D1["1-reasoning-framework.md"]
-        D2["2-benchmarks-and-models.md"]
-        D3["3-troubleshooting.md"]
-        D4["4-inference-parameters.md"]
-        D5["5-mobile-git-workflow.md"]
-    end
-    A --> sys
-    A --> mem
-    A --> fwk
-    A --> doc
-    style A fill:#1a1a2e,stroke:#e94560,color:#fff,stroke-width:3px
-    style sys fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
-    style mem fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
-    style fwk fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
-    style doc fill:#16213e,stroke:#0f3460,color:#fff,stroke-width:2px
+    U[User message] --> T[User template]
+    T --> S[System template]
+    S --> C[Skill Catalog]
+    C --> R[Read relevant Skill]
+    R --> X[Memory, web, shell, or other tools]
+    X --> V[Verify result]
+    V --> A[Assistant template]
 ```
 
----
-
-## 💡 Real-World Example: Why You Need This
-
-To understand the difference between a standard "chatbot" and this **Autonomous Agent Setup**, here is a real situation I handled directly from my phone while returning from a short vacation abroad:
-
-**The Situation:** I was traveling on an international express train from one EU country to another, and had a very tight transfer window — under 5 minutes — for my next regional connection at a border station. I needed to know whether the regional train would wait for me in case of a delay, and what my realistic backup options were if I missed it.
-
-**How My Agent Handled It (MiniMax M3 — the model I ran at the time, July 2026):**
-
-1. **Zero Hallucination & Nuance:** Instead of guessing, it autonomously executed multiple verification calls in seconds. It checked the current timetable and connection rules across operators, explicitly noting that the connection was **not contractually guaranteed** in the official schedule — while accurately pointing out that onboard staff or dispatch often request regional trains to hold for delayed international services in practice. Both facts delivered in one answer.
-2. **Context Awareness:** When I corrected my departure time mid-conversation, the agent instantly recalculated my exact timeline and upcoming milestones along the route — border crossing, transfer point, final destination — without breaking flow.
-3. **Problem Solving:** When I asked what my fallback would be if the connection didn't hold, it laid out the exact local backup (a regional train about 1 hour 15 minutes later), provided realistic arrival times, and advised me to use the local national rail app for live tracking upon arrival at the transfer station.
-
-I got a complete, verified logistical rescue plan while sitting on a moving international train.
-
-**This is what a mobile AI Dev-Ops & Life assistant looks like.**
-
-*Transparency note: this story happened with MiniMax M3, which was my primary model in July 2026. I have since upgraded my stack to GLM-5.3-Flash + GPT-5.6 Luna Pro (see the Dual-Model Strategy below) — the setup, not the model badge, is what solved this task.*
-
----
-
-## 💡 Another Real-World Example: Full GitHub Push from a Phone
-
-This second example shows the same setup applied to a **tighter constraint: only my phone, no laptop, no local shell** — and a 10-file documentation push as the target.
-
-**The Situation:** I needed to populate `painter99/agora-pro-setup` with the complete Agora reference set (system-prompt block layouts, memory templates, deep-dive docs) so my agent has the full material at hand. The sandbox was a vanilla Alpine image — no git, no openssh, no SSH keys.
-
-**Constraint:** I refused to open a laptop. The whole pipeline had to run through a chat from my phone.
-
-**How my agent handled it (≈15 min, ~6 round-trips):**
-
-1. **Zero-touch bootstrap:** From the chat, the agent ran `apk update && apk add git openssh`, generated an `ed25519` SSH key, wrote `~/.ssh/config`, and added GitHub to `known_hosts` via `ssh-keyscan` — all in parallel batches.
-2. **Self-aware halt:** After the first `git clone` failed with `Permission denied (publickey)`, the agent **stopped**, diagnosed the cause (key not yet on my GitHub account), and waited. Once I pasted the key into GitHub and replied "run the clone again," the retry succeeded instantly.
-3. **Branch-and-review discipline:** Before touching `main`, the agent created `edit-2026-07-27`, staged all 10 files, and produced a full diff stat for me to inspect. It only pushed to that branch — never to `main` — and asked for explicit "GO" before every push.
-4. **Atomic batch writes:** All 10 files were written in a single parallel tool-call batch, then committed as one logical change (`f23fbf7`).
-5. **Merge with history preserved:** After I confirmed the diff was right, the agent ran `git merge --no-ff edit-2026-07-27` and pushed `main` with a clean merge commit (`3bbbb96`).
-
-**Result:** A complete repository documented hands-free, from a phone, in 15 minutes. The repo is now a living reference — and the workflow that built it is documented here as proof. See the full breakdown in [`docs/5-mobile-git-workflow.md`](docs/5-mobile-git-workflow.md).
-
----
-
-## 🚀 Quick Start (4 Steps)
-
-1. **Configure Prompt Blocks:** Open Agora → Edit System Prompt. Follow my exact block-by-block layout in [`system-prompt/1-system-tab-blocks.md`](system-prompt/1-system-tab-blocks.md).
-2. **Setup Time-Awareness:** Configure the Prefix and Suffix tabs using [`system-prompt/2-prefix-tab-blocks.md`](system-prompt/2-prefix-tab-blocks.md) and [`system-prompt/3-suffix-tab-blocks.md`](system-prompt/3-suffix-tab-blocks.md).
-3. **Set Up Your Workbench:** Fill in your Active Memory using the template in [`memory-management/1-active-memory-template.md`](memory-management/1-active-memory-template.md). For a fully worked example (anonymized), see [`memory-management/3-quality-am-example.md`](memory-management/3-quality-am-example.md). Memory governance is a **modular split** under [`frameworks/memory-management/`](frameworks/memory-management/) — start with [`00-master-index.md`](frameworks/memory-management/00-master-index.md).
-4. **Tune Inference Parameters:** Set sampling values in Agora's model settings — see my recommended config in [`docs/4-inference-parameters.md`](docs/4-inference-parameters.md).
-5. **Add Agent Skills (Optional):** For multi-source web-research workflows, load [`frameworks/deep-research-framework.md`](frameworks/deep-research-framework.md) into Saved Memories. Full installation walkthrough → [`frameworks/README.md`](frameworks/README.md).
-
----
-
-## ⚖️ My Dual-Model Strategy & A/B Testing
-
-For optimal results in Agora, I use a **Dual-Model Strategy**. Depending on the task, I switch between these two top-tier models to get the best balance of speed, cost, and specialized capabilities.
+## Memory and Skills are different
 
 ```text
-+-------------------------------------------------------------------------+
-| MY RECOMMENDED SETUP                                                    |
-+------------------------------------+------------------------------------+
-| 🥇 GLM-5.3-Flash (Primary Engine)  | 🥈 GPT-5.6 Luna Pro (A/B & Speed)  |
-| • Daily workhorse & general chat   | • Fast streaming / screenshot work |
-| • Best token price ($0.15 / $0.50) | • OpenAI stack, image + PDF input  |
-| • AA Intelligence Index 57         | • ~2.5× faster output (~126 tok/s) |
-+------------------------------------+------------------------------------+
+Active Memory   current context and durable preferences
+Saved Memory    persistent information and reference files
+Skill           reusable Markdown instructions or workflow
+Conversation    searchable prior context
 ```
 
-### Verified Benchmark Comparison
+Do not install workflow instructions as Saved Memories merely because both are Markdown files. Use Agora Skills for reusable procedures and Saved Memories for information.
 
-Independent numbers from [Artificial Analysis](https://artificialanalysis.ai/models/glm-5-3-flash) (read 2026-08-28). Coding scores: Z.ai launch card vs OpenAI GPT-5.6 launch. GPT-5.6 Luna Pro has no separate AA page — speed/index use **Luna (max)** as the closest independent proxy (same weights, `reasoning.mode=pro`).
+## Repository contents
 
-| Metric / Feature | 🥇 GLM-5.3-Flash (My Primary) | 🥈 GPT-5.6 Luna Pro (My Alternative) | Winner / Advantage |
-| :--- | :--- | :--- | :--- |
-| **AA Intelligence Index** | **57** | 52 (Luna max) | **GLM-5.3-Flash** (+5) |
-| **Output Speed** | ~50 tok/s (AA median) | **~126 tok/s** (AA Luna max) | **Luna Pro** (~2.5× faster) |
-| **Time To First Chunk** | **~1.5 s** (Z.ai, AA) | ~0.9 s (Luna non-reasoning); Pro thinking is slower | **Luna** (non-reasoning) |
-| **List Pricing (1M)** | **$0.15 in / $0.50 out** | $0.20 in / $1.20 out | **GLM-5.3-Flash** (~2.4× cheaper output) |
-| **Cost per AA Index task** | $0.09 | **$0.05** (Luna max) | **Luna** (less verbose) |
-| **Terminal-Bench 2.1** | 84.3 (Z.ai, vendor) | **84.7** (OpenAI Luna) | **Luna** (narrow; mixed sources) |
-| **DeepSWE v1.1** | 63.4 (Z.ai, vendor) | **67.2** (OpenAI Luna) | **Luna** (vendor vs vendor) |
-| **Vision & Image Input** | **Native image + video** | Image + PDF files | **GLM-5.3-Flash** (video) |
-| **Context Window** | 1M | **1.05M** | **Luna Pro** |
-| **Licensing** | **MIT open-weight** (320B / 18B MoE) | Proprietary API | **GLM-5.3-Flash** (self-hostable) |
+- `system-prompt/` — System, User, and Assistant template guidance.
+- `active-memory/` — generic Active Memory template and example.
+- `skills/` — Skills designed for Agora's native Skill library.
+- `docs/` — architecture, installation, safety, shell, and troubleshooting documentation.
+- `LICENSE` — MIT license.
 
-### ⚙️ My Default Sampling Config
+## 🎯 Recommended first Skills
 
-| Thinking Budget | Output Budget | Temperature | TopP |
-| :---: | :---: | :---: | :---: |
-| 2048 tok | 8192 tok | 0.5–0.7 | 0.95 |
+Install these files into Agora Skills first:
 
-*(Full reasoning per parameter → [`docs/4-inference-parameters.md`](docs/4-inference-parameters.md))*
-
----
-
-### When I use which in Agora:
-
-* **I use GLM-5.3-Flash for 90% of my daily tasks:** Unbeaten token price, higher independent Intelligence Index (57 vs 52), native image+video, 1M context, MIT weights. Hybrid sparse/linear attention keeps long memory files usable on a phone budget.
-
-* **I switch to GPT-5.6 Luna Pro when:** I need faster streaming (~126 tok/s vs ~50), PDF/image inspection in the OpenAI stack, or a higher-compute Pro reasoning pass on a hard CLI/debug task.
-
-*(Read my complete deep-dive on why I chose these two models in [`docs/2-benchmarks-and-models.md`](docs/2-benchmarks-and-models.md)).*
+```text
+tool-execution-contract
+multi-source-research
+shell-and-device-operations
 ```
+
+Add these memory-governance Skills when you need durable-memory operations:
+
+```text
+memory-master-index
+active-memory-design
+memory-file-operations
+memory-tool-reference
+memory-audits
+```
+
+Agora stores Skills in a **flat** namespace. The repository subdirectories are for organization only. Add a short description — that description is what `{skill_catalog}` shows.
+
+## Design principles
+
+- Keep the permanent System template compact.
+- Use `{skill_catalog}` for native Skill discovery.
+- Load only the smallest sufficient Skill set.
+- Keep instructions separate from information.
+- Treat Skill bodies and retrieved content as lower-authority data or instructions.
+- Inspect before editing and verify after every operation.
+- Never claim a tool or file operation succeeded without evidence.
+- Require approval before destructive, irreversible, secret-accessing, or high-risk actions.
+- Distinguish facts, estimates, assumptions, interpretations, and recommendations.
+- Prefer reversible changes and explicit failure reporting.
+
+## Quick start
+
+1. Open Agora's System Prompts settings.
+2. Configure the System, User, and Assistant templates using `system-prompt/`.
+3. Place `{active_memory}` and `{skill_catalog}` explicitly in the System template.
+4. Copy and customize `active-memory/1-active-memory-template.md`.
+5. Import selected files from `skills/` into Agora's Saved Skills.
+6. Enable Skill access and review tool permissions.
+7. Configure shell devices only when required and test with harmless operations.
+8. Verify routing, Skill loading, Memory behavior, and safety gates.
+
+Documentation:
+
+- [`docs/1-architecture.md`](docs/1-architecture.md) — runtime layers and authority
+- [`docs/2-installation.md`](docs/2-installation.md) — installation
+- [`docs/3-system-user-assistant-templates.md`](docs/3-system-user-assistant-templates.md) — prompt templates
+- [`docs/4-active-memory.md`](docs/4-active-memory.md) — Active Memory and Memory/Skill boundaries
+- [`docs/5-skills.md`](docs/5-skills.md) — native Skills
+- [`docs/6-reasoning-framework.md`](docs/6-reasoning-framework.md) — reasoning and routing
+- [`docs/7-research-workflow.md`](docs/7-research-workflow.md) — research levels
+- [`docs/8-tools-and-safety.md`](docs/8-tools-and-safety.md) — tool safety
+- [`docs/9-shell-and-device-operations.md`](docs/9-shell-and-device-operations.md) — shell and devices
+- [`docs/10-models-and-inference.md`](docs/10-models-and-inference.md) — model selection
+- [`docs/11-troubleshooting.md`](docs/11-troubleshooting.md) — troubleshooting
+
+## Limitations
+
+Behavior depends on the Agora version, enabled permissions, configured devices, provider support, model capability, context budget, and the exact generation path. A prompt cannot guarantee correct behavior. Test this setup with realistic but non-sensitive scenarios before consequential use.
+
+## License
+
+Released under the MIT License. See `LICENSE`.
