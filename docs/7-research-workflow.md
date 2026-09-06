@@ -1,16 +1,17 @@
 # Research Workflow
 
-Use the research Skill for current, technical, comparative, quantitative, unfamiliar, or disputed claims.
+The repository's `multi-source-research` Skill is the operational procedure. This document explains when to use it.
 
-1. Define the exact question and decision scope.
-2. Identify evidence requirements.
-3. Search from appropriate angles.
-4. Prefer primary and authoritative sources.
-5. Fetch and inspect relevant pages rather than relying on snippets.
-6. Compare dates, scope, methods, and applicability.
-7. Search for counter-evidence when consequences matter.
-8. Separate facts, calculations, estimates, assumptions, and recommendations.
-9. Cite important claims.
-10. State uncertainty, conflicts, and limitations.
+## Three levels
 
-Use proportional effort: a small verification does not require a full investigation, while a consequential comparison should not rely on one unexamined source.
+- **Light verification:** one narrow, low-risk claim; one authoritative source may be enough.
+- **Multi-source check:** comparison, recommendation, technical claim, or disputed fact; use corroboration and source comparison.
+- **Deep research:** broad, consequential, or multi-part question; use the full Skill with plan, query diversification, source scoring, counter-evidence, bounded iterations, escape hatch, and quality gate.
+
+The original Deep Research framework inspired the stronger parts, but the new Skill is not a full copy. It is deliberately compressed into reusable phases and adaptive depth.
+
+## Shared rules
+
+Fetch relevant pages instead of trusting snippets. Separate source facts, calculations, estimates, assumptions, interpretations, and recommendations. Surface conflicts. State `SINGLE-SOURCE — LIMITED CONFIDENCE`, `LIMITED EVIDENCE`, or `INSUFFICIENT ACCESS` when appropriate.
+
+Do not demand approval for every small factual check. Present a plan for substantial or high-impact research when an approval mechanism is available.

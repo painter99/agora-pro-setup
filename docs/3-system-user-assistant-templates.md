@@ -1,25 +1,29 @@
 # System, User, and Assistant Templates
 
-Current Agora uses three ordered templates rather than the former System/Prefix/Suffix arrangement.
+Agora 2.1 uses **System / User / Assistant**, not the former **System / Prefix / Suffix** arrangement.
 
 ## System
 
-Defines the complete provider-visible system message. It may contain text blocks and predefined variables such as `{active_memory}` and `{skill_catalog}`.
+System is the complete provider-visible system message. It contains the compact kernel, `{active_memory}`, `{skill_catalog}`, and the permanent safety/tool policy.
 
 ## User
 
-Defines ordinary user messages and must contain exactly one structural `Prompt` item. Optional text or variables may surround it.
+User wraps every ordinary user message. In this repository's recommended setup it contains:
+
+```text
+<agora_user_message sent_date="{sent_date}" sent_time="{sent_time}">
+{prompt}
+</agora_user_message>
+```
+
+The editor represents `{prompt}` as one immovable **Prompt** block. Build the wrapper from Text and Send Date/Send Time widgets; do not type a second Prompt block.
 
 ## Assistant
 
-Defines ordinary assistant messages and must contain exactly one structural `Prompt` item.
+Assistant contains exactly one immovable **Prompt** block. It should normally remain Prompt-only. The user-message envelope must not be copied around assistant output.
 
-## Important behavior
+## Variables
 
-Variables are resolved immediately before outbound provider requests, including relevant continuations and retries. The selected structured System template owns the system prompt; Agora does not silently append hidden memory or Skill text.
+Current variables include `{time}`, `{date}`, `{sent_time}`, `{sent_date}`, `{active_memory}`, `{skill_catalog}`, `{current_model_id}`, and `{message_model_id}`. `{model_id}` is a legacy alias.
 
-Special paths such as tool messages, Context Compact, and title generation may have dedicated formats.
-
-## Migration rule
-
-Do not reproduce the former Prefix/Suffix XML wrapper as the current installation. Use the templates in `system-prompt/`.
+Variables are resolved immediately before outbound provider requests, including relevant tool continuations and retries. Agora does not append hidden memory or Skill text to a custom System template.

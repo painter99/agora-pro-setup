@@ -1,18 +1,15 @@
 # Models and Inference
 
-This repository does not prescribe one universally best model.
+This public repository does not prescribe one universally best model.
 
-Evaluate the selected model for the actual workflow:
+Evaluate the selected model on the actual setup:
 
-- instruction following;
+- instruction following with a long System kernel;
+- `{active_memory}` and `{skill_catalog}` handling;
 - Skill and tool-call reliability;
-- latency;
-- context capacity;
-- cost;
-- vision or document support;
+- latency, context capacity, and cost;
+- vision/document support;
 - privacy and hosting requirements;
-- stability under long prompts.
+- stability during tool continuations.
 
-Sampling parameters influence generation behavior, not factual knowledge. Record model version, provider, date, parameters, task set, and measurement method when comparing configurations.
-
-Separate independent benchmarks, vendor claims, proxy measurements, personal observations, and recommendations. A benchmark does not guarantee reliable agent behavior.
+Sampling affects style and variability, not factual knowledge. Record model version, provider, date, parameters, task set, and measurement method. Separate independent benchmarks, vendor claims, proxy measurements, personal observations, and recommendations.

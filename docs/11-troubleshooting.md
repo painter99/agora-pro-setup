@@ -1,29 +1,25 @@
 # Troubleshooting
 
-## Skill is not loaded
+## Skill does not load
 
-Check Skill access, the saved file, its catalog description, exact filename, availability of `read_skill_file`, and whether the model actually read the body.
+Check Skill access, the saved file, short catalog description, exact flat name, `{skill_catalog}` in System, and whether the model actually called `read_skill_file`.
 
-## Too many Skills are loaded
+## Wrong memory layer is used
 
-Shorten descriptions and make them concrete. Do not create broad catalog entries that match unrelated tasks.
+Facts and durable context belong in Memory. Reusable procedures belong in Skills. Check `memory-master-index` and do not route Skill CRUD through Memory tools.
 
-## Memory is stored unexpectedly
+## User dates are missing
 
-Check whether the information is durable, whether the user requested persistence, Memory permissions, and the approval policy. Reusable procedures should normally be Skills, not personal Memory.
+Put the Send Date and Send Time widgets around the single Prompt block in **User**. Do not recreate Prefix/Suffix.
 
-## Prompt variables do not resolve
+## Active Memory is missing
 
-Check the exact variable spelling, prompt placement, current Agora version, and the corresponding access setting. Do not assume disabled capabilities resolve to content.
+Place `{active_memory}` in **System** and check Access Active Memory. Custom templates do not receive hidden Active Memory text.
 
 ## Shell fails
 
-Check the selected device, authentication, host-key policy, confirmation setting, and whether a durable job is still running. Stop retrying structural or permission failures.
+Check selected device, authentication, host-key policy, confirmation setting, and durable `job_id`. Stop retrying structural or permission failures.
 
-## Unsupported claims appear
+## Unsupported research claim
 
-Route current claims through research, inspect fetched sources, distinguish source types, and report uncertainty.
-
-## Active Memory is too large
-
-Move long-form content to Saved Memory or a Skill. Keep only current context, durable preferences, and concise boundaries.
+Load `research-multi-source` for multi-source work, fetch pages rather than trusting snippets, surface conflicts, and state `LIMITED EVIDENCE` when appropriate.

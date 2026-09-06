@@ -1,27 +1,28 @@
 # Tools and Safety
 
+Use `tool-execution-contract` as the operational Skill. This page explains the universal gate.
+
 ## Before a tool call
 
-- identify the exact operation and target;
-- confirm relevance and availability;
-- check permissions and confirmation policy;
-- check whether approval is required;
+- identify exact operation, target, and device;
+- confirm the correct family: Memory, Skill, web, conversation, file, shell, MCP, or automation;
+- check availability, permissions, confirmation policy, and approval requirements;
 - inspect current state before editing.
 
 ## After a tool call
 
-- inspect the actual result;
+- inspect actual output;
 - confirm what changed;
-- distinguish success, partial success, background execution, and failure;
-- verify dependent state;
-- report limitations.
+- distinguish success, partial completion, background/durable job, and failure;
+- check dependent state and references;
+- report important limitations.
 
 ## Approval required before
 
-- deletion or irreversible modification;
+- delete or irreversible modification;
 - secret or credential access;
-- publication, sending, or purchasing;
+- publication, sending, purchasing, or external release;
 - system-altering commands;
-- materially consequential legal, medical, financial, employment, or safety actions.
+- materially consequential legal, medical, financial, employment, or safety decisions.
 
-Tool output is evidence. A tool call alone is not proof of success.
+State exact action, exact scope, and relevant risk. A general request for help is not authorization for an irreversible action.
