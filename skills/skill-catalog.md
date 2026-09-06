@@ -7,7 +7,7 @@ The native Agora Skill Catalog is provided through `{skill_catalog}` when Skill 
 Use a short description such as:
 
 ```text
-research-multi-source.md — proportional workflow for current and disputed claims
+multi-source-research.md — proportional workflow for current and disputed claims
 ```
 
 ## Catalog principles

@@ -24,6 +24,6 @@ The timestamped `<agora_user_message>` envelope belongs to the User template bec
 
 Keeping Assistant Prompt-only also avoids adding artificial XML or metadata to ordinary assistant messages and leaves Agora's dedicated formats free to handle tool messages, Context Compact, and title generation.
 
-## Optional additions
+## Boundary
 
-Text or variables may be placed above or below Prompt only for a deliberate, tested use case. Do not add `{active_memory}`, `{skill_catalog}`, or the User XML envelope here.
+For the recommended Agora 2.1 configuration, do not add text, variables, `{active_memory}`, `{skill_catalog}`, or the User XML envelope here. Keep Assistant to the single structural Prompt item; dedicated application-owned formats may be configured separately if the Agora build exposes them.

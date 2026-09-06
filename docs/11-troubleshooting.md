@@ -22,4 +22,4 @@ Check selected device, authentication, host-key policy, confirmation setting, an
 
 ## Unsupported research claim
 
-Load `research-multi-source` for multi-source work, fetch pages rather than trusting snippets, surface conflicts, and state `LIMITED EVIDENCE` when appropriate.
+Load `multi-source-research` for multi-source work, fetch pages rather than trusting snippets, surface conflicts, and state `LIMITED EVIDENCE` when appropriate.

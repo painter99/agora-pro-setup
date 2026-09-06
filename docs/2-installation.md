@@ -27,15 +27,22 @@ Copy and customize `active-memory/1-active-memory-template.md`. Keep it short. D
 
 ## 4. Install Skills
 
-Import selected Markdown files from `skills/` into Agora's Saved Skills. Give each Skill a short catalog description. Start with:
+Import selected Markdown files from `skills/` into Agora's Saved Skills. The repository folders are only for organization; Agora uses a flat namespace. Choose the exact file and enter the flat name shown below (normally without `.md`):
 
-```text
-tool-execution-contract.md
-multi-source-research.md
-shell-and-device-operations.md
-```
+| Repository file | Agora Skill name |
+|---|---|
+| `skills/tool-execution-contract.md` | `tool-execution-contract` |
+| `skills/research/multi-source-research.md` | `multi-source-research` |
+| `skills/shell/shell-and-device-operations.md` | `shell-and-device-operations` |
+| `skills/memory-governance/memory-master-index.md` | `memory-master-index` |
+| `skills/memory-governance/active-memory-design.md` | `active-memory-design` |
+| `skills/memory-governance/memory-file-operations.md` | `memory-file-operations` |
+| `skills/memory-governance/memory-tool-reference.md` | `memory-tool-reference` |
+| `skills/memory-governance/memory-audits.md` | `memory-audits` |
+| `skills/examples/example-project-skill.md` | `example-project-skill` |
+| `skills/examples/example-learning-skill.md` | `example-learning-skill` |
 
-Add memory-governance or example Skills only when useful.
+Add the example Skills only when useful. Do not install `skills/README.md`, `skill-format.md`, or `skill-catalog.md` as runtime Skills; they are author documentation.
 
 ## 5. Review access and permissions
 

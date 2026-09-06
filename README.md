@@ -29,6 +29,17 @@ Memory, web, shell, or other tools
 verification and response
 ```
 
+```mermaid
+flowchart TD
+    U[User message] --> T[User template]
+    T --> S[System template]
+    S --> C[Skill Catalog]
+    C --> R[Read relevant Skill]
+    R --> X[Memory, web, shell, or other tools]
+    X --> V[Verify result]
+    V --> A[Assistant template]
+```
+
 ## Memory and Skills are different
 
 ```text
@@ -47,6 +58,28 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - `skills/` — Skills designed for Agora's native Skill library.
 - `docs/` — architecture, installation, safety, shell, and troubleshooting documentation.
 - `LICENSE` — MIT license.
+
+## 🎯 Recommended first Skills
+
+Install these files into Agora Skills first:
+
+```text
+tool-execution-contract
+multi-source-research
+shell-and-device-operations
+```
+
+Add these memory-governance Skills when you need durable-memory operations:
+
+```text
+memory-master-index
+active-memory-design
+memory-file-operations
+memory-tool-reference
+memory-audits
+```
+
+Agora stores Skills in a **flat** namespace. The repository subdirectories are for organization only. Add a short description — that description is what `{skill_catalog}` shows.
 
 ## Design principles
 
@@ -71,6 +104,20 @@ Do not install workflow instructions as Saved Memories merely because both are M
 6. Enable Skill access and review tool permissions.
 7. Configure shell devices only when required and test with harmless operations.
 8. Verify routing, Skill loading, Memory behavior, and safety gates.
+
+Documentation:
+
+- [`docs/1-architecture.md`](docs/1-architecture.md) — runtime layers and authority
+- [`docs/2-installation.md`](docs/2-installation.md) — installation
+- [`docs/3-system-user-assistant-templates.md`](docs/3-system-user-assistant-templates.md) — prompt templates
+- [`docs/4-active-memory.md`](docs/4-active-memory.md) — Active Memory and Memory/Skill boundaries
+- [`docs/5-skills.md`](docs/5-skills.md) — native Skills
+- [`docs/6-reasoning-framework.md`](docs/6-reasoning-framework.md) — reasoning and routing
+- [`docs/7-research-workflow.md`](docs/7-research-workflow.md) — research levels
+- [`docs/8-tools-and-safety.md`](docs/8-tools-and-safety.md) — tool safety
+- [`docs/9-shell-and-device-operations.md`](docs/9-shell-and-device-operations.md) — shell and devices
+- [`docs/10-models-and-inference.md`](docs/10-models-and-inference.md) — model selection
+- [`docs/11-troubleshooting.md`](docs/11-troubleshooting.md) — troubleshooting
 
 ## Limitations
 
