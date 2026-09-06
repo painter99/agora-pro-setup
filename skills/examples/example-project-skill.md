@@ -2,11 +2,11 @@
 
 ## Catalog description
 
-Generic workflow for planning and reviewing a recurring project.
+Generic planning workflow for a named recurring project. Load when requirements, milestones, or priorities materially affect the answer.
 
 ## Purpose
 
-Demonstrate a public, anonymized project Skill.
+Show a public, anonymized project Skill. Replace with your own project Skill; keep facts in Saved Memory.
 
 ## Load when
 
@@ -14,24 +14,30 @@ A named project, requirements, milestones, risks, or priorities materially affec
 
 ## Do not load when
 
-The project is mentioned only incidentally or no planning decision is needed.
+The project is mentioned only incidentally.
 
 ## Dependencies
 
-None by default. Load project facts from Saved Memory only when required.
+None by default. Load project **facts** from Saved Memory only when the Archive Index trigger matches.
 
 ## Workflow
 
-Identify the current goal, separate confirmed requirements from assumptions, check dependencies and unresolved decisions, order the next steps, identify risks, and distinguish completed work from proposed work.
+1. Identify the current goal.
+2. Separate confirmed requirements from assumptions.
+3. Check dependencies and unresolved decisions.
+4. Order next steps.
+5. Identify risks and missing information.
+6. Distinguish completed work from proposed work.
+7. Record durable project **facts** through the memory workflow — not by rewriting this Skill.
 
 ## Forbidden behavior
 
-Do not invent requirements, claim milestones are complete without evidence, silently change scope, or store every session detail as durable memory.
+Do not invent requirements, claim milestones without evidence, silently change scope, or store every session note as durable memory.
 
 ## Verification
 
-Check the plan against the current user request and available project facts.
+Check the plan against the current user request and loaded project facts.
 
 ## Output contract
 
-State the goal, confirmed facts, next steps, risks, and open decisions.
+Goal, confirmed facts, next steps, risks, open decisions.

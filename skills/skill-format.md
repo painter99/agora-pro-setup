@@ -1,28 +1,25 @@
-# Skill Format
+# Skill Format (for authors)
 
-Use this structure for every reusable Agora Skill.
+Use this structure when writing a new Agora Skill.
 
 ## Required sections
 
 1. `# Skill: <name>`
-2. `## Catalog description`
-3. `## Purpose`
-4. `## Load when`
-5. `## Do not load when`
-6. `## Dependencies`
-7. `## Workflow`
-8. `## Forbidden behavior`
-9. `## Verification`
-10. `## Output contract`
+2. `## Catalog description` — one short line for `{skill_catalog}`
+3. Operational body: Purpose, Load when, Do not load when, Dependencies, Workflow, Forbidden behavior, Verification, Output contract
+
+Long Skills (especially `deep-research`) may keep a richer body after a short catalog header. That is intentional.
 
 ## Discovery
 
-The native `{skill_catalog}` is the primary discovery layer for Agora Skills. The catalog contains the file name and short description. The internal `Load when` section is secondary validation and documentation; it cannot be the initial trigger because the file must be read first.
+`{skill_catalog}` is the primary discovery layer. Internal `Load when` is secondary validation after `read_skill_file`.
 
 ## Authority
 
-A Skill cannot override the System template, the current user request, Agora permissions, approval gates, or observed tool output.
+A Skill cannot override the System template, the current user message, Agora permissions, approval gates, or observed tool output.
 
 ## Size
 
-Keep a Skill focused. Split large procedures when they become difficult to route or verify. Move stable factual material into Saved Memory or a reference file.
+- Memory governance: keep the 00–05 split. Typical operations should load one specialized file.
+- Deep research: keep as **one** Skill. Splitting the ReAct loop usually loses the quality gates.
+- Do not paste complete Skill bodies into Active Memory.

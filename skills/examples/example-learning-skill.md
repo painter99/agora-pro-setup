@@ -6,23 +6,23 @@ Generic workflow for a recurring learning or practice activity.
 
 ## Purpose
 
-Demonstrate a public, anonymized learning Skill.
+Public anonymized example. Keep equipment lists and progress logs in Saved Memory.
 
 ## Load when
 
-A learning goal, practice routine, level, equipment constraint, or progress decision materially affects the answer.
+A learning goal, practice routine, level, or progress decision materially affects the answer.
 
 ## Do not load when
 
-The activity is mentioned only casually or is irrelevant to the answer.
+The activity is mentioned only casually.
 
 ## Dependencies
 
-None by default. Load factual resources only when needed.
+None by default.
 
 ## Workflow
 
-Identify the goal and current level, separate confirmed facts from options, propose practical next steps, respect existing constraints, distinguish facts from recommendations, and treat durable preferences as possible Memory decisions rather than automatic saves.
+Identify goal and current level, separate confirmed facts from options, propose practical next steps, respect constraints, distinguish facts from recommendations. Durable preferences may be Memory candidates — do not auto-save.
 
 ## Forbidden behavior
 
@@ -30,8 +30,8 @@ Do not invent progress or equipment, turn a suggestion into a decision, or recom
 
 ## Verification
 
-Check consistency with the current user message and any loaded factual resources.
+Consistency with the current user message and any loaded factual resources.
 
 ## Output contract
 
-State the practical next step and unresolved choices.
+Practical next step and unresolved choices.

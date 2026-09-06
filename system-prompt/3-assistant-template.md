@@ -1,11 +1,31 @@
 # Assistant Template
 
-Use this as a minimal generic **Assistant** template.
+In Agora, switch to the **Assistant** tab. This template defines the structure **around each ordinary assistant message**.
+
+Keep **exactly one** structural **Prompt** item (`{prompt}`). Agora inserts the original assistant body there. Do not delete it. Do not add a second Prompt item.
+
+---
+
+## Recommended layout
+
+Leave the Assistant template as **Prompt only**:
 
 ```text
-<Prompt>
+[Prompt]
 ```
 
-The `Prompt` item is Agora's required structural representation of the original assistant message. Keep exactly one `Prompt` item. Do not add a second wrapper that attempts to recreate the former Prefix/Suffix architecture.
+That is the correct default. The User template already wraps the human message with send date/time. Wrapping assistant output in extra XML is usually noise and can confuse later Context Compact / tool rounds.
 
-Special generation paths such as tool messages, Context Compact, and title generation may use their own application-owned formats.
+---
+
+## Optional additions
+
+You may add text or variables **above or below** the Prompt item, for example `{current_model_id}`, if you have a specific reason. Most setups should not.
+
+Do **not**:
+
+- put `{active_memory}` or `{skill_catalog}` here;
+- put `{sent_date}` / `{sent_time}` here unless you have a measured need;
+- recreate Prefix/Suffix architecture on the assistant side.
+
+Special paths (tool messages, Compact, title generation) ignore this template.

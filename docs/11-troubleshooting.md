@@ -1,29 +1,42 @@
 # Troubleshooting
 
-## Skill is not loaded
+## Skill never loads
 
-Check Skill access, the saved file, its catalog description, exact filename, availability of `read_skill_file`, and whether the model actually read the body.
+- Skill access enabled?
+- File exists under Skills (not Memories)?
+- Catalog description present and specific?
+- `{skill_catalog}` actually in the **System** template?
+- Did the model call `read_skill_file`?
+- Flat name match (`deep-research` vs `deep-research.md` vs folder path)?
 
-## Too many Skills are loaded
+## Too many Skills load
 
-Shorten descriptions and make them concrete. Do not create broad catalog entries that match unrelated tasks.
+Shorten descriptions. Remove "anything related".
 
-## Memory is stored unexpectedly
+## Memory ops go to the wrong store
 
-Check whether the information is durable, whether the user requested persistence, Memory permissions, and the approval policy. Reusable procedures should normally be Skills, not personal Memory.
+Procedures → Skills. Facts → Memories. If the agent writes a workflow into Saved Memory, point it at `00-master-index` and this distinction.
 
-## Prompt variables do not resolve
+## User envelope missing dates
 
-Check the exact variable spelling, prompt placement, current Agora version, and the corresponding access setting. Do not assume disabled capabilities resolve to content.
+You are still thinking in Prefix/Suffix. Put `{sent_date}` / `{sent_time}` around `{prompt}` in the **User** tab. Assistant tab stays Prompt-only.
 
-## Shell fails
+## Variables empty
 
-Check the selected device, authentication, host-key policy, confirmation setting, and whether a durable job is still running. Stop retrying structural or permission failures.
+Spelling, placement, access toggle, Agora version. Disabled Skill access ⇒ empty `{skill_catalog}`.
 
-## Unsupported claims appear
+## Shell / GitHub confusion
 
-Route current claims through research, inspect fetched sources, distinguish source types, and report uncertainty.
+`github.com` is not Conch. Fill Conch only if you run a Conch server. For Git: sandbox or your Linux host, then `git` + SSH key.
 
-## Active Memory is too large
+## Unexpected memory writes
 
-Move long-form content to Saved Memory or a Skill. Keep only current context, durable preferences, and concise boundaries.
+Authority Skill (`03-am-authority`), confirmation matrix, whether the user actually asked to remember.
+
+## Active Memory too large
+
+Move long-form to Saved Memory. Keep status, preferences, Archive Index. Never paste `deep-research` into AM.
+
+## Unsupported claims
+
+Route to `deep-research` when 2+ sources matter. Fetch pages. Surface conflicts. State LIMITED EVIDENCE.
