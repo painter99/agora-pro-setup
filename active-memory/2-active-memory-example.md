@@ -1,32 +1,32 @@
 # Active Memory Example
 
-Fictional and generic. Structure only — not a real profile.
+This fictional example demonstrates structure only.
 
 ```markdown
-> **Status (2026-01-15):** Building a personal learning system and keeping a few recurring workflows organized.
-
-### Who I Am
-- Name: Alex Rivera
-- Location: Example City
-- Public: github.com/example
+> **Status (2026-01-15):** Organizing a learning project and a small set of recurring workflows.
 
 ### Communication Preferences
+
 - Respond in English.
 - Lead with the conclusion.
 - Prefer concise, practical explanations.
 - Distinguish verified facts from estimates and recommendations.
 - Mention important limitations.
 
-### Current Focus
-- Learning project (anchor only)
-- Occasional evidence-based research
-- Constraint: mobile-first, limited context budget
+### Current Context
 
-### Archive Index (Saved Memories)
-- `learning-project.md` — confirmed requirements and milestones. **Load when:** project planning needs factual context.
+- **Current priorities:** A learning project, knowledge organization, and occasional evidence-based research.
+- **Current constraints:** Mobile-first use and a limited context budget.
 
-### Runtime Notes
-- Discover procedures through `{skill_catalog}`.
-- Do not copy Skill bodies into this file.
-- Current user instructions override stale status.
+### Memory Boundaries
+
+- Current user instructions override stale context.
+- Durable facts may be stored as Saved Memories when appropriate.
+- Reusable procedures should be read as Skills, not stored as personal facts.
+- Destructive actions require explicit approval.
+- Tool results must be inspected before reporting success.
+
+### Optional Saved Memory References
+
+- `learning-project.md` — confirmed project requirements. Load when project planning needs factual context.
 ```
