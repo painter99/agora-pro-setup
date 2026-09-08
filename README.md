@@ -55,8 +55,8 @@ Do not install workflow instructions as Saved Memories merely because both are M
 
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
 - `active-memory/` — generic Active Memory template and example.
-- `skills/` — Skills designed for Agora's native Skill library.
-- `docs/` — architecture, installation, safety, shell, and troubleshooting documentation.
+- `skills/` — Skills designed for Agora's native Skill library. The repository uses subdirectories for organization, but Agora imports them into a flat Skill namespace.
+- `docs/` — architecture, installation, safety, shell, troubleshooting, memory governance, and context-compaction documentation.
 - `LICENSE` — MIT license.
 
 ## 🎯 Recommended first Skills
@@ -74,6 +74,7 @@ Add these memory-governance Skills when you need durable-memory operations:
 ```text
 memory-master-index
 active-memory-design
+active-memory-authority
 memory-file-operations
 memory-tool-reference
 memory-audits
@@ -119,6 +120,7 @@ Documentation:
 - [`docs/10-models-and-inference.md`](docs/10-models-and-inference.md) — model selection
 - [`docs/11-troubleshooting.md`](docs/11-troubleshooting.md) — troubleshooting
 - [`docs/12-context-compaction.md`](docs/12-context-compaction.md) — Context Compact behavior and Compact prompt rationale
+- [`docs/13-memory-governance.md`](docs/13-memory-governance.md) — memory-layer architecture, routing, and hybrid governance Skills
 
 ## Limitations
 

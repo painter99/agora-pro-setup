@@ -34,6 +34,7 @@ User message
 - A System template is not Active Memory.
 - Active Memory is not Saved Memory.
 - A Skill is not a Saved Memory.
+- Memory-governance Skills define procedures; they do not contain the user's personal memory.
 - Skill discovery is not Skill execution.
 - Tool invocation is not verified success.
 - Repository organization is not the same as Agora's internal storage.

@@ -1,6 +1,6 @@
 # Tools and Safety
 
-Use `tool-execution-contract` as the operational Skill. This page explains the universal gate.
+Use `tool-execution-contract` as the operational Skill. This page explains the universal gate. For memory-specific work, route through `memory-master-index` and load only the relevant memory-governance Skill.
 
 ## Before a tool call
 

@@ -2,28 +2,23 @@
 
 ## Catalog description
 
-Reference for Agora Memory and conversation-recall tool families.
+Selects Agora Memory and conversation-recall tools using current tool definitions and verified outputs.
 
 ## Purpose
 
-Help select the correct Memory operation without confusing it with Skill tools.
+Prevent confusion between Memory, Skill, and conversation tool families and prevent documentation from outranking live tool behavior.
 
 ## Load when
 
-- a Memory tool name, argument, or operation order is uncertain;
-- a persistent-memory permission must be checked.
+- a Memory tool name, argument, mode, or operation order is uncertain;
+- a persistent-memory permission must be checked;
+- a tool result conflicts with this reference.
 
-## Do not load when
+## Authority rule
 
-- no Memory or conversation tool is required.
+The current tool definitions and actual tool output are authoritative. This document is a routing reference, not a guarantee that every listed tool or argument is enabled in a given Agora deployment.
 
-## Dependencies
-
-None.
-
-## Reference
-
-Memory tools may include:
+## Expected Memory tools
 
 ```text
 list_memory_files
@@ -34,7 +29,7 @@ delete_memory_file
 update_active_memory
 ```
 
-Conversation recall tools may include:
+## Expected conversation-recall tools
 
 ```text
 search_conversations
@@ -42,7 +37,7 @@ list_conversations
 read_conversation
 ```
 
-Skill tools are a separate family:
+## Separate Skill tools
 
 ```text
 list_skill_files
@@ -52,14 +47,17 @@ edit_skill_file
 delete_skill_file
 ```
 
-## Forbidden behavior
+Do not route Skill operations through Memory storage or assume availability without checking the current tool set.
 
-Never route a Skill operation through Memory storage or assume a tool is available without checking the current tool set.
+## Invariants
+
+- Read/list before editing or creating.
+- Use the smallest operation that satisfies the request.
+- For a precise file patch, `old_string` must be unique; do not substitute a full replacement casually.
+- `content` is the replacement/new content for the selected operation; do not assume incompatible operation fields are interchangeable.
+- `description` is metadata and does not replace file content.
+- After every write, re-read or otherwise inspect the resulting state.
 
 ## Verification
 
-Use the actual tool result and current permissions as the authority.
-
-## Output contract
-
-State which tool family applies and what prerequisite or permission remains.
+State the tool family used, actual tool result, prerequisite or permission that remains, and any mismatch between this reference and live behavior.
