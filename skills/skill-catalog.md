@@ -8,6 +8,7 @@ Use a short description such as:
 
 ```text
 multi-source-research.md — proportional workflow for current and disputed claims
+sequential-thinking-workflow.md — adaptive workflow for complex, multi-step, ambiguous, and tool-assisted tasks
 ```
 
 ## Catalog principles

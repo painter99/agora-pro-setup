@@ -69,6 +69,12 @@ multi-source-research
 shell-and-device-operations
 ```
 
+Add this reasoning Skill for complex or adaptive work:
+
+```text
+sequential-thinking-workflow
+```
+
 Add these memory-governance Skills when you need durable-memory operations:
 
 ```text
@@ -114,6 +120,7 @@ Documentation:
 - [`docs/4-active-memory.md`](docs/4-active-memory.md) — Active Memory and Memory/Skill boundaries
 - [`docs/5-skills.md`](docs/5-skills.md) — native Skills
 - [`docs/6-reasoning-framework.md`](docs/6-reasoning-framework.md) — reasoning and routing
+- [`docs/14-sequential-thinking-workflow.md`](docs/14-sequential-thinking-workflow.md) — public guide to adaptive sequential problem solving
 - [`docs/7-research-workflow.md`](docs/7-research-workflow.md) — research levels
 - [`docs/8-tools-and-safety.md`](docs/8-tools-and-safety.md) — tool safety
 - [`docs/9-shell-and-device-operations.md`](docs/9-shell-and-device-operations.md) — shell and devices
