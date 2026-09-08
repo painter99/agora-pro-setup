@@ -54,6 +54,31 @@ The Skill Catalog is discovery. `read_skill_file` is loading. The Skill body is 
 | **3 — Research** | current, technical, comparative, quantitative, unfamiliar, disputed | read `multi-source-research`, gather evidence, surface conflicts |
 | **4 — High risk** | destructive, secret-accessing, irreversible, system-altering, consequential | state exact scope and risk; obtain approval before execution |
 
+## Sequential Thinking as an on-demand workflow
+
+The System template provides permanent reasoning levels and safety gates. For work that is genuinely complex, ambiguous, adaptive, or tool-assisted, load `sequential-thinking-workflow` from the Skill Catalog. It adds a reusable process without turning every request into a long planning exercise.
+
+```text
+System template
+  → proportional reasoning level and safety gate
+sequential-thinking-workflow
+  → framing, minimal plan, checkpoints, revision, verification, stopping
+domain Skill
+  → task-specific procedure
+tools
+  → observations that can update the plan
+```
+
+The workflow uses:
+
+```text
+QUESTION → ACTION → OBSERVATION → UPDATE → NEXT DECISION
+```
+
+Use it for diagnosis, multi-step file work, comparisons with competing criteria, research planning, and other tasks where new evidence may change the route. Do not load it for a simple answer, translation, formatting task, or known direct calculation.
+
+Sequential Thinking does not authorize tools, override approval gates, or expose hidden reasoning. The user should receive the plan, relevant evidence, decisions, uncertainties, actions, and result—not a private chain-of-thought transcript.
+
 ## What the System template does not do
 
 It does not contain the complete research loop, memory CRUD manual, or shell-job manual. Those procedures belong in Skills and are loaded only when relevant. The System template provides the routing and safety gates that make progressive disclosure reliable.

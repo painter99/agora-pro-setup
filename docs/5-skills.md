@@ -35,3 +35,16 @@ shared cross-domain layer: tool-execution-contract
 ```
 
 The master index routes; specialized Skills contain the procedure. Do not load the entire family for a simple read. Personal facts and project state belong in Active Memory or Saved Memory, never in these reusable Skills.
+
+## Reasoning Skills
+
+The repository includes `skills/reasoning/sequential-thinking-workflow.md` for complex, ambiguous, multi-step, or tool-assisted tasks. It is loaded on demand and should not replace the proportional reasoning policy in the System template.
+
+It provides:
+
+- task framing and success criteria;
+- minimal decomposition and workflow-pattern selection;
+- question/action/observation/update checkpoints;
+- adaptive revision and branching;
+- verification and stopping conditions;
+- a strict boundary against exposing private chain-of-thought.

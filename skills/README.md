@@ -27,5 +27,7 @@ Import individual Markdown files into Agora's Skills settings. Give each Skill a
 - State forbidden behavior and verification.
 - Keep personal facts, preferences, and project state in Memory, not reusable Skills.
 - Treat `skills/memory-governance/` as the hybrid memory-procedure family; import its files individually into Agora.
+- Treat `skills/reasoning/` as reusable reasoning procedures; import each Skill individually and use it proportionally.
+- Sequential Thinking means explicit planning and adaptive verification, not disclosure of private chain-of-thought.
 - Never assume a Skill was applied before reading it.
 - Do not put secrets or personal data in public example Skills.
