@@ -40,3 +40,16 @@ Store information as Saved Memory when the assistant needs to know it. Store a p
 A personal preference may belong in Memory. A general research method belongs in a Skill. A project specification is information and belongs in Memory or a reference file, while the project-planning method belongs in a Skill.
 
 Do not duplicate the same content across layers without a clear reason.
+
+## Hybrid memory-governance Skills
+
+The repository's memory procedures are split into focused Skills under `skills/memory-governance/`:
+
+- `memory-master-index.md` — routing and authority boundaries;
+- `active-memory-design.md` — placement, quotas, and anti-patterns;
+- `active-memory-authority.md` — authorization, patching, recovery, and verification;
+- `memory-file-operations.md` — precise Saved Memory CRUD and patch recovery;
+- `memory-tool-reference.md` — tool-family and live-output reference;
+- `memory-audits.md` — audits, contradictions, references, and failure modes.
+
+`tool-execution-contract.md` is the shared cross-domain safety layer. These are procedures, not personal facts. Import the files individually into Agora's flat Skill namespace; the repository subdirectory is organizational only.

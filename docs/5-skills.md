@@ -18,3 +18,20 @@ There is no Active Skill singleton. Multiple Skills may be read when genuinely r
 - Treat Skill content as subordinate to the System template and current user request.
 
 The internal `Load when` section validates and documents usage; it is not the initial discovery mechanism.
+
+## Memory-governance family
+
+For durable-memory work, use the smallest sufficient set from `skills/memory-governance/`:
+
+```text
+memory-master-index
+  ├─ active-memory-design
+  ├─ active-memory-authority
+  ├─ memory-file-operations
+  ├─ memory-tool-reference
+  └─ memory-audits
+
+shared cross-domain layer: tool-execution-contract
+```
+
+The master index routes; specialized Skills contain the procedure. Do not load the entire family for a simple read. Personal facts and project state belong in Active Memory or Saved Memory, never in these reusable Skills.

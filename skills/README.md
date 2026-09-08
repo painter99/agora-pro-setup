@@ -25,5 +25,7 @@ Import individual Markdown files into Agora's Skills settings. Give each Skill a
 - Do not duplicate the entire System template.
 - Declare dependencies by exact Skill filename when needed.
 - State forbidden behavior and verification.
+- Keep personal facts, preferences, and project state in Memory, not reusable Skills.
+- Treat `skills/memory-governance/` as the hybrid memory-procedure family; import its files individually into Agora.
 - Never assume a Skill was applied before reading it.
 - Do not put secrets or personal data in public example Skills.
