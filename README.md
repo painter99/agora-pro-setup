@@ -134,6 +134,7 @@ Documentation:
 - [`docs/11-troubleshooting.md`](docs/11-troubleshooting.md) — troubleshooting
 - [`docs/12-context-compaction.md`](docs/12-context-compaction.md) — Context Compact behavior and Compact prompt rationale
 - [`docs/13-memory-governance.md`](docs/13-memory-governance.md) — memory-layer architecture, routing, and hybrid governance Skills
+- [`docs/15-capability-gating.md`](docs/15-capability-gating.md) — runtime capability verification pattern for agents
 
 ## Limitations
 
