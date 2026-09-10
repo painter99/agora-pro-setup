@@ -75,6 +75,12 @@ Add this reasoning Skill for complex or adaptive work:
 sequential-thinking-workflow
 ```
 
+Add this coordination Skill for managing Skills, memory, and automation:
+
+```text
+agora-coordinator
+```
+
 Add these memory-governance Skills when you need durable-memory operations:
 
 ```text
