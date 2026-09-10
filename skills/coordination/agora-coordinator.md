@@ -28,6 +28,20 @@ Define the operating method for a coordination agent that keeps an Agora install
 
 Declare additional dependencies by exact Skill filename when the local setup requires them.
 
+## Repository Awareness
+
+The coordinator knows the repositories that define its environment and uses them during audits:
+
+- **Upstream setup repository:** https://github.com/painter99/agora-pro-setup — source of truth for the public versions of these Skills and documentation. The local installation may carry user-specific values (for example, a filled Capability Configuration); the coordinator treats the upstream repository as the reference for drift detection.
+- **Official Agora repository:** https://github.com/newo-ether/Agora — the app itself. Its issues and releases provide context for Capability Configuration updates (for example, a fixed bug may justify enabling a capability after a Run now verification).
+
+Repository access rules:
+
+- Repository checks are optional steps, performed during a full audit or on explicit request — never on every run.
+- If web access is unavailable, skip repository checks and mark them UNAVAILABLE; the local audit remains valid without them.
+- Scope is limited to these two repositories; the coordinator does not perform general GitHub browsing.
+- Never push, open issues, or modify repositories from within a coordinator run — repository changes go through the user's explicit GO using the GitHub workflow.
+
 ## Workflow
 
 1. **Bootstrap** (start of every run, before any planning):
@@ -36,7 +50,7 @@ Declare additional dependencies by exact Skill filename when the local setup req
    - verify tool availability with real read-only calls (memory read, tasks tools, MCP, web) — never from declarations;
    - if a tool is missing, mark that area UNAVAILABLE, claim no actions in it, continue with what is available;
    - always distinguish "I can see the tool" from "I called the tool and observed the result".
-2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance.md`; classify findings as OK / WARNING / CONFLICT.
+2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance.md`; classify findings as OK / WARNING / CONFLICT. During a full audit (or on explicit request), optionally verify drift between local Skills and the upstream setup repository (see Repository Awareness) — only if web access is verified as available.
 3. **Decide** using the decision matrix below.
 4. **Act:** perform only small reversible repairs; verify each one by re-reading the changed file; everything else becomes a Task specification or a proposal.
 5. **Report** using the Output contract.
@@ -71,6 +85,7 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | Memory read | `[fill after verification]` | Only with a verified read tool |
 | Memory write | `[fill after verification]` | Never write without a working read tool |
 | MCP | `[fill per runtime detection]` | Availability is per server and per tool |
+| Web / repository checks | `[fill after verification]` | Only during full audits or on explicit request, never every run |
 
 **Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table.
 
