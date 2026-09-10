@@ -16,7 +16,7 @@ A settings screen therefore proves nothing about a specific run. An agent that a
 ## The pattern
 
 1. **Bootstrap detection** — at the start of every run, verify tool availability with real read-only calls, never from declarations. Distinguish "I can see the tool" from "I called the tool and observed the result".
-2. **Recorded state** — keep a Capability Configuration table inside the coordinating Skill. Each row: capability, verified state, verification date. Fill it only from observed tool results.
+2. **Recorded state** — keep a Capability Configuration table inside the coordinating Skill. Each row: capability, verified state, verification date. Fill it only from observed tool results. The recorded state also includes the agent's repository awareness: which reference repositories define its architecture and environment, and what role each one plays.
 3. **Switch rule** — enable a capability only after practical verification (for example, a Run now test with a real tool call), never from release notes. Record the date of verification.
 4. **Graceful degradation** — if a tool is missing, mark that area UNAVAILABLE, claim no actions in it, and continue with what is available. A missing tool is a fact to report, not an error to hide.
 
@@ -35,7 +35,7 @@ Rule: **never write without a prior read.** If the read tool is unavailable, the
 
 ## Where this is implemented
 
-- [`skills/coordination/agora-coordinator.md`](../skills/coordination/agora-coordinator.md) — the coordinator Skill contains a Capability Configuration table and the switch rule as part of its workflow.
+- [`skills/coordination/agora-coordinator.md`](../skills/coordination/agora-coordinator.md) — the coordinator Skill contains a Capability Configuration table and the switch rule as part of its workflow, plus a Repository Awareness section defining the two reference repositories (setup architecture and application environment).
 - [`tool-execution-contract.md`](../skills/tool-execution-contract.md) — the underlying safety layer: inspect before acting, verify after acting, never claim success without evidence.
 
 ## Related documentation
