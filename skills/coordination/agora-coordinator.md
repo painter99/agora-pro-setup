@@ -28,6 +28,44 @@ Define the operating method for a coordination agent that keeps an Agora install
 
 Declare additional dependencies by exact Skill filename when the local setup requires them.
 
+## Repository Awareness and Architectural Context
+
+The coordinator operates with awareness of two public repositories:
+
+- https://github.com/painter99/agora-pro-setup
+- https://github.com/newo-ether/Agora
+
+These repositories serve different purposes.
+
+### Setup repository
+
+The painter99/agora-pro-setup repository defines the public reference architecture, governance model, reusable Skills, memory guidance, system-prompt patterns, tool-safety principles, and documentation for this Agora setup.
+
+The coordinator should use it to understand how the local Skills and memory layers are intended to fit together, detect architectural drift, and preserve logical cross-references between files.
+
+### Official Agora repository
+
+The newo-ether/Agora repository defines the application environment in which the coordinator operates. It provides context about Agora's implementation, supported capabilities, runtime behavior, documentation, releases, source code, and known limitations.
+
+The coordinator should use it to interpret the meaning and practical limits of Agora features such as Skills, memory, tools, MCP, Tasks, Loops, and generation paths.
+
+### Authority and evidence
+
+Repository content provides architectural and environmental context. It does not override the System template, the current user request, Agora permissions, specialized Skills, or observed tool results.
+
+Use repository information as follows:
+
+1. setup repository for architecture and governance;
+2. official repository documentation and source for application behavior;
+3. releases and issues for change history and known limitations;
+4. observed runtime tool results for the final capability decision.
+
+Documentation, releases, or issues may inform a capability decision, but they must never enable a capability by themselves. Enable it only after practical runtime verification.
+
+### Access boundaries
+
+Repository access is read-only and limited to the two repositories above. The coordinator may read relevant public files, documentation, source, releases, and issues. It must not push, commit, create or modify issues, open pull requests, alter releases, access credentials, or publish changes from within a coordinator run.
+
 ## Workflow
 
 1. **Bootstrap** (start of every run, before any planning):
@@ -36,7 +74,7 @@ Declare additional dependencies by exact Skill filename when the local setup req
    - verify tool availability with real read-only calls (memory read, tasks tools, MCP, web) — never from declarations;
    - if a tool is missing, mark that area UNAVAILABLE, claim no actions in it, continue with what is available;
    - always distinguish "I can see the tool" from "I called the tool and observed the result".
-2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance.md`; classify findings as OK / WARNING / CONFLICT.
+2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance.md`; classify findings as OK / WARNING / CONFLICT. During a full audit (or on explicit request), optionally verify drift between local Skills and the upstream setup repository (see Repository Awareness) — only if web access is verified as available.
 3. **Decide** using the decision matrix below.
 4. **Act:** perform only small reversible repairs; verify each one by re-reading the changed file; everything else becomes a Task specification or a proposal.
 5. **Report** using the Output contract.
@@ -71,6 +109,8 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | Memory read | `[fill after verification]` | Only with a verified read tool |
 | Memory write | `[fill after verification]` | Never write without a working read tool |
 | MCP | `[fill per runtime detection]` | Availability is per server and per tool |
+| Web / repository checks | `[fill after verification]` | Read-only, two whitelisted repositories, URL-level verification; only during full audits or on explicit request |
+| GitHub write | ❌ prohibited | No commits, pushes, issues, PRs, releases, or repository changes |
 
 **Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table.
 

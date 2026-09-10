@@ -64,3 +64,5 @@ agora-coordinator
 
 It introduces a capability-configuration pattern: the coordinator verifies tool availability at runtime with real read-only calls, records the verified state in a table inside the Skill, and enables capabilities only after practical verification. This guards against generation paths that provision a restricted toolset (for example, Task-run generations). It never deletes, never writes to Active Memory without reading it, and reports every run with a structured LOADED / FINDINGS / PERFORMED / UNAVAILABLE report.
 
+The coordinator also carries Repository Awareness: it knows the upstream setup repository (this repository — the reference architecture and governance model for the local installation) and the official Agora repository (the application environment — documentation, releases, source, known limitations). Repository content informs capability decisions but never enables them by themselves, and repository access is read-only within these two repositories.
+
