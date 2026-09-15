@@ -12,6 +12,10 @@ setup. It merges two earlier, partial descriptions:
 `docs/8` remains valid: it states *which* actions require approval. This
 document adds *how much* scrutiny each class of action receives.
 
+The class vocabulary was first introduced in `docs/16-multi-agent-system.md`
+(a proposal for a future native runtime). It is normatively defined here so
+that this model does not depend on the fate of that proposal.
+
 ## Design goal
 
 A single agent must decide, for every action:
@@ -70,9 +74,9 @@ Stop and request a decision regardless of band when:
 
 - `docs/8-tools-and-safety.md` — the approval gate this model refines.
 - `docs/15-capability-gating.md` — verification of tool availability (precondition).
-- `docs/16-multi-agent-system.md` — source of the class vocabulary; its native
-  MAS runtime, when implemented, should map agent-profile permissions onto
-  these classes and bands.
+- `docs/16-multi-agent-system.md` — provenance of the class vocabulary; its
+  native MAS runtime, when implemented, should map agent-profile permissions
+  onto these classes and bands.
 - `docs/18-domain-routing.md` — domains may assign stricter bands per class,
   never laxer ones than this model.
 
