@@ -120,6 +120,7 @@ Agora stores Skills in a **flat** namespace. The repository subdirectories are f
 
 Documentation:
 
+- [`docs/0-overview.md`](docs/0-overview.md) — one-page architecture map, design decisions, and placement decision tree
 - [`docs/1-architecture.md`](docs/1-architecture.md) — runtime layers and authority
 - [`docs/2-installation.md`](docs/2-installation.md) — installation
 - [`docs/3-system-user-assistant-templates.md`](docs/3-system-user-assistant-templates.md) — prompt templates
@@ -135,6 +136,9 @@ Documentation:
 - [`docs/12-context-compaction.md`](docs/12-context-compaction.md) — Context Compact behavior and Compact prompt rationale
 - [`docs/13-memory-governance.md`](docs/13-memory-governance.md) — memory-layer architecture, routing, and hybrid governance Skills
 - [`docs/15-capability-gating.md`](docs/15-capability-gating.md) — runtime capability verification pattern for agents
+- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
+- [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
+- [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
 
 ## Limitations
 

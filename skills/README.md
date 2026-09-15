@@ -31,3 +31,10 @@ Import individual Markdown files into Agora's Skills settings. Give each Skill a
 - Sequential Thinking means explicit planning and adaptive verification, not disclosure of private chain-of-thought.
 - Never assume a Skill was applied before reading it.
 - Do not put secrets or personal data in public example Skills.
+
+## Examples
+
+`skills/examples/` contains two minimal Skills (`example-learning-skill.md`,
+`example-project-skill.md`) demonstrating the format from
+[`skill-format.md`](skill-format.md). They are optional teaching material —
+import them only when useful, and never treat them as runtime requirements.
