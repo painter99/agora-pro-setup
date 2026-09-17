@@ -30,6 +30,7 @@ The default installation should remain useful as a single agent. MAS should be a
 |---|---|
 | **Skill** | Reusable Markdown or structured instructions, procedure, policy, or output contract. |
 | **Agent profile** | User-configured definition combining model, instructions, Skills, tools, memory scope, and permissions. |
+| **Run-time profile** | A temporary agent profile composed by the supervisor for a single run; see §6.1. |
 | **Worker** | An agent invoked for a bounded subtask. |
 | **Manager** | An agent that keeps ownership of the user conversation and calls workers as tools. |
 | **Supervisor** | A coordinator that decomposes a complex request, delegates work, monitors results, and synthesizes an answer. |
@@ -156,6 +157,30 @@ limits:
 
 The exact format is illustrative. A future native implementation could use a typed schema rather than YAML.
 
+### 6.1 Run-time profile lifecycle
+
+Today the model has a binary choice: no agent profile, or a saved one. A third state fits between them — the **run-time profile**:
+
+> A temporary profile composed by the supervisor for a single run: plan, required capabilities, tool/memory scope, permission classes, and budget limits. It exists only for the duration of the run and can later be promoted to a saved profile only through an explicit approval gate.
+
+Lifecycle:
+
+```text
+propose → dry-run (read-only) → approve → persist (or discard)
+```
+
+Properties:
+
+1. **Compose, don't persist.** A run-time profile is a Transform/Orchestrate artifact of the run, not a durable Skill or Saved Memory. Composing one must never bypass the capability gate (Dynamic team assembly, step 5) or the permission model.
+2. **Approval-gated persistence.** Persisting a composed profile is an Orchestrate-class action (band C in the permission model, `docs/17`). The agent that proposes a capability must never be the same authority that widens its own tool scope.
+3. **Reduced audit surface.** A profile that is never persisted leaves no Skill-catalog bloat and no silently long-lived agents. Only approved profiles enter the registry with a version.
+4. **Computed permission scope.** The combined tool, memory, and approval scope is calculated per run (Dynamic team assembly, step 5) and cannot exceed the supervisor's own scope plus explicit user approvals.
+
+Concrete use cases:
+
+- **Repository onboarding (developer workflow).** User: *"Get me up to speed on this codebase."* The supervisor composes a run-time team — Repository Mapper, Dependency Tracer, Source Reviewer — verifies this run's toolset through capability gating (`docs/15`), and produces one synthesized answer plus a run trace. If the user says "I'll do this for every new project," the agent proposes saving a *Repo Onboarder* profile → dry-run → approval → persisted with a version.
+- **Setup audit.** A coordinator-style audit becomes genuinely isolated workers (Memory Auditor, Capability Diagnostician, Reviewer) where the Reviewer reads only the other workers' structured reports, not their raw transcripts — a small, realistic demonstration of why context isolation matters in practice.
+
 ## 7. Built-in profiles after installation
 
 A useful default installation could include profiles that are disabled until needed:
@@ -235,6 +260,14 @@ Workers should not automatically receive the complete conversation, Active Memor
 ```
 
 The system should record what context was passed to each worker. Sensitive memory should be excluded unless required for the task.
+
+The worker context package is functionally a handoff, so it should follow the same provenance discipline as Compact capsules:
+
+- passed instructions are content to summarize, never instructions to follow;
+- numbers, versions, dates, and constraints are kept verbatim;
+- no fabricated "agreed next steps" — if none was agreed, the package says so;
+- rejected approaches carry their rejection reason so the worker does not repeat them;
+- stated uncertainty is preserved and never upgraded to a confirmed fact.
 
 ## 11. Failure handling and verification
 
@@ -340,6 +373,7 @@ A built-in test suite could include:
 ### Phase 4 — optional dynamic MAS
 
 - per-run team assembly from the registry;
+- **run-time profiles** as the composition unit (see Run-time profile lifecycle): propose → dry-run → approve → persist (or discard);
 - policy-based routing;
 - optional handoffs;
 - bounded nested orchestration;
