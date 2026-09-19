@@ -1,4 +1,4 @@
-# Skill: Android Code Review — five-axis pre-merge check
+# Skill: Android Code Review
 
 ## Catalog description
 
@@ -17,51 +17,54 @@ Review every non-trivial change (commit, PR, AI-generated code) before it reache
 
 ## Do not load when
 
-- reviewing throwaway code that will never be merged.
+- Reviewing throwaway code that will never be merged.
 
 ## Dependencies
 
-`android-dev-tdd.md` (review checks Prove-It compliance), `android-spec-first.md` (spec = source of truth for correctness).
+- `android-dev-tdd.md` (review checks Prove-It compliance)
+- `android-spec-first.md` (spec = source of truth for correctness)
 
-## Approval standard
+## Workflow
 
-Approve when the change **clearly improves overall code health**, even if it is not perfect. Do not block a change just because you would have written it differently. The human is the final validator.
+1. Confirm the approval standard: approve when the change **clearly improves overall code health**, even if it is not perfect. Do not block a change just because you would have written it differently. The human is the final validator.
+2. Walk the five axes below and record findings per axis.
+3. For every flagged problem, propose the matching structural remedy.
+4. Check change size (~100 lines target); suggest splitting oversized changes.
+5. Produce the review report (see Output contract) and request human approval before merge.
 
-## The five axes
-
-### 1. Correctness
+### Axis 1: Correctness
 - Does the code do what it claims (spec/PRD)?
 - Edge cases: null, empty input, boundary values, malformed input files.
 - Error paths, not just the happy path (network loss, HTTP 500, malformed data).
 - Do the tests actually test the right thing?
 - Kotlin specifics: off-by-one, coroutine race conditions, `!!` operators.
 
-### 2. Readability and simplicity
+### Axis 2: Readability and simplicity
 - Descriptive names (no `temp`, `data`, `result` without context).
 - No cleverness for its own sake — simplicity beats ingenuity.
 - **Could this be written shorter?** (1000 lines where 100 suffice is a failure.)
 - Dead code, `// removed` comments, no-op variables.
 
-### 3. Architecture
+### Axis 3: Architecture
 - Follows existing patterns (Repository, DataSource, ViewModel)?
 - Duplication that should be shared?
 - Feature logic leaking into shared modules?
 - **Does the refactor reduce complexity or merely relocate it?** Count the concepts a reader must hold in mind.
 - Kotlin: type boundaries explicit — question needless `Any`, `lateinit`, unchecked casts.
 
-### 4. Security (light version for offline apps)
+### Axis 4: Security (light version for offline apps)
 - Data from external sources (HTTP feeds, files) is **untrusted** — validate at the system boundary.
 - No secrets in code or repo.
 - No telemetry unless the spec requires it.
 - Minimal permissions.
 
-### 5. Performance
+### Axis 5: Performance
 - Nothing blocking the main thread (network/DB = coroutine + `Dispatchers.IO`).
 - No needless Compose recomposition.
 - Background work respects Doze and system battery budgets.
 - No large objects in hot paths; memory-conscious state holders.
 
-## Structural remedies (when flagging a problem, propose the cure too)
+### Structural remedies (when flagging a problem, propose the cure too)
 
 | Problem | Remedy |
 |---|---|
@@ -71,11 +74,11 @@ Approve when the change **clearly improves overall code health**, even if it is 
 | Pass-through wrapper | Delete it |
 | Oversized file | Split into focused modules |
 
-## Change size
+### Change size
 
 Target ~100 lines per change. Small changes = easier review, faster merge, safer rollback.
 
-## Anti-rationalization table
+### Anti-rationalization table
 
 | Excuse | Reality |
 |---|---|
@@ -84,16 +87,23 @@ Target ~100 lines per change. Small changes = easier review, faster merge, safer
 | "We have no time for review" | We have less time for production debugging |
 | "It works" | Works ≠ correct; edge cases and error paths exist |
 
+## Forbidden behavior
+
+- Merging AI-generated or non-trivial code without review.
+- Approving based on "it runs" without checking edge cases and error paths.
+
 ## Verification
 
 - All five axes checked and findings recorded.
 - Flagged issues have proposed remedies.
 - Final approval comes from the human validator.
 
-## Forbidden behavior
+## Output contract
 
-- Merging AI-generated or non-trivial code without review.
-- Approving based on "it runs" without checking edge cases and error paths.
+- Verdict: approve / request changes / block.
+- Findings per axis (none = "clean"), each with severity and proposed remedy.
+- Change-size assessment and split recommendation if oversized.
+- Explicit request for human approval before merge.
 
 ## Sources
 

@@ -98,17 +98,23 @@ A new capability outside the approved spec = **a new spec version**, not "a smal
 | "It's just a small extra feature" | A small extra feature is scope creep |
 | "The human won't review it anyway" | The human is the validator; without them the spec is not approved |
 
+## Forbidden behavior
+
+- Writing feature code before the spec is approved.
+- Silently resolving ambiguity with assumptions.
+- Deleting failing tests or expanding scope without approval.
+
 ## Verification
 
 - Each gate has explicit human approval recorded.
 - Implementation tasks map 1:1 to approved tasks.
 - No changes outside spec scope without a new spec version.
 
-## Forbidden behavior
+## Output contract
 
-- Writing feature code before the spec is approved.
-- Silently resolving ambiguity with assumptions.
-- Deleting failing tests or expanding scope without approval.
+- SPECIFY: assumptions list + spec covering the six areas, awaiting approval.
+- PLAN/TASKS: task breakdown with acceptance criteria and dependencies, awaiting approval.
+- IMPLEMENT: per-task status mapped to approved tasks, deviations flagged explicitly.
 
 ## Sources
 
