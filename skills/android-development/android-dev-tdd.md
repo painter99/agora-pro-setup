@@ -73,17 +73,23 @@ Bug report -> test reproducing the bug -> FAIL (bug confirmed)
 | "I verified it manually" | Manual verification cannot be repeated; a test can |
 | "I'll add tests later" | Later = never. RED-GREEN now |
 
+## Forbidden behavior
+
+- Committing logic without tests.
+- Writing a fix before a failing test reproduces the bug.
+- Calling the network in unit tests.
+
 ## Verification
 
 - New tests were observed failing (RED) before the fix, then passing (GREEN).
 - The full suite passes before commit.
 - Bug fixes ship together with their regression test.
 
-## Forbidden behavior
+## Output contract
 
-- Committing logic without tests.
-- Writing a fix before a failing test reproduces the bug.
-- Calling the network in unit tests.
+- Per task: the RED test (name + observed failure), the GREEN result, refactor notes.
+- Full-suite result before commit.
+- For bug fixes: confirmation that the regression test failed before the fix.
 
 ## Sources
 
