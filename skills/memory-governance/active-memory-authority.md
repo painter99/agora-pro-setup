@@ -25,7 +25,6 @@ Protect Active Memory from silent drift, unauthorized identity changes, bloat, u
 
 - `memory-master-index.md`
 - `active-memory-design.md`
-- `memory-tool-reference.md`
 - `tool-execution-contract.md`
 
 ## Authority model

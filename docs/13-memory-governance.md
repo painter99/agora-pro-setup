@@ -29,17 +29,20 @@ Import these Markdown files individually into Agora's native Skills. Agora expos
 | `active-memory-design.md` | Decides what belongs in Active Memory and controls size/duplication. |
 | `active-memory-authority.md` | Controls authorization, patch versus replace, recovery, and verification for AM. |
 | `memory-file-operations.md` | Handles precise Saved Memory creation, patching, rename/archive, and deletion gates. |
-| `memory-tool-reference.md` | Separates Memory, Skill, and conversation tools; live tool output wins. |
 | `memory-audits.md` | Audits stale data, contradictions, references, duplication, bloat, and failure modes. |
 | `tool-execution-contract.md` | Shared inspection, approval, retry, and verification contract for all tool domains. |
 
 ## Routing examples
 
 - **Where should a durable fact go?** Read `memory-master-index`, then `active-memory-design` if placement is unclear.
-- **Patch a Saved Memory file:** Read `memory-file-operations`; add `memory-tool-reference` only if tool arguments are uncertain.
+- **Patch a Saved Memory file:** Read `memory-file-operations`; consult [`docs/19-memory-tool-reference.md`](19-memory-tool-reference.md) only if tool names or arguments are uncertain.
 - **Change Active Memory:** Read `active-memory-design` and `active-memory-authority`.
 - **Audit the memory layer:** Read `memory-audits`, plus the relevant placement/operation Skill for approved corrections.
 - **Use a tool:** Read `tool-execution-contract` and the domain-specific Skill before acting.
+
+## Kernel enforcement
+
+The invariants below are guaranteed by a gate stated in the System template itself, not only by these Skills: a memory write requires reading the router first, choosing the correct layer, patching rather than replacing, verifying after the write, and attesting the gate at the end of the task. See [`docs/20-memory-gate.md`](20-memory-gate.md) for the normative text, the version history that motivated it, and behavioral verification.
 
 ## Non-negotiable invariants
 

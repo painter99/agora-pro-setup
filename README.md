@@ -88,7 +88,6 @@ memory-master-index
 active-memory-design
 active-memory-authority
 memory-file-operations
-memory-tool-reference
 memory-audits
 ```
 
