@@ -41,7 +41,7 @@ Provide the shared safety contract for Memory, Skill, web, conversation, shell, 
 
 ## Domain routing
 
-- Saved Memory: `memory-master-index.md` → `memory-file-operations.md` and, when needed, `memory-tool-reference.md`.
+- Saved Memory: `memory-master-index.md` → `memory-file-operations.md` and, when needed, `docs/19-memory-tool-reference.md`.
 - Active Memory: `active-memory-design.md` + `active-memory-authority.md`.
 - Memory audit: `memory-audits.md`.
 - Shell/device: `shell-and-device-operations.md`.
