@@ -15,6 +15,16 @@ Provide the shared safety contract for Memory, Skill, web, conversation, shell, 
 - an external or high-trust action is considered;
 - scope, permission, reversibility, or verification is unclear.
 
+## Do not load when
+
+- answering from knowledge without any tool operation;
+- reading a file or memory with no change and no consequential action;
+- a domain Skill already covers the operation and no approval, retry, or verification question is open.
+
+## Dependencies
+
+- None (this Skill is the shared safety layer). Domain Skills are routed in `## Domain routing`.
+
 ## Workflow
 
 1. Identify the exact operation, target, device, and expected result.

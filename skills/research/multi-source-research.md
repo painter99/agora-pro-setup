@@ -138,6 +138,20 @@ Use proportional bounds:
 
 For Level 3, if two consecutive iterations produce no new evidence or five iterations remain stuck, stop adding tools and reconceptualize the sub-question. Re-run only the affected phase. Report the boundary instead of pretending completeness.
 
+## Forbidden behavior
+
+- Fabricated citations, URLs, quotes, statistics, or tool results.
+- Treating snippets as proof.
+- Treating a vendor claim as an independent benchmark.
+- Repeating failed searches without changing strategy.
+- Unlimited research without an escape hatch.
+- Presenting a recommendation stronger than the evidence.
+- Claiming to have used this Skill before reading it.
+
+## Verification
+
+Research is complete only when the Quality gate below passes for the chosen level, every important claim traces to an inspected source, contradictions and counter-evidence are reported rather than hidden, and the report states what remains unknown. If the result fails materially, revise once or mark it `DRAFT - NEEDS HUMAN REVIEW`.
+
 ## Output contract
 
 ### Level 1–2
@@ -182,13 +196,3 @@ Before finalizing Level 2 or 3 research, check:
 - [ ] The report states what remains unknown.
 
 If the result fails materially, revise once or mark it `DRAFT — NEEDS HUMAN REVIEW`.
-
-## Forbidden behavior
-
-- Fabricated citations, URLs, quotes, statistics, or tool results.
-- Treating snippets as proof.
-- Treating a vendor claim as an independent benchmark.
-- Repeating failed searches without changing strategy.
-- Unlimited research without an escape hatch.
-- Presenting a recommendation stronger than the evidence.
-- Claiming to have used this Skill before reading it.

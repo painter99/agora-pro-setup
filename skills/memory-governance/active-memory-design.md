@@ -15,6 +15,16 @@ Decide what deserves recurring context cost and where all other durable informat
 - separating current context from Saved Memory, conversation recall, or Skills;
 - repairing duplicate or oversized Active Memory.
 
+## Do not load when
+
+- only reading Active Memory with no placement or size question;
+- editing a Saved Memory file whose placement is already settled;
+- handling purely transient conversation context.
+
+## Dependencies
+
+`memory-master-index.md` for routing and `active-memory-authority.md` before an AM change.
+
 ## Allocation rules
 
 - **Active Memory:** dynamic current state, standing communication preferences, active priorities, short project/hobby anchors, and essential memory boundaries.
@@ -47,9 +57,12 @@ Prefer the cheaper archival layer over Active Memory when both can serve the pur
 
 Do not place full Skill bodies, tool manuals, copied web results, session logs, speculative facts, duplicate file bodies, or unrelated history in Active Memory. Do not silently change identity, preferences, life focus, or personal boundaries.
 
-## Dependencies
+## Forbidden behavior
 
-`memory-master-index.md` for routing and `active-memory-authority.md` before an AM change.
+- Never store full Skill bodies, tool manuals, copied web results, or session logs in Active Memory.
+- Never create parallel current-status sections.
+- Never duplicate a Saved Memory body in Active Memory; keep only a short routing anchor.
+- Never change identity, preferences, life focus, or personal boundaries without authority (see `active-memory-authority.md`).
 
 ## Verification
 
