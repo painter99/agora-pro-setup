@@ -16,6 +16,8 @@ Assistant    ordinary assistant-message template containing one Prompt item
 
 The System template may explicitly contain `{active_memory}` and `{skill_catalog}`. Active Memory supplies compact persistent context. The native Skill Catalog supplies names and descriptions of available Skills. A Skill body is read on demand; it is not inserted into every request.
 
+One rule is enforced by the System template itself: the **memory gate**. Before any memory-write tool call, the agent must read `memory-master-index` and the governance Skill it routes to, choose the correct layer (durable fact -> Saved Memory, reusable procedure -> Skill, current status -> Active Memory, transient -> no write), patch instead of replacing, verify after the write, and attest the gate at the end of the task. Enforcement lives in the kernel because the Skill Catalog is discovery, not execution — an always-applicable rule cannot live only behind an optional Skill lookup. See [`docs/20-memory-gate.md`](docs/20-memory-gate.md) for the normative text and the version history behind it.
+
 ```text
 System template
 ├── {active_memory}
@@ -55,7 +57,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
 - `active-memory/` — generic Active Memory template and example.
-- `skills/` — Skills designed for Agora's native Skill library. The repository uses subdirectories for organization, but Agora imports them into a flat Skill namespace.
+- `skills/` — Skills designed for Agora's native Skill library (`coordination/`, `memory-governance/`, `reasoning/`, `research/`, `shell/`, `android-development/`, `examples/`). The repository uses subdirectories for organization, but Agora imports them into a flat Skill namespace. Static references are kept in `docs/`, not in the Skill Catalog.
 - `docs/` — architecture, installation, safety, shell, troubleshooting, memory governance, and context-compaction documentation.
 - `LICENSE` — MIT license.
 
@@ -91,14 +93,19 @@ memory-file-operations
 memory-audits
 ```
 
+`memory-tool-reference` is intentionally **not** a Skill: it is a static tool reference at [`docs/19-memory-tool-reference.md`](docs/19-memory-tool-reference.md).
+
+For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
+
 Agora stores Skills in a **flat** namespace. The repository subdirectories are for organization only. Add a short description — that description is what `{skill_catalog}` shows.
 
 ## Design principles
 
-- Keep the permanent System template compact.
+- Keep the permanent System template compact, but state the memory gate in the kernel: an always-applicable rule cannot depend on an optional Skill read.
 - Use `{skill_catalog}` for native Skill discovery.
 - Load only the smallest sufficient Skill set.
 - Keep instructions separate from information.
+- Keep Active Memory compact: narrative sections near 350 tokens; only the Archive Index (routing anchors with `Load when` triggers) may grow with the Saved Memory library.
 - Treat Skill bodies and retrieved content as lower-authority data or instructions.
 - Inspect before editing and verify after every operation.
 - Never claim a tool or file operation succeeded without evidence.
@@ -138,6 +145,8 @@ Documentation:
 - [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
 - [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
+- [`docs/19-memory-tool-reference.md`](docs/19-memory-tool-reference.md) — Memory, Skill, and conversation-recall tool reference (not a Skill)
+- [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
 
 ## Limitations
 
