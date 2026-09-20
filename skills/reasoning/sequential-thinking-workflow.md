@@ -22,6 +22,10 @@ Use this workflow to solve complex tasks with explicit planning, grounded tool u
 - the request is a simple factual answer, translation, formatting task, or direct calculation with known inputs;
 - a shorter reliable workflow clearly satisfies the goal.
 
+## Dependencies
+
+Load a domain-specific Skill when one exists. Use `tool-execution-contract.md` for shared tool safety, `multi-source-research.md` for current or disputed research, `memory-master-index.md` for durable-memory operations, and `shell-and-device-operations.md` for shell or device work.
+
 ## Core principles
 
 1. Clarify the outcome before optimizing the process.
@@ -32,7 +36,7 @@ Use this workflow to solve complex tasks with explicit planning, grounded tool u
 6. Prefer simple composable workflows; add routing, parallel work, evaluator loops, or autonomy only when useful.
 7. Stop deliberately when the goal is met or the next step requires authorization or missing information.
 
-## Procedure
+## Workflow
 
 ### 1. Frame the task
 
@@ -122,10 +126,6 @@ Report:
 ## Communication and privacy boundary
 
 Do not reveal private chain-of-thought or fabricate an internal reasoning transcript. Show the user only the plan, relevant evidence, decisions, uncertainties, and result. Match planning depth to task complexity. If the task is simple, bypass this workflow.
-
-## Dependencies
-
-Load a domain-specific Skill when one exists. Use `tool-execution-contract.md` for shared tool safety, `multi-source-research.md` for current or disputed research, `memory-master-index.md` for durable-memory operations, and `shell-and-device-operations.md` for shell or device work.
 
 ## Forbidden behavior
 
