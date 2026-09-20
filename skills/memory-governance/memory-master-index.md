@@ -36,7 +36,7 @@ Use the current Agora tool definitions as authority. Load only what is needed:
 - `active-memory-design.md` for placement and size;
 - `active-memory-authority.md` for AM authorization, recovery, and approval;
 - `memory-file-operations.md` for Saved Memory creation, patching, renaming, archiving, or deletion;
-- `memory-tool-reference.md` when exact tool names or arguments are uncertain;
+- `docs/19-memory-tool-reference.md` (reference doc, not a Skill) when exact tool names or arguments are uncertain;
 - `memory-audits.md` for audits and contradictions;
 - `tool-execution-contract.md` for the shared inspection and verification contract.
 

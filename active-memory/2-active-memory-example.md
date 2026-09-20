@@ -26,6 +26,11 @@ This fictional example demonstrates structure only.
 - Destructive actions require explicit approval.
 - Tool results must be inspected before reporting success.
 
+### Archive Index (Saved Memory)
+
+- **Projects:** `learning-project.md` — confirmed requirements. Load when: project planning or scope questions.
+- **Reference:** `tool-notes.md` — verified tool quirks. Load when: a tool call fails unexpectedly.
+
 ### Optional Saved Memory References
 
 - `learning-project.md` — confirmed project requirements. Load when project planning needs factual context.

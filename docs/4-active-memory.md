@@ -8,7 +8,8 @@ Active Memory is compact context intended to remain available across conversatio
 - durable communication preferences;
 - active priorities;
 - short project anchors;
-- concise memory boundaries.
+- concise memory boundaries;
+- an **Archive Index** of Saved Memory routing anchors, each with a `Load when` trigger.
 
 ## Poor content
 
@@ -23,6 +24,17 @@ Active Memory is compact context intended to remain available across conversatio
 Use Saved Memories for durable information and Skills for reusable procedures. Use conversation search for prior context that should not become permanent.
 
 The current user request takes precedence over stale Active Memory, but it does not bypass application permissions or safety requirements.
+
+## Size policy
+
+Narrative sections stay near 350 tokens. The Archive Index may grow with the
+Saved Memory library — roughly 500–1000 tokens for the whole of Active Memory is
+acceptable when the growth is index lines only (one line per topic group, each
+with a `Load when` trigger). Index growth is the mechanism that lets a model
+orient itself across many Saved Memories without reading them. File bodies,
+histories, procedures, and session logs are never valid index content; if the
+index no longer fits under the deployment ceiling, split it by domain and keep
+only routing anchors.
 
 ---
 
@@ -49,7 +61,6 @@ The repository's memory procedures are split into focused Skills under `skills/m
 - `active-memory-design.md` — placement, quotas, and anti-patterns;
 - `active-memory-authority.md` — authorization, patching, recovery, and verification;
 - `memory-file-operations.md` — precise Saved Memory CRUD and patch recovery;
-- `memory-tool-reference.md` — tool-family and live-output reference;
 - `memory-audits.md` — audits, contradictions, references, and failure modes.
 
 `tool-execution-contract.md` is the shared cross-domain safety layer. These are procedures, not personal facts. Import the files individually into Agora's flat Skill namespace; the repository subdirectory is organizational only.
