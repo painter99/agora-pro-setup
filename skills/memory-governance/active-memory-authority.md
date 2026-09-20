@@ -21,6 +21,13 @@ Protect Active Memory from silent drift, unauthorized identity changes, bloat, u
 - editing Saved Memory without changing AM;
 - answering a transient question.
 
+## Dependencies
+
+- `memory-master-index.md`
+- `active-memory-design.md`
+- `memory-tool-reference.md`
+- `tool-execution-contract.md`
+
 ## Authority model
 
 - **User explicit:** may change any AM content.
@@ -30,7 +37,9 @@ Protect Active Memory from silent drift, unauthorized identity changes, bloat, u
 
 The current user message wins over stale or conflicting AM content.
 
-## Decision gate
+## Workflow
+
+### Decision gate
 
 1. Identify the exact AM section and intended change.
 2. Classify the change as user-explicit, allowed maintenance, or requiring confirmation.
@@ -51,6 +60,13 @@ For an ambiguous or failed patch, stop and re-read the current AM. Widen the mat
 ## Sensitive data and boundaries
 
 Do not add sensitive personal information without appropriate explicit authorization. Do not use AM as a dump for session logs, detailed workflows, tool manuals, or speculative facts. Keep durable detail in Saved Memory.
+
+## Forbidden behavior
+
+- Never change identity, communication preferences, life focus, hobby anchors, AI model choices, or personal boundaries without explicit confirmation of the exact scope.
+- Never use `replace` for ordinary edits or without explicit approval and a verified reconstruction source.
+- Never guess at missing AM content or patch a non-unique target.
+- Never exceed the authorized scope of an approved change.
 
 ## Verification
 

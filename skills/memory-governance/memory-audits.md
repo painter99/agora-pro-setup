@@ -15,7 +15,23 @@ Audit Active Memory, Saved Memories, and their relationships without silently re
 - a reference is missing, stale, or points to an obsolete filename;
 - Active Memory appears bloated, duplicated, or corrupted.
 
-## Audit workflow
+## Do not load when
+
+- a single known Saved Memory edit with no cross-layer consistency question;
+- answering a transient question from conversation context;
+- routine reading of memory with no audit intent.
+
+## Dependencies
+
+- `memory-master-index.md`
+- `active-memory-design.md`
+- `active-memory-authority.md`
+- `memory-file-operations.md`
+- `tool-execution-contract.md`
+
+## Workflow
+
+### Audit workflow
 
 1. Inspect current Active Memory and list Saved Memory files.
 2. Read relevant files and check identity, preferences, status markers, descriptions, references, and source-of-truth boundaries.
@@ -32,6 +48,13 @@ Run a user-initiated full audit, a change-triggered audit after a major life or 
 ## Failure-mode checklist
 
 Check for AM hijack, doubletalk between AM and files, phantom references, stale status markers, unauthorized sensitive data, accidental full replacement, non-unique patch targets, duplicate source-of-truth entries, and Skills or memories pointing to obsolete filenames. Never silently choose a winner in a contradiction and never delete as part of an audit without explicit authorization.
+
+## Forbidden behavior
+
+- Never silently choose a winner in a contradiction; surface unresolved conflicts.
+- Never delete or rewrite memory as part of an audit without explicit authorization.
+- Never perform corrections beyond the smallest safe authorized operation.
+- Never report a correction as verified without reading the result back.
 
 ## Verification
 
