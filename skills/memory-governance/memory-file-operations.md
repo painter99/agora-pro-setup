@@ -21,7 +21,7 @@ Apply the smallest reversible operation while preserving unrelated content and p
 
 ## Dependencies
 
-`memory-master-index.md`, `memory-tool-reference.md`, and `tool-execution-contract.md`.
+`memory-master-index.md` and `tool-execution-contract.md`. Tool names and arguments: `docs/19-memory-tool-reference.md`.
 
 ## Operation selection
 

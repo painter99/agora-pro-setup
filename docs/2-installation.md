@@ -37,7 +37,6 @@ Import selected Markdown files from `skills/` into Agora's Saved Skills. The rep
 | `skills/memory-governance/memory-master-index.md` | `memory-master-index` |
 | `skills/memory-governance/active-memory-design.md` | `active-memory-design` |
 | `skills/memory-governance/memory-file-operations.md` | `memory-file-operations` |
-| `skills/memory-governance/memory-tool-reference.md` | `memory-tool-reference` |
 | `skills/memory-governance/memory-audits.md` | `memory-audits` |
 | `skills/examples/example-project-skill.md` | `example-project-skill` |
 | `skills/examples/example-learning-skill.md` | `example-learning-skill` |

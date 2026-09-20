@@ -32,12 +32,12 @@ Decide what deserves recurring context cost and where all other durable informat
 - **Conversation recall:** ephemeral session details, proposals, and unresolved one-session work.
 - **Skills:** reusable procedures, frameworks, decision rules, checklists, and output contracts. Never duplicate personal facts in them.
 
-Prefer the cheaper archival layer over Active Memory when both can serve the purpose. Keep Active Memory near a practical target of about 350 tokens and below the 1500-token hard limit unless the current Agora deployment documents different limits.
+Prefer the cheaper archival layer over Active Memory when both can serve the purpose. Keep the narrative sections (status, preferences, current context, boundaries) near a practical target of about 350 tokens. The Archive Index may grow with the Saved Memory library: roughly 500-1000 tokens for the whole of Active Memory is acceptable when the growth is index lines only, one line per topic group, each with a precise `**Load when:**` trigger. Stay below the 1500-token hard limit unless the current Agora deployment documents different limits; if the index itself no longer fits, split it by domain and keep only routing anchors.
 
 ## Design rules
 
 1. Keep one current-status section; do not create parallel status blocks.
-2. Prefer short routing anchors with precise `**Load when:**` triggers over copied file bodies.
+2. Prefer short routing anchors with precise `**Load when:**` triggers over copied file bodies. Every Saved Memory file should be reachable from the Archive Index; an unindexed file is effectively invisible to the model.
 3. Keep long histories, detailed specifications, static references, complete workflows, and dormant information in Saved Memory.
 4. Do not use Active Memory as a tool manual, session log, research dump, or Skill registry.
 5. Separate current facts from durable facts; stale status must be refreshed or moved.
