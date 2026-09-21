@@ -2,7 +2,7 @@
 
 ## Catalog description
 
-Verified Git workflow from a constrained mobile sandbox: branches, GO rules, SSH troubleshooting, and Alpine/BusyBox gotchas.
+Verified Git workflow from a constrained mobile sandbox: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), SSH troubleshooting, and Alpine/BusyBox gotchas.
 
 ## Purpose
 
@@ -49,6 +49,17 @@ git branch -d <branch> && git push origin --delete <branch>
 2. **GO from the user before pushing** — exception: explicit "send it" / "do the merge".
 3. **`--no-ff` merges** — keep the branch visible in history.
 4. **Cleanup after merge** — locally and on the remote.
+5. **CI verification before merge** — an API conclusion of "success" is NOT sufficient; required depth is defined in "CI verification before merge" below. Precedent: a real incident where `tee` without `pipefail` masked an assembleDebug failure, producing a falsely green run with an empty APK artifact.
+
+### CI verification before merge (required depth)
+| Run type | Required check |
+|---|---|
+| Run on a feature branch | API conclusion + JUnit summary (test counts) |
+| **Merge run on main** | **Full mirrored log**: both `BUILD SUCCESSFUL` (unit tests and assembleDebug), JUnit XML — total count matches expectations, 0 failures / skipped / errors, 0 deprecation warnings and `e:`/javac errors |
+
+- Read the full log via: `git fetch origin <log-branch> && git show origin/<log-branch>:<log-path>` (e.g. a `ci-logs` branch mirrored by the CI workflow).
+- **Gotcha:** `raw.githubusercontent.com` may briefly serve a stale file (CDN cache) — verify via `git show` after fetch and check the file header (`# CI run N — commit <sha>`) matches the run being verified.
+- Prerequisite: the CI must mirror full logs to a public branch; without such mirroring these rules cannot be followed — set it up first.
 
 ### SSH troubleshooting
 | Symptom | Cause | Fix |
@@ -83,7 +94,7 @@ git branch -d <branch> && git push origin --delete <branch>
 ## Verification
 
 - After push: `git log --oneline -3` + `git status --short --branch` (in sync with remote).
-- After merge: cleanup done, `git branch` clean.
+- After merge: cleanup done, `git branch` clean, **CI run on main verified with the full mirrored log (see "CI verification before merge")**.
 - Before push: privacy check passed (or the repository is private).
 
 ## Output contract
@@ -95,3 +106,4 @@ git branch -d <branch> && git push origin --delete <branch>
 ## Sources
 
 v1.0 — distilled from hands-on mobile-first Git operations in a constrained Alpine/BusyBox sandbox; anonymized and generalized for public sharing.
+v1.1 — added the CI verification gate before merge (full mirrored log for merge runs; an API conclusion alone is insufficient), including the CDN-cache gotcha of raw log reads.
