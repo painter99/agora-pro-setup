@@ -40,6 +40,8 @@ Use for a comparison, recommendation, technical claim, or claim where one source
 
 Use for broad, consequential, disputed, or multi-part questions. Run the full workflow below, including a plan, source scoring, counter-evidence, bounded iterations, and a final quality gate.
 
+Level 3 MUST produce, in addition to the standard output: an evidence matrix, a data-source classification for every candidate or key claim, counter-evidence for each important claim, and an explicit "what cannot be proven from available data" section.
+
 Do not run Level 3 merely because the user used the words “deep dive.” Match depth to scope and consequence.
 
 ## Workflow
@@ -67,10 +69,11 @@ Do not repeat a query that produced no new information. Search local context, Me
 
 1. Fetch the most relevant sources instead of relying on snippets.
 2. Prefer official documentation, standards, legislation, academic work, original data, manufacturers, and reputable institutions according to the topic.
-3. Record the source name, URL, publication/update date, claim supported, and access date.
+3. Record the source name, URL, publication/update date, claim supported, and access date. For time-sensitive data also record the observation/measurement time itself — without all three timestamps (observation, access, publication/update), "current" is only an assumption.
 4. Compare source scope, method, definitions, incentives, and recency.
 5. Seek at least one independent or opposing source for important conclusions.
 6. Never fetch the same URL repeatedly without a reason.
+7. Classify the data source behind every candidate or key claim: `DIRECT_STATION` (direct measurement at a specific point), `OFFICIAL_NETWORK` (official measurement network), `MODEL_OUTPUT` (numerical model), `INTERPOLATED` (interpolation or correction for a location), `CROWDSOURCED` (user or private stations), `UNKNOWN` (source not verified). Never present a model, interpolated, or crowdsourced value as a direct measurement.
 
 ### Phase 3 — Evidence notes and mini-ReAct loop
 
@@ -101,6 +104,17 @@ Score important sources from 1–5:
 
 Use scores to guide confidence, not to manufacture mathematical certainty. Mark a claim `LIMITED EVIDENCE`, `DISPUTED`, or `UNVERIFIED` when appropriate.
 
+### Evidence matrix (mandatory for Level 2–3)
+
+For every claim that materially affects the conclusion, record:
+
+| Claim | Claim type | Source | Direct evidence | Freshness | Independent verification | Status |
+|---|---|---|---|---|---|---|
+| e.g. "app X uses a local station" | technical fact | official docs | yes/no | measurement time | yes/no | verified / limited / unproven |
+| e.g. "app X is the most accurate" | conclusion | benchmark | missing | — | missing | unproven |
+
+Claim types: sourced fact, calculation, estimate, assumption, interpretation, recommendation. A conclusion without direct comparative evidence stays `unproven` — it must not be worded as a fact.
+
 ### Phase 5 — Chain of verification
 
 Before presenting an important factual claim, check:
@@ -124,7 +138,7 @@ If a check fails, weaken the wording, identify the gap, or continue researching.
 - If only one credible source exists, state `SINGLE-SOURCE — LIMITED CONFIDENCE`.
 - If search returns nothing, rephrase or narrow the query once or twice.
 - If fetching fails, try a relevant alternative source rather than repeating indefinitely.
-- If access remains insufficient, report `INSUFFICIENT ACCESS`.
+- If access remains insufficient, report `INSUFFICIENT ACCESS`. Use it when material evidence is unreachable, for example: no independent benchmark or comparison exists, technical specifications of the sources cannot be verified, or the candidate set cannot be validated. In that case deliver a bounded conclusion (e.g. "best practical option based on the availability of local measurement"), not a decisive verdict.
 
 ### Phase 7 — Bounded iterations and escape hatch
 
@@ -143,6 +157,8 @@ For Level 3, if two consecutive iterations produce no new evidence or five itera
 - Fabricated citations, URLs, quotes, statistics, or tool results.
 - Treating snippets as proof.
 - Treating a vendor claim as an independent benchmark.
+- Presenting model, interpolated, or crowdsourced data as direct measurement.
+- Unsupported absolute superlatives without a direct comparison against a predefined metric.
 - Repeating failed searches without changing strategy.
 - Unlimited research without an escape hatch.
 - Presenting a recommendation stronger than the evidence.
@@ -160,6 +176,7 @@ Research is complete only when the Quality gate below passes for the chosen leve
 ## Conclusion
 ## Evidence
 ## Uncertainty and limitations
+## What cannot be proven from available data
 ## Sources
 ```
 
@@ -174,14 +191,18 @@ Research is complete only when the Quality gate below passes for the chosen leve
 ## Key Findings
 ## Analysis and Synthesis
 ## Contradictions and Limitations
+## What cannot be proven from available data
 ## Recommendations / Next Steps
+## Evidence Matrix
+| Claim | Claim type | Source | Direct evidence | Freshness | Independent verification | Status |
+|---|---|---|---|---|---|---|
 ## Source Registry
 | # | Source | URL | Date | Relevance / score |
 |---|---|---|---|---|
 ## Methodology Note
 ```
 
-Always distinguish sourced facts, calculations, estimates, assumptions, interpretations, and recommendations.
+Always distinguish sourced facts, calculations, estimates, assumptions, interpretations, and recommendations. The "What cannot be proven" section separates verified facts, interpretations, recommendations, and unproven assumptions — it is mandatory for Level 2–3 and must list the material gaps (e.g. missing independent benchmark, unverifiable source data).
 
 ## Quality gate
 
@@ -190,9 +211,16 @@ Before finalizing Level 2 or 3 research, check:
 - [ ] The requested scope was answered.
 - [ ] Important claims have appropriate evidence.
 - [ ] Source types and vendor claims are labeled honestly.
+- [ ] Every candidate or key claim has a data-source classification (`DIRECT_STATION` … `UNKNOWN`).
 - [ ] Counter-evidence and contradictions were not hidden.
 - [ ] Confidence matches evidence quality.
+- [ ] Absolute superlatives ("most accurate", "best", "most reliable") appear only when a direct comparison against a predefined metric exists; otherwise recommendations use bounded wording ("best practical option based on …").
 - [ ] The result is actionable without pretending certainty.
 - [ ] The report states what remains unknown.
 
 If the result fails materially, revise once or mark it `DRAFT — NEEDS HUMAN REVIEW`.
+
+## Sources
+
+v1.0 — distilled from a real research failure where a "deep" verdict was issued without an independent benchmark; anonymized and generalized for public sharing.
+v1.1 — added the evidence matrix, mandatory data-source classification (`DIRECT_STATION` … `UNKNOWN`), three timestamps for time-sensitive data, defined criteria for `INSUFFICIENT ACCESS`, a ban on unsupported absolute superlatives, and the mandatory "What cannot be proven from available data" section for Level 2–3.
