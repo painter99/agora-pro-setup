@@ -4,9 +4,7 @@ Agora Skills are durable Markdown instruction files with optional short descript
 
 ## Discovery and loading
 
-When Skill access is enabled, `{skill_catalog}` exposes a compact catalog of names and descriptions. The model reads a relevant body through `read_skill_file` or another available Skill tool. Skill bodies are not automatically inserted into every request.
-
-There is no Active Skill singleton. Multiple Skills may be read when genuinely required.
+How Agora exposes Skills — the `{skill_catalog}` variable, frozen per generation, on-demand reads, and the absence of an active-skill toggle — is defined by the application and documented in the official user manual. This repository adds rules for using that mechanism: multiple Skills may be read when genuinely required, but never load a family wholesale.
 
 ## Skill rules
 
