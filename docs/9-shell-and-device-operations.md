@@ -6,13 +6,9 @@ Agora may expose Local Sandbox, Conch, SSH, and device-file tools depending on b
 
 Use `list_shells` when the target is ambiguous. Do not assume Local Sandbox is the intended device.
 
-## Conch
+## Conch and SSH
 
-Conch commands may become durable jobs. A bounded wait can return a `job_id` without killing the process. Inspect, wait, stop, or acknowledge the exact job; never blindly rerun an unknown job.
-
-## SSH
-
-SSH settings describe a real Linux host: host, port, Linux username, and authentication for that host. GitHub's `github.com` / `git` endpoint is Git transport, not a general Agora shell device.
+How Conch durable jobs and SSH transport behave — job lifecycle, encryption, host-key pinning — is defined by the application and documented in the official user manual. This repository adds only operating rules on top: treat both shell types as high-trust capabilities, inspect/wait/stop/acknowledge the exact job, and never blindly rerun an unknown job.
 
 ## Safe sequence
 

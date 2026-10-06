@@ -35,7 +35,7 @@ Import these Markdown files individually into Agora's native Skills. Agora expos
 ## Routing examples
 
 - **Where should a durable fact go?** Read `memory-master-index`, then `active-memory-design` if placement is unclear.
-- **Patch a Saved Memory file:** Read `memory-file-operations`; consult [`docs/19-memory-tool-reference.md`](19-memory-tool-reference.md) only if tool names or arguments are uncertain.
+- **Patch a Saved Memory file:** Read `memory-file-operations`; check the tool list in the current generation and the official Agora user manual when tool names or arguments are uncertain.
 - **Change Active Memory:** Read `active-memory-design` and `active-memory-authority`.
 - **Audit the memory layer:** Read `memory-audits`, plus the relevant placement/operation Skill for approved corrections.
 - **Use a tool:** Read `tool-execution-contract` and the domain-specific Skill before acting.
@@ -43,6 +43,18 @@ Import these Markdown files individually into Agora's native Skills. Agora expos
 ## Kernel enforcement
 
 The invariants below are guaranteed by a gate stated in the System template itself, not only by these Skills: a memory write requires reading the router first, choosing the correct layer, patching rather than replacing, verifying after the write, and attesting the gate at the end of the task. See [`docs/20-memory-gate.md`](20-memory-gate.md) for the normative text, the version history that motivated it, and behavioral verification.
+
+## Tool routing invariants
+
+Memory, Skill, and conversation-recall tool names, arguments, and availability are defined by the Agora application: the in-app tool definitions and the official user manual are authoritative. Do not copy them into this repository — use the tool list shown in the current generation and route through the correct family:
+
+- Memory operations → Memory tools; Skill operations → Skill tools; never route one through the other.
+- Read/list before editing or creating.
+- Use the smallest operation that satisfies the request.
+- For a precise file patch, `old_string` must be unique; do not substitute a full replacement casually.
+- `content` is the replacement/new content for the selected operation; do not assume incompatible operation fields are interchangeable.
+- `description` is metadata and does not replace file content.
+- After every write, re-read or otherwise inspect the resulting state.
 
 ## Non-negotiable invariants
 

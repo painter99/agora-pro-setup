@@ -41,7 +41,6 @@ Split the concern by layer instead of choosing one:
 | `active-memory-design.md`, `active-memory-authority.md`, `memory-file-operations.md`, `memory-audits.md` | **the specialized procedures** | progressive disclosure |
 | `tool-execution-contract.md` | inspection, approval, retry, verification | shared safety floor |
 | `docs/17-permission-model.md` | memory writes = **Modify** class, band B/C | normative approval bands |
-| `docs/19-memory-tool-reference.md` | tool names/arguments (reference, not a Skill) | static facts out of the catalog |
 
 This is defense in depth: the kernel guarantees the gate fires; the Skills keep
 the kernel small; the docs keep the rules auditable.
@@ -103,5 +102,4 @@ After changing the System template, confirm by behavior, not by reading:
 
 `docs/0-overview.md`, `docs/3-system-user-assistant-templates.md`,
 `docs/4-active-memory.md`, `docs/13-memory-governance.md`,
-`docs/15-capability-gating.md`, `docs/17-permission-model.md`,
-`docs/19-memory-tool-reference.md`.
+`docs/15-capability-gating.md`, `docs/17-permission-model.md`.

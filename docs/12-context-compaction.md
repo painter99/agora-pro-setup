@@ -4,13 +4,11 @@ This document explains how Agora's Context Compact works, how the recommended Co
 
 ## How Agora implements Compact
 
-Per Agora's official documentation (`docs/en/context.md` in the Agora repository):
+Compact mechanics — capsules, verbatim recent suffix, recompaction, the app-level automatic trigger, and the separate Compact model — are defined by the application and documented in the official user manual. This document does not restate them; it builds on three facts that matter for prompt design:
 
-- Compact summarizes older context into a durable **Compact capsule** while keeping recent messages verbatim. Original messages are never deleted; deleting a capsule only removes the summary boundary.
-- **Automatic compact** runs before a send would overflow the active token budget. The trigger is application-level and cannot be changed by the prompt.
-- **Recent messages to keep** (0–20) preserves a verbatim recent suffix after the Compact boundary. Setting this above 0 is recommended — it is the single most effective mitigation for post-compaction behavioral drift, and it is handled by the app, not the prompt.
-- **Compact model** can be a different (smaller, faster) model than the conversation model. Because the compactor does not receive `{active_memory}`, `{skill_catalog}`, or Skill bodies, its instructions must live entirely in the **Compact prompt** setting.
-- Compact capsules can be **recompacted**. Chained compactions are therefore a normal case, not an edge case.
+- The compactor does not receive `{active_memory}`, `{skill_catalog}`, or Skill bodies: its instructions must live entirely in the **Compact prompt** setting.
+- **Recent messages to keep** (0–20) is the single most effective mitigation for post-compaction behavioral drift, and it is handled by the app, not the prompt.
+- Chained compactions are a normal case, not an edge case.
 
 ## Why the recommended prompt is stricter than industry stock prompts
 

@@ -6,6 +6,8 @@ This repository is not the Agora application. Agora is developed separately by [
 
 ## Current Agora architecture
 
+Agora's own behavior — templates, variables, tools, memory, shell, and Compact mechanics — is documented in the official Agora repository and user manual. This repository adds an architecture and governance layer on top of it and does not duplicate that documentation; when app behavior and this repository disagree, the app wins.
+
 The current Agora prompt editor uses three ordered templates:
 
 ```text
@@ -93,7 +95,7 @@ memory-file-operations
 memory-audits
 ```
 
-`memory-tool-reference` is intentionally **not** a Skill: it is a static tool reference at [`docs/19-memory-tool-reference.md`](docs/19-memory-tool-reference.md).
+Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them.
 
 For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
 
@@ -145,7 +147,6 @@ Documentation:
 - [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
 - [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
-- [`docs/19-memory-tool-reference.md`](docs/19-memory-tool-reference.md) — Memory, Skill, and conversation-recall tool reference (not a Skill)
 - [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
 
 ## Limitations
