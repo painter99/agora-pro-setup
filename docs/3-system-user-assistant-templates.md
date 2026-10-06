@@ -24,6 +24,4 @@ Assistant contains exactly one immovable **Prompt** block. It should normally re
 
 ## Variables
 
-Current variables include `{time}`, `{date}`, `{sent_time}`, `{sent_date}`, `{active_memory}`, `{skill_catalog}`, `{current_model_id}`, and `{message_model_id}`. `{model_id}` is a legacy alias.
-
-Variables are resolved immediately before outbound provider requests, including relevant tool continuations and retries. Agora does not append hidden memory or Skill text to a custom System template.
+The available variables (`{time}`, `{date}`, `{sent_time}`, `{sent_date}`, `{active_memory}`, `{skill_catalog}`, `{current_model_id}`, `{message_model_id}`) and their resolution semantics are defined by the Agora application and documented in the official user manual — this repository does not duplicate that list, because it changes with the app. Build wrappers only from variables your installed Agora version offers in its editor.
