@@ -55,7 +55,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Reasoning & routing | `docs/6`, `docs/14` | `sequential-thinking-workflow` |
 | Compact / state handoff | `docs/12` | — |
 | Skills model | `docs/5` | `skill-format.md` (authoring guide) |
-| Memory layers | `docs/4`, `docs/13`, `docs/19` (tool reference) | `memory-master-index` + governance family |
+| Memory layers | `docs/4`, `docs/13` | `memory-master-index` + governance family |
 | Tools & safety | `docs/8`, `docs/9` | `tool-execution-contract`, `shell-and-device-operations` |
 | Research | `docs/7` | `multi-source-research` |
 | Capability gating | `docs/15` | implemented in `agora-coordinator` |
