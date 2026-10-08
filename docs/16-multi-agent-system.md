@@ -22,7 +22,7 @@ The default installation should remain useful as a single agent. MAS should be a
 7. **Human approval at boundaries.** Publishing, deletion, purchases, messages, credentials, system changes, and recurring automation require explicit approval.
 8. **Runtime evidence wins.** Documentation and configuration may describe a capability, but only an observed runtime result proves that it is available in a particular run.
 9. **Observable execution.** The UI should show which agent ran, which tools were used, what was returned, and where approval or failure occurred.
-10. **Bounded autonomy.** Every run has limits for turns, depth, time, cost, tool calls, and delegation.
+10. **Bounded autonomy.** Every run has limits for turns, depth, time, cost, tool calls, and delegation. The single-agent setup already applies a prompt-level version: `docs/21-tool-call-budget.md` (retry discipline, three failed rounds per query type, ~15-round reply budget). A native per-generation budget control would make this guaranteed instead of likely.
 
 ## 3. Terminology
 
