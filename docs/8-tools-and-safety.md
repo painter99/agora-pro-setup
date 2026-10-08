@@ -17,6 +17,19 @@ Use `tool-execution-contract` as the operational Skill. This page explains the u
 - check dependent state and references;
 - report important limitations.
 
+## Failed-call discipline and budget
+
+Never repeat an identical failed tool call. Full policy and rationale:
+[`docs/21-tool-call-budget.md`](21-tool-call-budget.md). The short rules:
+
+- read the error text before any retry; every retry must differ in parameters,
+  anchor, scope, or method;
+- two consecutive failed calls of one query type force an approach change
+  before the next round;
+- three failed rounds exhaust a query type — report what was attempted and ask
+  the user instead of continuing;
+- keep a single reply within ~15 tool-call rounds; batch and slice instead.
+
 ## Approval required before
 
 - delete or irreversible modification;

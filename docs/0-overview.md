@@ -56,7 +56,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Compact / state handoff | `docs/12` | — |
 | Skills model | `docs/5` | `skill-format.md` (authoring guide) |
 | Memory layers | `docs/4`, `docs/13` | `memory-master-index` + governance family |
-| Tools & safety | `docs/8`, `docs/9` | `tool-execution-contract`, `shell-and-device-operations` |
+| Tools & safety | `docs/8`, `docs/9`, `docs/21` | `tool-execution-contract`, `shell-and-device-operations` |
 | Research | `docs/7` | `multi-source-research` |
 | Capability gating | `docs/15` | implemented in `agora-coordinator` |
 | Permission model (normative) | `docs/17` | — |
@@ -92,3 +92,4 @@ New content
 - Understanding the agent's behavior: this page, then `docs/6`.
 - Extending with a new domain: `docs/18`.
 - Governing memory: `docs/13`.
+- Tool-call retry discipline and budget: `docs/21`.
