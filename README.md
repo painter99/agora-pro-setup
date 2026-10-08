@@ -20,6 +20,8 @@ The System template may explicitly contain `{active_memory}` and `{skill_catalog
 
 One rule is enforced by the System template itself: the **memory gate**. Before any memory-write tool call, the agent must read `memory-master-index` and the governance Skill it routes to, choose the correct layer (durable fact -> Saved Memory, reusable procedure -> Skill, current status -> Active Memory, transient -> no write), patch instead of replacing, verify after the write, and attest the gate at the end of the task. Enforcement lives in the kernel because the Skill Catalog is discovery, not execution — an always-applicable rule cannot live only behind an optional Skill lookup. See [`docs/20-memory-gate.md`](docs/20-memory-gate.md) for the normative text and the version history behind it.
 
+The System template also carries the **tool-call budget rule**: never repeat an identical failed tool call, adjust the approach after two consecutive failed calls of one query type, and exhaust a query type after three failed rounds. See [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md).
+
 ```text
 System template
 ├── {active_memory}
@@ -104,6 +106,7 @@ Agora stores Skills in a **flat** namespace. The repository subdirectories are f
 ## Design principles
 
 - Keep the permanent System template compact, but state the memory gate in the kernel: an always-applicable rule cannot depend on an optional Skill read.
+- State the tool-call budget rule in the kernel for the same reason (`docs/21`).
 - Use `{skill_catalog}` for native Skill discovery.
 - Load only the smallest sufficient Skill set.
 - Keep instructions separate from information.
@@ -148,6 +151,7 @@ Documentation:
 - [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
 - [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
+- [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md) — tool-call retry discipline and budget: policy, industry context, enforcement split
 
 ## Limitations
 
