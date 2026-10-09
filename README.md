@@ -152,6 +152,7 @@ Documentation:
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
 - [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
 - [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md) — tool-call retry discipline and budget: policy, industry context, enforcement split
+- [`docs/22-platform-architecture.md`](docs/22-platform-architecture.md) — phone-orchestrated coding platform pattern: topology, build-host baseline, autonomy levels, state contract
 
 ## Limitations
 
