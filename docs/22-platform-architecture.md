@@ -46,6 +46,21 @@ re-downloadable. A stateless host needs no backups and no uptime guarantees; dow
 costs convenience, not data. Introduce durable storage only deliberately, and back it up
 from the day it exists.
 
+### Where the workspace lives — operator's choice
+
+The workspace does not have to be one specific kind of machine. The pattern works with
+any reachable x86_64 Linux; **the choice between them belongs to the operator**, and the
+same platform can migrate between them later:
+
+| Option | Fits when | Trade-offs |
+|---|---|---|
+| Owned idle machine (laptop/desktop) | interactive builds, no public services, minimal cost | availability depends on the household; no public reachability |
+| Small cloud VM | 24/7 availability or public services wanted; no spare hardware | monthly cost; identity/KYC requirements vary by provider |
+| Hybrid | stateless builds on the owned machine + a small VM only for what truly needs 24/7 or public reachability | two hosts to keep configured (config-as-code helps) |
+
+Decision rule: start with the cheapest option that covers the **actual** need, and add
+infrastructure only when a concrete requirement appears — not speculatively.
+
 ## 3. Host baseline (generic)
 
 | Area | Baseline |
