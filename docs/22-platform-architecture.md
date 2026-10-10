@@ -74,6 +74,19 @@ infrastructure only when a concrete requirement appears — not speculatively.
 | Remote | mesh VPN (Tailscale-class) instead of port forwarding |
 | Jobs | Conch for durable background jobs and image viewing; plain SSH for interactive work |
 | Power | BIOS auto-power-on; battery charge threshold if the host is a laptop |
+| GUI | none by default; virtual framebuffer (Xvfb-class) installed on demand |
+
+### How the agent sees
+
+The agent's vision does not require a desktop. It works through two channels:
+(1) **rendered artifacts** — screenshot-test images, headless emulator captures,
+generated PNGs — read via the image-viewing capability of the durable-job transport;
+(2) **shell outputs** from pre-flight discovery and sweeps (§5). If GUI automation is
+ever needed (browser or desktop-app flows), a virtual framebuffer (Xvfb-class) with a
+small automation toolkit is installed on demand — a full desktop environment never
+enters the baseline. Note: on bare-metal hosts (unlike container-based VPSs) hardware
+virtualization is available, so a headless Android emulator (`-no-window`) is a viable
+future addition to the same vision channel.
 
 ## 4. Autonomy model
 
@@ -194,6 +207,9 @@ host, per-person keys, resource limits, and no shell access for non-admins.
 - Shared credentials between devices or people.
 - Letting a personal decision log, schedule, or device inventory leak into a public repo.
 - Assuming continuous monitoring: an episodic agent sees nothing between wake-ups.
+- Installing a desktop environment on a headless build host 'so the agent can see' —
+  the agent's vision comes from rendered artifacts and shell outputs, not desktop
+  screenshots.
 - Adopting tooling from unverified names in briefings; every component is checked on
   its upstream source first.
 
