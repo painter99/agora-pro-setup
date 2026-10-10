@@ -190,6 +190,11 @@ OS install (headless, SSH only) → add as SSH device → firewall (LAN-only)
 The bootstrap itself is the first live exercise of the autonomy model: propose,
 approve, execute, verify, journal.
 
+Baseline package set (generic): `git`, `curl`, `tmux`, `unzip`, `jq`, `ufw`,
+`smartmontools`, `openssh-client`, `python3-venv` (the MCP Python SDK later runs inside
+a venv). GUI automation tools (`xvfb`, `xdotool`) and any desktop environment stay out
+of the baseline — installed only when a concrete need appears (§3, §9).
+
 ## 8. Multi-person extension
 
 When other people join the setup, give each person **their own instance on their own
