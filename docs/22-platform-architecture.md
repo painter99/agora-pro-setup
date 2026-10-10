@@ -90,6 +90,12 @@ LEVEL 3 — ACT (whitelist)
   each logged to an append-only journal on the host
 ```
 
+**Command allowlist.** At levels 2–3 every mutating command must match an explicit
+allowlist (or be individually approved on the operator's phone). Destructive operations —
+package removal, service disablement, firewall changes, volume deletion — are never
+allowlisted; they always require per-action approval. The allowlist lives on the host,
+is version-controlled, and is reviewed on every change.
+
 Safety rails (all levels): per-device confirmation policy; no secret **values** in agent
 context (names and paths only); tool-call budget discipline (`docs/21`); a hard cap on
 blind retries before switching to diagnosis; destructive actions always behind explicit
@@ -111,7 +117,67 @@ WAKE-UP PROCEDURE
 5. write back only durable changes (memory gate, docs/20)
 ```
 
-## 6. Multi-person extension
+**Pre-flight discovery.** Before every action set, observe the environment — memory and
+swap, disk free, SSD wear indicators, failed services, container state, network
+reachability between host and operator device, pending updates. Never assume state from
+the previous session; the discovery result is part of every report.
+
+**Append-only mutation journal.** Every system change is appended to a journal file on
+the host — one line per action: timestamp, actor, command, result. Append-only (no
+edits; rotation by size). The journal is the first runtime artifact a wake-up reads
+after memory, and it complements (not replaces) git history for configuration.
+
+**Transactional config edits.** Before editing a critical configuration file (e.g.
+under `/etc`): create a timestamped `.bak` copy, apply the change, verify (config test,
+service restart), and keep the rollback command ready. If the connection drops
+mid-edit, the next wake-up detects the `.bak` and either completes or reverts the
+change — a half-applied configuration is never left behind.
+
+## 6. Structured tool layer (MCP)
+
+A raw shell is the bootstrap transport, not the only interface. Once the host is stable,
+a structured tool layer — the Model Context Protocol — can sit on top:
+
+**App capabilities (verified in source, app v2.1.x):** the MCP client speaks
+**Streamable HTTP** (protocol 2025-11-25 with fallbacks) and legacy **SSE**
+(2024-11-05); endpoints must be `http`/`https`; **custom headers** are supported for
+authentication; there is **no stdio transport** — MCP servers run remotely on the host,
+never on the phone.
+
+**Official ecosystem (verified 2026-10):** `modelcontextprotocol/python-sdk` (the
+official Python SDK) and `modelcontextprotocol/servers` (official reference servers,
+including a filesystem server for precise text-diff edits that protect against
+token-bloat rewrites). Caution: verify every component on GitHub before adoption —
+project briefings can contain hallucinated names (a draft in this project cited two
+shell-guard servers that do not exist).
+
+**Deployment pattern:** MCP servers run on the host, bound to LAN/VPN only; auth via
+headers; the shell-guard role (command allowlist) is enforced by the confirmation
+policy and the allowlist pattern in §4 — adopt a third-party guard server only after
+verifying its maintenance status.
+
+**Open question (resolve at integration):** app-side credential guards may refuse auth
+headers over plain `http`. Preferred solution: TLS certificates issued by the mesh VPN
+(MagicDNS-style internal names with automated Let's Encrypt issuance) — trusted HTTPS
+inside the private network, no self-signed certificates, no public exposure. Fallback:
+run MCP without auth headers over the encrypted VPN link, if the app permits.
+
+## 7. Bootstrap sequence (chicken-and-egg)
+
+The first contact with a clean host is always plain shell — MCP servers cannot install
+themselves. Standard sequence, each step proposed (level 2) before execution:
+
+```text
+OS install (headless, SSH only) → add as SSH device → firewall (LAN-only)
+  → toolchain (JDK + SDK) → clone repos → smoke test (build + tests)
+  → measure the interaction loop → durable-job server (Conch)
+  → only then: structured tool layer (MCP, §6)
+```
+
+The bootstrap itself is the first live exercise of the autonomy model: propose,
+approve, execute, verify, journal.
+
+## 8. Multi-person extension
 
 When other people join the setup, give each person **their own instance on their own
 device** rather than accounts on a shared server: isolation is inherent, personalization
@@ -120,7 +186,7 @@ Add shared services (storage, media, vault) only when a concrete demand appears
 (trigger-based provisioning). If shared compute is ever used: one active orchestrator per
 host, per-person keys, resource limits, and no shell access for non-admins.
 
-## 7. Anti-patterns
+## 9. Anti-patterns
 
 - Port-forwarding the host or exposing services publicly "just in case".
 - Self-hosted CI runners on public repositories (untrusted forks could execute code).
@@ -128,10 +194,12 @@ host, per-person keys, resource limits, and no shell access for non-admins.
 - Shared credentials between devices or people.
 - Letting a personal decision log, schedule, or device inventory leak into a public repo.
 - Assuming continuous monitoring: an episodic agent sees nothing between wake-ups.
+- Adopting tooling from unverified names in briefings; every component is checked on
+  its upstream source first.
 
-## 8. Version coupling
+## 10. Version coupling
 
 The pattern depends only on stable app capabilities (shell relays, memory, skills,
-automation). On each major upstream release, re-validate: task scheduling behavior,
-durable-job semantics, image viewing, and the licensing terms that apply to bundled
-skills.
+automation, remote MCP transports). On each major upstream release, re-validate: task
+scheduling behavior, durable-job semantics, image viewing, MCP transport and auth
+behavior, and the licensing terms that apply to bundled skills.
