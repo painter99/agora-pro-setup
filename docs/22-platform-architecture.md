@@ -5,6 +5,8 @@
 > Linux host as the workspace. Generic by design — personal specifics (hardware
 > models, project names, schedules, household details) never belong in a public
 > repository; they live in the operator's private memory and project docs.
+> A concrete step-by-step instantiation of this pattern is documented in
+> docs/23 (bootstrap walkthrough).
 
 ## 1. Pattern summary
 
