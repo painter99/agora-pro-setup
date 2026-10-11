@@ -17,7 +17,9 @@
   devices). The agent never touches the host directly; every action is a tool
   call relayed by the app (docs/22 §1).
 - End state of this walkthrough: host boots unattended, network persists across
-  reboots, SSH server runs, baseline packages installed, agent access verified.
+  reboots, SSH server runs, baseline packages installed, agent access verified,
+  toolchain and first build verified, durable-jobs transport active, remote
+  access via mesh VPN.
 
 ## 2. Phase overview
 
@@ -30,10 +32,10 @@
 | 4 | agent access (SSH device) | operator in app UI | first remote command |
 | 5 | toolchain (JDK, SDK) | agent over SSH | version outputs |
 | 6 | jobs transport (Conch) | agent + app UI | durable job + image view |
+| 7 | remote access (mesh VPN) | operator in browser + app UI | tailnet ping, both transports |
 
-Phases 0–4 are documented below as executed. Phases 5–6 are appended to this
-document only after they are executed and verified — the walkthrough records
-verified reality, not intentions.
+Every phase below is documented as executed and verified — the walkthrough
+records verified reality, not intentions.
 
 ## 3. Phase 0 — OS install
 
@@ -187,20 +189,149 @@ the console anymore — the agent works over SSH, and the physical bootstrap
 chicken-and-egg (docs/22 §7) is resolved: the console was needed only until SSH
 worked.
 
-## 8. Phases 5–6 — toolchain and jobs transport (to be appended)
+## 8. Phase 5 — toolchain and first build
 
-The remaining phases follow docs/22 §3 and §6 and will be appended here as
-executed and verified:
+JDK from the distro (version chosen against the project's Android Gradle
+plugin):
 
-- **Phase 5 — toolchain:** distro JDK (verified against the project's Android
-  Gradle plugin), Android SDK under `/opt`, project clone over HTTPS (public
-  repositories; deploy keys are only for push), Gradle heap sized to real RAM,
-  long builds run inside `tmux` and polled in batches.
-- **Phase 6 — jobs transport:** Conch as a single static binary + systemd unit
-  + API key, reachable from the LAN/VPN only; adds durable background jobs and
-  image viewing (docs/22 §3 "How the agent sees").
+```
+sudo apt install -y openjdk-21-jdk-headless
+java -version && javac -version
+```
 
-## 9. Gotchas learned on this host
+Android SDK under `/opt/android-sdk`:
+
+```
+sudo mkdir -p /opt/android-sdk/cmdline-tools
+wget -P /tmp https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+sudo unzip -q /tmp/commandlinetools-linux-11076708_latest.zip -d /opt/android-sdk/cmdline-tools
+sudo mv /opt/android-sdk/cmdline-tools/cmdline-tools /opt/android-sdk/cmdline-tools/latest
+```
+
+**Ownership gotcha:** a directory created with `sudo` is root-owned; the SDK
+manager then fails with `Failed to read or create install properties file`
+(exit code 1). On a single-user agent host the clean model is a user-owned
+SDK:
+
+```
+sudo chown -R <user>:<user> /opt/android-sdk
+```
+
+Licenses and packages — a long step, run it in `tmux` and poll the log:
+
+```
+tmux new-session -d -s sdk \
+  'yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager \
+   "platforms;android-35" "build-tools;35.0.0" "platform-tools" \
+   > /tmp/sdk.log 2>&1'
+tail -5 /tmp/sdk.log        # poll until done
+```
+
+Project and build configuration:
+
+```
+git clone --depth 20 https://github.com/<org>/<project>.git ~/work/<project>
+cd ~/work/<project>
+echo "sdk.dir=/opt/android-sdk" > local.properties
+printf 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g\norg.gradle.parallel=true\norg.gradle.caching=true\n' > ~/.gradle/gradle.properties
+```
+
+**Wrapper gotcha:** the Gradle wrapper's default network timeout (10 s) is too
+aggressive on slower links — the distribution download fails with
+`SocketTimeoutException`. Add `networkTimeout=60000` to
+`gradle/wrapper/gradle-wrapper.properties` (supported since Gradle 8).
+
+The full unit-test suite runs inside `tmux`:
+
+```
+tmux new-session -d -s build \
+  './gradlew testDebugUnitTest > /tmp/build.log 2>&1'
+```
+
+Verification reads the JUnit XML results from the module's build directory
+(`app/build/test-results/testDebugUnitTest/`) and sums `tests`, `failures`,
+`errors` and `skipped` — the totals must match the project's CI baseline.
+
+Measured on this host: the cold run (wrapper download + all dependencies +
+compile + full suite) took ≈ 6 minutes wall; a warm no-op rerun takes ≈ 1 s
+(daemon + caches). The agent now runs tests and reads failures without any CI
+round trip.
+
+## 9. Phase 6 — durable jobs transport (Conch)
+
+Conch (docs/22 §3, §6) is a single static binary serving shell execution with
+durable background jobs and image retrieval. Install in **system mode**
+(machine-wide systemd service — runs at boot without any user login; the
+user-mode variant would need lingering on a headless host):
+
+```
+wget -qO /tmp/conch-install.sh \
+  https://raw.githubusercontent.com/newo-ether/conch/main/scripts/install.sh
+# inspect the script, then:
+sudo bash /tmp/conch-install.sh --mode system -y \
+  --api-key "$(head -c 32 /dev/urandom | base64 -w0)"
+```
+
+Gotchas:
+
+- Without a TTY the installer hangs on its confirmation prompt — `-y` skips
+  prompts. A hung run is killed by PID (not by a name pattern) and re-run; an
+  existing installation is detected and upgraded in place, and override flags
+  are refused during an upgrade.
+- Configuration lives in `/etc/conch/env` (root-only, mode 600); the **server
+  public key** for the app's end-to-end encryption is printed by the service at
+  startup — read it from the journal: `journalctl -u conch`.
+
+App side: Settings → Shell Devices → Conch with the server URL — **the URL
+must include the scheme** (`http://<host>:14216`; a bare host:port is
+rejected) — plus the API key and the server public key.
+
+Verified capabilities on this host: foreground commands; a durable background
+job (start → job id → wait → result, surviving client disconnects); and image
+viewing — a PNG generated server-side and read through the image tool, which
+gives the agent its "eyes" for rendered artifacts (docs/22 §3 "How the agent
+sees").
+
+## 10. Phase 7 — remote access (mesh VPN)
+
+Tailscale on the host (the official installer adds the apt repository):
+
+```
+wget -qO /tmp/ts-install.sh https://tailscale.com/install.sh
+sudo bash /tmp/ts-install.sh
+tmux new-session -d -s tsup 'sudo tailscale up > /tmp/ts-up.log 2>&1'
+cat /tmp/ts-up.log        # contains the authentication URL
+```
+
+The printed `https://login.tailscale.com/a/…` URL is opened in **any** browser
+— the operator approves the device from the phone; no console needed. The
+phone client installs from F-Droid or the vendor's GitHub releases (no Play
+services required) and logs into the same account.
+
+Android VPN settings for a split-tunnel tailnet:
+
+- **Always-on VPN: on** — the client reconnects itself after reboots and
+  network changes.
+- **"Block connections without VPN": off** — lockdown mode forces all traffic
+  into the tunnel; without an exit node, internet-bound traffic is dropped and
+  the phone loses connectivity. The kill switch only fits full-tunnel use
+  (exit node), which is not this pattern.
+
+Firewall — the default-deny policy would block tailnet traffic to the host;
+allow the agent ports on the tailnet interface:
+
+```
+sudo ufw allow in on tailscale0 to any port 22 proto tcp
+sudo ufw allow in on tailscale0 to any port 14216 proto tcp
+```
+
+Devices receive stable CGNAT-range addresses (`100.x.y.z`); the same address
+works on the LAN and from anywhere, so the app's shell devices are switched to
+the tailnet address once. Verified on this host: a direct (non-relayed)
+connection between phone and host, and both transports answering over the
+tailnet from mobile data.
+
+## 11. Gotchas learned on this host
 
 - The installer's stanza covers **only the install-time interface** — check
   both NICs after the first boot, not just the one that worked in the
@@ -218,7 +349,7 @@ executed and verified:
 - Verify every mutation by reading the file back (`sudo cat …`) before moving
   on; a typo in a heredoc is otherwise discovered only at the next reboot.
 
-## 10. Cross-references
+## 12. Cross-references
 
 - Architecture, rationale and the generic baseline: **docs/22** (§3 baseline,
   §5 state contract, §7 bootstrap sequence).
