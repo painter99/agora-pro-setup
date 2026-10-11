@@ -37,7 +37,14 @@
 Every phase below is documented as executed and verified — the walkthrough
 records verified reality, not intentions.
 
+The division of labor is the point of the pattern: the operator does only what
+physically requires a human — installing, firmware, the first network
+recovery, approvals in UIs. Everything after the first SSH connection is the
+agent's work.
+
 ## 3. Phase 0 — OS install
+
+**Executed by:** operator at the console.
 
 - Netinst USB; tasksel selection: **SSH server + standard system utilities
   only**. No desktop environment — the agent "sees" through rendered artifacts
@@ -56,6 +63,8 @@ Lessons:
 
 ## 4. Phase 1 — firmware
 
+**Executed by:** operator in the firmware setup.
+
 - Enable **auto-power-on** (firmware labels vary by vendor; one common label is
   "Power On with AC Attach"). A headless host must return by itself after a
   power cut — this is what makes the "no uptime guarantees" model workable.
@@ -63,6 +72,9 @@ Lessons:
 - Nothing else is changed in firmware.
 
 ## 5. Phase 2 — network (the realistic part)
+
+**Executed by:** operator at the console (guided step by step); the agent
+verifies over SSH as soon as it exists.
 
 ### 5.1 What actually broke after the first reboot
 
@@ -145,6 +157,8 @@ Notes:
 
 ## 6. Phase 3 — baseline packages and host ergonomics
 
+**Executed by:** operator at the console.
+
 Package batch (docs/22 §3 baseline; GUI tools stay on-demand):
 
 ```
@@ -175,6 +189,8 @@ lspci | grep -iE 'vga|3d|network'
 
 ## 7. Phase 4 — agent access (the handover moment)
 
+**Executed by:** operator in the app UI; the agent verifies.
+
 In the app: **Settings → Shell Devices → SSH** with host, port, user and
 password (key-only hardening is a later step; docs/22 §3 auth row). Then the
 first verification command, executed by the agent over SSH:
@@ -190,6 +206,8 @@ chicken-and-egg (docs/22 §7) is resolved: the console was needed only until SSH
 worked.
 
 ## 8. Phase 5 — toolchain and first build
+
+**Executed by:** the agent over SSH.
 
 JDK from the distro (version chosen against the project's Android Gradle
 plugin):
@@ -259,6 +277,9 @@ round trip.
 
 ## 9. Phase 6 — durable jobs transport (Conch)
 
+**Executed by:** the agent over SSH; the final device entry by the operator in
+the app UI.
+
 Conch (docs/22 §3, §6) is a single static binary serving shell execution with
 durable background jobs and image retrieval. Install in **system mode**
 (machine-wide systemd service — runs at boot without any user login; the
@@ -293,6 +314,9 @@ gives the agent its "eyes" for rendered artifacts (docs/22 §3 "How the agent
 sees").
 
 ## 10. Phase 7 — remote access (mesh VPN)
+
+**Executed by:** the agent over SSH; approvals by the operator in the browser
+and app UI.
 
 Tailscale on the host (the official installer adds the apt repository):
 
