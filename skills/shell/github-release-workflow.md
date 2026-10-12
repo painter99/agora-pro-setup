@@ -1,14 +1,15 @@
 # Skill: GitHub Release Workflow
 
 ## Catalog description
-Verified Git workflow from a constrained mobile sandbox: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes without CI runs, CI efficiency rules, SSH troubleshooting, and Alpine/BusyBox gotchas.
+Verified Git workflow from a constrained mobile sandbox and from a self-hosted build host: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes without CI runs, CI efficiency rules, identity/deploy-key handling, a branch-cleanup gate, SSH troubleshooting, and Alpine/BusyBox gotchas.
 
 ## Purpose
 Reliable mobile-first Git workflow: safe commits, pushes, merges, and cleanup with minimal failures, including concrete gotchas of an Alpine/BusyBox sandbox. Tuned for a single developer driving everything from a phone through an AI agent: the remote CI is the only build feedback, so every run must be fast, cheap, and informative.
 
 ## Load when
 - commit, push, merge, new branch, or cleanup;
-- SSH/Git errors (host key, permission denied, missing repository);
+- SSH/Git errors (host key, permission denied, missing repository, "detected dubious ownership", "Author identity unknown");
+- git on a build host: which shell identity may touch the repository, per-repo deploy keys, single-branch clones;
 - creating or adjusting a repository or its CI workflows;
 - publishing content publicly (privacy check!).
 
@@ -28,13 +29,30 @@ git checkout -b <prefix>-YYYY-MM-DD   # or a thematic name
 # edits via file_write / file_edit
 git add -A
 git diff --cached --check             # whitespace check
-git commit -m "..."
+git commit -m "..."                   # identity: see "Identity and keys on a build host"
 git push origin <branch>
 # AFTER explicit GO from the user:
 git checkout main && git merge --no-ff <branch> -m "Merge ..."
 git push origin main
-git branch -d <branch> && git push origin --delete <branch>
+git merge-base --is-ancestor <branch> main \
+  && git branch -d <branch> && git push origin --delete <branch>
 ```
+
+### Identity and keys on a build host
+- **The clone belongs to the user who works in it.** A durable background-job transport often runs commands as `root`, and git then refuses to operate on a repository owned by an unprivileged user ("detected dubious ownership"). Run git **as the owning identity** (typically the plain SSH device user); keep the job transport for long builds, image viewing and system administration. Do not paper over this with a global `safe.directory` exception.
+- **A fresh clone has no `user.name`/`user.email`** → both `git commit` and `git merge` fail with "Author identity unknown". Solve it per command (`git -c user.name=… -c user.email=… commit …`) or repo-locally; never with a global identity shared between machines.
+- **Per-repository deploy keys through SSH aliases**, not one account key: `~/.ssh/config` maps `Host github-<repo>` → its own `IdentityFile` + `IdentitiesOnly yes`. An account key with access to every repository is the first thing to retire.
+- **Misleading warning:** `Warning: Identity file … not accessible` during a push does not mean failure — if the remote URL uses an alias, `~/.ssh/config` supplies the key and the push succeeds. Verify with `ssh -G <alias> | grep -i identityfile` instead of guessing.
+
+### Branch state: where branches actually are
+- A **single-branch clone** (`remote.origin.fetch = +refs/heads/main:…`) **never shows your own branch** as `origin/<branch>`. `git branch -a` in such a clone is not evidence about the remote.
+- Read remote state with `git ls-remote --heads origin`; after fetching one branch, work through `FETCH_HEAD`.
+- **Cleanup gate (mandatory before any deletion):**
+  ```bash
+  git fetch origin <branch>
+  git merge-base --is-ancestor FETCH_HEAD main && echo "merged → safe to delete" || echo "NOT merged → keep and report"
+  ```
+  A branch that looks like post-merge leftovers may be unbacked work. Precedent: a feature branch with two commits that was not in `main` would have been deleted by an unconditional cleanup step.
 
 ### Trivial fixes (1–2 lines)
 - Only with an explicit "commit to main" from the user — otherwise always use a branch.
@@ -43,8 +61,9 @@ git branch -d <branch> && git push origin --delete <branch>
 1. **Always show diff stat before committing** — never push blind.
 2. **GO from the user before pushing** — exception: explicit "send it" / "do the merge".
 3. **`--no-ff` merges** — keep the branch visible in history.
-4. **Cleanup after merge** — locally and on the remote.
-5. **CI verification before merge** — an API conclusion of "success" is NOT sufficient; required depth is defined in "CI verification before merge" below. Precedent: a real incident where `tee` without `pipefail` masked an assembleDebug failure, producing a falsely green run with an empty APK artifact.
+4. **Cleanup after merge** — locally and on the remote, **but only after `git merge-base --is-ancestor` proves the merge** (see the cleanup gate above).
+5. **Read repository state from the repository, not from memory** — a note saying "waiting for merge GO" is a hypothesis; `git log main` and `ls-remote` are evidence. Precedent: a merge that had already landed three hours earlier kept being reported as pending.
+6. **CI verification before merge** — an API conclusion of "success" is NOT sufficient; required depth is defined in "CI verification before merge" below. Precedent: a real incident where `tee` without `pipefail` masked an assembleDebug failure, producing a falsely green run with an empty APK artifact.
 
 ### CI verification before merge (required depth)
 | Run type | Required check |
@@ -105,6 +124,10 @@ Only proceed with the destructive step after the backup ref provably exists on t
 | Permission denied (publickey) | Key not registered on GitHub | `cat ~/.ssh/<key>.pub` -> Settings -> SSH keys |
 | Could not resolve hostname <alias> | SSH alias without config | `GIT_SSH_COMMAND='ssh -F ~/.ssh/config-<name>' git push ...` |
 | Repository does not exist | Typo in remote URL | `git remote -v` and correct |
+| "detected dubious ownership" | Git runs as a different user than the clone owner | run git as the owning identity (not a global `safe.directory` exception) |
+| "Author identity unknown" | No user.name/user.email in a fresh clone | `git -c user.name=… -c user.email=… commit …` |
+| "Identity file … not accessible" warning, push still succeeds | The SSH alias supplied the key, not `-i` | `ssh -G <alias> | grep -i identityfile` |
+| `git branch -a` misses a pushed branch | Single-branch fetch refspec | `git ls-remote --heads origin` |
 | Author identity unknown | No user.name/user.email in a fresh clone | `git -c user.name=... -c user.email=... commit ...` (repo-local) |
 
 ### Sandbox gotchas (Alpine/BusyBox)
@@ -130,11 +153,14 @@ Only proceed with the destructive step after the backup ref provably exists on t
 - Pushing without GO unless explicit consent was given.
 - Never pushing to `main` without GO or an explicit exception.
 - Never pushing personal data into a public repo.
-- Never deleting a branch before verifying the merge succeeded.
+- Never deleting a branch before verifying the merge succeeded — with `merge-base --is-ancestor`, not with a feeling.
+- Never treating `git branch -a` of a single-branch clone as proof about remote state.
+- Never running git as root inside clones owned by an unprivileged service user.
 - Never force pushing, rewriting history, or deleting a remote branch without a verified backup ref and explicit GO for the exact scope.
 
 ## Verification
-- After push: `git log --oneline -3` + `git status --short --branch` (in sync with remote).
+- After push: `git log --oneline -3` + `git status --short --branch` (in sync with remote) + `git ls-remote --heads origin` for your own branches.
+- After a merge: the merged content is provably on the remote (`git show main:<file>`, or the raw URL with a check that it is not a stale CDN copy).
 - After merge: cleanup done, `git branch` clean, **CI run on main verified with the full mirrored log (see "CI verification before merge")**; for docs-only merges in a repo with CI, verified that no run was started.
 - Before push: privacy check passed (or the repository is private).
 
@@ -146,4 +172,5 @@ Only proceed with the destructive step after the backup ref provably exists on t
 ## Sources
 v1.0 — distilled from hands-on mobile-first Git operations in a constrained Alpine/BusyBox sandbox; anonymized and generalized for public sharing.
 v1.1 — added the CI verification gate before merge (full mirrored log for merge runs; an API conclusion alone is insufficient), including the CDN-cache gotcha of raw log reads.
+v1.3 — added build-host reality: shell identity vs. repository ownership ("dubious ownership"), missing commit identity in fresh clones, per-repo deploy keys behind SSH aliases, single-branch clones hiding remote branches, and a mandatory `merge-base` gate before branch cleanup; anonymised 2026-10-12.
 v1.2 — added docs-only changes without CI runs, CI efficiency rules (concurrency + cancel-in-progress, job timeouts, paths-ignore, shallow checkout, Gradle caching), token-less CI polling, backup refs before destructive operations, and the GITHUB_TOKEN / notification / rate-limit gotchas. Cross-checked against GitHub Docs (workflow concurrency, triggering workflows) and gradle/actions docs, 2026-09-26.
