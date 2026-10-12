@@ -41,14 +41,13 @@ error-prone part of it and shrinks the area an unattended call can damage.
 ```text
 ┌────────────────────────────────────────────────────────────────┐
 │ OPERATOR PHONE — MCP client in the assistant app               │
-│   transport: Streamable HTTP (current spec) or legacy SSE      │
+│   transport: Streamable HTTP                                   │
 └──────────────────────────┬─────────────────────────────────────┘
                            │ HTTPS, private mesh network only
 ┌──────────────────────────▼─────────────────────────────────────┐
 │ BUILD HOST                                                     │
 │   mesh VPN proxy (path per server, no public port)             │
 │     ├─ /mcp      → 127.0.0.1:8765  own server (Python SDK)     │
-│     ├─ :8443/sse → 127.0.0.1:8766  same server, legacy SSE     │
 │     └─ /bridge   → 127.0.0.1:8767  stdio→HTTP bridge           │
 │                       └─ child process: unmodified npm server  │
 │   service user: no sudo, no credentials, one writable file     │
@@ -59,8 +58,8 @@ Rules of the pattern:
 
 - Every server binds to **localhost only**; the mesh VPN proxy is the sole
   external path, and the host firewall opens nothing extra.
-- **One path per server.** Different servers never share a path prefix, and
-  different transports never share a path.
+- **One path per server.** Paths are not multiplexed: one proxy path maps to
+  exactly one localhost port.
 - The service user owns no secrets: no repository keys, no sudo, no cloud
   credentials. Anything sensitive stays in the operator's private memory.
 - Write-capable tools write to **one designated file** and validate before
@@ -68,29 +67,20 @@ Rules of the pattern:
 - The bridge is infrastructure, not a fork: the upstream package runs
   unmodified, so updates are `npm update` plus a service restart.
 
-## 3. Transport reality
+## 3. Transport
 
-The protocol has two remote transports, and clients are not interchangeable:
+The layer speaks one remote transport: **Streamable HTTP**. A client sends
+`POST initialize`, receives an `mcp-session-id` header, and carries it on every
+subsequent request. Three consequences are worth designing for:
 
-| Transport | Status | Wire behaviour |
-|---|---|---|
-| **Streamable HTTP** | current spec | `POST initialize` → `mcp-session-id` in a response header → subsequent POSTs |
-| **HTTP+SSE** | deprecated, still widely implemented | `GET /sse` → `event: endpoint` → `POST /messages/?session_id=…` |
-
-Gotchas found by operating both:
-
-1. **A client configured as "SSE" cannot talk to a Streamable HTTP endpoint.**
-   It issues `GET /sse` without a session id and receives `400 Bad Request`.
-   The fix is a real SSE endpoint, not a client retry.
-2. **Path-prefix proxying breaks legacy SSE.** The `endpoint` event carries a
-   *relative* `/messages/…` path; behind a prefix such as `/mcp-sse`, the
-   client posts to the wrong handler. Use a dedicated HTTPS port with a root
-   proxy for the SSE variant.
-3. **Session id placement differs** — query string (legacy, may end up in
-   access logs) versus header (current). On a private network this is a
-   cosmetic risk, but it is a reason to prefer the current transport.
-4. **Run both transports in parallel during migration.** Two units, two ports,
-   two paths: nothing breaks if the client is switched later.
+1. **Session identity lives in a header, not in a URL.** Nothing identifying
+   ends up in access logs, bookmarks or proxy history.
+2. **Requests are ordinary POSTs.** A status line in the server journal is
+   enough to debug the integration — there is no long-lived stream to interpret.
+3. **Sessions expire.** A stateful server keeps history per session, so an idle
+   session is eventually reaped and the next call opens a fresh one. Multi-step
+   tools therefore accumulate history inside one working stretch; across
+   stretches the conversation itself carries the state.
 
 This section resolves the open question recorded in docs/22 §6: TLS issued by
 the mesh VPN proxy makes trusted HTTPS available inside the private network,
@@ -310,7 +300,7 @@ viewing and system administration.
   convenience".
 - Exposing a generic `read_file(path)` / `run(command)` tool — that is the
   shell again, with a schema painted on top.
-- Two transports on one path, or two servers on one proxy path.
+- Two servers on one proxy path, or one server split across two paths.
 - Assuming a phone client can launch a stdio server.
 - Believing a client is connected because the settings screen looks configured,
   instead of reading the server journal.
