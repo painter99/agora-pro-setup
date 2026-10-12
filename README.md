@@ -153,6 +153,9 @@ Documentation:
 - [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
 - [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md) — tool-call retry discipline and budget: policy, industry context, enforcement split
 - [`docs/22-platform-architecture.md`](docs/22-platform-architecture.md) — phone-orchestrated coding platform pattern: topology, build-host baseline, autonomy levels, state contract, MCP tool layer, bootstrap sequence
+- [`docs/23-bootstrap-walkthrough.md`](docs/23-bootstrap-walkthrough.md) — ordered instantiation of that pattern on a real host: phases 0–7, commands, verification, gotchas
+- [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents
+- [`docs/25-mcp-tool-layer-stdio-bridge.md`](docs/25-mcp-tool-layer-stdio-bridge.md) — MCP tool layer on the host: narrow guarded tools, transport reality, stdio bridge for ecosystem servers, verification and security model
 
 ## Limitations
 
