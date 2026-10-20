@@ -93,10 +93,20 @@ repository):
 - The loop is proven end-to-end on a reference part and a first real part
   (six-pocket organizer with ribbed pocket floors), both with full
   verification reports and owner acceptance recorded in the repository.
-- Open work: a presentation-quality headless renderer (the automated preview
-  renderer is deliberately minimal), and generated dimensioned drawings
-  derived from the spec — so that the public repository shows professional
-  artifacts only, while raw hand sketches stay private.
+- Open work: first external FDM print of the organizer, and presentation
+  polish (render style, optional hero variant with brushes).
+- The presentation pipeline is solved: presentation images are rendered
+  headlessly with Blender Cycles from the verified STL
+  (`tools/render_blender.py` in the repository — see the renders in
+  [`specs/brush_organizer/visuals/`](https://github.com/painter99/cad-workshop/tree/main/specs/brush_organizer/visuals)),
+  and a dimensioned drawing is generated directly from the spec
+  (`tools/render_drawing.py` — see
+  [`visuals/drawing.png`](https://github.com/painter99/cad-workshop/blob/main/specs/brush_organizer/visuals/drawing.png)).
+  The public repository therefore shows professional artifacts only, while
+  raw hand sketches stay private.
+- A practical step-by-step guide for reproducing the loop on a new part is
+  in the repository:
+  [`docs/07-new-part-checklist.md`](https://github.com/painter99/cad-workshop/blob/main/docs/07-new-part-checklist.md).
 - The pattern is domain-portable: any field where "the expert can judge the
   result but not the code" benefits from the same loop — spec as contract,
   machine-verified correctness, human-judged quality.
