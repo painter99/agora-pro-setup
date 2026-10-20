@@ -156,6 +156,7 @@ Documentation:
 - [`docs/23-bootstrap-walkthrough.md`](docs/23-bootstrap-walkthrough.md) — ordered instantiation of that pattern on a real host: phases 0–7, commands, verification, gotchas
 - [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents
 - [`docs/25-mcp-tool-layer-stdio-bridge.md`](docs/25-mcp-tool-layer-stdio-bridge.md) — MCP tool layer on the host: narrow guarded tools, Streamable HTTP transport, stdio bridge for ecosystem servers, verification and security model
+- [`docs/26-cad-workshop.md`](docs/26-cad-workshop.md) — spec-driven parametric CAD with an AI agent: spec → model → tests → previews → human acceptance, applied in a public workshop repository
 
 ## Limitations
 
