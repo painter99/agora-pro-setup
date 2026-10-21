@@ -1,5 +1,9 @@
 # Agora Pro Setup
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Unofficial](https://img.shields.io/badge/Agora-unofficial-orange)](https://github.com/newo-ether/Agora)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../issues)
+
 **An unofficial governance and configuration layer for [Agora](https://github.com/newo-ether/Agora)** — reusable prompt templates, Active Memory guidance, Skills, and operational documentation for building a compact, memory-aware, tool-using assistant.
 
 > ⚠️ **Unofficial project.** This repository is *not* the Agora application and is not affiliated with, endorsed by, or supported by its author. The app is developed separately: [newo-ether/Agora](https://github.com/newo-ether/Agora). App bugs and feature requests belong upstream; issues with this setup belong here.
