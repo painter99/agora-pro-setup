@@ -1,10 +1,94 @@
 # Agora Pro Setup
 
-A public collection of reusable prompt configurations, Active Memory guidance, Agora Skills, and operational documentation for the Agora AI application.
+**An unofficial governance and configuration layer for [Agora](https://github.com/newo-ether/Agora)** — reusable prompt templates, Active Memory guidance, Skills, and operational documentation for building a compact, memory-aware, tool-using assistant.
 
-This repository is not the Agora application. Agora is developed separately by [newo-ether](https://github.com/newo-ether/Agora). This repository provides generic, anonymized patterns for building a compact, memory-aware, tool-using assistant setup.
+> ⚠️ **Unofficial project.** This repository is *not* the Agora application and is not affiliated with, endorsed by, or supported by its author. The app is developed separately: [newo-ether/Agora](https://github.com/newo-ether/Agora). App bugs and feature requests belong upstream; issues with this setup belong here.
 
-## Current Agora architecture
+## What you get
+
+- **A compact, enforced kernel.** The System template stays small but carries two always-applicable rules: the memory gate and the tool-call budget (see [Architecture](#architecture)).
+- **Layered memory governance.** Clear boundaries and routing between Active Memory, Saved Memory, Skills, and conversation history.
+- **Safety-first tool operations.** Inspect before editing, verify after every operation, explicit approval bands for destructive or high-risk actions.
+- **Generic, anonymized patterns.** Tested on a real setup, published without personal data, adaptable to other agent applications.
+
+## Quick start
+
+1. Open Agora's System Prompts settings.
+2. Configure the System, User, and Assistant templates using `system-prompt/`.
+3. Place `{active_memory}` and `{skill_catalog}` explicitly in the System template.
+4. Copy and customize `active-memory/1-active-memory-template.md`.
+5. Import selected files from `skills/` into Agora's Saved Skills.
+6. Enable Skill access and review tool permissions.
+7. Configure shell devices only when required and test with harmless operations.
+8. Verify routing, Skill loading, Memory behavior, and safety gates.
+
+## Status
+
+Unofficial companion repository, documentation-only (no build, no CI). Maintained against current Agora releases from F-Droid; last reviewed 2026-10. Feedback and pull requests are welcome via [Issues](../../issues).
+
+## Repository map
+
+```text
+agora-pro-setup/
+├── README.md            # this file
+├── LICENSE              # MIT
+├── system-prompt/       # System, User, Assistant, and Compact template guidance
+├── active-memory/       # generic Active Memory template and example
+├── skills/              # Skills for Agora's native Skill library
+│   ├── coordination/    # coordination Skills (repo, skills, memory, automation)
+│   ├── memory-governance/
+│   ├── reasoning/
+│   ├── research/
+│   ├── shell/
+│   ├── android-development/
+│   ├── examples/
+│   ├── skill-catalog.md # catalog description conventions
+│   ├── skill-format.md  # Skill file format
+│   └── tool-execution-contract.md
+└── docs/                # architecture, installation, safety, memory governance, patterns
+```
+
+The repository uses subdirectories for organization, but Agora imports Skills into a **flat** namespace. Static references are kept in `docs/`, not in the Skill Catalog.
+
+## Recommended first Skills
+
+Install these files into Agora Skills first:
+
+```text
+tool-execution-contract
+multi-source-research
+shell-and-device-operations
+```
+
+Add the reasoning Skill for complex or adaptive work:
+
+```text
+sequential-thinking-workflow
+```
+
+Add the coordination Skill for managing Skills, memory, and automation:
+
+```text
+agora-coordinator
+```
+
+Add the memory-governance Skills when you need durable-memory operations:
+
+```text
+memory-master-index
+active-memory-design
+active-memory-authority
+memory-file-operations
+memory-audits
+```
+
+Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them.
+
+For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
+
+Add a short description when importing a Skill — that description is what `{skill_catalog}` shows.
+
+## Architecture
 
 Agora's own behavior — templates, variables, tools, memory, shell, and Compact mechanics — is documented in the official Agora repository and user manual. This repository adds an architecture and governance layer on top of it and does not duplicate that documentation; when app behavior and this repository disagree, the app wins.
 
@@ -57,52 +141,6 @@ Conversation    searchable prior context
 
 Do not install workflow instructions as Saved Memories merely because both are Markdown files. Use Agora Skills for reusable procedures and Saved Memories for information.
 
-## Repository contents
-
-- `system-prompt/` — System, User, Assistant, and Compact template guidance.
-- `active-memory/` — generic Active Memory template and example.
-- `skills/` — Skills designed for Agora's native Skill library (`coordination/`, `memory-governance/`, `reasoning/`, `research/`, `shell/`, `android-development/`, `examples/`). The repository uses subdirectories for organization, but Agora imports them into a flat Skill namespace. Static references are kept in `docs/`, not in the Skill Catalog.
-- `docs/` — architecture, installation, safety, shell, troubleshooting, memory governance, and context-compaction documentation.
-- `LICENSE` — MIT license.
-
-## 🎯 Recommended first Skills
-
-Install these files into Agora Skills first:
-
-```text
-tool-execution-contract
-multi-source-research
-shell-and-device-operations
-```
-
-Add this reasoning Skill for complex or adaptive work:
-
-```text
-sequential-thinking-workflow
-```
-
-Add this coordination Skill for managing Skills, memory, and automation:
-
-```text
-agora-coordinator
-```
-
-Add these memory-governance Skills when you need durable-memory operations:
-
-```text
-memory-master-index
-active-memory-design
-active-memory-authority
-memory-file-operations
-memory-audits
-```
-
-Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them.
-
-For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
-
-Agora stores Skills in a **flat** namespace. The repository subdirectories are for organization only. Add a short description — that description is what `{skill_catalog}` shows.
-
 ## Design principles
 
 - Keep the permanent System template compact, but state the memory gate in the kernel: an always-applicable rule cannot depend on an optional Skill read.
@@ -118,18 +156,9 @@ Agora stores Skills in a **flat** namespace. The repository subdirectories are f
 - Distinguish facts, estimates, assumptions, interpretations, and recommendations.
 - Prefer reversible changes and explicit failure reporting.
 
-## Quick start
+## Documentation
 
-1. Open Agora's System Prompts settings.
-2. Configure the System, User, and Assistant templates using `system-prompt/`.
-3. Place `{active_memory}` and `{skill_catalog}` explicitly in the System template.
-4. Copy and customize `active-memory/1-active-memory-template.md`.
-5. Import selected files from `skills/` into Agora's Saved Skills.
-6. Enable Skill access and review tool permissions.
-7. Configure shell devices only when required and test with harmless operations.
-8. Verify routing, Skill loading, Memory behavior, and safety gates.
-
-Documentation:
+**Getting started**
 
 - [`docs/0-overview.md`](docs/0-overview.md) — one-page architecture map, design decisions, and placement decision tree
 - [`docs/1-architecture.md`](docs/1-architecture.md) — runtime layers and authority
@@ -137,21 +166,32 @@ Documentation:
 - [`docs/3-system-user-assistant-templates.md`](docs/3-system-user-assistant-templates.md) — prompt templates
 - [`docs/4-active-memory.md`](docs/4-active-memory.md) — Active Memory and Memory/Skill boundaries
 - [`docs/5-skills.md`](docs/5-skills.md) — native Skills
+
+**Reasoning and research**
+
 - [`docs/6-reasoning-framework.md`](docs/6-reasoning-framework.md) — reasoning and routing
 - [`docs/14-sequential-thinking-workflow.md`](docs/14-sequential-thinking-workflow.md) — public guide to adaptive sequential problem solving
 - [`docs/7-research-workflow.md`](docs/7-research-workflow.md) — research levels
+
+**Safety and operations**
+
 - [`docs/8-tools-and-safety.md`](docs/8-tools-and-safety.md) — tool safety
 - [`docs/9-shell-and-device-operations.md`](docs/9-shell-and-device-operations.md) — shell and devices
+- [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
 - [`docs/10-models-and-inference.md`](docs/10-models-and-inference.md) — model selection
 - [`docs/11-troubleshooting.md`](docs/11-troubleshooting.md) — troubleshooting
-- [`docs/12-context-compaction.md`](docs/12-context-compaction.md) — Context Compact behavior and Compact prompt rationale
+
+**Memory governance**
+
 - [`docs/13-memory-governance.md`](docs/13-memory-governance.md) — memory-layer architecture, routing, and hybrid governance Skills
-- [`docs/15-capability-gating.md`](docs/15-capability-gating.md) — runtime capability verification pattern for agents
-- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
-- [`docs/17-permission-model.md`](docs/17-permission-model.md) — normative capability classes and approval bands
-- [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
 - [`docs/20-memory-gate.md`](docs/20-memory-gate.md) — kernel-enforced memory gate: normative text, version analysis, and behavioral verification
-- [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md) — tool-call retry discipline and budget: policy, industry context, enforcement split
+- [`docs/12-context-compaction.md`](docs/12-context-compaction.md) — Context Compact behavior and Compact prompt rationale
+- [`docs/15-capability-gating.md`](docs/15-capability-gating.md) — runtime capability verification pattern for agents
+
+**Advanced patterns**
+
+- [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
+- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
 - [`docs/22-platform-architecture.md`](docs/22-platform-architecture.md) — phone-orchestrated coding platform pattern: topology, build-host baseline, autonomy levels, state contract, MCP tool layer, bootstrap sequence
 - [`docs/23-bootstrap-walkthrough.md`](docs/23-bootstrap-walkthrough.md) — ordered instantiation of that pattern on a real host: phases 0–7, commands, verification, gotchas
 - [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents
@@ -164,4 +204,4 @@ Behavior depends on the Agora version, enabled permissions, configured devices, 
 
 ## License
 
-Released under the MIT License. See `LICENSE`.
+MIT — see [LICENSE](LICENSE). The license covers this repository only; the Agora application is developed and licensed separately by its author.
