@@ -204,6 +204,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents
 - [`docs/25-mcp-tool-layer-stdio-bridge.md`](docs/25-mcp-tool-layer-stdio-bridge.md) — MCP tool layer on the host: narrow guarded tools, Streamable HTTP transport, stdio bridge for ecosystem servers, verification and security model
 - [`docs/26-cad-workshop.md`](docs/26-cad-workshop.md) — spec-driven parametric CAD with an AI agent: spec → model → tests → previews → human acceptance, applied in a public workshop repository
+- [`docs/27-file-exchange.md`](docs/27-file-exchange.md) — operator-agent file exchange pattern: manual handover layer between the phone and the host — write-in/read-out permission model, metadata-only watcher with neutral push notifications, cursor/ack discipline, two-layer audit
 
 ## Limitations
 
