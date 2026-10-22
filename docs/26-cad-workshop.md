@@ -31,7 +31,7 @@ judges appearance** — each doing the part the other cannot.
 ## 2. The core loop
 
 ```text
-sketch/intent → spec.yaml (human-approved) → drawing (generated from the spec)
+sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (generated from the spec)
              → model (build123d) → pytest suite → headless previews (PNG)
              → verification report → human acceptance
 ```
@@ -60,6 +60,12 @@ Properties that make the loop work in practice:
 6. **Git discipline is part of the design.** Work happens on branches; pushes
    and merges require explicit human approval; CI must be green before merge;
    a privacy scan runs before every push to the public remote.
+7. **The spec's structure is machine-checked before the loop starts.** Every
+   `spec.yaml` is validated against a JSON Schema contract (locally and in
+   CI): required fields, positive dimensions, `part` matching the directory
+   name, and an explicit uncertainty statement (`uncertain` or `assumptions`).
+   Structural errors are caught before any model reads the spec; semantic
+   correctness stays a human-gate question.
 
 ## 3. Division of labour
 
