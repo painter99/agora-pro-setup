@@ -7,7 +7,7 @@ Verified headless workflow for AI-assisted 3D part design: human-approved spec �
 
 Makes AI-generated CAD geometry trustworthy: **nothing is trusted, everything is proven**. The machine proves correctness with tests and measurements; the human approves intent and judges appearance — every phase has an explicit agent/human division of labour.
 
-The workflow was built and verified end-to-end on real parts in the public repository [cad-workshop](https://github.com/painter99/cad-workshop) — a reference test block and a multi-feature organizer (20/20 tests passing, recorded owner acceptance). This Skill describes the procedure portably, so any agent or person can apply it to new parts without a GUI, without containers, and without trusting generated code.
+The workflow was built and verified end-to-end on real parts in the public repository [cad-workshop](https://github.com/painter99/cad-workshop) — a reference test block and a multi-feature organizer (20/20 tests passing, recorded owner acceptance). This Skill describes the procedure portably, so any agent or person can apply it to new parts headless (no GUI on the machine), without containers, and without trusting generated code.
 
 ## Load when
 
