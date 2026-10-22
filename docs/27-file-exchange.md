@@ -121,6 +121,46 @@ layer (docs/24):
 - notifications fire only when an upload has stabilized (second consecutive
   observation) — unstable uploads stay silent by design.
 
+### 4.2 Real-time event layer (inotify watch mode)
+
+The periodic scan is the reconciliation layer; a second, event-driven layer
+provides immediacy. The same watcher script gains a long-running watch mode
+that uses the kernel's inotify API directly (through `ctypes`, no extra
+packages) and watches the tree from the host side — exactly where the
+in-process SFTP server's logging limitation (§7) does not apply.
+
+- **Completion signals, not polling:** `close_write` and `moved_to` mean the
+  content is complete; the watcher hashes the file immediately and records
+  the event with the same schema as the scan, plus `origin` and `actor`
+  fields.
+- **Actor attribution is correlation, not proof:** an active SFTP session for
+  the operator account (a process-list probe at event time) marks the event
+  as `sftp`, anything else as `local`. Exact per-syscall attribution would
+  require the audit subsystem and is deliberately not used.
+- **The observer cannot observe itself:** the private control subtree is
+  excluded from watching.
+- **One log, one state, one push pipeline:** the watch mode appends to the
+  same JSONL log, updates the same state file, and claims the same
+  notification cursor — all under an advisory file lock shared with the
+  periodic scan. A healthy watcher therefore leaves the scan nothing to
+  report, and neither layer double-notifies.
+- **Tiered push policy:** `outbox/` additions → default priority ("ready for
+  download"); `inbox/` additions → low priority (a silent receipt
+  acknowledgment); `quarantine/` → high priority. Events inside a short
+  quiet window are batched into a single push. Deletions, renames, and
+  workspace/archive activity are logged but never pushed.
+- **The scan remains the safety net:** it catches events missed during
+  watcher downtime; if it finds unnotified events while the watch service is
+  supposed to be running, it raises a low-priority "watcher missed events"
+  alert.
+
+Honest limits: reads are not logged (only the audit subsystem could); an
+aborted transfer still produces a completion event when the connection tears
+down (the kernel closes the descriptor), so a partial size can be recorded —
+the periodic scan and operator review remain the correction path; and a
+watcher crash inside the batching window can lose a push (the event itself
+stays in the log).
+
 ## 5. Cursor and acknowledgment discipline
 
 The agent reads exchange events through a cursor, not by re-listing the tree:
@@ -139,8 +179,8 @@ the cursor means "this batch was reviewed", nothing more.
   operator does not poll the tree; the phone tells them when a result is
   ready or when something needs attention.
 - The host health check covers the exchange layer: tree size (the handover
-  layer is not durable storage — alert over a threshold) and liveness of the
-  watcher timer.
+  layer is not durable storage — alert over a threshold) and liveness of both
+  watcher layers — the periodic timer and the real-time watch service.
 
 ## 7. Rules
 
@@ -156,14 +196,16 @@ the cursor means "this batch was reviewed", nothing more.
 5. **Sorting is a level-2 action.** Moving or archiving operator files follows
    the autonomy model (docs/22 §4): propose → approve → execute → verify, or
    stays within individually granted idempotent moves.
-6. **Audit is two-layered.** Session logs record who connected, when, from
-   where, with which key; the watcher's event log records every content
-   change with size and SHA-256. Per-operation SFTP logging (open/read/write
-   per file) is not provided by the in-process `internal-sftp` server on
-   current OpenSSH releases; if it is ever required, it means switching to
-   the standalone sftp-server binary inside the chroot — a deliberate
-   maintenance burden (binary and library copies refreshed on every OpenSSH
-   upgrade), adopted only for a concrete forensic need.
+6. **Audit is three-layered.** Session logs record who connected, when, from
+   where, with which key; the real-time event log records every content
+   change within seconds (path, size, SHA-256, actor correlation); the
+   periodic scan reconciles stability and checksums. Per-operation SFTP
+   logging (open/read/write per file) is not provided by the in-process
+   `internal-sftp` server on current OpenSSH releases; if it is ever
+   required, it means switching to the standalone sftp-server binary inside
+   the chroot — a deliberate maintenance burden (binary and library copies
+   refreshed on every OpenSSH upgrade), adopted only for a concrete forensic
+   need. File reads remain unlogged by design unless that need arises.
 
 ## 8. Anti-patterns
 
@@ -180,6 +222,7 @@ the cursor means "this batch was reviewed", nothing more.
 The pattern depends only on stable capabilities: file access from the
 operator's device (SFTP-class), shell access for the agent, and event-cursor
 tools. On each major upstream release, re-validate: event tool semantics,
-acknowledgment behavior, the SFTP account's permission boundaries, and —
-noted explicitly — whether the in-process SFTP server still does not log
-per-operation events (§7, audit).
+acknowledgment behavior, the SFTP account's permission boundaries, the
+real-time watcher's kernel event interface (inotify semantics and limits),
+and — noted explicitly — whether the in-process SFTP server still does not
+log per-operation events (§7, audit).
