@@ -33,18 +33,19 @@ The workflow was built and verified end-to-end on real parts in the public repos
 ### Core loop (always in this order)
 
 ```text
-sketch/intent → spec.yaml (human-approved) → drawing (generated from the spec)
+sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (generated from the spec)
 → model (build123d) → pytest suite → headless previews (PNG) → verification report → human acceptance
 ```
 
 ### Environment (baseline)
 
-- Headless only: no GUI dependency, no containers, minimal footprint. Python venv: build123d (current version), trimesh, matplotlib, pytest, pyyaml.
+- Headless only: no GUI dependency, no containers, minimal footprint. Python venv: build123d (pinned 0.13.0), trimesh, matplotlib, pytest, pyyaml, jsonschema (spec validation).
 - Presentation renders: Blender **standalone tarball** without sudo (ships its own GL libraries — bypasses missing system libGL/OSMesa).
 
 ### Phase 1 — Intent and spec
 
 1. Transcribe the sketch/description into `specs/<part>/spec.yaml`: every dimension, tolerance and assumption explicit; no "I assumed that".
+1a. Validate the spec's structure against `schemas/spec.schema.json` (`tools/validate_spec.py`, also a CI step) — catch structural errors before the model, not inside it.
 2. Offer the interpretation for an explicit veto (what runs along, what across, rectangle orientation, directions) — dimensions read from a sketch are the biggest error source.
 3. Derive functional dimensions from the part's use (e.g. pocket depth = how deep the object sits; rib height follows the seating, not aesthetics).
 4. **Gate: the human approves the spec before anything is modeled.**
@@ -58,7 +59,7 @@ sketch/intent → spec.yaml (human-approved) → drawing (generated from the spe
 ### Phase 3 — Model
 
 8. Parametric `build(spec)` contract: readable Python, everything from the spec, no magic numbers.
-9. Work with build123d **with the documentation at hand** — the API changes between versions (0.13.0), never from memory.
+9. Work with build123d **with the documentation at hand** — the API changes between versions (pinned 0.13.0), never from memory; verify every call used against the installed version (`help()`, `inspect.signature`, docs) and record it in the verification report.
 
 ### Phase 4 — Tests (pytest, mandatory set)
 
@@ -101,7 +102,7 @@ sketch/intent → spec.yaml (human-approved) → drawing (generated from the spe
 
 ## Verification
 
-- Test suite passes (report counts), `body_count == 1`, STL watertight with a small delta vs. BREP.
+- Spec passes schema validation (`tools/validate_spec.py`), test suite passes (report counts), `body_count == 1`, STL watertight with a small delta vs. BREP.
 - Drawing compared against the sketch before modeling; previews reviewed by the human; acceptance recorded in verification.md.
 - CI on main green (docs-only merges skip runs per paths-ignore); privacy scan clean; local = remote sync.
 
