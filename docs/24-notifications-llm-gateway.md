@@ -44,12 +44,17 @@ Rules of the pattern:
 
 - The ntfy server binds to **localhost only**; the phone reaches it through
   the mesh VPN HTTPS proxy, never through an open port.
+- **Topic names are bearer credentials.** Without server-side auth, whoever
+  knows the topic name can publish to it. Use an unguessable random string
+  (e.g. 24 hex chars), never a dictionary word; rotate it if it leaks.
 - Notifications carry **neutral content only** (job names, counts, states).
   Sensitive details stay in the app or private memory — anything routed
-  through the upstream relay leaves the tailnet.
-- The upstream relay is a deliberate trade-off: instant push delivery
-  (relay forwards through vendor push infrastructure) versus full privacy
-  with delayed polling. Neutral content makes the trade-off safe.
+  through an upstream relay leaves the tailnet.
+- The upstream relay (`upstream-base-url`) is optional and must be verified,
+  not assumed: publish a test message and poll the upstream topic to confirm
+  it actually forwards — a misconfigured relay fails silently. The simpler
+  default is no relay at all: the phone subscribes directly via the tailnet
+  URL, and the app's instant-delivery option covers Doze.
 - Every durable alert source is wired as a systemd timer or a job-completion
   hook, not as an ad-hoc manual call.
 
@@ -62,8 +67,11 @@ base_url: "https://<host>.<tailnet>.ts.net"
 listen-http: "127.0.0.1:2586"
 behind-proxy: true
 cache-file: "/var/cache/ntfy/cache.db"
-upstream-base-url: "https://ntfy.sh"
 EOF
+# Optional: upstream relay to the public ntfy.sh for instant delivery.
+# Add it only after verifying it actually forwards (publish a test, poll
+# the upstream topic) — a silent relay failure means no delivery at all.
+#   upstream-base-url: "https://ntfy.sh"
 sudo mkdir -p /var/cache/ntfy && sudo chown _ntfy:_ntfy /var/cache/ntfy
 sudo systemctl enable --now ntfy
 curl -s http://127.0.0.1:2586/v1/health   # {"healthy":true}
@@ -78,7 +86,9 @@ sudo tailscale serve --bg http://127.0.0.1:2586
 curl -s https://<host>.<tailnet>.ts.net/v1/health   # {"healthy":true}
 ```
 
-The phone subscribes to topic `<topic>` on that URL in the ntfy app.
+The phone subscribes to topic `<topic>` on that URL in the ntfy app — with
+the app's instant-delivery (Doze) option enabled, alerts arrive without
+per-subscription polling delays.
 
 ### 2.3 Publishing from agents and jobs
 
@@ -182,7 +192,9 @@ curl -s -H "Authorization: Bearer $MASTER_KEY" \
 1. Install and configure ntfy (localhost) → verify `/v1/health`.
 2. Enable tailnet Serve/HTTPS in the vendor console → `tailscale serve` →
    verify from the host via the public tailnet URL.
-3. Install the ntfy app on the phone, subscribe to the topic, send a test.
+3. Install the ntfy app on the phone, subscribe to the topic, send a test
+   and confirm delivery end-to-end (including the upstream topic, if the
+   optional relay is used).
 4. Wire health-check timer and job hooks.
 5. Install the LLM gateway, generate the master key, verify liveness and
    auth with an empty model list.
