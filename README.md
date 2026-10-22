@@ -45,6 +45,7 @@ agora-pro-setup/
 │   ├── research/
 │   ├── shell/
 │   ├── android-development/
+│   ├── cad-development/
 │   ├── examples/
 │   ├── skill-catalog.md # catalog description conventions
 │   ├── skill-format.md  # Skill file format
@@ -89,6 +90,8 @@ memory-audits
 Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them.
 
 For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
+
+For AI-assisted 3D part design (CAD as code), the `cad-development/` family ships `cad-spec-driven-workflow` — the agent-side procedure for the [cad-workshop](https://github.com/painter99/cad-workshop) pattern; import it individually.
 
 Add a short description when importing a Skill — that description is what `{skill_catalog}` shows.
 
