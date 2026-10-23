@@ -31,8 +31,9 @@ judges appearance** — each doing the part the other cannot.
 ## 2. The core loop
 
 ```text
-sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (generated from the spec)
-             → model (build123d) → pytest suite → headless previews (PNG)
+sketch/intent → spec.yaml (schema-validated, human-approved) → model (build123d)
+             → drawing (views projected from the model, annotations from the spec)
+             → pytest suite (+ drawing completeness gate) → headless previews (PNG)
              → verification report → human acceptance
 ```
 
@@ -42,12 +43,18 @@ Properties that make the loop work in practice:
    from `spec.yaml`; tests assert every spec dimension against the measured
    geometry. A spec error is a *review* problem (caught at the approval gate),
    never silently inherited by tests that would "confirm" it.
-2. **The spec-generated drawing is a review gate of its own.** The drawing is
-   generated from the spec — never from the model — and compared against the
-   original sketch before any modeling starts. It visualizes the
-   *interpretation*, so a misread dimension is vetoed at the cheapest point of
-   the loop; and when the sketch is private, it doubles as the public,
-   dimension-bearing artifact.
+2. **The drawing is a review gate of its own — views from the model,
+   annotations from the spec.** The drawing's views are true projections of
+   the built model (build123d `project_to_viewport`, OCCT hidden-line
+   removal), so a feature cannot go missing from a projected view; its
+   dimensions, labels and schedule are generated from the spec, so the
+   drawing still shows the approved intent. A view that disagrees with a spec
+   dimension exposes a model/spec mismatch, and a drawing-completeness gate
+   (projected views probed against the spec, plus a manifest) makes that
+   check mechanical. Hand-drawn schematic views duplicate the model's
+   geometry logic — the reference workshop spent three correction rounds
+   reconciling them before replacing them with projections. When the sketch
+   is private, the drawing doubles as the public, dimension-bearing artifact.
 3. **Every interpretation is an explicit, veto-friendly assumption.** A hand
    sketch is ambiguous; instead of silently picking a reading, the ambiguity is
    written into the spec as an assumption the owner can veto with a
@@ -72,7 +79,7 @@ Properties that make the loop work in practice:
 | Task | Machine (agent) | Human (owner) |
 |---|---|---|
 | Transcribe intent into spec | drafts, marks ambiguities | approves, vetoes assumptions |
-| Visualize the interpretation | generates the drawing from the spec | compares against the sketch, vetoes |
+| Visualize the part | projects the drawing views from the model, dimensions from the spec | compares against the sketch, vetoes |
 | Build the model | writes build123d script | — |
 | Verify dimensions | test suite, probes | reviews the report |
 | Judge appearance | renders previews | **accepts or rejects** |
