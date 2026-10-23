@@ -1,13 +1,13 @@
 # Skill: cad-spec-driven-workflow
 
 ## Catalog description
-Verified headless workflow for AI-assisted 3D part design: human-approved spec → drawing generated from the spec → parametric model (build123d) → pytest suite → headless previews → human acceptance, including test discipline, the render pipeline, FDM printability rules and git/privacy rules.
+Verified headless workflow for AI-assisted 3D part design: human-approved spec → parametric model (build123d) → drawing (views projected from the model, annotations from the spec) → pytest + drawing completeness gate → headless previews → human acceptance, including test discipline, the render pipeline, FDM printability rules and git/privacy rules.
 
 ## Purpose
 
 Makes AI-generated CAD geometry trustworthy: **nothing is trusted, everything is proven**. The machine proves correctness with tests and measurements; the human approves intent and judges appearance — every phase has an explicit agent/human division of labour.
 
-The workflow was built and verified end-to-end on real parts in the public repository [cad-workshop](https://github.com/painter99/cad-workshop) — a reference test block and a multi-feature organizer (20/20 tests passing, recorded owner acceptance). This Skill describes the procedure portably, so any agent or person can apply it to new parts headless (no GUI dependency), without containers, and without trusting generated code.
+The workflow was built and verified end-to-end on real parts in the public repository [cad-workshop](https://github.com/painter99/cad-workshop) — a reference test block and a multi-feature organizer (28/28 tests passing including the drawing-completeness gate, recorded owner acceptance). This Skill describes the procedure portably, so any agent or person can apply it to new parts headless (no GUI dependency), without containers, and without trusting generated code.
 
 ## Load when
 
@@ -33,8 +33,10 @@ The workflow was built and verified end-to-end on real parts in the public repos
 ### Core loop (always in this order)
 
 ```text
-sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (generated from the spec)
-→ model (build123d) → pytest suite → headless previews (PNG) → verification report → human acceptance
+sketch/intent → spec.yaml (schema-validated, human-approved) → model (build123d)
+→ drawing (views projected from the model, annotations from the spec)
+→ pytest suite (+ drawing completeness gate) → headless previews (PNG)
+→ verification report → human acceptance
 ```
 
 ### Environment (baseline)
@@ -50,16 +52,16 @@ sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (gene
 3. Derive functional dimensions from the part's use (e.g. pocket depth = how deep the object sits; rib height follows the seating, not aesthetics).
 4. **Gate: the human approves the spec before anything is modeled.**
 
-### Phase 2 — Drawing from the spec (review gate)
+### Phase 2 — Model
 
-5. Generate the dimensioned drawing **from the spec, never from the model** (third-angle projection top/front/end, dimensions, parameter table, title block).
-6. The human compares the drawing against the original sketch **before modeling** — a misread dimension is vetoed at the cheapest point of the loop.
-7. The sketch stays private (owner decision: prototype photos do not belong in a public repository); the generated drawing is the public, dimension-bearing artifact.
+5. Parametric `build(spec)` contract: readable Python, everything from the spec, no magic numbers.
+6. Work with build123d **with the documentation at hand** — the API changes between versions (pinned 0.13.0), never from memory; verify every call used against the installed version (`help()`, `inspect.signature`, docs) and record it in the verification report.
 
-### Phase 3 — Model
+### Phase 3 — Drawing (views from the model, annotations from the spec)
 
-8. Parametric `build(spec)` contract: readable Python, everything from the spec, no magic numbers.
-9. Work with build123d **with the documentation at hand** — the API changes between versions (pinned 0.13.0), never from memory; verify every call used against the installed version (`help()`, `inspect.signature`, docs) and record it in the verification report.
+7. Generate the dimensioned drawing from the built model (`tools/render_drawing.py`): the views are **true projections of the model** (`project_to_viewport`, OCCT hidden-line removal; visible edges solid, hidden edges dotted) — a feature cannot go missing, because the views are not drawn by hand; dimensions, labels, the schedule and the title block come **from the spec** via a single dimension plan (the renderer fails loudly if the drawn tags drift from the plan). Hand-drawing the view geometry from the spec duplicates the model's logic (the root cause of three correction rounds) — do not do it.
+8. The human compares the drawing against the original sketch and **zooms into features** (ribs, holes, walls) — rendering defects hide at full-sheet scale.
+9. **Drawing-completeness gate** (`tests/test_drawing_completeness.py`): the projected views are probed against the spec (pocket openings at position/size, rib edges where the fill requires them, hidden profiles of internal features, legs, view envelopes) plus a manifest (`drawing.manifest.json`) — "every spec feature must appear in the drawing" as a test, not a discipline.
 
 ### Phase 4 — Tests (pytest, mandatory set)
 
@@ -93,8 +95,8 @@ sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (gene
 
 ## Forbidden behavior
 
-- Do not model before the spec is approved and the drawing compared against the sketch.
-- Do not generate the drawing from the model — the drawing shows intent (from the spec), previews show the measured result; review compares both.
+- Do not model before the spec is approved; do not accept before the drawing and previews are compared against the original intent.
+- Do not hand-draw the view geometry from the spec (duplicated model logic): views are projected from the model, annotations come from the spec; do not publish a drawing without the completeness gate passing.
 - Do not rely on build123d API from memory, or on a single suspicious render.
 - Do not skip the connectivity test, or claim a part is correct from tests alone (appearance and printability cannot be proven by tests).
 - Do not put private sketches, prototype photos or personal data into a public repository; public repository content stays English and anonymized.
@@ -103,12 +105,12 @@ sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (gene
 ## Verification
 
 - Spec passes schema validation (`tools/validate_spec.py`), test suite passes (report counts), `body_count == 1`, STL watertight with a small delta vs. BREP.
-- Drawing compared against the sketch before modeling; previews reviewed by the human; acceptance recorded in verification.md.
+- Drawing-completeness gate passes (projected views probed against the spec + manifest); the drawing is zoom-checked; previews reviewed by the human; acceptance recorded in verification.md.
 - CI on main green (docs-only merges skip runs per paths-ignore); privacy scan clean; local = remote sync.
 
 ## Output contract
 
-- List of created artifacts (spec, drawing, model, tests, previews, verification.md) with paths.
+- List of created artifacts (spec, drawing + manifest, model, tests, previews, verification.md) with paths.
 - Test counts and key measurements (volume, watertight delta).
 - Repository state (commit, CI) and what awaits human acceptance / GO.
 
@@ -116,4 +118,3 @@ sketch/intent → spec.yaml (schema-validated, human-approved) → drawing (gene
 
 - **[cad-workshop](https://github.com/painter99/cad-workshop)** — reference implementation and source of truth for the current state: `docs/01-workflow.md`, `docs/03-testing.md`, `docs/04-verification-workflow.md`, `docs/06-lessons-learned.md`, `docs/07-new-part-checklist.md`, `docs/08-roadmap.md`.
 - **[agora-pro-setup docs/26](https://github.com/painter99/agora-pro-setup/blob/main/docs/26-cad-workshop.md)** — the evergreen pattern document (describes the pattern, not the repository state).
-- Authority: this Skill describes the procedure; the repository documents describe the current state — on conflict, trust the repository and update this Skill afterwards.
