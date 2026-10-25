@@ -45,6 +45,23 @@ Split the concern by layer instead of choosing one:
 This is defense in depth: the kernel guarantees the gate fires; the Skills keep
 the kernel small; the docs keep the rules auditable.
 
+## Observed failure (2026-10-25): routing to the wrong tool family
+
+The original gate sentence ("read `memory-master-index.md` and the governance
+Skill it routes to") did not name the tool family. In production the model
+attempted `read_memory_file("memory-master-index.md")` and received
+`File not found` — it searched Saved Memory for a file that lives in the Skill
+Catalog. The sentence sat inside a paragraph about memory writes, and the
+referenced names (`memory-master-index.md`, `memory-file-operations.md`,
+`active-memory-design.md`) are indistinguishable from Saved Memory filenames by
+naming convention alone.
+
+Fix: the gate sentence now names the tool family explicitly (`read_skill_file`,
+never memory tools) and states that `memory-master-index.md` is a Skill in the
+Skill Catalog, not a Saved Memory file. The Skill Catalog paragraph additionally
+states that any `.md` name mentioned inside the System template is a Skill, read
+only via Skill tools.
+
 ## The gate (normative text)
 
 The kernel carries a compact version — roughly 100 words, not the v2 wall of
@@ -52,7 +69,9 @@ text:
 
 ```text
 Memory writes are gated. Before any create_memory_file, edit_memory_file,
-delete_memory_file, or update_active_memory call, read memory-master-index.md
+delete_memory_file, or update_active_memory call, read — via the Skill file
+tools (read_skill_file), never via memory tools — the Skill
+memory-master-index.md (a Skill in the Skill Catalog, not a Saved Memory file)
 and the governance Skill it routes to (Active Memory: active-memory-design.md +
 active-memory-authority.md; Saved Memory: memory-file-operations.md). Choose the
 layer first: durable fact -> Saved Memory, reusable procedure -> Skill, current
