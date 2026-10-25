@@ -28,6 +28,7 @@ Import individual Markdown files into Agora's Skills settings. Give each Skill a
 - Keep personal facts, preferences, and project state in Memory, not reusable Skills.
 - Treat `skills/android-development/` as the Android/Kotlin development family (spec-first, TDD, code review); import each Skill individually.
 - Treat `skills/cad-development/` as the CAD/3D part development family (spec-driven workflow for AI-assisted modeling); import each Skill individually.
+- Treat `skills/communication/` as the output-quality family (language fidelity for non-English user-facing output); import each Skill individually.
 - Treat `skills/memory-governance/` as the hybrid memory-procedure family; import its files individually into Agora.
 - Treat `skills/reasoning/` as reusable reasoning procedures; import each Skill individually and use it proportionally.
 - Sequential Thinking means explicit planning and adaptive verification, not disclosure of private chain-of-thought.
