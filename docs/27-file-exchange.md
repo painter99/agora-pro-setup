@@ -118,8 +118,10 @@ layer (docs/24):
   review");
 - notifications are deduplicated by event id (a small state file in the
   control subtree); a failed push is retried on the next scan;
-- notifications fire only when an upload has stabilized (second consecutive
-  observation) — unstable uploads stay silent by design.
+- in scan mode, notifications fire only when an upload has stabilized
+  (second consecutive observation) — unstable uploads stay silent by design;
+  the watch mode (§4.2) pushes on the completion signals
+  (`close_write`/`moved_to`), where the content is complete by definition.
 
 ### 4.2 Real-time event layer (inotify watch mode)
 
@@ -150,16 +152,19 @@ in-process SFTP server's logging limitation (§7) does not apply.
   quiet window are batched into a single push. Deletions, renames, and
   workspace/archive activity are logged but never pushed.
 - **The scan remains the safety net:** it catches events missed during
-  watcher downtime; if it finds unnotified events while the watch service is
-  supposed to be running, it raises a low-priority "watcher missed events"
-  alert.
+  watcher downtime; if it finds events it had to record itself (the watch
+  service did not log them) while the watch service is supposed to be running,
+  it raises a low-priority "watcher missed events" alert. Events the watch
+  service recorded but that never qualify for a push (workspace edits,
+  deletions) are not counted — "unnotified" is not the same as "missed".
 
 Honest limits: reads are not logged (only the audit subsystem could); an
 aborted transfer still produces a completion event when the connection tears
 down (the kernel closes the descriptor), so a partial size can be recorded —
-the periodic scan and operator review remain the correction path; and a
+the periodic scan and operator review remain the correction path; a
 watcher crash inside the batching window can lose a push (the event itself
-stays in the log).
+stays in the log), and the scan retry covers outbox and quarantine pushes
+while a lost inbox acknowledgment is not re-pushed.
 
 ## 5. Cursor and acknowledgment discipline
 
