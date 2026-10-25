@@ -56,17 +56,35 @@ Mechanical detection does **not** catch Latin-script foreign words ("quelque", "
 - Emit the T3 banner (accuracy category) and append a row to the escalation log per `model-escalation-protocol.md`.
 - If the same degradation type repeats 3 times within 24 hours, recommend switching to a different model (T2 banner logic).
 
-### 5. Thinking-token economy
+### 5. Thinking-token economy (tiered)
 
-- Routine tasks (research, calendar, routine shell, documentation): use the lowest reasoning effort the task definition supports.
-- Visible plans and justifications: write in a Chain of Draft style (arXiv:2502.18600) — concise, information-dense steps of roughly five words or fewer; published results show large token reductions at comparable accuracy on standard benchmarks.
-- Hard tasks (preventive trigger, multi-file refactors, irreversible actions): full reasoning effort — savings never at the cost of quality.
-- Latent-space reasoning (Coconut, arXiv:2412.06769) is not applicable to API models: it requires retraining.
+Reasoning tokens are billed as output; the reasoning language is a direct cost item. Techniques by applicability tier:
+
+**Prompt-based (apply immediately, any API model):**
+
+- Routine tasks (research, calendar, routine shell, documentation): use the lowest reasoning effort the task definition supports. Rationale beyond cost: extra reasoning can actively hurt — models abandon correct intermediate answers ("negative flips", Zhou et al. 2026), and sampled shorter reasoning chains were up to 34.5 percentage points more accurate than the longest chain for the same question (Hassid et al. 2025).
+- Visible plans and justifications: Chain of Draft style (arXiv:2502.18600) — concise, information-dense steps of roughly five words or fewer; matches or surpasses Chain-of-Thought accuracy using as little as 7.6% of the tokens.
+- Sketch-of-Thought paradigms (EMNLP 2025) for visible reasoning: conceptual chaining (arrows between concepts), chunked symbolism (notation instead of prose), expert lexicons (domain shorthand); reported up to 84% token reduction with minimal accuracy loss.
+- Token-Budget-Aware prompting (TALE, ACL 2025 Findings): state an explicit token budget matched to task difficulty (starting scale: easy ≈ 100, medium ≈ 300, hard ≈ 800 reasoning tokens).
+
+**Inference-based (applicable; multiplies request cost):**
+
+- short-m@k (Hassid et al.): spawn k parallel reasoning chains, stop after the first m complete; matches majority voting with up to 40% fewer thinking tokens. Use only when accuracy outweighs the multiplied request cost.
+
+**Training-based (not applicable to API models — record and skip):**
+
+- Learned supertokens (Shorthand for Thought, COLM 2026, arXiv:2604.26355): 8.1% average trace shortening; requires supervised fine-tuning on the model's own reasoning traces.
+- [SKIP]-token compressed chain-of-thought: requires training.
+- Latent-space reasoning (Coconut, arXiv:2412.06769): requires retraining.
+
+**Emoji as reasoning compression: do not use.** No published evidence exists (research on emoji covers sentiment, interpretation, and personality — not token-efficient reasoning); emoji tokenization is tokenizer-dependent and complex sequences can cost dozens of tokens per glyph; emoji lack the compositional precision that reasoning steps need.
 
 ### 6. Periodic fidelity measurement (roughly every two weeks)
 
-- Run a fidelity test set: 20–30 realistic prompts in the target language, check outputs with the detector plus review, record results in the model-evaluation memory.
-- Optionally run a target-language benchmark suite if one exists for that language.
+- Run a fidelity test set: 20–30 realistic prompts in the target language; check outputs with the detector plus review; record results in the model-evaluation memory.
+- Include an output-language-alignment check: did the model answer in the requested language at all (cf. the OLA benchmark, ACL 2026), not only whether the text is clean?
+- Optionally run a target-language benchmark suite if one exists (Czech example: Czech-Bench — AGREECS grammar agreement, MMLU CS, Belebele CS reading comprehension).
+- Optionally run a target-language spell/grammar checker as a mechanical second layer (Czech example: ÚFAL Korektor — BSD-licensed code; Czech language models CC BY-NC-SA: fine for internal testing, not for commercial redistribution).
 
 ## Forbidden behavior
 
