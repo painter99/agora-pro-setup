@@ -10,6 +10,7 @@ Use a short description such as:
 multi-source-research.md — proportional workflow for current and disputed claims
 sequential-thinking-workflow.md — adaptive workflow for complex, multi-step, ambiguous, and tool-assisted tasks
 agora-coordinator.md — coordination agent for Skill/memory audits, tool diagnostics, and safe repairs
+model-escalation-protocol.md — tripwire protocol for agentic work: objective failure triggers, escalation banner, append-only log, static routing table
 language-fidelity.md — non-English output fidelity: script-leak self-check before persistent writes, escalation discipline, thinking-token economy
 ```
 
