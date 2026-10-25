@@ -171,11 +171,13 @@ headers; the shell-guard role (command allowlist) is enforced by the confirmatio
 policy and the allowlist pattern in §4 — adopt a third-party guard server only after
 verifying its maintenance status.
 
-**Open question (resolve at integration):** app-side credential guards may refuse auth
-headers over plain `http`. Preferred solution: TLS certificates issued by the mesh VPN
-(MagicDNS-style internal names with automated Let's Encrypt issuance) — trusted HTTPS
-inside the private network, no self-signed certificates, no public exposure. Fallback:
-run MCP without auth headers over the encrypted VPN link, if the app permits.
+**Open question (resolved during integration — see docs/25 §3):** app-side credential
+guards may refuse auth headers over plain `http`. Preferred solution: TLS certificates
+issued by the mesh VPN (MagicDNS-style internal names with automated Let's Encrypt
+issuance) — trusted HTTPS inside the private network, no self-signed certificates, no
+public exposure. Fallback: run MCP without auth headers over the encrypted VPN link, if
+the app permits. This fallback is what shipped: TLS from the mesh VPN proxy, no auth
+headers.
 
 ## 7. Bootstrap sequence (chicken-and-egg)
 
