@@ -64,6 +64,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Domain routing | `docs/18` | — |
 | Coordination & audits | `docs/11` | `agora-coordinator` |
 | Multi-agent (future) | `docs/16` — proposal for the Agora application | — |
+| Scheduled agent loops | `docs/28` | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -93,3 +94,4 @@ New content
 - Extending with a new domain: `docs/18`.
 - Governing memory: `docs/13`.
 - Tool-call retry discipline and budget: `docs/21`.
+- Unattended scheduled work: `docs/28`.
