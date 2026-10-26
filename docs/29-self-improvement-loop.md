@@ -23,7 +23,7 @@ Generator → Reflector → GO gate → Curator → Eval
 ```
 
 1. **Generator** — ordinary work; failures logged per the escalation protocol (T-tripwires).
-2. **Reflector** — retrospective: signals = escalation log, eval log, memory audits, repeated corrections, scheduled-task outputs. Output: max 3 candidate deltas, each with evidence, proposed patch, risk, and an eval plan. No evidence, no delta.
+2. **Reflector** — retrospective: signals = escalation log, eval log, memory audits, repeated corrections, scheduled-task outputs, the observability decision log (open recommendations, superseded chains) and baseline+diff trends from the observability dashboard. Output: max 3 candidate deltas, each with an ID `D-YYYYMMDD-NN`, evidence, proposed patch, risk, and an eval plan. No evidence, no delta. When a delta realizes a decision-log recommendation `DR-YYYYMMDD-NN`, the recommendation's note is marked `realized by D-…`; decision-log statuses are changed only by the operator.
 3. **GO gate** — no delta is applied without explicit operator approval. Changes to a Skill's purpose, merges/splits, deletions, and security rules are always proposals only.
 4. **Curator** — incremental patches instead of rewrites; deprecated passages are marked, not deleted; repo-visible changes are committed (history = archive of variants).
 5. **Eval** — golden-task subset (3–5) before and after the change, same model, same memory context; accept only improvement without regression plus operator acceptance. Budget: ~10 eval runs per delta.
@@ -37,6 +37,7 @@ Generator → Reflector → GO gate → Curator → Eval
 | Golden-task corpus | agent's local memory; fill-in template in §4 | eval corpus + rubric |
 | Eval log `sil-evals.csv` | agent host, append-only | measured scores |
 | Retrospectives | agent host `logs/sil-retrospectives/YYYY-MM-DD.md` | weekly Reflector output |
+| Observability decision log + dashboard | measurement store (docs/28 §4–5) | Reflector signal source; `D-` ↔ `DR-` cross-reference |
 | Scheduled task `sil-weekly-retrospective` | weekly cron (Sunday evening), read-only | automated Reflector |
 | Scheduled task `repo-sync-weekly` | weekly cron (Sunday, after the retrospective) | autonomous repository maintenance (§5) |
 
