@@ -23,14 +23,13 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 
 ## Dependencies
 
-- golden-task corpus (local persistent memory; fill-in template in `docs/29-self-improvement-loop.md`)
-- escalation protocol Skill (T-tripwires, append-only log)
-- memory audit Skill (stale/contradiction detection)
-- skill governance Skill (what may change automatically)
-- memory master index + memory file operations Skill (write gate)
-- model evaluation Skill (fair before/after comparison)
-- tool execution contract Skill (result verification)
-- repository sync task (weekly; policy in `docs/29` §5)
+- `model-escalation-protocol.md`
+- `memory-audits.md`
+- `skill-governance.md`
+- `memory-master-index.md`
+- `memory-file-operations.md`
+- `llm-model-evaluation.md`
+- `tool-execution-contract.md`
 
 ## Workflow
 
@@ -57,3 +56,8 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 
 - Retrospective: table of candidate deltas + recommended order.
 - After GO: report — file and patch, commit, eval scores before/after, language check result.
+
+## Related docs
+
+- `docs/29-self-improvement-loop.md` — SIL pattern, golden-task corpus template, autonomous repository-maintenance policy (§5).
+- `docs/28-update-observability.md` — decision log and dashboard signals consumed by the Reflector; SIL KPIs in the meta-review.
