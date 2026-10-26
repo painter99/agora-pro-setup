@@ -8,7 +8,8 @@
 > itself and is documented in the application's official manual; this
 > repository does not duplicate it (see the duplication rule in the README).
 > Generic by design — personal specifics (real paths, schedules, model
-> choices, domain data) never belong in a public repository.
+> choices, domain data) never belong in a public repository. A validated
+> working instance with day-zero measurements is shown in §8.
 
 ## 1. Purpose
 
@@ -49,6 +50,25 @@ Their configuration belongs to the application's official documentation;
 | Drift | listening ports vs. expected list; service liveness vs. expected set; firewall state; disk/memory; handover-tree size | host inspection | weekly (the health check bridges the gaps — docs/24) |
 | Ecosystem movement | new versions, tools, procedures, advisories per domain | bounded Level 3 research (docs/7) | weekly, one domain per run (rotation) |
 | Delivery freshness | backup ages, dashboard update date | state directory | weekly |
+
+Why each dimension earns its weekly cost:
+
+- **Currency** — an unpatched known vulnerability is the cheapest attack on
+  the stack; falling behind upstream also makes every future upgrade
+  costlier.
+- **Patch state** — security-origin updates are the time-critical subset; a
+  growing backlog is a trend to catch early, not an event.
+- **Hardening** — one comparable number per week turns security posture from
+  a feeling into a trend; warnings are the actionable subset, suggestions
+  the backlog.
+- **Drift** — silent configuration change is how outages and exposures
+  happen; the expected-state comparison turns "something changed" into a
+  finding with severity.
+- **Ecosystem movement** — a self-hosted stack does not rot by breaking but
+  by falling behind; the research leg is the only defense against doing
+  things the way they were done years ago.
+- **Delivery freshness** — observability that is not delivered is invisible;
+  stale backups or a stale dashboard mean the loop itself is degrading.
 
 Design rule: every metric is either **measured on the host** (never recalled
 from memory) or **sourced with citations** (research leg). A metric that
@@ -93,7 +113,7 @@ acts on.
   domain, top risks, hardening-index trend, recommendations awaiting a
   decision, a three-line summary of the last report.
 - Plain files are the right size for a single-host, few-tasks setup; heavier
-  state machinery is an anti-pattern at this scale (§9).
+  state machinery is an anti-pattern at this scale (§10).
 
 ## 5. The decision log (closing the loop)
 
@@ -151,7 +171,7 @@ contributes on top:
   run. Deletion where genuinely needed (backup retention) is a single exact
   command scoped by directory, name pattern, and age.
 - **Rules live in the prompt.** An unattended run receives no injected
-  active memory (observed behavior, version-dependent — §10): every rule the
+  active memory (observed behavior, version-dependent — §12): every rule the
   run must follow is stated in the task prompt, self-contained; durable
   context is read explicitly from memory and skill files. The memory gate
   (docs/20) still applies to any attempted write.
@@ -160,7 +180,48 @@ contributes on top:
   limitation, and does **not** advance the rotation.
 - **Tool budget applies** as everywhere (docs/21).
 
-## 8. Failure handling
+## 8. A working instance (validated)
+
+The pattern runs on a single-host setup with three coexisting tasks (§7):
+a daily external-data sweep, a daily documentation upkeep, and a weekly
+research rotation over ten domains. The measurement store as deployed:
+
+```text
+<work-root>/deep-research/
+├── rotation-state.txt        # "1" / "0" — ten domains queued, none completed
+├── decisions.md              # seeded with the operator's founding decisions
+├── state/  reports/          # filled by the first runs
+└── dashboard.md              # written by the first run
+```
+
+Day-zero measurement (single headless host):
+
+| Metric | Day-zero value | Reading |
+|---|---|---|
+| Hardening audit (read-only) | index 65 · 0 warnings · 49 suggestions | ~23 s wall time — the weekly security-trend leg costs less than half a minute; suggestions are the improvement backlog the loop works through |
+
+The decision log as seeded — founding decisions with outcomes, including an
+honest rejection:
+
+```text
+| DR-20261026-01 | platform/sweep | adopt the hardening audit into the weekly sweep | DONE     | installed and verified same day |
+| DR-20261026-02 | meta-review    | KPIs in the periodic meta-review                | DONE     | part of the weekly prompt |
+| DR-20261026-03 | decision log   | superseded-by convention                        | DONE     | part of the weekly prompt |
+| DR-20261026-04 | agent memory   | heavier memory services (vector store)          | REJECTED | file state suffices at this scale; revisit at ~10 tasks |
+```
+
+And the dashboard skeleton the first run produces:
+
+```text
+# Stack observability — dashboard (YYYY-MM-DD)
+Next domain: 1 — platform/OS
+Top risks: (from the last sweep)
+Hardening index: 65 — trend: first observation
+Awaiting decision: —
+Last report: <path> — three-line summary
+```
+
+## 9. Failure handling
 
 - **No silent failures** — every failed step is reported factually; partial
   work is never presented as complete.
@@ -172,7 +233,7 @@ contributes on top:
   (`skills/communication/language-fidelity.md`).
 - Run output is one factual sentence: what changed, or "no change".
 
-## 9. Anti-patterns
+## 10. Anti-patterns
 
 - Monitoring without delivery: measurements that stay on the host.
 - Stateless runs: re-measured facts, re-proposed rejected ideas, invisible
@@ -188,7 +249,7 @@ contributes on top:
 - Heavier state machinery (databases, memory services) for a single-host,
   few-tasks setup.
 
-## 10. Verification
+## 11. Verification
 
 Per run:
 
@@ -203,7 +264,7 @@ Per period (meta-review):
 - KPIs from §5; hardening-index trend; report usefulness verdict; rotation
   still matches the actual stack.
 
-## 11. Version coupling
+## 12. Version coupling
 
 The pattern depends only on stable capabilities: scheduled execution of the
 same agent (cron semantics), shell and structured-tool access in unattended
