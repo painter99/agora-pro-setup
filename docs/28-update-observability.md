@@ -271,7 +271,9 @@ Per run:
 Per period (meta-review):
 
 - KPIs from §5; hardening-index trend; report usefulness verdict; rotation
-  still matches the actual stack.
+  still matches the actual stack; where a self-improvement loop exists
+  (docs/29), also its eval KPIs (run count, average score, regressions),
+  read-only from the SIL eval log.
 
 ## 12. Version coupling
 

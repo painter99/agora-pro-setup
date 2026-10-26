@@ -35,7 +35,7 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 ## Workflow
 
 1. **Generator** — ordinary work; failures logged per the escalation protocol.
-2. **Reflector** — collect signals (escalation log, eval log, memory audits, repeated corrections, scheduled-task outputs); output: max 3 candidate deltas, each as `| what | evidence | proposed patch | risk | eval plan |`. No evidence, no delta.
+2. **Reflector** — collect signals (escalation log, eval log, memory audits, repeated corrections, scheduled-task outputs, the observability decision log with its open recommendations and superseded chains, baseline+diff trends from the observability dashboard); output: max 3 candidate deltas, each as `| id | what | evidence | proposed patch | risk | eval plan |`. No evidence, no delta. A delta carries an ID `D-YYYYMMDD-NN`; when it realizes a decision-log recommendation `DR-YYYYMMDD-NN`, the recommendation's note is marked `realized by D-…`. Decision-log statuses are changed only by the operator — the loop reads and proposes, never closes them.
 3. **GO gate** — no delta is applied without explicit operator approval; purpose changes, merges/splits, deletions, and security rules are always proposals only.
 4. **Curator** — patch instead of replace; preserve details (prevents context collapse); mark deprecated passages instead of deleting; commit repo-visible changes (history = archive of variants).
 5. **Eval** — golden-task subset (3–5) before and after, same model and memory context; accept only improvement without regression plus operator acceptance; budget ~10 runs per delta.
