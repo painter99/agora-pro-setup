@@ -70,6 +70,15 @@ Why each dimension earns its weekly cost:
 - **Delivery freshness** — observability that is not delivered is invisible;
   stale backups or a stale dashboard mean the loop itself is degrading.
 
+The research leg runs at Level 3 (docs/7); the full procedure — query
+diversification with counter-evidence, source scoring, the evidence matrix,
+bounded iterations, and the mandatory "what cannot be proven" section —
+lives in the `multi-source-research` Skill
+(`skills/research/multi-source-research.md`), which the weekly run reads
+before researching. Referencing the Skill here keeps the chain complete:
+this document says *what* is observed and *why*, docs/7 defines the levels,
+and the Skill carries the procedure.
+
 Design rule: every metric is either **measured on the host** (never recalled
 from memory) or **sourced with citations** (research leg). A metric that
 cannot be measured or sourced honestly is dropped, not estimated.
