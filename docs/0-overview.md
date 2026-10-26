@@ -65,6 +65,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Coordination & audits | `docs/11` | `agora-coordinator` |
 | Multi-agent (future) | `docs/16` — proposal for the Agora application | — |
 | Stack update observability | `docs/28` | — |
+| Self-improvement loop | `docs/29` | `self-improvement-loop` |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -95,3 +96,4 @@ New content
 - Governing memory: `docs/13`.
 - Tool-call retry discipline and budget: `docs/21`.
 - Stack update observability: `docs/28`.
+- Agent self-improvement and autonomous repository maintenance: `docs/29`.
