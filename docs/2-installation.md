@@ -1,5 +1,11 @@
 # Installation
 
+## 0. Prerequisites
+
+- The Agora app (current release from F-Droid) on an Android device.
+- A copy of this repository (clone or download).
+- To validate the repository with `scripts/check.sh`: python3, git, and bash — standard on Linux and macOS development machines.
+
 ## 1. Configure prompt templates
 
 Open Agora's System Prompts settings and create or edit a prompt configuration.
@@ -27,21 +33,11 @@ Copy and customize `active-memory/1-active-memory-template.md`. Keep it short. D
 
 ## 4. Install Skills
 
-Import selected Markdown files from `skills/` into Agora's Saved Skills. The repository folders are only for organization; Agora uses a flat namespace. Choose the exact file and enter the flat name shown below (normally without `.md`):
+Import selected Markdown files from `skills/` into Agora's Saved Skills. The repository folders are only for organization; Agora uses a flat namespace.
 
-| Repository file | Agora Skill name |
-|---|---|
-| `skills/tool-execution-contract.md` | `tool-execution-contract` |
-| `skills/research/multi-source-research.md` | `multi-source-research` |
-| `skills/shell/shell-and-device-operations.md` | `shell-and-device-operations` |
-| `skills/memory-governance/memory-master-index.md` | `memory-master-index` |
-| `skills/memory-governance/active-memory-design.md` | `active-memory-design` |
-| `skills/memory-governance/memory-file-operations.md` | `memory-file-operations` |
-| `skills/memory-governance/memory-audits.md` | `memory-audits` |
-| `skills/examples/example-project-skill.md` | `example-project-skill` |
-| `skills/examples/example-learning-skill.md` | `example-learning-skill` |
+The Agora Skill name is the file name without the `.md` extension — for example `skills/research/multi-source-research.md` imports as `multi-source-research`, and `skills/android-development/android-dev-tdd.md` imports as `android-dev-tdd`. Add a short description when importing; that description is what `{skill_catalog}` shows.
 
-Add the example Skills only when useful. Do not install `skills/README.md`, `skill-format.md`, or `skill-catalog.md` as runtime Skills; they are author documentation.
+Every file under `skills/` is a Skill except the author documentation — `skills/README.md`, `skill-catalog.md`, and `skill-format.md`; do not install those as runtime Skills. For a suggested installation order, see "Recommended first Skills" in `README.md`. Example Skills are optional.
 
 ## 5. Review access and permissions
 
