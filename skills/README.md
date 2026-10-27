@@ -16,14 +16,14 @@ There is no Active Skill singleton. Do not create an `active_skill.md`, an activ
 
 ## Installation
 
-Import individual Markdown files into Agora's Skills settings. Give each Skill a short description suitable for the catalog. The repository directories are for human organization; Agora manages its own normalized flat Skill store.
+Import individual `SKILL.md` files (one directory per Skill) into Agora's Skills settings. The frontmatter `description` is suitable for the catalog as-is. The repository directories are for human organization; Agora manages its own normalized flat Skill store.
 
 ## Rules
 
 - One Skill should have one primary responsibility.
 - Keep catalog descriptions short and concrete.
 - Do not duplicate the entire System template.
-- Declare dependencies by exact Skill filename when needed.
+- Declare dependencies by exact Skill name (the Skill's directory name) when needed.
 - State forbidden behavior and verification.
 - Keep personal facts, preferences, and project state in Memory, not reusable Skills.
 - Treat `skills/android-development/` as the Android/Kotlin development family (spec-first, TDD, code review); import each Skill individually.
@@ -39,7 +39,7 @@ Import individual Markdown files into Agora's Skills settings. Give each Skill a
 
 ## Examples
 
-`skills/examples/` contains two minimal Skills (`example-learning-skill.md`,
-`example-project-skill.md`) demonstrating the format from
+`skills/examples/` contains two minimal Skills (`example-learning-skill`,
+`example-project-skill`) demonstrating the format from
 [`skill-format.md`](skill-format.md). They are optional teaching material —
 import them only when useful, and never treat them as runtime requirements.

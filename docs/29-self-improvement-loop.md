@@ -33,7 +33,7 @@ Generator → Reflector → GO gate → Curator → Eval
 
 | Component | Location | Role |
 |---|---|---|
-| Skill `self-improvement-loop.md` | agent Skill catalog (local instance; repo EN version in `skills/self-improvement/`) | procedure and hard limits |
+| Skill `self-improvement-loop` | agent Skill catalog (local instance; repo EN version in `skills/self-improvement/`) | procedure and hard limits |
 | Golden-task corpus | agent's local memory; fill-in template in §4 | eval corpus + rubric |
 | Eval log `sil-evals.csv` | agent host, append-only | measured scores |
 | Retrospectives | agent host `logs/sil-retrospectives/YYYY-MM-DD.md` | weekly Reflector output |

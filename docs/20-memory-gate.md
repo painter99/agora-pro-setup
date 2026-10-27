@@ -37,9 +37,9 @@ Split the concern by layer instead of choosing one:
 | Layer | Owns | Why |
 |---|---|---|
 | System template (kernel) | **the trigger and the obligation**: which tool calls are gated, that the routing Skill must be read first, that writes must be verified, that the gate must be attested | always injected; cannot be skipped |
-| `memory-master-index.md` | **the decision guide**: which layer, which specialized Skill | procedure detail, loaded on demand |
-| `active-memory-design.md`, `active-memory-authority.md`, `memory-file-operations.md`, `memory-audits.md` | **the specialized procedures** | progressive disclosure |
-| `tool-execution-contract.md` | inspection, approval, retry, verification | shared safety floor |
+| `memory-master-index` | **the decision guide**: which layer, which specialized Skill | procedure detail, loaded on demand |
+| `active-memory-design`, `active-memory-authority`, `memory-file-operations`, `memory-audits` | **the specialized procedures** | progressive disclosure |
+| `tool-execution-contract` | inspection, approval, retry, verification | shared safety floor |
 | `docs/17-permission-model.md` | memory writes = **Modify** class, band B/C | normative approval bands |
 
 This is defense in depth: the kernel guarantees the gate fires; the Skills keep
@@ -47,17 +47,17 @@ the kernel small; the docs keep the rules auditable.
 
 ## Observed failure (2026-10-25): routing to the wrong tool family
 
-The original gate sentence ("read `memory-master-index.md` and the governance
+The original gate sentence ("read `memory-master-index` and the governance
 Skill it routes to") did not name the tool family. In production the model
 attempted `read_memory_file("memory-master-index.md")` and received
 `File not found` — it searched Saved Memory for a file that lives in the Skill
 Catalog. The sentence sat inside a paragraph about memory writes, and the
-referenced names (`memory-master-index.md`, `memory-file-operations.md`,
-`active-memory-design.md`) are indistinguishable from Saved Memory filenames by
+referenced names (`memory-master-index`, `memory-file-operations`,
+`active-memory-design`) are indistinguishable from Saved Memory filenames by
 naming convention alone.
 
 Fix: the gate sentence now names the tool family explicitly (`read_skill_file`,
-never memory tools) and states that `memory-master-index.md` is a Skill in the
+never memory tools) and states that `memory-master-index` is a Skill in the
 Skill Catalog, not a Saved Memory file. The Skill Catalog paragraph additionally
 states that any `.md` name mentioned inside the System template is a Skill, read
 only via Skill tools.
@@ -99,7 +99,7 @@ Design constraints honored:
 - The v2 "internal knowledge is UNRELIABLE" wall and the nine-rule reasoning
   framework: superseded by `skills/reasoning/sequential-thinking-workflow.md` and
   `docs/6`.
-- The deep-research HARD GATE: `multi-source-research.md` plus the kernel's
+- The deep-research HARD GATE: `multi-source-research` plus the kernel's
   research-routing sentence are sufficient; research is not a write operation and
   carries no drift risk.
 - Block/widget assembly instructions: Agora 2.1 uses System/User/Assistant
