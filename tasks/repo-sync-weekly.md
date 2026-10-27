@@ -38,8 +38,8 @@ Weekly (Sunday evening).
 6. Stage exactly the intended files; whitespace check; review the staged diff.
 7. Commit with the repository identity; push to the default branch; verify the
    push (status + remote heads).
-8. Verify the content actually arrived on the remote, and — for a docs-only
-   repository — that no CI run was triggered.
+8. Verify the content actually arrived on the remote, and that the CI check
+   run for the pushed head commit finished with conclusion=success.
 9. Exactly one notification when something was synced (files, commit hash,
    state). No change = no commit, no push, no notification.
 

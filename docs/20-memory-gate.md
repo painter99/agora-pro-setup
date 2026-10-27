@@ -52,8 +52,8 @@ Skill it routes to") did not name the tool family. In production the model
 attempted `read_memory_file("memory-master-index.md")` and received
 `File not found` — it searched Saved Memory for a file that lives in the Skill
 Catalog. The sentence sat inside a paragraph about memory writes, and the
-referenced names (`memory-master-index`, `memory-file-operations`,
-`active-memory-design`) are indistinguishable from Saved Memory filenames by
+referenced names (`memory-master-index.md`, `memory-file-operations.md`,
+`active-memory-design.md`) are indistinguishable from Saved Memory filenames by
 naming convention alone.
 
 Fix: the gate sentence now names the tool family explicitly (`read_skill_file`,
@@ -97,7 +97,7 @@ Design constraints honored:
 ## What was deliberately NOT restored
 
 - The v2 "internal knowledge is UNRELIABLE" wall and the nine-rule reasoning
-  framework: superseded by `skills/reasoning/sequential-thinking-workflow.md` and
+  framework: superseded by `skills/reasoning/sequential-thinking-workflow/SKILL.md` and
   `docs/6`.
 - The deep-research HARD GATE: `multi-source-research` plus the kernel's
   research-routing sentence are sufficient; research is not a write operation and

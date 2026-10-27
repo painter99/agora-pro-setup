@@ -1,13 +1,13 @@
 ---
 name: github-release-workflow
-description: "Verified Git workflow from a constrained mobile sandbox and from a self-hosted build host: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes without CI runs, CI efficiency rules, identity/deploy-key handling, a branch-cleanup gate, SSH troubleshooting, and Alpine/BusyBox gotchas."
+description: "Verified Git workflow from a constrained mobile sandbox and from a self-hosted build host: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes under a CI gate, CI efficiency rules, identity/deploy-key handling, a branch-cleanup gate, SSH troubleshooting, and Alpine/BusyBox gotchas."
 license: MIT
 ---
 
 # Skill: GitHub Release Workflow
 
 ## Catalog description
-Verified Git workflow from a constrained mobile sandbox and from a self-hosted build host: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes without CI runs, CI efficiency rules, identity/deploy-key handling, a branch-cleanup gate, SSH troubleshooting, and Alpine/BusyBox gotchas.
+Verified Git workflow from a constrained mobile sandbox and from a self-hosted build host: branches, GO rules, CI verification before merge (full mirrored log, not just the API conclusion), docs-only changes under a CI gate, CI efficiency rules, identity/deploy-key handling, a branch-cleanup gate, SSH troubleshooting, and Alpine/BusyBox gotchas.
 
 ## Purpose
 Reliable mobile-first Git workflow: safe commits, pushes, merges, and cleanup with minimal failures, including concrete gotchas of an Alpine/BusyBox sandbox. Tuned for a single developer driving everything from a phone through an AI agent: the remote CI is the only build feedback, so every run must be fast, cheap, and informative.
@@ -81,11 +81,11 @@ git merge-base --is-ancestor <branch> main \
 - **Gotcha:** `raw.githubusercontent.com` may briefly serve a stale file (CDN cache) — verify via `git show` after fetch and check the file header (`# CI run N — commit <sha>`) matches the run being verified.
 - Prerequisite: the CI must mirror full logs to a public branch; without such mirroring these rules cannot be followed — set it up first.
 
-### Docs-only changes (no CI run)
-Purely documentary edits (README, `*.md`, `docs/**`) do not need a CI build — the code did not change.
+### Docs-only changes under a CI gate
+Purely documentary edits (README, `*.md`, `docs/**`) do not change code, but in a repository with CI they still trigger a check run unless the workflow excludes doc paths.
 
-- Repository with CI: put doc paths into `paths-ignore` in the workflow, otherwise the run starts anyway. Repository without CI: nothing to do — there are no runs.
-- Docs-only merge without a CI run: verify that Actions did not start a run for that commit (API / Actions UI — no run for the SHA), plus the standard diff stat and local–remote sync.
+- Repository with CI: put doc paths into `paths-ignore` in the workflow, otherwise the run starts anyway — and when it starts, verify `conclusion=success` like any other run. Repository without CI: nothing to do — there are no runs.
+- Docs-only merge in a repository with CI: verify the run outcome for the merge head (`conclusion=success`, or a confirmed absence of a run only when `paths-ignore` covers the changed paths), plus the standard diff stat and local–remote sync. In a repository without CI: verify that Actions did not start a run for that commit (API / Actions UI — no run for the SHA).
 - Beware mixed commits (docs + code): `paths-ignore` does not apply, full CI depth per the table above.
 - `.github/workflows/*` are NOT docs — a workflow change always triggers CI.
 
@@ -167,7 +167,7 @@ Only proceed with the destructive step after the backup ref provably exists on t
 ## Verification
 - After push: `git log --oneline -3` + `git status --short --branch` (in sync with remote) + `git ls-remote --heads origin` for your own branches.
 - After a merge: the merged content is provably on the remote (`git show main:<file>`, or the raw URL with a check that it is not a stale CDN copy).
-- After merge: cleanup done, `git branch` clean, **CI run on main verified with the full mirrored log (see "CI verification before merge")**; for docs-only merges in a repo with CI, verified that no run was started.
+- After merge: cleanup done, `git branch` clean, **CI run on main verified with the full mirrored log (see "CI verification before merge")**; for docs-only merges in a repo with CI, verified the run outcome (`conclusion=success`, or absence only under `paths-ignore`).
 - Before push: privacy check passed (or the repository is private).
 
 ## Output contract
@@ -179,4 +179,4 @@ Only proceed with the destructive step after the backup ref provably exists on t
 v1.0 — distilled from hands-on mobile-first Git operations in a constrained Alpine/BusyBox sandbox; anonymized and generalized for public sharing.
 v1.1 — added the CI verification gate before merge (full mirrored log for merge runs; an API conclusion alone is insufficient), including the CDN-cache gotcha of raw log reads.
 v1.3 — added build-host reality: shell identity vs. repository ownership ("dubious ownership"), missing commit identity in fresh clones, per-repo deploy keys behind SSH aliases, single-branch clones hiding remote branches, and a mandatory `merge-base` gate before branch cleanup; anonymised 2026-10-12.
-v1.2 — added docs-only changes without CI runs, CI efficiency rules (concurrency + cancel-in-progress, job timeouts, paths-ignore, shallow checkout, Gradle caching), token-less CI polling, backup refs before destructive operations, and the GITHUB_TOKEN / notification / rate-limit gotchas. Cross-checked against GitHub Docs (workflow concurrency, triggering workflows) and gradle/actions docs, 2026-09-26.
+v1.2 — added docs-only changes under a CI gate, CI efficiency rules (concurrency + cancel-in-progress, job timeouts, paths-ignore, shallow checkout, Gradle caching), token-less CI polling, backup refs before destructive operations, and the GITHUB_TOKEN / notification / rate-limit gotchas. Cross-checked against GitHub Docs (workflow concurrency, triggering workflows) and gradle/actions docs, 2026-09-26.

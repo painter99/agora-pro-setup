@@ -28,7 +28,7 @@
 
 ## Status
 
-Unofficial companion repository (no build, no CI; repository validation via `scripts/check.sh`). Maintained against current Agora releases from F-Droid; last reviewed 2026-10. Feedback and pull requests are welcome via [Issues](../../issues). AI agents working in this repository: start with [AGENTS.md](AGENTS.md).
+Unofficial companion repository (no build; validation via `scripts/check.sh`, enforced by CI on every push). Maintained against current Agora releases from F-Droid; last reviewed 2026-10. Feedback and pull requests are welcome via [Issues](../../issues). AI agents working in this repository: start with [AGENTS.md](AGENTS.md).
 
 ## Repository map
 
@@ -54,7 +54,7 @@ agora-pro-setup/
 │   ├── examples/
 │   ├── skill-catalog.md # catalog description conventions
 │   ├── skill-format.md  # Skill file format
-│   └── tool-execution-contract.md
+│   └── tool-execution-contract/
 ├── tasks/               # task cards for scheduled task instances (not verbatim prompts)
 ├── scripts/             # validation checks: Skill format, privacy scan, link integrity
 ├── decisions/           # architecture decision records (ADR, MADR-lite)

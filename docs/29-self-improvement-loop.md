@@ -71,7 +71,7 @@ Rules for the autonomous sync task:
 - **Allowed:** `docs/*.md` and `skills/**` — English, anonymized, generic; new Skills, updated procedures, doc refresh when stack reality drifts.
 - **Forbidden without explicit GO:** code, `.github/` workflows, `system-prompt/` templates, file deletions, history rewrite, force-push, secrets, personal data.
 - **Traceability:** one commit per sync batch with an explicit message; max 1 push per run; no change → no push, no notification.
-- **Verification before push:** identifier scan (names, projects, hardware, models, paths, IPs, dates/plans) = 0 hits; language check for any non-English text; `git diff --stat` reviewed; push verified via `git ls-remote`; remote content verified via `git show origin/main:<file>`. This repository has no CI (docs-only) — verify that no Actions run was triggered for the commit.
+- **Verification before push:** identifier scan (names, projects, hardware, models, paths, IPs, dates/plans) = 0 hits; language check for any non-English text; `git diff --stat` reviewed; push verified via `git ls-remote`; remote content verified via `git show origin/main:<file>`. This repository has CI (`.github/workflows/check.yml`): a docs-only commit triggers a check run — verify its conclusion is `success` for the pushed head before considering the push done.
 - **Uncertainty:** missing evidence → no change; unverifiable → `UNVERIFIED` in the run report; failure → notification with priority low.
 
 ## 6. Safety rules

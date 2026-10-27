@@ -1,10 +1,12 @@
 # Skills
 
-Agora Skills are durable Markdown instruction files with optional short descriptions.
+Agora Skills are durable instruction packages: one directory per Skill containing a `SKILL.md` (frontmatter + body), see `skills/skill-format.md`.
 
 ## Discovery and loading
 
 How Agora exposes Skills — the `{skill_catalog}` variable, frozen per generation, on-demand reads, and the absence of an active-skill toggle — is defined by the application and documented in the official user manual. This repository adds rules for using that mechanism: multiple Skills may be read when genuinely required, but never load a family wholesale.
+
+Naming: in this repository each Skill is a directory `<name>/SKILL.md`. A deployed Agora instance keeps its own flat Skill store, and its catalog may list file names with a `.md` suffix (as in the maintained instance). Normative texts meant to be pasted into the instance (System template, memory gate) quote that instance form; repository references use the repository layout.
 
 ## Skill rules
 
@@ -35,7 +37,7 @@ The master index routes; specialized Skills contain the procedure. Do not load t
 
 ## Reasoning Skills
 
-The repository includes `skills/reasoning/sequential-thinking-workflow.md` for complex, ambiguous, multi-step, or tool-assisted tasks. It is loaded on demand and should not replace the proportional reasoning policy in the System template.
+The repository includes `skills/reasoning/sequential-thinking-workflow/SKILL.md` for complex, ambiguous, multi-step, or tool-assisted tasks. It is loaded on demand and should not replace the proportional reasoning policy in the System template.
 
 It provides:
 
@@ -48,14 +50,14 @@ It provides:
 
 ## Coordination Skill
 
-The repository includes `skills/coordination/agora-coordinator.md` for managing an installed setup: auditing Skills and memory, diagnosing available tools at runtime, performing small reversible repairs, and producing Task specifications.
+The repository includes `skills/coordination/agora-coordinator/SKILL.md` for managing an installed setup: auditing Skills and memory, diagnosing available tools at runtime, performing small reversible repairs, and producing Task specifications.
 
 It composes the other families rather than duplicating them:
 
 ```text
 agora-coordinator
   ├─ tool-execution-contract      (mandatory safety layer)
-  ├─ skill-governance             (audit rules — see skills/README.md rules)
+  ├─ skill-governance             (audit rules — local instance Skill, see skills/README.md rules)
   └─ sequential-thinking-workflow (methodology for complex audits)
 ```
 

@@ -112,8 +112,8 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | Task specification output | `[fill: usually available]` | Produce name + prompt + schedule for manual creation |
 | Skills read | `[fill after verification]` | |
 | Skills edit | `[fill: small reversible edits only]` | |
-| Memory read | `[fill after verification]` | Only with a verified read tool |
-| Memory write | `[fill after verification]` | Never write without a working read tool |
+| Memory read | ✅ verified 2026-10-27 (read, list) | Only with a verified read tool |
+| Memory write | ✅ verified 2026-10-27 in chat runs (write, patch); Task runs: reads verified, writes unverified | Memory gate before any write |
 | MCP | `[fill per runtime detection]` | Availability is per server and per tool |
 | Web / repository checks | `[fill after verification]` | Read-only, two whitelisted repositories, URL-level verification; only during full audits or on explicit request |
 | GitHub write | ❌ prohibited | No commits, pushes, issues, PRs, releases, or repository changes |
