@@ -28,13 +28,15 @@
 
 ## Status
 
-Unofficial companion repository, documentation-only (no build, no CI). Maintained against current Agora releases from F-Droid; last reviewed 2026-10. Feedback and pull requests are welcome via [Issues](../../issues).
+Unofficial companion repository (no build, no CI; repository validation via `scripts/check.sh`). Maintained against current Agora releases from F-Droid; last reviewed 2026-10. Feedback and pull requests are welcome via [Issues](../../issues). AI agents working in this repository: start with [AGENTS.md](AGENTS.md).
 
 ## Repository map
 
 ```text
 agora-pro-setup/
 ├── README.md            # this file
+├── AGENTS.md            # standing instructions for AI coding agents
+├── CHANGELOG.md         # release history and versioning policy
 ├── LICENSE              # MIT
 ├── system-prompt/       # System, User, Assistant, and Compact template guidance
 ├── active-memory/       # generic Active Memory template and example
@@ -46,10 +48,14 @@ agora-pro-setup/
 │   ├── shell/
 │   ├── android-development/
 │   ├── cad-development/
+│   ├── communication/
+│   ├── self-improvement/
 │   ├── examples/
 │   ├── skill-catalog.md # catalog description conventions
 │   ├── skill-format.md  # Skill file format
 │   └── tool-execution-contract.md
+├── tasks/               # task cards for scheduled task instances (not verbatim prompts)
+├── scripts/             # validation checks: Skill format, privacy scan, link integrity
 └── docs/                # architecture, installation, safety, memory governance, patterns
 ```
 
