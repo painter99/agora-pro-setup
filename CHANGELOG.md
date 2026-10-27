@@ -7,6 +7,13 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Fixed
+
+- Broken external MADR link in `decisions/README.md` — now points to the
+  official project page (https://adr.github.io/madr/). External URLs are not
+  covered by `check_links.py`; they are covered by the quarterly replication
+  dry-run.
+
 ## [1.2.0] - 2026-10-27
 
 P2 milestone: SKILL.md layout, CI gate, platform layer, replication golden task.
