@@ -64,6 +64,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 ./scripts/check.sh
 ```
 
+Requires python3, git, and bash.
+
 - `check_format.py` — Skill section structure: 10 required sections in order,
   code fences excluded from matching.
 - `privacy_scan.py` — personal-identifier pattern scan over all Markdown

@@ -5,6 +5,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic (MAJOR.MINOR.PATCH) and tagged. Each release records
 the Agora app baseline it was maintained against.
 
+## [Unreleased]
+
+### Fixed
+
+- `docs/2-installation.md`: added a prerequisites section (python3/git/bash for repository validation); replaced the stale partial Skill table with the flat-name rule (file name without `.md`), so the document no longer drifts when Skills are added.
+- `AGENTS.md`: documented the validation prerequisites.
+
 ## [1.0.0] - 2026-10-27
 
 First tagged release: the governance layer as of `main` @ `dfae1bc`.
