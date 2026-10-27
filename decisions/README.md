@@ -1,7 +1,7 @@
 # Decision Records
 
 Architecture decision records (ADRs) for this repository, in a light
-[MADR](https://madewithlove.com/madr)-inspired format.
+[MADR](https://adr.github.io/madr/)-inspired format.
 
 ## Format
 
