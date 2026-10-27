@@ -7,6 +7,11 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+
+- `manifest.yaml` — machine-readable component inventory (source → deployment
+  target) for drift detection; the privacy scan now covers YAML files too.
+
 ### Fixed
 
 - `docs/2-installation.md`: added a prerequisites section (python3/git/bash for repository validation); replaced the stale partial Skill table with the flat-name rule (file name without `.md`), so the document no longer drifts when Skills are added.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scan all repository Markdown for personal-identifier patterns.
+"""Scan all repository Markdown and YAML files for personal-identifier patterns.
 
 The repository must stay English, anonymized, and generic. This scan is a
 net, not a judge: every finding needs human review before content is pushed
@@ -55,8 +55,9 @@ def main():
     root = Path(__file__).resolve().parent.parent
     findings = 0
     files = 0
-    for path in sorted(root.rglob("*.md")):
-        if ".git" in path.parts:
+    scanned_suffixes = (".md", ".yaml", ".yml")
+    for path in sorted(root.rglob("*")):
+        if ".git" in path.parts or path.suffix.lower() not in scanned_suffixes:
             continue
         files += 1
         text = path.read_text(encoding="utf-8")
@@ -75,7 +76,7 @@ def main():
                     + match.group(0)
                 )
     print()
-    print(str(files) + " Markdown files scanned, " + str(findings) + " findings")
+    print(str(files) + " files scanned, " + str(findings) + " findings")
     return 1 if findings else 0
 
 

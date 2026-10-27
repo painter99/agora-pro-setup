@@ -1,0 +1,68 @@
+# Component inventory: what this repository governs and where it is deployed.
+#
+# Purpose: machine-readable source of truth for drift detection. A maintenance
+# pass compares this inventory against the actual repository tree (existence,
+# counts) and against the deployed setup (targets).
+#
+# Rules:
+# - Every deployable component appears here exactly once; reference-only
+#   material is listed with target: none.
+# - When a component is added or removed, update this inventory in the same
+#   change.
+# - Skill flat names follow the rule in docs/2-installation.md (file name
+#   without the .md extension).
+
+meta:
+  inventory_version: 1
+  last_verified: "2026-10-27"
+
+components:
+  # --- deployed into the Agora app ---
+  - name: system-template
+    kind: prompt-template
+    source: system-prompt/1-system-template.md
+    target: "Agora > System Prompts > System"
+  - name: user-template
+    kind: prompt-template
+    source: system-prompt/2-user-template.md
+    target: "Agora > System Prompts > User"
+  - name: assistant-template
+    kind: prompt-template
+    source: system-prompt/3-assistant-template.md
+    target: "Agora > System Prompts > Assistant"
+  - name: compact-template
+    kind: prompt-template
+    source: system-prompt/4-compact-template.md
+    target: "Agora > System Prompts > Compact"
+  - name: active-memory-template
+    kind: memory-template
+    source: active-memory/1-active-memory-template.md
+    target: "Agora > Active Memory (copy, then customize)"
+  - name: skill-set
+    kind: skill-set
+    source: "skills/**/*.md (22 files; excluding README.md, skill-catalog.md, skill-format.md)"
+    target: "Agora > Saved Skills (flat namespace)"
+  - name: task-cards
+    kind: task-card-set
+    source: "tasks/*.md (5 cards + README; cards, not verbatim prompts)"
+    target: "Agora > Tasks (instances maintained separately)"
+
+  # --- repository tooling ---
+  - name: validation-checks
+    kind: tooling
+    source: scripts/
+    target: "run in a repository checkout (python3, git, bash)"
+
+  # --- reference only ---
+  - name: active-memory-example
+    kind: reference
+    source: active-memory/2-active-memory-example.md
+    target: none
+  - name: architecture-docs
+    kind: reference
+    source: "docs/*.md (29 files; number 19 is retired)"
+    target: none
+  - name: author-docs
+    kind: reference
+    source: "skills/README.md, skills/skill-catalog.md, skills/skill-format.md"
+    target: none
