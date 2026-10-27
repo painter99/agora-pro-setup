@@ -188,6 +188,10 @@ contributes on top:
   the run performs the local sweep and dashboard update, reports the
   limitation, and does **not** advance the rotation.
 - **Tool budget applies** as everywhere (docs/21).
+- **Instance documentation.** The live tasks that run this pattern are
+  documented as genericized task cards in [`tasks/`](../tasks/README.md) —
+  cards, not verbatim prompts; operator-specific details stay out of the
+  repository.
 
 ## 8. A working instance (validated)
 
