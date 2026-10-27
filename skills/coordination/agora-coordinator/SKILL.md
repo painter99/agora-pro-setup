@@ -29,8 +29,9 @@ Define the operating method for a coordination agent that keeps an Agora install
 ## Dependencies
 
 - `tool-execution-contract` — mandatory safety layer for all tool operations.
-- `skill-governance.md` — rules applied during Skill audits.
+- `skill-governance` — rules applied during Skill audits.
 - `sequential-thinking-workflow` — methodology for complex planning and audits.
+- `self-improvement-loop` — route systemic findings (repeated failures, drift patterns) into the SIL loop instead of ad-hoc fixes.
 
 Declare additional dependencies by exact Skill filename when the local setup requires them.
 
@@ -93,6 +94,9 @@ Repository access is read-only and limited to the two repositories above. The co
 | Purpose change, Skill conflict, deletion, merge, large rewrite | Produce a Task specification; hand it to the user |
 | Anything affecting money, messages, publishing, career, purchases | Proposal only; wait for approval |
 | Anything requiring creating/changing/deleting a Task | Per Capability Configuration below |
+| Systemic finding (repeated failure, drift pattern, improvement opportunity) | SIL delta proposal (D-ID) via `self-improvement-loop`, not a direct edit |
+
+Mechanical fixes (typo, formatting, broken link) do not require SIL evaluation; SIL eval applies to behavioral skill changes.
 
 ### Hard limits per run
 

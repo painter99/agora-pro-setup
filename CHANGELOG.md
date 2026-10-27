@@ -18,6 +18,9 @@ the Agora app baseline it was maintained against.
   validates frontmatter, naming rules, and description consistency.
 - ADR-0012 — the repository remains public; sensitive material belongs to the
   private instance overlay, not this repository.
+- `agora-coordinator` Skill now routes systemic findings (repeated failures,
+  drift patterns) into the self-improvement loop as evaluated deltas instead
+  of ad-hoc direct edits.
 
 ### Fixed
 
