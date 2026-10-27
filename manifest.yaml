@@ -56,7 +56,7 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    source: "decisions/*.md (9 ADRs + README index)"
+    source: "decisions/*.md (10 ADRs + README index)"
     target: none
   - name: active-memory-example
     kind: reference
