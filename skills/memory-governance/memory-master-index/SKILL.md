@@ -42,7 +42,7 @@ Use the current Agora tool definitions as authority. Load only what is needed:
 - `active-memory-design` for placement and size;
 - `active-memory-authority` for AM authorization, recovery, and approval;
 - `memory-file-operations` for Saved Memory creation, patching, renaming, archiving, or deletion;
-- the tool list shown in the current generation and the official Agora user manual, when exact tool names or arguments are uncertain;
+- `memory-tool-reference` when exact tool names or arguments are uncertain (expected tool families; the current generation's tool list and the official Agora user manual remain the authority);
 - `memory-audits` for audits and contradictions;
 - `tool-execution-contract` for the shared inspection and verification contract.
 

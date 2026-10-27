@@ -72,7 +72,7 @@ round in which every call failed or returned an unusable result.
 
 ## Domain routing
 
-- Saved Memory: `memory-master-index` → `memory-file-operations` (tool names and arguments: the current generation's tool list and the official Agora user manual).
+- Saved Memory: `memory-master-index` → `memory-file-operations`; exact tool names and arguments: `memory-tool-reference` (the current generation's tool list and the official Agora user manual remain the authority).
 - Active Memory: `active-memory-design` + `active-memory-authority`.
 - Memory audit: `memory-audits`.
 - Shell/device: `shell-and-device-operations`.
