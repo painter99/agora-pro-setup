@@ -70,7 +70,7 @@ Error taxonomy (who fixes what):
 | Layer | Owns |
 |---|---|
 | System template (kernel) | compact always-injected rule: never repeat an identical failed call; adjust after two consecutive failures; exhaust a query type after three failed rounds; terminal honesty |
-| `skills/tool-execution-contract.md` | the detailed procedure: definitions, wave rules, error taxonomy, budget bookkeeping |
+| `skills/tool-execution-contract/SKILL.md` | the detailed procedure: definitions, wave rules, error taxonomy, budget bookkeeping |
 | `docs/8-tools-and-safety.md` | routing and the short rule set |
 | `docs/11-troubleshooting.md` | the failure-mode entry |
 | `docs/16-multi-agent-system.md` | generalization: per-agent budget controls in the future MAS layer |
@@ -105,5 +105,5 @@ verified by behavior (below), never assumed.
 
 `docs/0-overview.md`, `docs/8-tools-and-safety.md`,
 `docs/11-troubleshooting.md`, `docs/16-multi-agent-system.md`,
-`docs/20-memory-gate.md`, `skills/tool-execution-contract.md`,
+`docs/20-memory-gate.md`, `skills/tool-execution-contract/SKILL.md`,
 `system-prompt/1-system-template.md`.

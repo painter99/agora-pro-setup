@@ -74,7 +74,7 @@ The research leg runs at Level 3 (docs/7); the full procedure — query
 diversification with counter-evidence, source scoring, the evidence matrix,
 bounded iterations, and the mandatory "what cannot be proven" section —
 lives in the `multi-source-research` Skill
-(`skills/research/multi-source-research.md`), which the weekly run reads
+(`skills/research/multi-source-research/SKILL.md`), which the weekly run reads
 before researching. Referencing the Skill here keeps the chain complete:
 this document says *what* is observed and *why*, docs/7 defines the levels,
 and the Skill carries the procedure.
@@ -243,7 +243,7 @@ Last report: <path> — three-line summary
   after (transactional pattern, docs/22 §5).
 - **Language fidelity gate** before durable writes: a mechanical non-Latin
   script self-check plus a read-back
-  (`skills/communication/language-fidelity.md`).
+  (`skills/communication/language-fidelity/SKILL.md`).
 - Run output is one factual sentence: what changed, or "no change".
 
 ## 10. Anti-patterns

@@ -19,6 +19,17 @@ the Agora app baseline it was maintained against.
 - ADR-0012 — the repository remains public; sensitive material belongs to the
   private instance overlay, not this repository.
 
+### Fixed
+
+- Stale Skill references after the SKILL.md migration (`docs/5`, `docs/20`,
+  `docs/21`, `docs/28`) and CI-era drift: README status line, `docs/29`
+  verification step, `tasks/repo-sync-weekly` card, and the
+  `github-release-workflow` Skill now reflect the CI gate; the coordinator
+  Skill capability table was re-verified against runtime.
+- Instance-facing normative texts (System template memory gate, `docs/20`)
+  quote the deployed instance naming (`.md` catalog names); a naming note in
+  `docs/5` explains repository layout vs. instance store naming.
+
 ## [1.1.0] - 2026-10-27
 
 P1 milestone: validation, inventory, and decision records complete.
