@@ -7,6 +7,10 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-27
+
+P2 milestone: SKILL.md layout, CI gate, platform layer, replication golden task.
+
 ### Added
 
 - `.github/workflows/check.yml` — CI gate running `scripts/check.sh` on push
