@@ -1,0 +1,20 @@
+# Template: Agora MCP sequential-thinking bridge (stdio -> Streamable HTTP via
+# supergateway). Placeholders are resolved from the private instance overlay at
+# install time (docs/30-instance-overlay.md); never commit real values.
+[Unit]
+Description=Agora MCP sequential-thinking bridge (stdio -> Streamable HTTP via supergateway)
+Documentation=https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking
+After=network.target
+
+[Service]
+Type=simple
+User={{SERVICE_USER}}
+WorkingDirectory={{AGORA_HOME}}/mcp-node
+Environment=TMPDIR=/tmp
+NoNewPrivileges=yes
+ExecStart={{AGORA_HOME}}/mcp-node/node_modules/.bin/supergateway --stdio "node {{AGORA_HOME}}/mcp-node/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js" --outputTransport streamableHttp --port {{SEQTHINK_PORT}} --streamableHttpPath {{SEQTHINK_PATH}} --stateful --sessionTimeout 1800000 --logLevel info
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

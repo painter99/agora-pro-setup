@@ -1,0 +1,20 @@
+# Template: Agora exchange periodic scan (oneshot; driven by
+# agora-exchange-watch.timer as the fallback mode alongside the real-time
+# watcher — see docs/27). Placeholders are resolved from the private instance
+# overlay at install time; never commit real values.
+[Unit]
+Description=Observe stable metadata changes under {{EXCHANGE_DIR}}
+After=local-fs.target
+
+[Service]
+Type=oneshot
+User={{SERVICE_USER}}
+Group={{SERVICE_GROUP}}
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths={{EXCHANGE_DIR}}
+ReadWritePaths={{EXCHANGE_DIR}}/.control
+ExecStart=/usr/bin/python3 {{TOOLS_DIR}}/agora-exchange-watch.py scan
+TimeoutStartSec=10min

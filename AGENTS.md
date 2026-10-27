@@ -32,6 +32,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
 - `active-memory/` — generic Active Memory template and example.
 - `tasks/` — task cards (genericized descriptions, not verbatim prompts).
+- `platform/` — parameterized host-level systemd unit templates + install
+  manifest (`docs/31`); placeholders only, no host-specific values.
 - `scripts/` — validation checks; run before every commit.
 - `manifest.yaml` — component inventory: every deployable component, its
   source, and its deployment target.
