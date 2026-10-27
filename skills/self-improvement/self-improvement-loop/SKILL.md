@@ -31,10 +31,10 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 
 - `model-escalation-protocol`
 - `memory-audits`
-- `skill-governance.md`
+- `skill-governance`
 - `memory-master-index`
 - `memory-file-operations`
-- `llm-model-evaluation.md`
+- `llm-model-evaluation`
 - `tool-execution-contract`
 
 ## Workflow

@@ -24,7 +24,10 @@ Reliable mobile-first Git workflow: safe commits, pushes, merges, and cleanup wi
 - reading GitHub via web/API without any push need.
 
 ## Dependencies
-- `tool-execution-contract` (safety layer). Context: Saved Memory holds account and key details — never the Skill file.
+- `tool-execution-contract` (safety layer).
+- `shell-and-device-operations` — device selection, SSH, and shell execution discipline.
+
+Context: Saved Memory holds account and key details — never the Skill file.
 
 ## Workflow
 

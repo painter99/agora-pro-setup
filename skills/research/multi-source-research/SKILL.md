@@ -30,7 +30,7 @@ Provide a reusable research procedure for current, technical, comparative, quant
 
 ## Dependencies
 
-Use available `web_search` and `web_fetch` tools. Use conversation or Memory tools only when they materially clarify the question. Do not assume any tool is available; follow the current Agora tool set and permissions.
+None. Uses available `web_search` and `web_fetch` tools; use conversation or Memory tools only when they materially clarify the question. Do not assume any tool is available; follow the current Agora tool set and permissions.
 
 ## Proportionality: choose the research level
 

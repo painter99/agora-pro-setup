@@ -77,6 +77,12 @@ round in which every call failed or returned an unusable result.
 - Memory audit: `memory-audits`.
 - Shell/device: `shell-and-device-operations`.
 - Current/disputed research: `multi-source-research`.
+- Coordination and audits: `agora-coordinator` (+ `skill-governance`).
+- Reasoning workflow: `sequential-thinking-workflow`.
+- Self-improvement: `self-improvement-loop`.
+- Git/release: `github-release-workflow`.
+- CAD: `cad-spec-driven-workflow`.
+- Android: `android-spec-first` (entry point of the Android trio).
 
 ## Approval gates
 

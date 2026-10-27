@@ -30,6 +30,8 @@ Define the operating method for a coordination agent that keeps an Agora install
 
 - `tool-execution-contract` — mandatory safety layer for all tool operations.
 - `skill-governance` — rules applied during Skill audits.
+- `memory-audits` — procedure for Saved Memory audits.
+- `memory-master-index` — routing for memory operations.
 - `sequential-thinking-workflow` — methodology for complex planning and audits.
 - `self-improvement-loop` — route systemic findings (repeated failures, drift patterns) into the SIL loop instead of ad-hoc fixes.
 

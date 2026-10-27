@@ -1,6 +1,6 @@
 ---
 name: model-escalation-protocol
-description: "model-escalation-protocol.md — tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data."
+description: "tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data."
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Catalog description
 
-model-escalation-protocol.md — tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data.
+tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data.
 
 ## Purpose
 
@@ -31,6 +31,7 @@ Shorten the time between "the model went off track" and "the user knows". Unreli
 - `sequential-thinking-workflow` — the re-frame method; this Skill decides when to run it.
 - `tool-execution-contract` — tool-result verification rules (T4 is built on it).
 - `memory-master-index` + `active-memory-authority` — T3/T5 memory writes.
+- `llm-model-evaluation` — how to fairly measure and record model results.
 
 ## Workflow
 
