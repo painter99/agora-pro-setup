@@ -37,6 +37,7 @@ agora-pro-setup/
 ├── README.md            # this file
 ├── AGENTS.md            # standing instructions for AI coding agents
 ├── CHANGELOG.md         # release history and versioning policy
+├── manifest.yaml        # component inventory: what is governed, where deployed
 ├── LICENSE              # MIT
 ├── system-prompt/       # System, User, Assistant, and Compact template guidance
 ├── active-memory/       # generic Active Memory template and example

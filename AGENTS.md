@@ -33,6 +33,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 - `active-memory/` — generic Active Memory template and example.
 - `tasks/` — task cards (genericized descriptions, not verbatim prompts).
 - `scripts/` — validation checks; run before every commit.
+- `manifest.yaml` — component inventory: every deployable component, its
+  source, and its deployment target.
 - `CHANGELOG.md` — release history and versioning policy.
 
 ## Mandatory conventions
@@ -57,6 +59,9 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
    with a clear message, show the diff stat, and wait for explicit operator
    approval before pushing or merging. Merges to `main` are `--no-ff`; branch
    cleanup only after `git merge-base --is-ancestor` verification.
+7. **Inventory.** `manifest.yaml` lists every deployable component with its
+   source and deployment target. When a component is added or removed, update
+   the inventory in the same change.
 
 ## Validation
 
