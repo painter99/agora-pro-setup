@@ -11,6 +11,9 @@ the Agora app baseline it was maintained against.
 
 - `manifest.yaml` — machine-readable component inventory (source → deployment
   target) for drift detection; the privacy scan now covers YAML files too.
+- `decisions/` — architecture decision records (MADR-lite): 8 seeded ADRs
+  (add-on-layer policy, docs numbering, kernel rules, tool-call budget,
+  validation-as-code, MCP transport, inventory, task cards) + format index.
 
 ### Fixed
 

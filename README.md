@@ -57,6 +57,7 @@ agora-pro-setup/
 │   └── tool-execution-contract.md
 ├── tasks/               # task cards for scheduled task instances (not verbatim prompts)
 ├── scripts/             # validation checks: Skill format, privacy scan, link integrity
+├── decisions/           # architecture decision records (ADR, MADR-lite)
 └── docs/                # architecture, installation, safety, memory governance, patterns
 ```
 
