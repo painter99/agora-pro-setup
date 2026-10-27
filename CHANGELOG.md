@@ -7,7 +7,22 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+
+- Two previously local-only Skills published: `skill-governance` and
+  `llm-model-evaluation` — closes dangling dependencies in `agora-coordinator`
+  and `self-improvement-loop`.
+
 ### Fixed
+
+- Dependency and format consistency across Skills: `.md` suffixes in
+  `self-improvement-loop` Dependencies, prose Dependencies sections
+  (`multi-source-research`, `sequential-thinking-workflow`), self-referencing
+  description prefixes (`language-fidelity`, `model-escalation-protocol`),
+  missing cross-links (`agora-coordinator` → memory audit routing,
+  `github-release-workflow`/`cad-spec-driven-workflow` →
+  `shell-and-device-operations`), and extended Domain routing in
+  `tool-execution-contract`.
 
 - Broken external MADR link in `decisions/README.md` — now points to the
   official project page (https://adr.github.io/madr/). External URLs are not

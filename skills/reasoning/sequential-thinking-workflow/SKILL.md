@@ -30,7 +30,12 @@ Use this workflow to solve complex tasks with explicit planning, grounded tool u
 
 ## Dependencies
 
-Load a domain-specific Skill when one exists. Use `tool-execution-contract` for shared tool safety, `multi-source-research` for current or disputed research, `memory-master-index` for durable-memory operations, and `shell-and-device-operations` for shell or device work.
+Load a domain-specific Skill when one exists.
+
+- `tool-execution-contract` — shared tool safety.
+- `multi-source-research` — current or disputed research.
+- `memory-master-index` — durable-memory operations.
+- `shell-and-device-operations` — shell or device work.
 
 ## Core principles
 

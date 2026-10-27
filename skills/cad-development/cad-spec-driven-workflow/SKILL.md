@@ -33,6 +33,7 @@ The workflow was built and verified end-to-end on real parts in the public repos
 
 - `github-release-workflow` — git discipline: branches, diff stat, GO push/merge, privacy scan, CI verification.
 - `tool-execution-contract` — safety layer for all tool operations.
+- `shell-and-device-operations` — shell execution for headless runs (venv, pytest, renders).
 
 ## Workflow
 
