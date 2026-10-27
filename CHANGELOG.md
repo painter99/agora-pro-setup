@@ -14,6 +14,9 @@ the Agora app baseline it was maintained against.
 - `decisions/` — architecture decision records (MADR-lite): 8 seeded ADRs
   (add-on-layer policy, docs numbering, kernel rules, tool-call budget,
   validation-as-code, MCP transport, inventory, task cards) + format index.
+- `docs/30-instance-overlay.md` + ADR-0009 — instance overlay pattern:
+  public generic base ↔ private localized instance, derivation and export
+  rules, privacy gates.
 
 ### Fixed
 
