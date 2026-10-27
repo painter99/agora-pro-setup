@@ -16,6 +16,8 @@ Open Agora's System Prompts settings and create or edit a prompt configuration.
 
 The User and Assistant templates must retain exactly one structural `Prompt` item each.
 
+Tool names quoted inside the System template (for example `read_skill_file` in the memory gate) must match the installed app version. They were verified against the maintained instance on 2026-10-27; if your app version renamed tools, adjust the quoted names at import time.
+
 ## 2. Add runtime variables
 
 Place these explicitly in the System template:

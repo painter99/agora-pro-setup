@@ -2,18 +2,21 @@
 #
 # Purpose: machine-readable source of truth for drift detection. A maintenance
 # pass compares this inventory against the actual repository tree (existence,
-# counts) and against the deployed setup (targets).
+# counts) and against the deployed setup (targets). scripts/check_inventory.py
+# enforces the tree side mechanically; CI runs it with the other checks.
 #
 # Rules:
 # - Every deployable component appears here exactly once; reference-only
 #   material is listed with target: none.
 # - When a component is added or removed, update this inventory in the same
 #   change.
+# - Glob sources carry a machine-checkable "files" count; do not embed counts
+#   in prose — a prose count is what drifted before the checker existed.
 # - Skill names follow the Agent Skills layout: one directory per Skill under
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 2
+  inventory_version: 3
   last_verified: "2026-10-27"
 
 components:
@@ -40,11 +43,15 @@ components:
     target: "Agora > Active Memory (copy, then customize)"
   - name: skill-set
     kind: skill-set
-    source: "skills/**/SKILL.md (22 skills; one directory per Skill, Agent Skills layout)"
+    # 22 skills; one directory per Skill, Agent Skills layout
+    source: "skills/**/SKILL.md"
+    files: 22
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set
-    source: "tasks/*.md (5 cards + README; cards, not verbatim prompts)"
+    # 5 cards + README index; cards, not verbatim prompts
+    source: "tasks/*.md"
+    files: 6
     target: "Agora > Tasks (instances maintained separately)"
 
   # --- repository tooling ---
@@ -56,7 +63,9 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    source: "decisions/*.md (10 ADRs + README index)"
+    # 12 ADRs (0001-0012) + README index
+    source: "decisions/*.md"
+    files: 13
     target: none
   - name: active-memory-example
     kind: reference
@@ -64,9 +73,13 @@ components:
     target: none
   - name: architecture-docs
     kind: reference
-    source: "docs/*.md (30 files; number 19 is retired)"
+    # number 19 is retired
+    source: "docs/*.md"
+    files: 30
     target: none
   - name: author-docs
     kind: reference
-    source: "skills/README.md, skills/skill-catalog.md, skills/skill-format.md"
+    # README, catalog conventions, format spec — not Skills
+    source: "skills/*.md"
+    files: 3
     target: none

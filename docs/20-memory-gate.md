@@ -59,8 +59,12 @@ naming convention alone.
 Fix: the gate sentence now names the tool family explicitly (`read_skill_file`,
 never memory tools) and states that `memory-master-index` is a Skill in the
 Skill Catalog, not a Saved Memory file. The Skill Catalog paragraph additionally
-states that any `.md` name mentioned inside the System template is a Skill, read
-only via Skill tools.
+states that any Skill name mentioned in the System template is a Skill, read
+only via Skill tools. Naming alignment (2026-10-27): the kernel text quotes
+repository-layout Skill names (directory names, no `.md` suffix), consistent
+with the import rule in `docs/2`; a store populated from older flat files may
+list catalog names with a `.md` suffix — both forms resolve in the maintained
+instance (verified 2026-10-27).
 
 ## The gate (normative text)
 
@@ -71,9 +75,9 @@ text:
 Memory writes are gated. Before any create_memory_file, edit_memory_file,
 delete_memory_file, or update_active_memory call, read — via the Skill file
 tools (read_skill_file), never via memory tools — the Skill
-memory-master-index.md (a Skill in the Skill Catalog, not a Saved Memory file)
-and the governance Skill it routes to (Active Memory: active-memory-design.md +
-active-memory-authority.md; Saved Memory: memory-file-operations.md). Choose the
+memory-master-index (a Skill in the Skill Catalog, not a Saved Memory file)
+and the governance Skill it routes to (Active Memory: active-memory-design +
+active-memory-authority; Saved Memory: memory-file-operations). Choose the
 layer first: durable fact -> Saved Memory, reusable procedure -> Skill, current
 status -> Active Memory, transient -> no write. Prefer a unique patch over
 replacement; deletion and full replacement require explicit approval for the
