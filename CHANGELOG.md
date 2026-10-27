@@ -21,6 +21,10 @@ the Agora app baseline it was maintained against.
 - `agora-coordinator` Skill now routes systemic findings (repeated failures,
   drift patterns) into the self-improvement loop as evaluated deltas instead
   of ad-hoc direct edits.
+- `platform/` — parameterized host-level systemd unit templates (MCP server,
+  sequential-thinking bridge, exchange watcher service + timer) with an
+  install manifest and `docs/31` (ADR-0013, minimal scope per the dry-run
+  gate); the privacy scan now covers `.service` and `.timer` files.
 
 ### Fixed
 

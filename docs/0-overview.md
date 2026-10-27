@@ -68,6 +68,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Self-improvement loop | `docs/29` | `self-improvement-loop` |
 | Decision records | `decisions/` (index: `decisions/README.md`) | — |
 | Instance overlay | `docs/30` | — |
+| Platform layer (host units) | `docs/31` | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -103,3 +104,5 @@ New content
 - Agent self-improvement and autonomous repository maintenance: `docs/29`.
 - Why the architecture is the way it is: `decisions/` (decision records).
 - Adapting this setup to another person or language: `docs/30`.
+- Host-level services (MCP servers, exchange watcher): `docs/31`, with the
+  host walkthrough in `docs/23`.

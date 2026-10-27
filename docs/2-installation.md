@@ -48,3 +48,5 @@ Enable Skill access only when wanted. Review Memory, web, conversation, shell, M
 ## 6. Test safely
 
 Test a normal answer, a Skill read, a harmless Memory read, a research question, a denied destructive action, and a controlled shell operation. Inspect each result.
+
+Host-level services (MCP servers, exchange watcher) are a separate, optional layer: see `docs/31-platform-layer.md` and the host walkthrough in `docs/23`.

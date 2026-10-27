@@ -54,6 +54,14 @@ components:
     files: 6
     target: "Agora > Tasks (instances maintained separately)"
 
+  # --- deployed onto the host ---
+  - name: platform-layer
+    kind: platform-unit-templates
+    # 5 units (4 services + 1 timer) + install manifest
+    source: "platform/*"
+    files: 6
+    target: "/etc/systemd/system/ (mapping: platform/install-manifest.yaml)"
+
   # --- repository tooling ---
   - name: validation-checks
     kind: tooling
@@ -63,9 +71,9 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    # 12 ADRs (0001-0012) + README index
+    # 13 ADRs (0001-0013) + README index
     source: "decisions/*.md"
-    files: 13
+    files: 14
     target: none
   - name: active-memory-example
     kind: reference
@@ -75,7 +83,7 @@ components:
     kind: reference
     # number 19 is retired
     source: "docs/*.md"
-    files: 30
+    files: 31
     target: none
   - name: author-docs
     kind: reference

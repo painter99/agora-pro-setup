@@ -1,0 +1,24 @@
+# Install manifest for the platform layer: maps each unit template to its
+# deployment target. Host-specific values are resolved from the private
+# instance overlay (docs/30-instance-overlay.md); this file records the
+# mapping and the placeholder names, never the values.
+
+meta:
+  last_verified: "2026-10-27"
+
+units:
+  - template: platform/agora-mcp.service
+    target: /etc/systemd/system/agora-mcp.service
+    placeholders: [SERVICE_USER, SERVICE_GROUP, AGORA_HOME]
+  - template: platform/agora-mcp-seqthink.service
+    target: /etc/systemd/system/agora-mcp-seqthink.service
+    placeholders: [SERVICE_USER, AGORA_HOME, SEQTHINK_PORT, SEQTHINK_PATH]
+  - template: platform/agora-exchange-events.service
+    target: /etc/systemd/system/agora-exchange-events.service
+    placeholders: [SERVICE_USER, SERVICE_GROUP, EXCHANGE_DIR, TOOLS_DIR]
+  - template: platform/agora-exchange-watch.service
+    target: /etc/systemd/system/agora-exchange-watch.service
+    placeholders: [SERVICE_USER, SERVICE_GROUP, EXCHANGE_DIR, TOOLS_DIR]
+  - template: platform/agora-exchange-watch.timer
+    target: /etc/systemd/system/agora-exchange-watch.timer
+    placeholders: []

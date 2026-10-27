@@ -56,7 +56,8 @@ agora-pro-setup/
 │   ├── skill-format.md  # Skill file format
 │   └── tool-execution-contract/
 ├── tasks/               # task cards for scheduled task instances (not verbatim prompts)
-├── scripts/             # validation checks: Skill format, privacy scan, link integrity
+├── platform/            # parameterized host systemd units + install manifest (docs/31)
+├── scripts/             # validation checks: format, privacy, links, inventory
 ├── decisions/           # architecture decision records (ADR, MADR-lite)
 └── docs/                # architecture, installation, safety, memory governance, patterns
 ```
@@ -216,6 +217,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/28-update-observability.md`](docs/28-update-observability.md) — stack update observability pattern: measured inventory (currency, patch state, hardening, drift, ecosystem movement), baseline+diff discipline, decision log with operator-only statuses, bounded research rotation, delivery and notification budget
 - [`docs/29-self-improvement-loop.md`](docs/29-self-improvement-loop.md) — self-improvement loop: retrospective → GO gate → incremental patch → golden-task eval; autonomous repository-maintenance policy (§5)
 - [`docs/30-instance-overlay.md`](docs/30-instance-overlay.md) — instance overlay pattern: public generic base ↔ private localized instance, derivation and export rules, privacy gates
+- [`docs/31-platform-layer.md`](docs/31-platform-layer.md) — platform layer: parameterized host systemd units (MCP server, sequential-thinking bridge, exchange watcher) with an install manifest; placeholders resolved from the instance overlay
 - [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync), documented as genericized cards — not verbatim prompts
 
 ## Limitations

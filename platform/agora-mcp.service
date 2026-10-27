@@ -1,0 +1,21 @@
+# Template: Agora MCP server (FastMCP, Streamable HTTP).
+# Placeholders are resolved from the private instance overlay at install time
+# (docs/30-instance-overlay.md); never commit real values (AGENTS.md, convention 1).
+# The bind address and port are configured in the server code/config (docs/22 §6),
+# not in this unit.
+[Unit]
+Description=Agora MCP server (FastMCP, Streamable HTTP)
+After=network.target
+
+[Service]
+User={{SERVICE_USER}}
+Group={{SERVICE_GROUP}}
+WorkingDirectory={{AGORA_HOME}}
+Environment=TMPDIR=/tmp
+NoNewPrivileges=yes
+ExecStart={{AGORA_HOME}}/mcp/bin/python {{AGORA_HOME}}/mcp/server.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

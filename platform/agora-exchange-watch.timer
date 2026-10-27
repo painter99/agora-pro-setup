@@ -1,0 +1,13 @@
+# Template: periodic exchange scan timer (drives agora-exchange-watch.service,
+# the scan-mode fallback alongside the real-time watcher — see docs/27).
+[Unit]
+Description=Scan the Agora exchange periodically
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+AccuracySec=1min
+Unit=agora-exchange-watch.service
+
+[Install]
+WantedBy=timers.target

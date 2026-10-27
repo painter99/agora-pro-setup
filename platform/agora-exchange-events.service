@@ -1,0 +1,23 @@
+# Template: Agora exchange real-time event watcher (inotify watch mode).
+# Placeholders are resolved from the private instance overlay at install time
+# (docs/30-instance-overlay.md); never commit real values.
+[Unit]
+Description=Agora exchange real-time event watcher (inotify watch mode)
+After=local-fs.target
+
+[Service]
+Type=simple
+User={{SERVICE_USER}}
+Group={{SERVICE_GROUP}}
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths={{EXCHANGE_DIR}}
+ReadWritePaths={{EXCHANGE_DIR}}/.control
+ExecStart=/usr/bin/python3 {{TOOLS_DIR}}/agora-exchange-watch.py watch
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
