@@ -97,6 +97,6 @@ If you add a new convention that can be checked mechanically, extend
 
 ## Last verified
 
-2026-10-27 against the SKILL.md migration branch `skill-md-migration-20261027`
-(post-merge state). If this file is older than recent merges, re-verify its
-claims (file map, checks, conventions) before relying on them.
+2026-10-27 against the v1.2.0 release state (post-merge). If this file is
+older than recent merges, re-verify its claims (file map, checks, conventions)
+before relying on them.
