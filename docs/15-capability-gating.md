@@ -35,8 +35,8 @@ Rule: **never write without a prior read.** If the read tool is unavailable, the
 
 ## Where this is implemented
 
-- [`skills/coordination/agora-coordinator.md`](../skills/coordination/agora-coordinator.md) — the coordinator Skill contains a Capability Configuration table and the switch rule as part of its workflow, plus a Repository Awareness section defining the two reference repositories (setup architecture and application environment).
-- [`tool-execution-contract.md`](../skills/tool-execution-contract.md) — the underlying safety layer: inspect before acting, verify after acting, never claim success without evidence.
+- [`skills/coordination/agora-coordinator/SKILL.md`](../skills/coordination/agora-coordinator/SKILL.md) — the coordinator Skill contains a Capability Configuration table and the switch rule as part of its workflow, plus a Repository Awareness section defining the two reference repositories (setup architecture and application environment).
+- [`tool-execution-contract`](../skills/tool-execution-contract/SKILL.md) — the underlying safety layer: inspect before acting, verify after acting, never claim success without evidence.
 
 ## Related documentation
 

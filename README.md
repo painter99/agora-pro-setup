@@ -21,7 +21,7 @@
 2. Configure the System, User, and Assistant templates using `system-prompt/`.
 3. Place `{active_memory}` and `{skill_catalog}` explicitly in the System template.
 4. Copy and customize `active-memory/1-active-memory-template.md`.
-5. Import selected files from `skills/` into Agora's Saved Skills.
+5. Import selected `SKILL.md` files from `skills/` into Agora's Saved Skills.
 6. Enable Skill access and review tool permissions.
 7. Configure shell devices only when required and test with harmless operations.
 8. Verify routing, Skill loading, Memory behavior, and safety gates.
@@ -41,7 +41,7 @@ agora-pro-setup/
 ├── LICENSE              # MIT
 ├── system-prompt/       # System, User, Assistant, and Compact template guidance
 ├── active-memory/       # generic Active Memory template and example
-├── skills/              # Skills for Agora's native Skill library
+├── skills/              # Skills for Agora's native Skill library (one directory per Skill)
 │   ├── coordination/    # coordination Skills (repo, skills, memory, automation)
 │   ├── memory-governance/
 │   ├── reasoning/
@@ -101,7 +101,7 @@ For Android/Kotlin development, the `android-development/` family ships three Sk
 
 For AI-assisted 3D part design (CAD as code), the `cad-development/` family ships `cad-spec-driven-workflow` — the agent-side procedure for the [cad-workshop](https://github.com/painter99/cad-workshop) pattern; import it individually.
 
-Add a short description when importing a Skill — that description is what `{skill_catalog}` shows.
+Add a short description when importing a Skill — the frontmatter `description` of its `SKILL.md` is what `{skill_catalog}` shows; keep it identical to the body's Catalog description.
 
 ## Architecture
 

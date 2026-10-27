@@ -57,10 +57,10 @@ Do not duplicate the same content across layers without a clear reason.
 
 The repository's memory procedures are split into focused Skills under `skills/memory-governance/`:
 
-- `memory-master-index.md` — routing and authority boundaries;
-- `active-memory-design.md` — placement, quotas, and anti-patterns;
-- `active-memory-authority.md` — authorization, patching, recovery, and verification;
-- `memory-file-operations.md` — precise Saved Memory CRUD and patch recovery;
-- `memory-audits.md` — audits, contradictions, references, and failure modes.
+- `memory-master-index` — routing and authority boundaries;
+- `active-memory-design` — placement, quotas, and anti-patterns;
+- `active-memory-authority` — authorization, patching, recovery, and verification;
+- `memory-file-operations` — precise Saved Memory CRUD and patch recovery;
+- `memory-audits` — audits, contradictions, references, and failure modes.
 
-`tool-execution-contract.md` is the shared cross-domain safety layer. These are procedures, not personal facts. Import the files individually into Agora's flat Skill namespace; the repository subdirectory is organizational only.
+`tool-execution-contract` is the shared cross-domain safety layer. These are procedures, not personal facts. Import the files individually into Agora's flat Skill namespace; the repository subdirectory is organizational only.

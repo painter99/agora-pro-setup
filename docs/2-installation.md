@@ -33,11 +33,11 @@ Copy and customize `active-memory/1-active-memory-template.md`. Keep it short. D
 
 ## 4. Install Skills
 
-Import selected Markdown files from `skills/` into Agora's Saved Skills. The repository folders are only for organization; Agora uses a flat namespace.
+Import selected `SKILL.md` files from `skills/` into Agora's Saved Skills. The repository folders are only for organization; Agora uses a flat namespace.
 
-The Agora Skill name is the file name without the `.md` extension — for example `skills/research/multi-source-research.md` imports as `multi-source-research`, and `skills/android-development/android-dev-tdd.md` imports as `android-dev-tdd`. Add a short description when importing; that description is what `{skill_catalog}` shows.
+Each Skill lives in the Agent Skills layout — one directory per Skill containing a `SKILL.md` (frontmatter + body), see `skills/skill-format.md`. The Agora Skill name is the Skill directory name — for example `skills/research/multi-source-research/SKILL.md` imports as `multi-source-research`, and `skills/android-development/android-dev-tdd/SKILL.md` imports as `android-dev-tdd`. The frontmatter `description` is what `{skill_catalog}` shows; keep it identical to the body's `## Catalog description` (the format check enforces this).
 
-Every file under `skills/` is a Skill except the author documentation — `skills/README.md`, `skill-catalog.md`, and `skill-format.md`; do not install those as runtime Skills. For a suggested installation order, see "Recommended first Skills" in `README.md`. Example Skills are optional.
+Every `SKILL.md` under `skills/` is a Skill; the author documentation — `skills/README.md`, `skill-catalog.md`, and `skill-format.md` — is not a Skill and must not be installed as one. For a suggested installation order, see "Recommended first Skills" in `README.md`. Example Skills are optional.
 
 ## 5. Review access and permissions
 

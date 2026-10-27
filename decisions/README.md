@@ -39,3 +39,5 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0008](0008-task-cards-not-verbatim-prompts.md) | Scheduled tasks are documented as cards, not verbatim prompts | accepted 2026-10-27 |
 | [0009](0009-instance-overlay.md) | Instance overlay — public generic base, private localized instance | accepted 2026-10-27 |
 | [0010](0010-ci-lint-gate-enabled.md) | CI lint gate enabled (supersedes the CI-deferral in ADR-0005) | accepted 2026-10-27 |
+| [0011](0011-agent-skills-skill-md-layout.md) | Skills use the Agent Skills (SKILL.md) layout | accepted 2026-10-27 |
+| [0012](0012-repository-stays-public.md) | The repository remains public | accepted 2026-10-27 |

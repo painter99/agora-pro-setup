@@ -36,8 +36,8 @@ A domain is described by five layers. Most domains need only two or three.
 2. **Write the Active Memory block.** Two to six lines: status, priorities,
    constraints. This is what makes the domain routable in ordinary conversation.
 3. **Write the domain Skill** (if needed) using `skills/skill-format.md`.
-   Declare dependencies (usually `tool-execution-contract.md`; add
-   `multi-source-research.md` or `shell-and-device-operations.md` when relevant).
+   Declare dependencies (usually `tool-execution-contract`; add
+   `multi-source-research` or `shell-and-device-operations` when relevant).
 4. **Assign permission overrides** (if needed) as a small table in the Skill:
    capability class → stricter band, with one-line justification.
 5. **Register references.** Add the Saved Memory files to the AM reference list

@@ -9,11 +9,11 @@
 #   material is listed with target: none.
 # - When a component is added or removed, update this inventory in the same
 #   change.
-# - Skill flat names follow the rule in docs/2-installation.md (file name
-#   without the .md extension).
+# - Skill names follow the Agent Skills layout: one directory per Skill under
+#   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 1
+  inventory_version: 2
   last_verified: "2026-10-27"
 
 components:
@@ -40,7 +40,7 @@ components:
     target: "Agora > Active Memory (copy, then customize)"
   - name: skill-set
     kind: skill-set
-    source: "skills/**/*.md (22 files; excluding README.md, skill-catalog.md, skill-format.md)"
+    source: "skills/**/SKILL.md (22 skills; one directory per Skill, Agent Skills layout)"
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set

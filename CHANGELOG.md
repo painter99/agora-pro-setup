@@ -12,6 +12,12 @@ the Agora app baseline it was maintained against.
 - `.github/workflows/check.yml` — CI gate running `scripts/check.sh` on push
   to `main` and pull requests; least privilege, no secrets (ADR-0010,
   supersedes the CI deferral in ADR-0005).
+- Skills migrated to the Agent Skills (`SKILL.md`) layout: one directory per
+  Skill under `skills/`, YAML frontmatter (`name`, `description`, `license`)
+  plus the existing 10-section body (ADR-0011); `check_format.py` now
+  validates frontmatter, naming rules, and description consistency.
+- ADR-0012 — the repository remains public; sensitive material belongs to the
+  private instance overlay, not this repository.
 
 ## [1.1.0] - 2026-10-27
 

@@ -18,8 +18,8 @@ maintained against observed reality (see `docs/28-update-observability.md`).
 A documentation-and-governance layer for the
 [Agora](https://github.com/newo-ether/Agora) application: prompt templates,
 Active Memory guidance, Skills, operational documentation, and task cards.
-There is no build and no CI. Content changes are Markdown-only; `scripts/`
-contains validation tooling only.
+There is no build. Content changes are Markdown-only; `scripts/` contains
+validation tooling, and CI runs the same checks on every push (see Validation).
 
 Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 (what the repository contains and how to install it).
@@ -27,8 +27,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 ## Repository map
 
 - `docs/` — numbered architecture documents; `docs/0-overview.md` is the map.
-- `skills/` — Skills (reusable procedures); format defined in
-  `skills/skill-format.md`.
+- `skills/` — Skills (reusable procedures), one directory per Skill with a
+  `SKILL.md` inside; format defined in `skills/skill-format.md`.
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
 - `active-memory/` — generic Active Memory template and example.
 - `tasks/` — task cards (genericized descriptions, not verbatim prompts).
@@ -47,9 +47,12 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 2. **Validate before committing.** Run `./scripts/check.sh` and require exit
    code 0. The script checks Skill format compliance, personal-identifier
    patterns, and relative link integrity.
-3. **Skill format.** Every file under `skills/` (except `README.md`,
-   `skill-format.md`, and `skill-catalog.md`) must carry the 10 required
-   sections from `skills/skill-format.md`, in the documented order.
+3. **Skill format.** Every Skill lives at `skills/<family>/<skill-name>/SKILL.md`
+   (Agent Skills layout): YAML frontmatter (`name` matching the directory,
+   `description` mirroring the Catalog description, `license: MIT`) plus the
+   10 required sections from `skills/skill-format.md` in the documented order.
+   Author docs (`README.md`, `skill-format.md`, `skill-catalog.md`) are not
+   Skills.
 4. **Docs numbering.** Never renumber existing documents. A retired document
    keeps its number unused (19 is retired); new documents take the next free
    number. Update cross-references when moving or retiring content.
@@ -90,6 +93,6 @@ If you add a new convention that can be checked mechanically, extend
 
 ## Last verified
 
-2026-10-27 against `main` @ `dfae1bc`. If this file is older than recent
-merges, re-verify its claims (file map, checks, conventions) before relying
-on them.
+2026-10-27 against the SKILL.md migration branch `skill-md-migration-20261027`
+(post-merge state). If this file is older than recent merges, re-verify its
+claims (file map, checks, conventions) before relying on them.

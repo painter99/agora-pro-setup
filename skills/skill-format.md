@@ -5,6 +5,31 @@ Use this structure for every reusable Agora Skill. It extends the earlier
 real installed Skills (for example the coordination family), without making
 them mandatory for small Skills.
 
+## SKILL.md packaging (Agent Skills standard)
+
+Every Skill is a directory `skills/<family>/<skill-name>/` containing a
+`SKILL.md` file — the open [Agent Skills](https://agentskills.io/specification.md)
+layout. The `SKILL.md` starts with YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: "One compact sentence shown in skill catalogs; mirrors the Catalog description."
+license: MIT
+---
+```
+
+- `name` follows the Agent Skills naming rules (lowercase letters, digits,
+  hyphens; no leading/trailing/consecutive hyphens) and must equal the
+  directory name.
+- `description` (max 1024 characters) must be identical to the body's
+  `## Catalog description` text; `scripts/check_format.py` enforces both.
+- The 10 required sections stay in the Markdown body below the frontmatter.
+- Keep `SKILL.md` under 500 lines; move stable factual material out of the
+  Skill instead of growing it.
+- Cross-Skill references use the Skill name (the directory name), for example
+  `tool-execution-contract`, not a file name.
+
 ## Required sections
 
 1. `# Skill: <name>`
@@ -12,7 +37,7 @@ them mandatory for small Skills.
 3. `## Purpose` — what problem the Skill solves.
 4. `## Load when` — concrete triggers for reading the body.
 5. `## Do not load when` — explicit anti-triggers to prevent overloading.
-6. `## Dependencies` — other Skills by exact filename, or "None".
+6. `## Dependencies` — other Skills by exact Skill name (the directory name), or "None".
 7. `## Workflow` — ordered, executable steps.
 8. `## Forbidden behavior` — actions the Skill must never take.
 9. `## Verification` — how completion is confirmed.
@@ -34,7 +59,7 @@ Add only when they carry real weight; an empty section is worse than none.
 ## Discovery and authority
 
 - The native `{skill_catalog}` is the primary discovery layer; the catalog shows
-  the file name and `Catalog description`.
+  the Skill name and `Catalog description`.
 - The internal `Load when` section is secondary validation and documentation.
 - A Skill cannot override the System template, the current user request, Agora
   permissions, approval gates (see `docs/17-permission-model.md`), or observed
@@ -51,6 +76,12 @@ Add only when they carry real weight; an empty section is worse than none.
 ## Example skeleton
 
 ```markdown
+---
+name: example-name
+description: "One sentence shown in the Skill Catalog."
+license: MIT
+---
+
 # Skill: example-name
 
 ## Catalog description
@@ -66,7 +97,7 @@ One sentence shown in the Skill Catalog.
 - ...
 
 ## Dependencies
-- `tool-execution-contract.md` (or None)
+- `tool-execution-contract` (or None)
 
 ## Workflow
 1. ...

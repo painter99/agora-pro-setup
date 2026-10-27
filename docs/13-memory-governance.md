@@ -25,12 +25,12 @@ Import these Markdown files individually into Agora's native Skills. Agora expos
 
 | Skill | Role |
 |---|---|
-| `memory-master-index.md` | Entry router; selects the correct layer and specialized procedure. |
-| `active-memory-design.md` | Decides what belongs in Active Memory and controls size/duplication. |
-| `active-memory-authority.md` | Controls authorization, patch versus replace, recovery, and verification for AM. |
-| `memory-file-operations.md` | Handles precise Saved Memory creation, patching, rename/archive, and deletion gates. |
-| `memory-audits.md` | Audits stale data, contradictions, references, duplication, bloat, and failure modes. |
-| `tool-execution-contract.md` | Shared inspection, approval, retry, and verification contract for all tool domains. |
+| `memory-master-index` | Entry router; selects the correct layer and specialized procedure. |
+| `active-memory-design` | Decides what belongs in Active Memory and controls size/duplication. |
+| `active-memory-authority` | Controls authorization, patch versus replace, recovery, and verification for AM. |
+| `memory-file-operations` | Handles precise Saved Memory creation, patching, rename/archive, and deletion gates. |
+| `memory-audits` | Audits stale data, contradictions, references, duplication, bloat, and failure modes. |
+| `tool-execution-contract` | Shared inspection, approval, retry, and verification contract for all tool domains. |
 
 ## Routing examples
 
