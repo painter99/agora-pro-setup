@@ -24,6 +24,11 @@ the Agora app baseline it was maintained against.
   `shell-and-device-operations`), and extended Domain routing in
   `tool-execution-contract`.
 
+- `memory-file-operations`: restored the Saved Memory file taxonomy
+  (living topic file / session log / hybrid / buffer with write triggers) that
+  was lost during generalization; the local instance relies on it for
+  session-log naming and living-file maintenance.
+
 - Broken external MADR link in `decisions/README.md` — now points to the
   official project page (https://adr.github.io/madr/). External URLs are not
   covered by `check_links.py`; they are covered by the quarterly replication

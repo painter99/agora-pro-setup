@@ -37,6 +37,17 @@ Apply the smallest reversible operation while preserving unrelated content and p
 - **Rename/archive:** potentially disruptive; inspect dependent references and obtain authorization.
 - **Delete:** irreversible; never do it automatically. Require explicit authorization and verify all references afterward.
 
+## File taxonomy
+
+Every Saved Memory file follows one of four patterns; choose the pattern at creation and keep it consistent.
+
+- **Living topic file** (undated name): one evolving topic (project state, workflow, strategy, environment facts, or an eval corpus). Created proactively when durable information likely to recur appears, then maintained by surgical patches with the description kept current. This is the default destination for evolving project state.
+- **Session log** (dated name `*-session-YYYY-MM-DD.md`): append-only history of one working day or session, created or appended at session end or before context compaction; never rewritten.
+- **Hybrid**: a living file that accumulates dated sections inside when a single topic needs chronology (for example a repository-state file). Prefer this over parallel dated files when the topic is one.
+- **Buffer**: a temporary capture file with an explicit consolidation rule stated in its header; consolidation and cleanup only with user GO.
+
+Write triggers (any one suffices): a plan worth fixing before execution, a milestone or state change, a verified verdict or lesson, session end or approaching context compaction. Record history in session logs and current state in living files; cross-reference instead of duplicating. Deprecate superseded content rather than deleting it; split a living file when it outgrows one topic; deletion stays governed by the Delete operation rules.
+
 ## Workflow
 
 1. Identify the exact target, intended scope, and reversibility.
