@@ -37,3 +37,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0006](0006-single-streamable-http-endpoint.md) | One Streamable HTTP endpoint per MCP server; SSE retired | accepted 2026-10-25 |
 | [0007](0007-component-inventory-drift-anchor.md) | Component inventory is the drift anchor | accepted 2026-10-27 |
 | [0008](0008-task-cards-not-verbatim-prompts.md) | Scheduled tasks are documented as cards, not verbatim prompts | accepted 2026-10-27 |
+| [0009](0009-instance-overlay.md) | Instance overlay — public generic base, private localized instance | accepted 2026-10-27 |

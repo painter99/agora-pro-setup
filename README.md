@@ -215,6 +215,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/27-file-exchange.md`](docs/27-file-exchange.md) — operator-agent file exchange pattern: manual handover layer between the phone and the host — write-in/read-out permission model, metadata-only watcher with neutral push notifications, cursor/ack discipline, two-layer audit
 - [`docs/28-update-observability.md`](docs/28-update-observability.md) — stack update observability pattern: measured inventory (currency, patch state, hardening, drift, ecosystem movement), baseline+diff discipline, decision log with operator-only statuses, bounded research rotation, delivery and notification budget
 - [`docs/29-self-improvement-loop.md`](docs/29-self-improvement-loop.md) — self-improvement loop: retrospective → GO gate → incremental patch → golden-task eval; autonomous repository-maintenance policy (§5)
+- [`docs/30-instance-overlay.md`](docs/30-instance-overlay.md) — instance overlay pattern: public generic base ↔ private localized instance, derivation and export rules, privacy gates
 - [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync), documented as genericized cards — not verbatim prompts
 
 ## Limitations
