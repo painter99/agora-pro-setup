@@ -1,0 +1,31 @@
+name: check
+
+# Repository validation gate: runs scripts/check.sh (Skill format,
+# personal-identifier scan, link integrity) on every push to main and on
+# pull requests. The repository is docs-only; the run takes seconds and is
+# free for public repositories (standard GitHub-hosted runners).
+#
+# Security: least-privilege token (contents: read), pull_request event only
+# (never pull_request_target), no secrets, no third-party actions beyond
+# actions/checkout.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run repository checks
+        run: ./scripts/check.sh

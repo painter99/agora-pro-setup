@@ -5,6 +5,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic (MAJOR.MINOR.PATCH) and tagged. Each release records
 the Agora app baseline it was maintained against.
 
+## [Unreleased]
+
+### Added
+
+- `.github/workflows/check.yml` — CI gate running `scripts/check.sh` on push
+  to `main` and pull requests; least privilege, no secrets (ADR-0010,
+  supersedes the CI deferral in ADR-0005).
+
 ## [1.1.0] - 2026-10-27
 
 P1 milestone: validation, inventory, and decision records complete.
