@@ -5,7 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning is semantic (MAJOR.MINOR.PATCH) and tagged. Each release records
 the Agora app baseline it was maintained against.
 
-## [Unreleased]
+## [1.1.0] - 2026-10-27
+
+P1 milestone: validation, inventory, and decision records complete.
 
 ### Added
 
