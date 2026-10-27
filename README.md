@@ -218,7 +218,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/29-self-improvement-loop.md`](docs/29-self-improvement-loop.md) — self-improvement loop: retrospective → GO gate → incremental patch → golden-task eval; autonomous repository-maintenance policy (§5)
 - [`docs/30-instance-overlay.md`](docs/30-instance-overlay.md) — instance overlay pattern: public generic base ↔ private localized instance, derivation and export rules, privacy gates
 - [`docs/31-platform-layer.md`](docs/31-platform-layer.md) — platform layer: parameterized host systemd units (MCP server, sequential-thinking bridge, exchange watcher) with an install manifest; placeholders resolved from the instance overlay
-- [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync), documented as genericized cards — not verbatim prompts
+- [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync, quarterly replication dry-run), documented as genericized cards — not verbatim prompts
 
 ## Limitations
 
