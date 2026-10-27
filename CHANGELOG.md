@@ -13,6 +13,11 @@ the Agora app baseline it was maintained against.
   `llm-model-evaluation` — closes dangling dependencies in `agora-coordinator`
   and `self-improvement-loop`.
 
+- `memory-tool-reference` Skill published — ported from the local instance,
+  reformatted to the SKILL.md layout, and wired into memory routing
+  (`memory-master-index` Dependencies, `tool-execution-contract` Domain
+  routing).
+
 ### Fixed
 
 - Dependency and format consistency across Skills: `.md` suffixes in

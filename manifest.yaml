@@ -43,9 +43,9 @@ components:
     target: "Agora > Active Memory (copy, then customize)"
   - name: skill-set
     kind: skill-set
-    # 24 skills; one directory per Skill, Agent Skills layout
+    # 25 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 24
+    files: 25
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set
