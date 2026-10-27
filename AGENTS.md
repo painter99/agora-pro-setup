@@ -35,6 +35,7 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 - `scripts/` — validation checks; run before every commit.
 - `manifest.yaml` — component inventory: every deployable component, its
   source, and its deployment target.
+- `decisions/` — architecture decision records; index in `decisions/README.md`.
 - `CHANGELOG.md` — release history and versioning policy.
 
 ## Mandatory conventions
@@ -62,6 +63,10 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 7. **Inventory.** `manifest.yaml` lists every deployable component with its
    source and deployment target. When a component is added or removed, update
    the inventory in the same change.
+8. **Decision records.** Record architectural decisions as ADRs in
+   `decisions/` (format in `decisions/README.md`): one decision, one file;
+   never deleted — superseded ADRs keep their Status line pointing to the
+   successor.
 
 ## Validation
 

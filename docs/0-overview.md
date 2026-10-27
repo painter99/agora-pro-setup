@@ -66,6 +66,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Multi-agent (future) | `docs/16` — proposal for the Agora application | — |
 | Stack update observability | `docs/28` | — |
 | Self-improvement loop | `docs/29` | `self-improvement-loop` |
+| Decision records | `decisions/` (index: `decisions/README.md`) | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -82,6 +83,8 @@ New content
 │   → Active Memory (2–6 lines)
 ├─ Recurring work in a specific life area?
 │   → Domain package (docs/18)
+├─ An architectural decision worth recording?
+│   → ADR in decisions/ (format: decisions/README.md)
 ├─ Should happen later, unattended?
 │   → Task/Loop proposal — creation needs explicit approval (docs/17, Orchestrate)
 └─ A future application capability, not usable today?
@@ -97,3 +100,4 @@ New content
 - Tool-call retry discipline and budget: `docs/21`.
 - Stack update observability: `docs/28`.
 - Agent self-improvement and autonomous repository maintenance: `docs/29`.
+- Why the architecture is the way it is: `decisions/` (decision records).

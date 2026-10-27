@@ -54,6 +54,10 @@ components:
     target: "run in a repository checkout (python3, git, bash)"
 
   # --- reference only ---
+  - name: decision-records
+    kind: reference
+    source: "decisions/*.md (8 ADRs + README index)"
+    target: none
   - name: active-memory-example
     kind: reference
     source: active-memory/2-active-memory-example.md
