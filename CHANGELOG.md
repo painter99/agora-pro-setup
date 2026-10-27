@@ -18,6 +18,13 @@ the Agora app baseline it was maintained against.
   (`memory-master-index` Dependencies, `tool-execution-contract` Domain
   routing).
 
+### Changed
+
+- `aps-upgrade`: repository-first flow for Skill text changes — the setup
+  repository is the source of truth; the local instance imports repository
+  versions and re-applies the personal overlay (docs/30). Runtime verification
+  of new app behavior still precedes any Skill text change.
+
 ### Fixed
 
 - Dependency and format consistency across Skills: `.md` suffixes in

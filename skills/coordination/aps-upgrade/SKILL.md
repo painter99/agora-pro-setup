@@ -35,9 +35,9 @@ Perform the upgrade only after an official Agora release, reliably and verifiabl
 3. **Local dogfood (before touching the repository):**
    - install the APK (the user's physical action);
    - verify every new tool at runtime with a real tool call; enable a capability only with the verification date (switch rule);
-   - update the local Skills to the verified behavior (including the capability table in `agora-coordinator`);
+   - record the verified capabilities in the local instance's capability table (`agora-coordinator`); Skill text changes are not edited locally — they land in the repository (step 4) and are imported back;
    - use the setup for a few days: memory gate, Active Memory behavior, Compact.
-4. **Repository port:** short topic branches as planned (English, anonymized). Each branch: branch → diff stat → GO → push → `--no-ff` merge → cleanup; format-check script; privacy scan. No long-lived staging branch.
+4. **Repository first (source of truth):** Skill and docs text changes land in short topic branches (English, anonymized). Each branch: branch → diff stat → GO → push → `--no-ff` merge → cleanup; format-check script; privacy scan. No long-lived staging branch. After the merge, import the repository versions into the local instance and re-apply the personal overlay (docs/30).
 5. **Wrap-up:** tag (for example `agora-2.2-compatible`), compatibility line in the README, update the watch record and the plan status (completed @ SHA).
 6. **Next version:** after completion, create the next version's plan by cloning the structure; the old plan remains as history.
 
@@ -69,4 +69,4 @@ Perform the upgrade only after an official Agora release, reliably and verifiabl
 ## Repository / context awareness
 - The upstream Agora repository is the application environment; the app defines behavior — the app wins.
 - The setup repository is this architecture and governance layer on top of the app.
-- Local Skills are the dogfood instance; repository versions are English and anonymized. Order: local first, then port to the repository.
+- The repository is the source of truth for Skill content (English, anonymized); the local instance imports repository versions and carries the personal overlay (docs/30-instance-overlay.md). Order: repository first, then import into the local instance. Runtime verification of new app behavior still happens on the live instance before any Skill text is written.
