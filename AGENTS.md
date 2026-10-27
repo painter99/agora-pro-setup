@@ -87,6 +87,8 @@ on every push to `main` and on pull requests (`.github/workflows/check.yml`).
   Findings require human review; allowlisted generic values are documented in
   the script.
 - `check_links.py` — relative Markdown links resolve to existing files.
+- `check_inventory.py` — component inventory: every `manifest.yaml` source
+  resolves and glob file counts match the tree.
 
 If you add a new convention that can be checked mechanically, extend
 `scripts/` instead of documenting it only.

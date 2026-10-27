@@ -29,9 +29,16 @@ the Agora app baseline it was maintained against.
   verification step, `tasks/repo-sync-weekly` card, and the
   `github-release-workflow` Skill now reflect the CI gate; the coordinator
   Skill capability table was re-verified against runtime.
-- Instance-facing normative texts (System template memory gate, `docs/20`)
-  quote the deployed instance naming (`.md` catalog names); a naming note in
-  `docs/5` explains repository layout vs. instance store naming.
+- Kernel Skill naming: the System template memory gate and the `docs/20`
+  normative text now quote repository-layout Skill names (directory names, no
+  `.md` suffix), consistent with the import rule in `docs/2`; the `docs/5`
+  naming note explains store suffix differences (both forms resolve in the
+  maintained instance — verified 2026-10-27). Replication dry-run GAP-2.
+- `manifest.yaml`: glob sources carry machine-checkable `files` counts
+  (inventory v3) and a new `check_inventory.py` enforces them in `check.sh` —
+  the inventory no longer drifts in prose (replication dry-run GAP-1).
+- `docs/2` and README: tool names quoted by the kernel gate are documented as
+  app-version-coupled, with import-time re-verification guidance.
 
 ## [1.1.0] - 2026-10-27
 

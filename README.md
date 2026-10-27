@@ -95,7 +95,7 @@ memory-file-operations
 memory-audits
 ```
 
-Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them.
+Tool names, arguments, and availability are defined by the Agora application itself: use the tool list shown in the current generation and the official Agora user manual. This repository does not duplicate them; the System template quotes only the few tool names its own gate rules require — verify those against your app version at import time (see `docs/2-installation.md`).
 
 For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
 

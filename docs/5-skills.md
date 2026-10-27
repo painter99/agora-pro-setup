@@ -6,7 +6,13 @@ Agora Skills are durable instruction packages: one directory per Skill containin
 
 How Agora exposes Skills — the `{skill_catalog}` variable, frozen per generation, on-demand reads, and the absence of an active-skill toggle — is defined by the application and documented in the official user manual. This repository adds rules for using that mechanism: multiple Skills may be read when genuinely required, but never load a family wholesale.
 
-Naming: in this repository each Skill is a directory `<name>/SKILL.md`. A deployed Agora instance keeps its own flat Skill store, and its catalog may list file names with a `.md` suffix (as in the maintained instance). Normative texts meant to be pasted into the instance (System template, memory gate) quote that instance form; repository references use the repository layout.
+Naming: in this repository each Skill is a directory `<name>/SKILL.md`; the
+Skill name is the directory name. A deployed Agora instance keeps its own flat
+Skill store, and a store populated from older flat files may list catalog names
+with a `.md` suffix (as in the maintained instance). Normative texts in this
+repository (System template, memory gate) quote the repository-layout names; a
+maintained instance's pasted copy may keep the instance form — both forms
+resolve in that store (verified 2026-10-27).
 
 ## Skill rules
 
