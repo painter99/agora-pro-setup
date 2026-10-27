@@ -25,6 +25,8 @@ the Agora app baseline it was maintained against.
   sequential-thinking bridge, exchange watcher service + timer) with an
   install manifest and `docs/31` (ADR-0013, minimal scope per the dry-run
   gate); the privacy scan now covers `.service` and `.timer` files.
+- Golden task: a quarterly replication dry-run (fresh-agent simulation over a
+  clean clone) is now a scheduled task; card in `tasks/` (docs/29).
 
 ### Fixed
 
