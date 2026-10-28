@@ -9,6 +9,12 @@ the Agora app baseline it was maintained against.
 
 ### Added
 
+- `skill-mirror-check` Skill + weekly task card — verifies that deployed local
+  Skills match the repository source of truth (fresh read + diff per Skill,
+  classified as content drift / expected overlay / cosmetic); prevents
+  instance drift from being misattributed to repository text and triggering
+  nonsense repository fixes.
+
 - Two previously local-only Skills published: `skill-governance` and
   `llm-model-evaluation` — closes dangling dependencies in `agora-coordinator`
   and `self-improvement-loop`.
