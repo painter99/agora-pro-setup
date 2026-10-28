@@ -1,6 +1,6 @@
 ---
 name: model-escalation-protocol
-description: "tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data."
+description: "Tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data."
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Catalog description
 
-tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data.
+Tripwire protocol for agentic work: objective failure triggers, escalation banner, mandatory re-frame, model-switch recommendation, append-only log, and a static routing table tuned from log data.
 
 ## Purpose
 
@@ -16,7 +16,7 @@ Shorten the time between "the model went off track" and "the user knows". Unreli
 
 ## Load when
 
-- working agentically with tools (shell, files, MCP, git, CI) and the task has multiple steps;
+- working agentically with tools under a preventive T7 condition — an irreversible action, a multi-file refactor, 3+ mutually dependent unknowns, or money/publication/career impact;
 - hitting a repeated error, a contradiction, or a user's factual correction;
 - the task contains an irreversible action, a multi-file refactor, or 3+ mutually dependent unknowns;
 - deciding which model suffices, or writing the escalation log.
@@ -24,7 +24,8 @@ Shorten the time between "the model went off track" and "the user knows". Unreli
 ## Do not load when
 
 - a simple single-step query without tools;
-- pure conversation or coaching without actions.
+- pure conversation or coaching without actions;
+- a routine multi-step task where no trigger has fired and no T7 condition applies (`sequential-thinking-workflow` + `tool-execution-contract` cover it).
 
 ## Dependencies
 
