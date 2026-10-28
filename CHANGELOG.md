@@ -35,6 +35,15 @@ the Agora app baseline it was maintained against.
 
 ### Changed
 
+- `privacy_scan.py` hardened after an adversarial self-test (2026-10-28):
+  family-term coverage extended with generic Czech kinship stems (siblings,
+  parents, in-laws, children, grandchildren), the personal-name pattern now
+  matches inflected forms, and `model_id` matches spaced model forms via a
+  bounded sub-name group (concrete examples live in the scanner docstring).
+  Documented accepted gaps: obfuscated contact strings, short Czech lines
+  with <= 2 diacritic glyphs, instance-specific proper nouns (adding them
+  to this public scanner would publish them).
+
 - `aps-upgrade`: repository-first flow for Skill text changes — the setup
   repository is the source of truth; the local instance imports repository
   versions and re-applies the personal overlay (docs/30). Runtime verification

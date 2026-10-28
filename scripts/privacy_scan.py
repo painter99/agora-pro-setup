@@ -18,9 +18,16 @@ Additional patterns:
 - czech_prose — the repository is English-only; Czech prose (3+ diacritic
   glyphs on one line) outside code fences signals leaked instance content.
   Code fences are exempt: Skills may legitimately quote Czech examples.
-- model_id — versioned model identifiers (e.g. gemini-2.5-pro) leak a
+- model_id — versioned model identifiers (e.g. gemini-2.5-pro, and spaced
+  forms like "Claude Opus 4.1" via a bounded sub-name group) leak a
   personal model-routing stack; product names like "Claude Code" do not
   match because a digit is required.
+
+Hardened after an adversarial self-test (2026-10-28): family-term coverage
+extended with generic Czech kinship stems, personal-name pattern matches
+inflected forms, model_id matches spaced forms. Known accepted gaps:
+obfuscated contact strings, short Czech lines with <= 2 diacritic glyphs,
+instance-specific proper nouns (adding them here would publish them).
 """
 import re
 import sys
@@ -36,13 +43,15 @@ PATTERNS = {
     "home_path": re.compile(r"/home/[A-Za-z0-9_.-]+"),
     "czech_family_term": re.compile(
         r"\b(?:dcera|dcer[aeou]|syn[au]?|manžel\w*|rodin\w*|zasnouben\w*"
-        r"|svatb\w*|place1)\b",
+        r"|svatb\w*|place1|sestr\w*|bratr\w*|mamink\w*|tat[íi]n\w*"
+        r"|tát\w*|dítě|dět\w*|vnuk\w*|vnučk\w*|tchyn\w*|tchán\w*)\b",
         re.I,
     ),
-    "personal_name": re.compile(r"\b(?:name1|name2)\b", re.I),
+    "personal_name": re.compile(r"\b(?:name1|name2)\w*", re.I),
     "model_id": re.compile(
         r"\b(?:claude|gemini|deepseek|qwen|glm|gpt|llama|mistral|kimi|grok)"
-        r"[-_a-z0-9.]*\d",
+        r"(?:[-_ ]?(?:opus|sonnet|haiku|pro|flash|mini|nano|large|small|air|max|lite))*"
+        r"[-_ ]?[a-z]?\d",
         re.I,
     ),
 }
