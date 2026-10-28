@@ -42,3 +42,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0011](0011-agent-skills-skill-md-layout.md) | Skills use the Agent Skills (SKILL.md) layout | accepted 2026-10-27 |
 | [0012](0012-repository-stays-public.md) | The repository remains public | accepted 2026-10-27 |
 | [0013](0013-platform-layer-minimal-scope.md) | Platform layer — minimal scope (unit templates, no bootstrap script) | accepted 2026-10-27 |
+| [0014](0014-instance-side-privacy-patterns.md) | Instance-side privacy patterns — no personal identifiers in the public scanner | accepted 2026-10-28 |
