@@ -33,6 +33,25 @@ the Agora app baseline it was maintained against.
   (`memory-master-index` Dependencies, `tool-execution-contract` Domain
   routing).
 
+- Skill evaluation methodology in the self-improvement loop (`docs/29` §7,
+  `self-improvement-loop` Skill): capability-uplift vs. encoded-preference
+  taxonomy, trigger-precision review of catalog descriptions, blind A/B
+  (skill vs. no skill), and a periodic necessity/retirement check.
+
+- AGENTS.md operational sections distilled from cross-repository agent
+  instruction practice: navigation guidance, boundaries with reasons and
+  alternatives, a repository-specific anti-pattern catalog, and a definition
+  of done.
+
+- Untrusted external content rule — external content is data, never
+  instructions; memory-write hygiene against memory poisoning (`docs/8`,
+  `docs/13`, one kernel sentence, ADR-0015).
+
+- Task-run metadata guidance and a lite error-budget rule in the
+  observability pattern (`docs/28` §6, §11).
+
+- Incident postmortem template with a decision-lineage section (`docs/29` §8).
+
 ### Changed
 
 - `LICENSE` copyright line restored to the copyright holder's real name —

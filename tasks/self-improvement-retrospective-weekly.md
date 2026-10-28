@@ -8,7 +8,8 @@
 
 The weekly Reflector step of the self-improvement loop (see
 `docs/29-self-improvement-loop.md`): collect signals from the last ~7 days and
-propose up to 3 improvement deltas for Skills, memory, or harness scripts. The
+propose up to 3 improvement deltas (plus at most 1 structural delta from the
+rotating Skills mini-audit) for Skills, memory, or harness scripts. The
 task applies nothing — application happens in conversation with the operator,
 after explicit approval.
 
@@ -22,23 +23,31 @@ Weekly (Sunday evening), before the repository-sync task.
   eval corpus from memory
 - the escalation log, the eval log, previous retrospectives
 - outputs of the scheduled tasks, the observability decision log and dashboard
+- the Skills mini-audit rotation state
 
 ## Workflow
 
-1. Read the procedure and the eval corpus.
+1. Read the procedure and the eval corpus, plus the rotation state file.
 2. Collect signals: escalation triggers, eval runs, recurring corrections,
    stale Skills, memory contradictions, unresolved deltas from previous
    retrospectives, open decision-log recommendations and superseded chains,
    baseline+diff trends.
-3. Evaluate and propose at most 3 deltas, each in a fixed table: id, what,
-   evidence, proposed patch, risk, eval plan. Every delta gets a dated ID; a
-   delta realizing a decision-log recommendation references it. Decision-log
-   statuses are never changed by this task.
-4. No evidence, no delta. Nothing found → the report says exactly that; never
+3. Evaluate and propose at most 3 signal deltas, each in a fixed table: id,
+   what, evidence, proposed patch, risk, eval plan. Every delta gets a dated
+   ID; a delta realizing a decision-log recommendation references it.
+   Decision-log statuses are never changed by this task.
+4. Mini-audit (rotating): review three Skills per week against the
+   skill-governance checklist (dependencies resolve, catalog description
+   matches content, missing links, duplications and contradictions, stale
+   content) plus the skill-evaluation questions (trigger precision,
+   capability-uplift vs. encoded-preference, necessity). Output: at most one
+   additional structural delta, marked `STRUCTURAL:`. Read-only toward
+   Skills.
+5. No evidence, no delta. Nothing found → the report says exactly that; never
    invent findings.
-5. Save the report (dated) to the local retrospectives directory.
-6. Send exactly one notification: findings count, delta count, report path.
-7. Deliver a copy of the report and a refreshed copy of the eval log to the
+6. Save the report (dated) to the local retrospectives directory.
+7. Send exactly one notification: findings count, delta count, report path.
+8. Deliver a copy of the report and a refreshed copy of the eval log to the
    operator's delivery directory — the only permitted write there.
 
 ## Hard rules

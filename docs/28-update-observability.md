@@ -163,6 +163,11 @@ acts on.
   notifications per week.
 - Alert fatigue is the failure mode of every monitoring system (docs/24): a
   push that says nothing new trains the operator to ignore pushes.
+- **Run metadata** — each report records its duration, token usage where the
+  application exposes it, and failed or skipped steps. The meta-review reads
+  failure counts as a lite error budget: two failed runs of the same task
+  within a rolling month trigger a review of the task itself, not just
+  another retry of its domain.
 
 ## 7. The vehicle: constraints this pattern adds
 
@@ -277,7 +282,9 @@ Per period (meta-review):
 - KPIs from §5; hardening-index trend; report usefulness verdict; rotation
   still matches the actual stack; where a self-improvement loop exists
   (docs/29), also its eval KPIs (run count, average score, regressions),
-  read-only from the SIL eval log.
+  read-only from the SIL eval log;
+- task-run failure rate as a lite error budget (§6): a rising trend triggers
+  a review of the task itself, not just another retry of its domain.
 
 ## 12. Version coupling
 

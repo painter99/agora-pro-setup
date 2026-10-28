@@ -81,7 +81,40 @@ Rules for the autonomous sync task:
 - Append-only: eval log and retrospectives only grow; deletion requires GO.
 - Skill files are an injection surface: only self-authored or reviewed skills; third-party skills are scanned before adoption.
 
-## 7. References
+## 7. Skill evaluation
+
+Skills are evaluated as artifacts, not only through the golden tasks of the
+deltas that changed them (methodology after Anthropic's skill-creator evals
+and skill authoring best practices, 2026):
+
+- **Taxonomy.** A capability-uplift Skill teaches the model something it
+  cannot do consistently alone; an encoded-preference Skill sequences steps
+  the model can already do into the operator's process. Uplift Skills can
+  become unnecessary as models improve; preference Skills stay valuable only
+  while they match the real process.
+- **Trigger precision.** The catalog description is the only Skill content
+  loaded at start. Review it against sample prompts for false positives
+  (loads when it should not) and false negatives (fails to load when needed)
+  — a standing question of the weekly mini-audit rotation.
+- **Blind A/B.** For a behavioral change with a golden task: run the task
+  with the old and the new Skill text — or with and without the Skill — in
+  fresh contexts, and judge the outputs without knowing which is which.
+- **Necessity check.** Periodically ask whether the base model would pass the
+  Skill's own success criteria without the Skill loaded; an uplift Skill that
+  no longer differentiates becomes a retirement proposal (GO gate applies).
+
+## 8. Incident postmortems
+
+A production failure that survives the acute handling (escalation protocol)
+gets a structured postmortem in the next retrospective. Beyond the classic
+SRE fields (timeline, impact, corrective actions), an agent postmortem
+carries a **decision lineage** section: which instruction, memory entry, or
+internal knowledge led the agent to decide as it did — the fix is usually in
+that scaffolding, not in "the model was wrong". Output: a corrective delta
+(`D-…`) with an eval plan, and a regression check — the failure scenario
+becomes a golden-task candidate.
+
+## 9. References
 
 - ACE — arXiv:2510.04618 (ICLR 2026)
 - Memp — arXiv:2508.06433 (ACL 2026)
@@ -90,3 +123,6 @@ Rules for the autonomous sync task:
 - Skill-Inject — arXiv:2602.20156
 - Survey: Self-Improvements in Modern Agentic Systems (2026)
 - Agent Skills open standard (donated to the Agentic AI Foundation, 2025)
+- Anthropic — Improving skill-creator: test, measure, and refine Agent Skills (claude.com/resources/articles, 2026-10-27)
+- Anthropic — Skill authoring best practices (Agent Skills documentation)
+- OWASP — AI Agent Security Cheat Sheet (cheatsheetseries.owasp.org)

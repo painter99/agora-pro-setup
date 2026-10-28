@@ -40,6 +40,13 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 - `decisions/` — architecture decision records; index in `decisions/README.md`.
 - `CHANGELOG.md` — release history and versioning policy.
 
+## Navigating this repository
+
+- Start at `docs/0-overview.md` (architecture map) and this file. `manifest.yaml` is the component inventory; `decisions/README.md` records why things are the way they are.
+- Search with `grep -rn` (or `rg`) instead of reading directories file by file; list with `ls` or `find` before assuming a path exists.
+- Read a document in full before editing it; patch anchors must match exactly once.
+- Do not use web search for repository-internal questions — read the repository. Web search is for upstream (Agora application) behavior and external standards.
+
 ## Mandatory conventions
 
 1. **Language and privacy.** All repository content is English, anonymized,
@@ -76,6 +83,34 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
    never deleted — superseded ADRs keep their Status line pointing to the
    successor.
 
+## Boundaries
+
+Do not modify — each with its reason and what to do instead:
+
+- `docs/` numbering — numbers are immutable; a retired number (19) stays retired. Add new documents under the next free number and update cross-references.
+- `decisions/` — ADRs are recorded by the operator through the interactive agent; an autonomous task or unrequested run proposes changes in its report instead of committing them.
+- `LICENSE` — the copyright line is the sole sanctioned location for the owner's real name (ADR-0014); never "correct" it to an anonymized value.
+- `platform/` — templates carry placeholders only; real host values live in the instance overlay, never here.
+- `.github/workflows/` — CI pipeline changes need operator review; propose them, do not push.
+
+Requires explicit operator approval:
+
+- changes to `system-prompt/` templates (kernel rules are always-applicable text);
+- changes to `scripts/` checkers (validation-as-code is the enforcement layer);
+- creating tags or releases;
+- any push outside the topic-branch → `--no-ff` merge flow.
+
+## Repository anti-patterns
+
+Specific failure modes observed in this repository — not general advice:
+
+- Prose file counts in `manifest.yaml` — they drift; use glob sources with a machine-checked `files:` count.
+- A soft gate before commit — chaining `check.sh` with `;` instead of `&&` lets a failed check commit anyway. Hard-`&&` the gate before every commit.
+- Editing on `main` directly — a forgotten `checkout -b` puts work on the wrong branch; make `checkout -b` the first command of every new unit of work.
+- Rewriting only backticked `name.md` reference forms after a layout change — path-style and unbackticked references stay stale; sweep all reference styles.
+- Retiring a document by renumbering the others — cross-references break; retire the number instead.
+- Fixing the frontmatter `description` but not the Catalog description body (or vice versa) — the format check enforces their equality; change both in the same edit.
+
 ## Validation
 
 ```bash
@@ -98,8 +133,19 @@ on every push to `main` and on pull requests (`.github/workflows/check.yml`).
 If you add a new convention that can be checked mechanically, extend
 `scripts/` instead of documenting it only.
 
+## Definition of done
+
+A change in this repository is done when:
+
+- `./scripts/check.sh` exits 0 (hard `&&` before the commit);
+- the diff is minimal — only what the task requires; unrelated improvements are reported, not bundled;
+- affected cross-references, routing rows, and the component inventory (`manifest.yaml`) are updated in the same change;
+- `CHANGELOG.md` carries an entry for user-visible changes;
+- the branch is merged `--no-ff`, the run on `main` is verified `success`, and the branch is cleaned up after `merge-base --is-ancestor`;
+- findings outside the task scope are reported — not silently fixed, not silently dropped.
+
 ## Last verified
 
-2026-10-27 against the v1.2.0 release state (post-merge). If this file is
+2026-10-28 against the post-v1.2.0 `main` state. If this file is
 older than recent merges, re-verify its claims (file map, checks, conventions)
 before relying on them.

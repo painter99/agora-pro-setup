@@ -25,6 +25,7 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 
 - a one-off task with nothing to learn from;
 - an acute incident — apply the escalation protocol first, this loop after;
+- a structured postmortem of an incident is needed (after the escalation protocol has handled the acute phase);
 - the operator explicitly does not want changes.
 
 ## Dependencies
@@ -44,7 +45,8 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 3. **GO gate** — no delta is applied without explicit operator approval; purpose changes, merges/splits, deletions, and security rules are always proposals only.
 4. **Curator** — patch instead of replace; preserve details (prevents context collapse); mark deprecated passages instead of deleting; commit repo-visible changes (history = archive of variants).
 5. **Eval** — golden-task subset (3–5) before and after, same model and memory context; accept only improvement without regression plus operator acceptance; budget ~10 runs per delta.
-6. **Harness level (bounded)** — the agent may improve its own scripts only with tests, green CI, and a merge approval; never the app itself, MCP servers, security Skills, or model choices without explicit GO.
+6. **Skill evaluation** — Skills are artifacts too: classify each as capability-uplift (may become unnecessary as models improve) or encoded-preference (valuable while it matches the real process); review catalog descriptions against sample prompts for trigger precision during the weekly mini-audit; prefer a blind A/B (old vs. new text, or skill vs. no skill) in fresh contexts for behavioral changes with a golden task; periodically propose retirement of an uplift Skill the base model already matches without it (GO gate applies).
+7. **Harness level (bounded)** — the agent may improve its own scripts only with tests, green CI, and a merge approval; never the app itself, MCP servers, security Skills, or model choices without explicit GO.
 
 ## Forbidden behavior
 
@@ -62,6 +64,7 @@ Improve the agent's own scaffolding (Skills, memory files, own harness scripts) 
 
 - Retrospective: table of candidate deltas + recommended order.
 - After GO: report — file and patch, commit, eval scores before/after, language check result.
+- Incident postmortem: timeline, decision lineage, corrective delta ID, regression check.
 
 ## Related docs
 
