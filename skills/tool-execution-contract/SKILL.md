@@ -87,6 +87,7 @@ round in which every call failed or returned an unusable result.
 - Escalation: `model-escalation-protocol`.
 - Model evaluation: `llm-model-evaluation`.
 - Setup upgrade: `aps-upgrade`.
+- Skill mirror verification: `skill-mirror-check`.
 
 ## Approval gates
 

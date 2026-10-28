@@ -1,10 +1,10 @@
 # Task Cards
 
 Documented instances of the scheduled-task pattern from
-[`docs/28-update-observability.md`](../docs/28-update-observability.md). Five
-tasks currently run in this setup: two daily maintenance tasks and three weekly
-loop tasks (stack observability + research, self-improvement retrospective,
-repository sync).
+[`docs/28-update-observability.md`](../docs/28-update-observability.md). Tasks
+currently running in this setup: daily maintenance tasks, weekly loop tasks
+(stack observability + research, self-improvement retrospective, repository
+sync, skill mirror check), and a quarterly replication dry-run.
 
 ## What these files are — and are not
 

@@ -1,0 +1,57 @@
+# Task: weekly skill mirror check
+
+> Card of a live scheduled task — **not the verbatim prompt**. Operator-specific
+> details are genericized into fill-in placeholders; see the
+> [task cards README](README.md).
+
+## Purpose
+
+Weekly verification that the deployed local Skills match the repository source
+of truth (procedure: `skills/coordination/skill-mirror-check/SKILL.md`). Silent
+divergence makes instance behavior get misattributed to repository text and
+triggers nonsense repository "fixes"; this check catches drift within a week
+and classifies it before anything is edited.
+
+## Schedule
+
+Weekly, Sunday evening (between the retrospective and the repository-sync
+tasks).
+
+## Reads
+
+- the Skill `skill-mirror-check` (procedure and classification rules);
+- the local Skill catalog and every local Skill file (fresh reads);
+- the repository checkout: `skills/**/SKILL.md`.
+
+## Workflow
+
+1. Read the Skill `skill-mirror-check`; follow its workflow.
+2. Fresh-read every local Skill, write verbatim working copies to a scratch
+   directory, and `diff` each against its repository file.
+3. Classify every difference: content drift (blocking) / expected overlay /
+   cosmetic.
+4. Write the dated report to the local mirror-check log directory; exactly one
+   notification with the summary line and report path.
+5. On drift: report and proposed remedy only — no repairs; the operator
+   decides through the normal GO gates.
+
+## Hard rules
+
+- Read-only on Skills and the repository: no edits, no deletes, no pushes, no
+  task/loop management.
+- Writes only to: the scratch directory, the mirror-check log directory, and
+  one notification.
+- A difference that does not reproduce on re-read is a transcription artifact,
+  not drift — re-read before reporting.
+- Overlay areas (coordinator capability table; escalation stack/routing
+  tables) are expected differences, not drift.
+
+## Failure behavior
+
+Every failed read or diff is recorded in the report; nothing fails silently.
+A missing repository checkout is a blocking finding (the check cannot run).
+
+## Verification
+
+The report exists with a per-Skill classification covering the whole catalog;
+the notification was sent (or its absence explained in the report).
