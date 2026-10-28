@@ -4,7 +4,7 @@ description: "Routes Active Memory, Saved Memory, conversation recall, and Skill
 license: MIT
 ---
 
-# Skill: Memory Governance
+# Skill: Memory Master Index
 
 ## Catalog description
 

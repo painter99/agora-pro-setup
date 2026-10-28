@@ -1,6 +1,6 @@
 ---
 name: language-fidelity
-description: "keeps non-English user-facing output faithful to the target language: language lock, mechanical non-Latin-script self-check before persistent writes, escalation discipline, and thinking-token economy."
+description: "Keeps non-English user-facing output faithful to the target language: language lock, mechanical non-Latin-script self-check before persistent writes, escalation discipline, and thinking-token economy."
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Catalog description
 
-keeps non-English user-facing output faithful to the target language: language lock, mechanical non-Latin-script self-check before persistent writes, escalation discipline, and thinking-token economy.
+Keeps non-English user-facing output faithful to the target language: language lock, mechanical non-Latin-script self-check before persistent writes, escalation discipline, and thinking-token economy.
 
 ## Purpose
 

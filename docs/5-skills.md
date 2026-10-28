@@ -62,10 +62,15 @@ It composes the other families rather than duplicating them:
 
 ```text
 agora-coordinator
-  ├─ tool-execution-contract      (mandatory safety layer)
-  ├─ skill-governance             (audit rules — local instance Skill, see skills/README.md rules)
-  └─ sequential-thinking-workflow (methodology for complex audits)
+  ├─ tool-execution-contract       (mandatory safety layer)
+  ├─ skill-governance              (audit rules)
+  ├─ memory-audits                 (Saved Memory audit procedure)
+  ├─ memory-master-index           (memory routing)
+  ├─ sequential-thinking-workflow  (methodology for complex audits)
+  └─ self-improvement-loop         (systemic findings route to a SIL delta)
 ```
+
+Dependency cycles between peer Skills (the Android trio, the active-memory design/authority pair) are intentional peer references, not load cycles — each side is loaded only when its concern is active.
 
 It introduces a capability-configuration pattern: the coordinator verifies tool availability at runtime with real read-only calls, records the verified state in a table inside the Skill, and enables capabilities only after practical verification. This guards against generation paths that provision a restricted toolset (for example, Task-run generations). It never deletes, never writes to Active Memory without reading it, and reports every run with a structured LOADED / FINDINGS / PERFORMED / UNAVAILABLE report.
 
