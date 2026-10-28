@@ -7,7 +7,8 @@ with YAML frontmatter (name, description, license) and a Markdown body
 carrying the 10 required sections in the documented order. Frontmatter
 follows the Agent Skills specification (https://agentskills.io/specification.md).
 Content inside code fences is ignored, so example skeletons inside a Skill
-do not affect the check.
+do not affect the check. Dependencies entries must resolve to an existing
+Skill directory (skills/**/<name>/SKILL.md).
 """
 import re
 import sys
@@ -73,7 +74,7 @@ def catalog_description(text):
     return " ".join(m.group(1).split()) if m else None
 
 
-def check_file(path):
+def check_file(path, skill_names):
     raw = path.read_text(encoding="utf-8")
     errors = []
     if len(raw.splitlines()) > 500:
@@ -118,6 +119,13 @@ def check_file(path):
     expected = [name for name in REQUIRED if any(name == n for _, n in found)]
     if ordered != expected:
         errors.append("sections out of order: " + ", ".join(ordered))
+    deps = re.search(r"^## Dependencies\s*$(.*?)(?=^## )", text, re.S | re.M)
+    if deps:
+        for dep in re.findall(r"`([a-z0-9-]+)`", deps.group(1)):
+            if dep not in skill_names:
+                errors.append(
+                    "dependency '" + dep + "' does not resolve to a Skill directory"
+                )
     return errors
 
 
@@ -133,9 +141,10 @@ def main():
     if not files:
         print("FAIL: no SKILL.md files found")
         return 1
+    skill_names = {path.parent.name for path in files}
     failures = 0
     for path in files:
-        errors = check_file(path)
+        errors = check_file(path, skill_names)
         rel = path.relative_to(root)
         if errors:
             failures += 1

@@ -13,6 +13,14 @@ Intentionally not flagged (documented allowlist):
   repository's command examples;
 - RFC 5737 documentation IP ranges, loopback, and unspecified addresses —
   reserved for examples.
+
+Additional patterns:
+- czech_prose — the repository is English-only; Czech prose (3+ diacritic
+  glyphs on one line) outside code fences signals leaked instance content.
+  Code fences are exempt: Skills may legitimately quote Czech examples.
+- model_id — versioned model identifiers (e.g. gemini-2.5-pro) leak a
+  personal model-routing stack; product names like "Claude Code" do not
+  match because a digit is required.
 """
 import re
 import sys
@@ -32,7 +40,14 @@ PATTERNS = {
         re.I,
     ),
     "personal_name": re.compile(r"\b(?:name1|name2)\b", re.I),
+    "model_id": re.compile(
+        r"\b(?:claude|gemini|deepseek|qwen|glm|gpt|llama|mistral|kimi|grok)"
+        r"[-_a-z0-9.]*\d",
+        re.I,
+    ),
 }
+
+CZECH_GLYPHS = re.compile(r"[áčďéěíĺľňóŕřšťúůýžÁČĎÉĚÍĹĽŇÓŔŘŠŤÚŮÝŽ]")
 
 SAFE_IP_PREFIXES = (
     "192.0.2.",
@@ -50,6 +65,21 @@ def is_allowed(kind, match_text):
     if kind == "home_path":
         return match_text == "/home/agora" or match_text.startswith("/home/agora/")
     return False
+
+
+def non_fenced_lines(text):
+    """Return (line number, line) pairs for lines outside ``` / ~~~ fences."""
+    out, fence = [], None
+    for i, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+        if fence is None:
+            if stripped.startswith("```") or stripped.startswith("~~~"):
+                fence = stripped[:3]
+                continue
+            out.append((i, line))
+        elif stripped.startswith(fence):
+            fence = None
+    return out
 
 
 def main():
@@ -75,6 +105,17 @@ def main():
                     + str(line)
                     + " -> "
                     + match.group(0)
+                )
+        for lineno, line_text in non_fenced_lines(text):
+            if len(CZECH_GLYPHS.findall(line_text)) >= 3:
+                findings += 1
+                print(
+                    "FINDING [czech_prose] "
+                    + str(path.relative_to(root))
+                    + ":"
+                    + str(lineno)
+                    + " -> "
+                    + line_text.strip()[:80]
                 )
     print()
     print(str(files) + " files scanned, " + str(findings) + " findings")

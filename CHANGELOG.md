@@ -9,6 +9,15 @@ the Agora app baseline it was maintained against.
 
 ### Added
 
+- `check_format.py` now resolves `Dependencies` entries: every backticked
+  reference must match an existing Skill directory
+  (`skills/**/<name>/SKILL.md`).
+
+- `privacy_scan.py` extended: Czech-prose detection outside code fences
+  (3+ diacritic glyphs per line; the repository is English-only) and
+  versioned model-identifier patterns (product names like "Claude Code"
+  do not match — a digit is required).
+
 - `skill-mirror-check` Skill + weekly task card — verifies that deployed local
   Skills match the repository source of truth (fresh read + diff per Skill,
   classified as content drift / expected overlay / cosmetic); prevents
