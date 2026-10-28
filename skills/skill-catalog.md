@@ -7,11 +7,11 @@ The native Agora Skill Catalog is provided through `{skill_catalog}` when Skill 
 Use a short description such as:
 
 ```text
-multi-source-research — proportional workflow for current and disputed claims
-sequential-thinking-workflow — adaptive workflow for complex, multi-step, ambiguous, and tool-assisted tasks
-agora-coordinator — coordination agent for Skill/memory audits, tool diagnostics, and safe repairs
-model-escalation-protocol — tripwire protocol for agentic work: objective failure triggers, escalation banner, append-only log, static routing table
-language-fidelity — non-English output fidelity: script-leak self-check before persistent writes, escalation discipline, thinking-token economy
+multi-source-research — Proportional workflow for current and disputed claims
+sequential-thinking-workflow — Adaptive workflow for complex, multi-step, ambiguous, and tool-assisted tasks
+agora-coordinator — Coordination agent for Skill/memory audits, tool diagnostics, and safe repairs
+model-escalation-protocol — Tripwire protocol for agentic work: objective failure triggers, escalation banner, append-only log, static routing table
+language-fidelity — Non-English output fidelity: script-leak self-check before persistent writes, escalation discipline, thinking-token economy
 ```
 
 ## Catalog principles
