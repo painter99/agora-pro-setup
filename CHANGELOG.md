@@ -38,8 +38,8 @@ the Agora app baseline it was maintained against.
 - `privacy_scan.py` hardened after an adversarial self-test (2026-10-28):
   family-term coverage extended with generic Czech kinship stems (siblings,
   parents, in-laws, children, grandchildren), the personal-name pattern now
-  matches inflected forms, and `model_id` matches spaced forms
-  ("Claude Opus 4.1", "Gemini 2.5 Pro") via a bounded sub-name group.
+  matches inflected forms, and `model_id` matches spaced model forms via a
+  bounded sub-name group (concrete examples live in the scanner docstring).
   Documented accepted gaps: obfuscated contact strings, short Czech lines
   with <= 2 diacritic glyphs, instance-specific proper nouns (adding them
   to this public scanner would publish them).
