@@ -83,6 +83,10 @@ round in which every call failed or returned an unusable result.
 - Git/release: `github-release-workflow`.
 - CAD: `cad-spec-driven-workflow`.
 - Android: `android-spec-first` (entry point of the Android trio).
+- Language fidelity: `language-fidelity`.
+- Escalation: `model-escalation-protocol`.
+- Model evaluation: `llm-model-evaluation`.
+- Setup upgrade: `aps-upgrade`.
 
 ## Approval gates
 

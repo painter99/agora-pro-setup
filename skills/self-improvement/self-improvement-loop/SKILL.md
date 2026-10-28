@@ -1,6 +1,6 @@
 ---
 name: self-improvement-loop
-description: "Closed self-improvement loop for agents: retrospective → delta proposal → human GO gate → incremental patch → eval on golden tasks; anti reward-hacking rules; based on ACE, Memp, and DGM (2025–2026). Load when: after a session or task with a lesson, when proposing a change to an existing Skill, or in a weekly retrospective run."
+description: "Closed self-improvement loop for agents: retrospective → delta proposal → human GO gate → incremental patch → eval on golden tasks; anti reward-hacking rules; based on ACE, Memp, and DGM (2025–2026)."
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Catalog description
 
-Closed self-improvement loop for agents: retrospective → delta proposal → human GO gate → incremental patch → eval on golden tasks; anti reward-hacking rules; based on ACE, Memp, and DGM (2025–2026). Load when: after a session or task with a lesson, when proposing a change to an existing Skill, or in a weekly retrospective run.
+Closed self-improvement loop for agents: retrospective → delta proposal → human GO gate → incremental patch → eval on golden tasks; anti reward-hacking rules; based on ACE, Memp, and DGM (2025–2026).
 
 ## Purpose
 

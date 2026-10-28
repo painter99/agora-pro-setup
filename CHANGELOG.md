@@ -25,6 +25,13 @@ the Agora app baseline it was maintained against.
   versions and re-applies the personal overlay (docs/30). Runtime verification
   of new app behavior still precedes any Skill text change.
 
+- `model-escalation-protocol`: Load-when narrowed — the first bullet now
+  requires a preventive T7 condition (irreversible action, multi-file
+  refactor, 3+ mutually dependent unknowns, money/publication/career) or an
+  already-fired trigger; routine multi-step tasks are covered by
+  `sequential-thinking-workflow` + `tool-execution-contract` alone
+  (D-20261028-04; dogfood eval pending).
+
 ### Fixed
 
 - Dependency and format consistency across Skills: `.md` suffixes in
@@ -45,6 +52,16 @@ the Agora app baseline it was maintained against.
   official project page (https://adr.github.io/madr/). External URLs are not
   covered by `check_links.py`; they are covered by the quarterly replication
   dry-run.
+
+- Skills deep-audit fixes (2026-10-28): `docs/5` coordinator composition
+  diagram updated to the current six dependencies (stale "local instance
+  Skill" note removed; peer dependency cycles documented as intentional);
+  `tool-execution-contract` Domain routing further extended by
+  `language-fidelity`, `model-escalation-protocol`, `llm-model-evaluation`,
+  and `aps-upgrade`; description capitalization (`language-fidelity`,
+  `model-escalation-protocol`), `memory-master-index` H1 title,
+  chronological Sources order in `github-release-workflow`, and a trimmed
+  catalog description for `self-improvement-loop`.
 
 ## [1.2.0] - 2026-10-27
 
