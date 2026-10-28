@@ -45,7 +45,10 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 1. **Language and privacy.** All repository content is English, anonymized,
    and generic: no personal names, projects, hardware models, networks, ports,
    schedules, or family context. Personal context belongs to a private memory
-   layer, never to this public repository.
+   layer, never to this public repository. Sole exception: the `LICENSE`
+   copyright line names the copyright holder (ADR-0014) — the privacy scan
+   does not scan the LICENSE, and instance-specific identifier patterns
+   live only in the instance overlay, never in repository files.
 2. **Validate before committing.** Run `./scripts/check.sh` and require exit
    code 0. The script checks Skill format compliance, personal-identifier
    patterns, and relative link integrity.

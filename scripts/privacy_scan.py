@@ -18,9 +18,11 @@ Instance overlay (ADR-0014): instance-specific identifier patterns are NOT
 stored in this public scanner. They load from an instance-side file,
 ~/.config/agora-repo/privacy-extra-patterns.txt (one "<kind> <regex>" per
 line, '#' comments), when present; an absent file (CI, fresh clones)
-degrades gracefully to the generic pattern classes below. Personal
+degrades gracefully to the generic pattern classes below. Overlay
+patterns compile case-insensitive. Personal
 identifiers must never appear in this repository — not in docs, not in
-tooling, not obfuscated.
+tooling, not obfuscated. Sole exception: the LICENSE copyright line
+(names the copyright holder; the LICENSE is not scanned).
 
 Generic patterns:
 - czech_prose — the repository is English-only; Czech prose (3+ diacritic
