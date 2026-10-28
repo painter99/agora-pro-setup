@@ -100,6 +100,14 @@ printability concerns, anonymization before push — maintained as
 in the repository. They are working rules, not anecdotes, and the repository is
 their source of truth; this document deliberately does not duplicate them.
 
+The repository also carries its own agent-facing entry point, `AGENTS.md`
+(cross-tool convention): repository map, the binding invariants of the loop,
+conventions, boundaries and the definition of done, written against the
+repository's actual state with a precedence rule for stale instructions. The
+layering is deliberate: this document and the Skill describe the pattern
+portably, while the repository's `AGENTS.md` governs work *inside* the
+repository itself.
+
 ## 5. Where to look
 
 The repository maintains its own state; these are the stable entry points:
@@ -108,6 +116,7 @@ The repository maintains its own state; these are the stable entry points:
 |---|---|
 | Current status, gallery, quick start | [`README.md`](https://github.com/painter99/cad-workshop) |
 | How to apply the pattern to a new part | [`docs/07-new-part-checklist.md`](https://github.com/painter99/cad-workshop/blob/main/docs/07-new-part-checklist.md) |
+| Agent-facing entry point (repository contract) | [`AGENTS.md`](https://github.com/painter99/cad-workshop/blob/main/AGENTS.md) |
 | Agent-side executable procedure (Agora Skill) | [`skills/cad-development/cad-spec-driven-workflow/SKILL.md`](../skills/cad-development/cad-spec-driven-workflow/SKILL.md) |
 | Planned testing and workflow improvements | [`docs/08-roadmap.md`](https://github.com/painter99/cad-workshop/blob/main/docs/08-roadmap.md) |
 | Verification evidence per part | `specs/<part>/verification.md` |
