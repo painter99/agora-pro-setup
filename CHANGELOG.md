@@ -132,6 +132,14 @@ P1 milestone: validation, inventory, and decision records complete.
 - `docs/2-installation.md`: added a prerequisites section (python3/git/bash for repository validation); replaced the stale partial Skill table with the flat-name rule (file name without `.md`), so the document no longer drifts when Skills are added.
 - `AGENTS.md`: documented the validation prerequisites.
 
+### Changed
+
+- `skill-mirror-check`: drift policy now encodes the operator's standing
+  authorization (2026-10-28) — on confirmed content drift with the repository
+  clearly newer, the repository version is re-imported into the local store
+  in place, recorded with diff evidence; repository ports and ambiguous
+  directions still require operator GO. Weekly task card aligned.
+
 ## [1.0.0] - 2026-10-27
 
 First tagged release: the governance layer as of `main` @ `dfae1bc`.

@@ -32,13 +32,26 @@ tasks).
    cosmetic.
 4. Write the dated report to the local mirror-check log directory; exactly one
    notification with the summary line and report path.
-5. On drift: report and proposed remedy only — no repairs; the operator
-   decides through the normal GO gates.
+5. On drift, determine the direction before any repair:
+   - Repository clearly the newer truth (a recent repository change was never
+     imported) → repair = re-import the repository version into the local
+     store, patched in place; this proceeds on the operator's standing
+     authorization (2026-10-28) and is recorded in the report with diff
+     evidence.
+   - Local version genuinely newer → do not import; propose a repository port
+     through the standard branch workflow (operator GO required).
+   - Ambiguous direction → report the diff and wait for the operator.
+   No repair is ever silent: every applied repair is recorded in the report
+   with its evidence and authorization basis.
 
 ## Hard rules
 
 - Read-only on Skills and the repository: no edits, no deletes, no pushes, no
-  task/loop management.
+  task/loop management. Standing exception (operator authorization
+  2026-10-28): on confirmed content drift with the repository clearly newer,
+  the repository version may be imported into the local store in place (never
+  a wholesale delete+re-import), recorded with diff evidence; repository
+  ports and ambiguous directions stay behind operator GO.
 - Writes only to: the scratch directory, the mirror-check log directory, and
   one notification.
 - A difference that does not reproduce on re-read is a transcription artifact,
