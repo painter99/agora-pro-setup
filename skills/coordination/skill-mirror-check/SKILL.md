@@ -51,7 +51,11 @@ A difference confined to these sections is expected, not drift. A repository fil
    - **COSMETIC** — trailing newline at end of file, a missing/extra blank line after a heading, whitespace-only → non-blocking; list for optional normalization.
 5. A difference that disappears when the read is repeated is a transcription artifact, not drift — re-read before reporting drift, and state the verification method either way.
 6. Report per Skill: IDENTICAL / OVERLAY-ONLY / COSMETIC / DRIFT, with diff evidence for anything not identical.
-7. On drift: no silent repair. The remedy is a re-import of the repository version into the local store, or — if the local version is genuinely newer — a repository port through the standard branch workflow. Both go through the normal GO gates.
+7. On drift, determine the direction before any repair:
+   - Repository clearly the newer truth (a recent repository change was never imported) → repair = re-import the repository version into the local store; this proceeds on the operator's standing authorization (2026-10-28) and is recorded in the report with diff evidence.
+   - Local version genuinely newer (content that exists only locally and belongs in the repository) → do not import; propose a repository port through the standard branch workflow (GO per github-release-workflow).
+   - Ambiguous direction → report the diff and wait for the operator.
+   No repair is ever silent: every applied repair is recorded in the report with its evidence and authorization basis.
 8. Persist the dated report under `/home/agora/logs/skill-mirror-check/` and send exactly one notification with the summary (higher priority when drift was found).
 
 ## Forbidden behavior
