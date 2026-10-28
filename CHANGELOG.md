@@ -35,6 +35,17 @@ the Agora app baseline it was maintained against.
 
 ### Changed
 
+- `LICENSE` copyright line credits the public account handle instead of a
+  real name.
+
+- `privacy_scan.py`: instance-specific identifier patterns removed from the
+  public scanner entirely (ADR-0014) — they load from an instance-side
+  overlay file (`~/.config/agora-repo/privacy-extra-patterns.txt`, one
+  `<kind> <regex>` per line) that is never committed; an absent file (CI,
+  fresh clones) degrades gracefully to the generic classes. The public
+  repository must contain no personal identifiers — not in docs, not in
+  tooling, not obfuscated.
+
 - `privacy_scan.py` hardened after an adversarial self-test (2026-10-28):
   family-term coverage extended with generic Czech kinship stems (siblings,
   parents, in-laws, children, grandchildren), the personal-name pattern now
