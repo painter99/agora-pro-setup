@@ -51,6 +51,8 @@ Each step defines its own check: row counts, checksums, control sums, a test run
 
 Anything destructive, irreversible, published, or spent requires a dry-run first, a backup or rollback path, and explicit approval bound to the exact scope. Structure beats agreement: prefer permissions and separation (test environment, read-only default, quarantine) over promises.
 
+**Script safety gate (agent-written code).** Never run an agent-written script unread, unscanned, or untested on a copy. Before the first real run: read the script line by line; scan it for dangerous patterns (deletion, in-place overwrite, moves outside the sandbox, network calls it should not have); keep input directories read-only so the script physically cannot touch originals; run it first in dry-run mode that only prints what it would do, then on a copy of the data; and prove the input unchanged with a checksum comparison taken before and after the run. Write outputs through a temporary file plus atomic rename so a crash mid-write cannot corrupt the result. Validate first, write last.
+
 ### 5. Make failure loud
 
 Two distinct failure classes need two distinct detectors:
@@ -99,6 +101,7 @@ When the methodology itself must be shared (job application, client, team), deri
 - Never store secrets, credentials, or personal identifiers in logs, cards, or shared artifacts.
 - Never let the process card drift from the implementation; update both in one change.
 - Never build a process whose failure modes are unknown — frame first.
+- Never run an agent-written script unread, unscanned, or untested on a copy of the data; keep input directories read-only and prove the input unchanged by checksum.
 
 ## Verification
 
