@@ -13,6 +13,9 @@ the Agora app baseline it was maintained against.
   design of repeatable, safe, and stable processes (process card template,
   per-step verification, loud failure, rollback, review cycle) plus rendering
   of an external one-page methodology artifact derived from the same source.
+  Refined from research before release: last-validated card metadata,
+  escalation criteria, per-step freedom levels, notification tiers and
+  hygiene, and a supervised first-run validation rule.
 
 - `check_format.py` now resolves `Dependencies` entries: every backticked
   reference must match an existing Skill directory

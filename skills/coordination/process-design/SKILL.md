@@ -41,6 +41,8 @@ Write the specification before any implementation: trigger, inputs, outputs, own
 
 Each step is a script, flow, or documented command — never unrecorded manual clicking. A step is idempotent when running it twice yields the same state as running it once. Non-idempotent steps must be explicitly marked and gated.
 
+Choose a freedom level per step: high freedom for text guidance where several paths are valid, medium freedom for parameterized templates, low freedom for exact scripts with a do-not-modify note. The more fragile and sequence-critical the step, the lower the freedom.
+
 ### 3. Verify after every step
 
 Each step defines its own check: row counts, checksums, control sums, a test run on dummy data, or a comparison against a baseline. A tool call or exit code 0 is not proof of success; the check is.
@@ -53,10 +55,10 @@ Anything destructive, irreversible, published, or spent requires a dry-run first
 
 Two distinct failure classes need two distinct detectors:
 
-- "did not run at all" — a watchdog or health check on schedule or liveness;
+- "did not run at all" — a watchdog or health check on schedule or liveness; absence of an expected output or heartbeat is itself a detectable signal;
 - "ran but wrong" — step-level verification results in a log, with alerting on anomalies.
 
-Silent success is the most dangerous state: a process that stops running must be noticed without a human remembering it.
+Silent success is the most dangerous state: a process that stops running must be noticed without a human remembering it. Tier notifications by impact — page on user-impact symptoms, ticket on degradation, dashboard for context — and prune notifications that no longer earn their keep; every notification links its process card.
 
 ### 6. Record state and audit trail
 
@@ -67,7 +69,7 @@ Keep a state file (what has been seen or processed), an append-only event log (w
 Capture the process in a process card (template below) stored next to the process. The card is the contract: update it in the same change as the process, or it drifts.
 
 ```text
-# Process card: <name>
+# Process card: <name> — last validated <date>
 Trigger:      what starts it (schedule, event, manual)
 Owner:        who is responsible
 Frequency:    how often it runs
@@ -75,13 +77,16 @@ Inputs:       sources and where access lives (reference, never the secret itself
 Steps:        1..n — each idempotent, with the expected output
 Verification: per-step checks plus the end-to-end check
 Rollback:     how to undo or restore
+Escalation:   when to stop and who or what takes over
 Logs/state:   where state, logs, and artifacts live
 Known risks:  top failure modes and their mitigations
 ```
 
+Keep the card critical and short — cover the steps that are catastrophic if missed or easily forgotten, and keep any operational checklist inside it within roughly nine items. The card is SOP-shaped (routine, repeatable work); exception-handling procedures additionally need symptom descriptions, impact assessment, and diagnostic branching, while escalation criteria remain mandatory in both cases. Validate the card against a real supervised run before relying on it — a validated date is not the last-edited date.
+
 ### 8. Review cycle
 
-On a regular cadence or after an incident: retrospective, proposed delta, approval, patch, then verification that the change actually improved the process. A process that never gets reviewed drifts from reality.
+On a regular cadence or after an incident: retrospective, proposed delta, approval, patch, then verification that the change actually improved the process. A process that never gets reviewed drifts from reality. Between retrospectives, periodically audit actual execution against the card — the same drift-check idea applied to processes.
 
 ### 9. External rendering
 
@@ -99,7 +104,7 @@ When the methodology itself must be shared (job application, client, team), deri
 
 - Design stage: specification reviewed, failure modes listed, dry-run on dummy data passed.
 - Runtime: per-step checks pass, the end-to-end check passes, and the watchdog confirms the run happened.
-- Documentation: process card matches the implementation (updated in the same change); external artifact passes the identifier scan and fits one page.
+- Documentation: process card matches the implementation (updated in the same change) and was validated against a real supervised run; external artifact passes the identifier scan and fits one page.
 
 ## Output contract
 
