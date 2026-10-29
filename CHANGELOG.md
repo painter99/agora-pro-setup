@@ -15,7 +15,9 @@ the Agora app baseline it was maintained against.
   of an external one-page methodology artifact derived from the same source.
   Refined from research before release: last-validated card metadata,
   escalation criteria, per-step freedom levels, notification tiers and
-  hygiene, and a supervised first-run validation rule.
+  hygiene, and a supervised first-run validation rule. Added script safety
+  gate: static scan of agent-written scripts, dry-run default, test on a
+  copy, read-only inputs, checksum proof of untouched input, atomic writes.
 
 - `check_format.py` now resolves `Dependencies` entries: every backticked
   reference must match an existing Skill directory
