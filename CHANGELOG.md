@@ -9,6 +9,11 @@ the Agora app baseline it was maintained against.
 
 ### Added
 
+- New Skill `skills/coordination/process-design/SKILL.md`: specification-first
+  design of repeatable, safe, and stable processes (process card template,
+  per-step verification, loud failure, rollback, review cycle) plus rendering
+  of an external one-page methodology artifact derived from the same source.
+
 - `check_format.py` now resolves `Dependencies` entries: every backticked
   reference must match an existing Skill directory
   (`skills/**/<name>/SKILL.md`).
