@@ -14,7 +14,7 @@ golden-task eval; the first manual run on 2026-10-27 is the baseline).
 
 ## Schedule
 
-Quarterly (first day of January, April, July, October, evening).
+Quarterly (first day of January, April, July, October, night NN:NN).
 
 ## Reads
 

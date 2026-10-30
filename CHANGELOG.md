@@ -43,6 +43,23 @@ the Agora app baseline it was maintained against.
   (`memory-master-index` Dependencies, `tool-execution-contract` Domain
   routing).
 
+### Changed
+
+- Task cards rescheduled to the operator's night window: daily data sweep
+  NN:NN, exchange README maintenance NN:NN, self-improvement retrospective
+  Sunday NN:NN, skill mirror check Sunday NN:NN, repository sync Sunday NN:NN,
+  stack observability Tuesday NN:NN, quarterly replication dry-run night
+  NN:NN. The Sunday ordering (retrospective → mirror check → repository sync)
+  is preserved.
+- Self-improvement retrospective upgraded from a rotating three-Skill
+  mini-audit to a full-catalog Skills audit every run (dependency graph:
+  hubs, cycles, dangling references, missing bindings) with a reduction lens
+  (KEEP / MERGE / RETIRE verdicts with evidence and impact on dependents) and
+  up to two structural deltas; the rotation state file is replaced by a
+  Skills health state file.
+- `docs/29-self-improvement-loop.md` and the `self-improvement-loop` Skill
+  aligned with the full-catalog audit wording.
+
 - Skill evaluation methodology in the self-improvement loop (`docs/29` §7,
   `self-improvement-loop` Skill): capability-uplift vs. encoded-preference
   taxonomy, trigger-precision review of catalog descriptions, blind A/B

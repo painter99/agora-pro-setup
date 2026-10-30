@@ -16,7 +16,7 @@ operator approval.
 
 ## Schedule
 
-Weekly (Tuesday morning).
+Weekly (Tuesday night, NN:NN).
 
 ## State directory
 

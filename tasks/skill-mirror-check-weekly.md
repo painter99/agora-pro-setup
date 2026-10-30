@@ -14,7 +14,7 @@ and classifies it before anything is edited.
 
 ## Schedule
 
-Weekly, Sunday evening (between the retrospective and the repository-sync
+Weekly, Sunday night NN:NN (between the retrospective and the repository-sync
 tasks).
 
 ## Reads
