@@ -146,6 +146,6 @@ A change in this repository is done when:
 
 ## Last verified
 
-2026-10-28 against the post-v1.2.0 `main` state. If this file is
+2026-10-30 against the post-v1.3.0 `main` state. If this file is
 older than recent merges, re-verify its claims (file map, checks, conventions)
 before relying on them.

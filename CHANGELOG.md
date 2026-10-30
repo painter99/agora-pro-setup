@@ -7,6 +7,12 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-30
+
+Checker hardening and privacy purge, process-design Skill, night task
+schedule, self-improvement loop v3.1 (full-catalog audit + outcome
+tracking), repo-graph observability loop.
+
 ### Added
 
 - New Skill `skills/coordination/process-design/SKILL.md`: specification-first

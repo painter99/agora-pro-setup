@@ -17,7 +17,7 @@
 
 meta:
   inventory_version: 3
-  last_verified: "2026-10-28"
+  last_verified: "2026-10-30"
 
 components:
   # --- deployed into the Agora app ---
