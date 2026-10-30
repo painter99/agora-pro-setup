@@ -32,6 +32,7 @@ Import individual `SKILL.md` files (one directory per Skill) into Agora's Skills
 - Treat `skills/memory-governance/` as the hybrid memory-procedure family; import its files individually into Agora.
 - Treat `skills/reasoning/` as reusable reasoning procedures; import each Skill individually and use it proportionally.
 - Treat `skills/self-improvement/` as the agent self-improvement family (retrospectives, improvement deltas, evals, harness-level improvements); import each Skill individually.
+- Treat `skills/coding/` as the generic coding family (goal-based coding loop with review and anti-reward-hacking guards); import each Skill individually.
 - Place a new Skill in the family matching its primary responsibility; if no family fits, create a new directory and add its Treat line to this list.
 - Sequential Thinking means explicit planning and adaptive verification, not disclosure of private chain-of-thought.
 - Never assume a Skill was applied before reading it.

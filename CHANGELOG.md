@@ -7,6 +7,13 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+
+- New Skill `skills/coding/coding-loop/SKILL.md`: goal-based coding loop (spec
+  gate, small increments, tested steps, second-agent review, bounded fix
+  rounds, anti-reward-hacking guards). New `coding` family with Treat line,
+  TEC domain routing row, manifest skill-set 27→28.
+
 ## [1.3.0] - 2026-10-30
 
 Checker hardening and privacy purge, process-design Skill, night task

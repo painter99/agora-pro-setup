@@ -51,6 +51,7 @@ agora-pro-setup/
 │   ├── cad-development/
 │   ├── communication/
 │   ├── self-improvement/
+│   ├── coding/
 │   ├── examples/
 │   ├── skill-catalog.md # catalog description conventions
 │   ├── skill-format.md  # Skill file format
