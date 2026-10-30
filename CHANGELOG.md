@@ -21,6 +21,8 @@ the Agora app baseline it was maintained against.
   is a one-off scheduled task (self-contained prompt, single review file,
   deleted after the verdict is verified, must not recur); a Loop or a
   same-conversation re-read does not count as a fresh context (D-20261030-03).
+  Task-management tool names (`create_task`/`delete_task`/`list_tasks`) named
+  with a defer note to the current toolset.
 
 ## [1.3.0] - 2026-10-30
 
