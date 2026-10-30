@@ -48,7 +48,9 @@ rolling dashboard.
    note, next domain.
 5. Update the per-domain state file; rewrite the dashboard (date, next domain,
    top risks, hardening index + trend, recommendations awaiting approval,
-   summary of the last report).
+   summary of the last report, the skills-health graph from the weekly
+   retrospective, and the repo-graph snapshot from the weekly repository
+   sync — both local log files; a missing file is reported as no data yet).
 6. Append new decision-log entries as proposals only; never change existing
    statuses (operator-only); mark superseded chains in notes.
 7. Copy the report and dashboard to the operator's delivery directory; send

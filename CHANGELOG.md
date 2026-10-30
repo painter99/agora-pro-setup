@@ -90,7 +90,11 @@ the Agora app baseline it was maintained against.
 
 - Incident postmortem template with a decision-lineage section (`docs/29` §8).
 
-### Changed
+- Stack observability task (v6): the dashboard additionally reads the local
+  repo-graph snapshot written by the weekly repository sync (absence is
+  reported as no data yet), completing the repository-graph observability
+  loop; the skills-health dashboard field aligned with the full-catalog
+  audit wording.
 
 - `LICENSE` copyright line restored to the copyright holder's real name —
   the LICENSE is the single sanctioned location for it (ADR-0014).
