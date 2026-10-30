@@ -32,6 +32,14 @@ Generic patterns:
   forms like "Claude Opus 4.1" via a bounded sub-name group) leak a
   personal model-routing stack; product names like "Claude Code" do not
   match because a digit is required.
+- schedule_time — clock times (HH:MM) outside code fences leak the
+  operator's task schedule; the user-template `sent_time=` example field
+  is exempt (generic example metadata, arbitrary past date).
+- cron_schedule — cron-like five-field patterns (e.g. "5 3 * * *") outside
+  code fences leak the operator's schedule the same way.
+
+Extended after an operator-schedule leak (2026-10-30): schedule values in
+task cards and the changelog were genericized and both classes added.
 
 Hardened after an adversarial self-test (2026-10-28): family-term coverage
 extended with generic Czech kinship stems, model_id matches spaced forms.
@@ -66,6 +74,9 @@ PATTERNS = {
 }
 
 CZECH_GLYPHS = re.compile(r"[áčďéěíĺľňóŕřšťúůýžÁČĎÉĚÍĹĽŇÓŔŘŠŤÚŮÝŽ]")
+
+SCHEDULE_TIME = re.compile(r"\b[0-2]?\d:[0-5]\d\b")
+CRON_LIKE = re.compile(r"\b\d{1,2} \d{1,2} \* \* [*0-9]")
 
 EXTRA_PATTERNS_PATH = (
     Path.home() / ".config" / "agora-repo" / "privacy-extra-patterns.txt"
@@ -158,10 +169,32 @@ def main():
                     + match.group(0)
                 )
         for lineno, line_text in non_fenced_lines(text):
+            if "sent_time=" in line_text:
+                continue  # user-template example field: generic example metadata
             if len(CZECH_GLYPHS.findall(line_text)) >= 3:
                 findings += 1
                 print(
                     "FINDING [czech_prose] "
+                    + str(path.relative_to(root))
+                    + ":"
+                    + str(lineno)
+                    + " -> "
+                    + line_text.strip()[:80]
+                )
+            if SCHEDULE_TIME.search(line_text):
+                findings += 1
+                print(
+                    "FINDING [schedule_time] "
+                    + str(path.relative_to(root))
+                    + ":"
+                    + str(lineno)
+                    + " -> "
+                    + line_text.strip()[:80]
+                )
+            if CRON_LIKE.search(line_text):
+                findings += 1
+                print(
+                    "FINDING [cron_schedule] "
                     + str(path.relative_to(root))
                     + ":"
                     + str(lineno)

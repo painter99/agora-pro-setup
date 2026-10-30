@@ -13,7 +13,7 @@ personal facts stay in local memory.
 
 ## Schedule
 
-Weekly (Sunday night, NN:NN), after the retrospective and the mirror-check tasks.
+Weekly (Sunday night), after the retrospective and the mirror-check tasks.
 
 ## Reads
 

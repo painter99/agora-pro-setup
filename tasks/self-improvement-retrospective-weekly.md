@@ -15,7 +15,7 @@ after explicit approval.
 
 ## Schedule
 
-Weekly (Sunday night, NN:NN), before the skill-mirror-check and
+Weekly (Sunday night), before the skill-mirror-check and
 repository-sync tasks.
 
 ## Reads

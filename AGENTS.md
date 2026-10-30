@@ -110,6 +110,11 @@ Specific failure modes observed in this repository — not general advice:
 - Rewriting only backticked `name.md` reference forms after a layout change — path-style and unbackticked references stay stale; sweep all reference styles.
 - Retiring a document by renumbering the others — cross-references break; retire the number instead.
 - Fixing the frontmatter `description` but not the Catalog description body (or vice versa) — the format check enforces their equality; change both in the same edit.
+- Operator schedule values in repository content — clock times (HH:MM), cron
+  fields, or weekday+time combinations reveal how the instance is operated.
+  Genericize to relative windows ("night window, exact time instance-specific");
+  the privacy scan flags `schedule_time` and `cron_schedule` outside code
+  fences.
 
 ## Validation
 
