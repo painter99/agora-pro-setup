@@ -42,6 +42,27 @@ Before declaring done, have the diff reviewed in a fresh context — a new conve
 
 **Reviewer mechanics (Agora).** An agent cannot open a new conversation by itself, and a Loop runs in the same conversation — neither counts as a fresh context. The reviewer is a **one-off scheduled task**: created with a self-contained prompt (read only the spec and the diff, write the verdict to a single review file, no pushes, no other writes), read and applied after its run, then **deleted after the verdict is verified** — it must not recur. Use the task-management tools of the current toolset (`create_task` with a five-field cron set minutes ahead, `delete_task` by the returned task id, `list_tasks` to verify creation and deletion; tool names per the current Agora tool definitions — verify against the live tool list). A trivial change may rely on self-review plus deterministic evidence (byte comparison, test output) instead.
 
+**Review-task prompt contract.** The creating agent owns the reviewer's prompt: the reviewer gets no memory, no Skills, and no conversation context, so everything it must know — its role, its task and goal, what to read, what and where to write — lives in that prompt. Before creating the task, fill in this contract; a missing item means the task is not ready to create:
+
+```text
+# Review task: <name> — ONE-OFF (the creating agent deletes it after the verdict)
+Role:   fresh-context reviewer; you did not write this code and have no
+        prior context — judge only what the files say
+Reads:  (1) <spec path>  (2) <diff path> — nothing else
+Checks: (1) does the code do what the spec says?
+        (2) do the tests actually test the spec, or are they hard-coded to pass?
+        (3) any weakened, skipped, or special-cased assertions?
+        (4) anything outside the spec scope?
+Writes: exactly one file, <review path> — per-finding table
+        (# | finding | severity | evidence | suggested fix)
+        plus an overall verdict: PASS / PASS-with-notes / FAIL
+Rules:  read-only except that single file; no pushes, no task management,
+        no memory or Skill writes; missing or unreadable input = say so and
+        stop — never invent findings
+```
+
+The creating agent reads the verdict, applies fixes like any other failure, and deletes the task.
+
 ### 5. Bounded fix loop
 Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap.
 
