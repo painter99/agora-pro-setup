@@ -56,12 +56,11 @@ tracking), repo-graph observability loop.
 
 ### Changed
 
-- Task cards rescheduled to the operator's night window: daily data sweep
-  NN:NN, exchange README maintenance NN:NN, self-improvement retrospective
-  Sunday NN:NN, skill mirror check Sunday NN:NN, repository sync Sunday NN:NN,
-  stack observability Tuesday NN:NN, quarterly replication dry-run night
-  NN:NN. The Sunday ordering (retrospective → mirror check → repository sync)
-  is preserved.
+- Task cards rescheduled to the operator's night window: daily data sweep,
+  exchange README maintenance, self-improvement retrospective, skill mirror
+  check, repository sync, stack observability, quarterly replication dry-run
+  (exact times are instance-specific). The Sunday ordering (retrospective →
+  mirror check → repository sync) is preserved.
 - Self-improvement retrospective upgraded from a rotating three-Skill
   mini-audit to a full-catalog Skills audit every run (dependency graph:
   hubs, cycles, dangling references, missing bindings) with a reduction lens

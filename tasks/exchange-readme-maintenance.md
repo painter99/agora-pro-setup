@@ -13,7 +13,7 @@ items, project directories, total size. Most runs correctly end with
 
 ## Schedule
 
-Daily, night (NN:NN).
+Daily, night window (exact time is instance-specific).
 
 ## Reads
 

@@ -13,7 +13,7 @@ nothing matches.
 
 ## Schedule
 
-Daily, night (NN:NN), before the operator's active hours.
+Daily, early night window (exact time is instance-specific), before the operator's active hours.
 
 ## Reads
 
