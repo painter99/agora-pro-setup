@@ -17,6 +17,10 @@ the Agora app baseline it was maintained against.
   scripts-repository versioning pattern, per-effect-class testing policy;
   ADR-0016 (human-gated coding loop as a Skill); routing in docs/0 + README;
   manifest docs 31→32, decisions 16→17.
+- coding-loop Skill: reviewer mechanics specified — the fresh-context reviewer
+  is a one-off scheduled task (self-contained prompt, single review file,
+  deleted after the verdict is verified, must not recur); a Loop or a
+  same-conversation re-read does not count as a fresh context (D-20261030-03).
 
 ## [1.3.0] - 2026-10-30
 
