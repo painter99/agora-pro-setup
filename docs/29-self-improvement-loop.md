@@ -15,6 +15,7 @@ Theoretical basis (2025–2026):
 - **Reward-hacking studies** (ICLR 2026) — proxy metrics rise while real utility falls; metrics must always be combined with human acceptance.
 - **Skill-Inject** (arXiv:2602.20156) — skill files are an injection surface; only self-authored or reviewed skills, third-party skills scanned before adoption.
 - **Survey: Self-Improvements in Modern Agentic Systems** (2026) — scaffolding improvement (176 works) is faster, cheaper, and more reversible than foundation-model improvement (77 works).
+- **Survey: Self-Evolving Agents — what/when/how/where to evolve** (arXiv:2507.21046) — taxonomy of self-evolving agents; this loop is deliberately placed at the conservative end: context-level evolution (memory + Skills), inter-test-time, textual feedback, single agent, every mutation behind a human gate.
 
 ## 2. The loop
 
@@ -26,7 +27,7 @@ Generator → Reflector → GO gate → Curator → Eval
 2. **Reflector** — retrospective: signals = escalation log, eval log, memory audits, repeated corrections, scheduled-task outputs, the observability decision log (open recommendations, superseded chains) and baseline+diff trends from the observability dashboard. Output: max 3 candidate deltas, each with an ID `D-YYYYMMDD-NN`, evidence, proposed patch, risk, and an eval plan. No evidence, no delta. When a delta realizes a decision-log recommendation `DR-YYYYMMDD-NN`, the recommendation's note is marked `realized by D-…`; decision-log statuses are changed only by the operator.
 3. **GO gate** — no delta is applied without explicit operator approval. Changes to a Skill's purpose, merges/splits, deletions, and security rules are always proposals only.
 4. **Curator** — incremental patches instead of rewrites; deprecated passages are marked, not deleted; repo-visible changes are committed (history = archive of variants).
-5. **Eval** — golden-task subset (3–5) before and after the change, same model, same memory context; accept only improvement without regression plus operator acceptance. Budget: ~10 eval runs per delta.
+5. **Eval** — golden-task subset (3–5) before and after the change, same model, same memory context; accept only improvement without regression plus operator acceptance. Budget: ~10 eval runs per delta. Realized deltas get a longitudinal outcome assessment in later retrospectives (helpful / harmful / neutral, appended to the eval log) so harmful changes surface instead of accumulating.
 6. **Harness level (bounded)** — the agent may improve its own scripts only with tests, green CI, and a merge approval; never the app itself, MCP servers, security Skills, or model choices without explicit GO.
 
 ## 3. Components
@@ -78,6 +79,7 @@ Rules for the autonomous sync task:
 
 - No weight training and no model-choice changes without explicit operator GO.
 - Anti reward-hacking: a score without human acceptance is not proof of improvement; changing eval criteria = changing the rules = always GO.
+- Benchmark alignment (after Darwin Gödel Machine §5): a loop optimized on its own metrics can amplify misalignment across generations. Mitigations: human GO on every delta, traceable lineage (git history, append-only logs), bounded scope (scaffolding only — never the app, MCP servers, or model choices), and an operator-owned kernel (system-template rules) the loop may not rewrite.
 - Append-only: eval log and retrospectives only grow; deletion requires GO.
 - Skill files are an injection surface: only self-authored or reviewed skills; third-party skills are scanned before adoption.
 
@@ -122,6 +124,7 @@ becomes a golden-task candidate.
 - GEPA — arXiv:2507.19457
 - Skill-Inject — arXiv:2602.20156
 - Survey: Self-Improvements in Modern Agentic Systems (2026)
+- Survey: Self-Evolving Agents — what/when/how/where to evolve — arXiv:2507.21046
 - Agent Skills open standard (donated to the Agentic AI Foundation, 2025)
 - Anthropic — Improving skill-creator: test, measure, and refine Agent Skills (claude.com/resources/articles, 2026-10-27)
 - Anthropic — Skill authoring best practices (Agent Skills documentation)

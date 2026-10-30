@@ -32,7 +32,9 @@ repository-sync tasks.
 2. Collect signals: escalation triggers, eval runs, recurring corrections,
    stale Skills, memory contradictions, unresolved deltas from previous
    retrospectives, open decision-log recommendations and superseded chains,
-   baseline+diff trends.
+   baseline+diff trends, and the outcomes of deltas applied at least 7 days
+   ago (helpful/harmful/neutral, appended to the eval log as `OUTCOME:`
+   notes).
 3. Evaluate and propose at most 3 signal deltas, each in a fixed table: id,
    what, evidence, proposed patch, risk, eval plan. Every delta gets a dated
    ID; a delta realizing a decision-log recommendation references it.
