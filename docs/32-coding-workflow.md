@@ -58,7 +58,7 @@ class:
 | Effect class | Examples | Test |
 |---|---|---|
 | Read-only, no side effects | holiday check, source availability test | run directly; record exit code and output |
-| Read-only with notifications | health check | run via `bash`; expect the alert path to fire |
+| Read-only with notifications | health check | run via `bash`; expect the alert path to fire. A test run of a notification-bearing script sends real notifications — announce it to the operator beforehand, or prefer a dry-run when the script supports one |
 | Sends notifications or mutates state | morning brief, calendar reminders, exchange watcher, daily data sweep | do not run casually; test on a copy or in dry-run when a change is made (script safety gate in `process-design`) |
 | Heavy local models | transcription, TTS | not tested casually; exercised by their own workflows |
 
