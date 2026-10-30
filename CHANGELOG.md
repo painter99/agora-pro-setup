@@ -13,6 +13,10 @@ the Agora app baseline it was maintained against.
   gate, small increments, tested steps, second-agent review, bounded fix
   rounds, anti-reward-hacking guards). New `coding` family with Treat line,
   TEC domain routing row, manifest skill-set 27→28.
+- New `docs/32-coding-workflow.md`: the coding layer — loop in practice,
+  scripts-repository versioning pattern, per-effect-class testing policy;
+  ADR-0016 (human-gated coding loop as a Skill); routing in docs/0 + README;
+  manifest docs 31→32, decisions 16→17.
 
 ## [1.3.0] - 2026-10-30
 

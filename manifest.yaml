@@ -71,9 +71,9 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    # 15 ADRs (0001-0015) + README index
+    # 16 ADRs (0001-0016) + README index
     source: "decisions/*.md"
-    files: 16
+    files: 17
     target: none
   - name: active-memory-example
     kind: reference
@@ -83,7 +83,7 @@ components:
     kind: reference
     # number 19 is retired
     source: "docs/*.md"
-    files: 31
+    files: 32
     target: none
   - name: author-docs
     kind: reference
