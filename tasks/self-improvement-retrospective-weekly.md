@@ -38,7 +38,9 @@ repository-sync tasks.
 3. Evaluate and propose at most 3 signal deltas, each in a fixed table: id,
    what, evidence, proposed patch, risk, eval plan. Every delta gets a dated
    ID; a delta realizing a decision-log recommendation references it.
-   Decision-log statuses are never changed by this task.
+   Decision-log statuses are never changed by this task. A procedure
+   performed 2–3 times in the same shape is a Skill candidate: propose it as
+   a new Skill (format template, eval plan, trigger-precision check).
 4. Full Skills audit (whole catalog every run): review every Skill against
    the skill-governance checklist (dependencies resolve, catalog description
    matches content, missing links, duplications and contradictions, stale
