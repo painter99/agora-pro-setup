@@ -38,8 +38,8 @@ Generator → Reflector → GO gate → Curator → Eval
 | Eval log `sil-evals.csv` | agent host, append-only | measured scores |
 | Retrospectives | agent host `logs/sil-retrospectives/YYYY-MM-DD.md` | weekly Reflector output |
 | Observability decision log + dashboard | measurement store (docs/28 §4–5) | Reflector signal source; `D-` ↔ `DR-` cross-reference |
-| Scheduled task `sil-weekly-retrospective` | weekly cron (Sunday evening), read-only | automated Reflector |
-| Scheduled task `repo-sync-weekly` | weekly cron (Sunday, after the retrospective) | autonomous repository maintenance (§5) |
+| Scheduled task `sil-weekly-retrospective` | weekly cron (Sunday night), read-only | automated Reflector |
+| Scheduled task `repo-sync-weekly` | weekly cron (Sunday night, after the retrospective) | autonomous repository maintenance (§5) |
 
 Task-agent constraints apply: no injected active memory, no automation tools — all rules live in the task prompt (see docs/28 §7 for the pattern).
 
@@ -95,7 +95,7 @@ and skill authoring best practices, 2026):
 - **Trigger precision.** The catalog description is the only Skill content
   loaded at start. Review it against sample prompts for false positives
   (loads when it should not) and false negatives (fails to load when needed)
-  — a standing question of the weekly mini-audit rotation.
+  — a standing question of the weekly full-catalog audit.
 - **Blind A/B.** For a behavioral change with a golden task: run the task
   with the old and the new Skill text — or with and without the Skill — in
   fresh contexts, and judge the outputs without knowing which is which.

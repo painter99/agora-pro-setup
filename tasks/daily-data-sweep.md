@@ -13,7 +13,7 @@ nothing matches.
 
 ## Schedule
 
-Daily, early morning (before the operator's active hours).
+Daily, night (NN:NN), before the operator's active hours.
 
 ## Reads
 
