@@ -64,6 +64,10 @@ class:
 
 Test evidence belongs in the commit message or the change report.
 
+Test framework convention: the standard-library `unittest` is the default
+(no external test dependencies); run tests as `python3 <test>.py`. Use another
+framework only when it is already installed and the task needs it.
+
 ## Boundaries
 
 - The loop is human-gated: no autonomous fix iterations past the budget, no

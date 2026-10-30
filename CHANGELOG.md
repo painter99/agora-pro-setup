@@ -27,6 +27,20 @@ the Agora app baseline it was maintained against.
   write target, hard rules — fill-in template; missing item = task not ready
   to create).
 
+### Changed
+
+- coding-loop Skill hardening from the first dogfood run (D-20261030-04):
+  spec gate now requires a test path per behavior and malformed-input
+  coverage; reviewer mechanics add the shell-time rule for the cron (`date`,
+  never conversation context; verify `next_run_at`), diff freshness proof,
+  final-content attachment for edits, immediate task deletion after the
+  verdict (one-off crons recur yearly), a two-sleep-check wait pattern, a
+  fix-round review policy (minor fixes = re-tests; behavior/spec fixes =
+  fresh re-review), and independent second-method verification at the
+  acceptance gate.
+- `docs/32` testing policy: test framework convention added (standard-library
+  `unittest` default, `python3 <test>.py`).
+
 ## [1.3.0] - 2026-10-30
 
 Checker hardening and privacy purge, process-design Skill, night task

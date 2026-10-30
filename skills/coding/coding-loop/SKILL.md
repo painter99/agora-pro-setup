@@ -29,7 +29,7 @@ Run coding tasks as a closed loop with a deterministic stop condition instead of
 ## Workflow
 
 ### 1. Spec gate
-Before writing code, state the specification: inputs, outputs, constraints, and what "done" means in observable terms. If the spec cannot say what done and failed look like, stop and get it from the user. A small task may hold the spec in the reply; a recurring or multi-step task gets it written down first.
+Before writing code, state the specification: inputs, outputs, constraints, and what "done" means in observable terms. If the spec cannot say what done and failed look like, stop and get it from the user. Every behavior in the spec needs a test path — a mechanism (an override, a fixture) or an explicit deferral with a reason — and the spec must cover malformed inputs (missing or wrong header, empty input). A small task may hold the spec in the reply; a recurring or multi-step task gets it written down first.
 
 ### 2. Implement in small increments
 Prefer the smallest change that moves toward the spec. One increment is one verifiable step. Reward hacking concentrates in large single-shot implementations — the measured gap grows with the size of the change — so a large change needs an explicit reason.
@@ -41,6 +41,8 @@ Run the tests and read the report; an exit code is not evidence, the test output
 Before declaring done, have the diff reviewed in a fresh context — a new conversation or a task agent that reads the spec and the diff but not the implementation reasoning. The reviewer checks: does the code do what the spec says, do the tests actually test it, is anything hard-coded to pass? Fix review findings like any other failure.
 
 **Reviewer mechanics (Agora).** An agent cannot open a new conversation by itself, and a Loop runs in the same conversation — neither counts as a fresh context. The reviewer is a **one-off scheduled task**: created with a self-contained prompt (read only the spec and the diff, write the verdict to a single review file, no pushes, no other writes), read and applied after its run, then **deleted after the verdict is verified** — it must not recur. Use the task-management tools of the current toolset (`create_task` with a five-field cron set minutes ahead, `delete_task` by the returned task id, `list_tasks` to verify creation and deletion; tool names per the current Agora tool definitions — verify against the live tool list). A trivial change may rely on self-review plus deterministic evidence (byte comparison, test output) instead.
+
+**Timing, freshness, and cleanup.** Get the current time from the shell (`date`) on the configured shell server — never from conversation context; set the cron minutes ahead and verify `next_run_at` in the `create_task` return (epoch → `date -d @<epoch>`). Before creating the task, prove the diff is fresh: byte-compare the diff source files against the live files; a stale diff means the task is not ready to create. For edits to existing files, attach the final content of the touched files — a diff alone is not self-contained. After the run, verify `last_run_at`, read the verdict file, and **delete the task immediately, before applying any fixes** — a one-off cron recurs yearly and must not fire again. Wait for the verdict file with at most two sleep-checks; then report honestly and hand back.
 
 **Review-task prompt contract.** The creating agent owns the reviewer's prompt: the reviewer gets no memory, no Skills, and no conversation context, so everything it must know — its role, its task and goal, what to read, what and where to write — lives in that prompt. Before creating the task, fill in this contract; a missing item means the task is not ready to create:
 
@@ -64,10 +66,10 @@ Rules:  read-only except that single file; no pushes, no task management,
 The creating agent reads the verdict, applies fixes like any other failure, and deletes the task.
 
 ### 5. Bounded fix loop
-Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap.
+Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap. Fix-round review policy: fixes for minor findings need re-tests and a fix-diff artifact; fixes that change behavior or the spec need a fresh re-review in a new one-off task.
 
 ### 6. Acceptance against reality
-The final gate is acceptance on real input, not green tests: run the change on the actual data or environment it targets (or a faithful copy) and show the observable result. Nothing is done until this gate passes — never report completion without it.
+The final gate is acceptance on real input, not green tests: run the change on the actual data or environment it targets (or a faithful copy) and show the observable result. Nothing is done until this gate passes — never report completion without it. Verify with an independent second method (checksum, grep, a second tool); a mismatch between two methods is a loud report, not a silent choice.
 
 ### 7. Encode what was learned
 Recurring fix patterns, review comments, and user corrections become system rules: propose a delta to the relevant Skill or a project rules file through the self-improvement loop instead of fixing only the instance. Fixes that never reach the ruleset will repeat.
