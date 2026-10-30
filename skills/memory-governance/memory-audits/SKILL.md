@@ -47,6 +47,16 @@ Audit Active Memory, Saved Memories, and their relationships without silently re
 6. Separate findings, proposed corrections, performed corrections, and unresolved issues.
 7. Obtain required authorization for corrections, execute the smallest safe operation, and verify each correction independently.
 
+### Staleness scoring
+
+Quantify staleness instead of judging it by feel. Derive each file's age from
+its own date markers (header dates, dated sections, last-verified notes); a
+file without any date marker counts as stale by default. Classes: fresh
+(≤ 30 days), aging (31–90), stale (> 90). Staleness is a finding, not a
+verdict: report it with a verify / refresh / archive recommendation, never
+correct it silently, and remember the current user request still outranks
+stale content.
+
 ## Audit triggers
 
 Run a user-initiated full audit, a change-triggered audit after a major life or project change, a bloat-triggered audit when AM approaches its limit or a file becomes unwieldy, and a periodic review when the memory layer has not been checked for an extended period.

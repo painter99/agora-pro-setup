@@ -43,6 +43,11 @@ the Agora app baseline it was maintained against.
   (`memory-master-index` Dependencies, `tool-execution-contract` Domain
   routing).
 
+- `memory-audits` Skill: quantified staleness scoring (fresh ≤ 30 days,
+  aging 31–90, stale > 90; undated files count as stale) — staleness is a
+  finding with a verify/refresh/archive recommendation, never a silent
+  correction.
+
 ### Changed
 
 - Task cards rescheduled to the operator's night window: daily data sweep
@@ -59,6 +64,12 @@ the Agora app baseline it was maintained against.
   Skills health state file.
 - `docs/29-self-improvement-loop.md` and the `self-improvement-loop` Skill
   aligned with the full-catalog audit wording.
+- Self-improvement loop: realized deltas now get a longitudinal outcome
+  assessment (helpful/harmful/neutral) in later retrospectives, appended to
+  the eval log (after ACE's helpful/harmful counters).
+- `docs/29-self-improvement-loop.md`: positioning within the self-evolving
+  agents taxonomy (arXiv:2507.21046) and safety rationale from the Darwin
+  Gödel Machine (§5) added to the safety rules.
 
 - Skill evaluation methodology in the self-improvement loop (`docs/29` §7,
   `self-improvement-loop` Skill): capability-uplift vs. encoded-preference
