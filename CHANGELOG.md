@@ -22,7 +22,10 @@ the Agora app baseline it was maintained against.
   deleted after the verdict is verified, must not recur); a Loop or a
   same-conversation re-read does not count as a fresh context (D-20261030-03).
   Task-management tool names (`create_task`/`delete_task`/`list_tasks`) named
-  with a defer note to the current toolset.
+  with a defer note to the current toolset. Review-task prompt contract added:
+  the creating agent owns the reviewer's prompt (role, reads, checks, single
+  write target, hard rules — fill-in template; missing item = task not ready
+  to create).
 
 ## [1.3.0] - 2026-10-30
 
