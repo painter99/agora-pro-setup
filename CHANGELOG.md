@@ -7,6 +7,15 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-31
+
+Tool-name canonization to the canonical v2.2.0 forms with an app v2.2.x
+compatibility baseline; file-based active memory replacing injected Active
+Memory (ADR-0017); the coding-loop Skill and docs/32 (ADR-0016) with subagent
+reviewer mechanics; external-skills policy; credential hygiene and
+connectivity audit in the weekly observability loop; system-template
+compression.
+
 ### Changed
 - Canonical tool names: repository texts updated from pre-2.2.0 legacy names
   (`read_skill_file`-style) to the canonical v2.2.0 forms (`memory_*`, `skill_*`,
