@@ -41,6 +41,14 @@ the Agora app baseline it was maintained against.
 - `docs/32` testing policy: test framework convention added (standard-library
   `unittest` default, `python3 <test>.py`).
 
+### Removed
+
+- Removed the repo-only `skills/examples/` family (two minimal format demos
+  and the event photo-sharing operator template): zero local use, removes
+  the 28-vs-25 skill-count mismatch and the weekly mirror-check repo-only
+  exception; content remains recoverable from git history. Manifest skill-set
+  28→25; mirror-check coverage clause and docs/2 example note updated.
+
 ## [1.3.0] - 2026-10-30
 
 Checker hardening and privacy purge, process-design Skill, night task
