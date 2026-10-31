@@ -125,7 +125,7 @@ WHERE STATE LIVES
 └── host files   → runtime state (clones, caches, stacks, journals)
 
 WAKE-UP PROCEDURE
-1. read injected active memory
+1. read the working state file (file-based active memory)
 2. route via skills → load the relevant durable context
 3. read runtime state from the host (git status, service state, ...)
 4. act within the granted autonomy level, verify results

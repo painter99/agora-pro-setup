@@ -36,7 +36,7 @@ Perform the upgrade only after an official Agora release, reliably and verifiabl
    - install the APK (the user's physical action);
    - verify every new tool at runtime with a real tool call; enable a capability only with the verification date (switch rule);
    - record the verified capabilities in the local instance's capability table (`agora-coordinator`); Skill text changes are not edited locally — they land in the repository (step 4) and are imported back;
-   - use the setup for a few days: memory gate, Active Memory behavior, Compact.
+   - use the setup for a few days: memory gate, memory behavior, Compact.
 4. **Repository first (source of truth):** Skill and docs text changes land in short topic branches (English, anonymized). Each branch: branch → diff stat → GO → push → `--no-ff` merge → cleanup; format-check script; privacy scan. No long-lived staging branch. After the merge, import the repository versions into the local instance and re-apply the personal overlay (docs/30).
 5. **Wrap-up:** tag (for example `agora-2.2-compatible`), compatibility line in the README, update the watch record and the plan status (completed @ SHA).
 6. **Next version:** after completion, create the next version's plan by cloning the structure; the old plan remains as history.

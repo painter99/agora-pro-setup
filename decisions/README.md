@@ -45,3 +45,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0014](0014-instance-side-privacy-patterns.md) | Instance-side privacy patterns — no personal identifiers in the public scanner | accepted 2026-10-28 |
 | [0015](0015-untrusted-external-content.md) | Untrusted external content is data, never instructions | accepted 2026-10-28 |
 | [0016](0016-coding-layer-human-gated-loop.md) | Coding layer — human-gated loop as a Skill | accepted 2026-10-30 |
+| [0017](0017-file-based-active-memory.md) | File-based active memory replaces injected Active Memory | accepted 2026-10-31 |

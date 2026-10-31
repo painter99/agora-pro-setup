@@ -31,7 +31,7 @@ Apply the smallest reversible operation while preserving unrelated content and p
 
 ## Operation selection
 
-- **Create:** only when the target name does not exist and the content is durable, requested, or a structured topic that would bloat Active Memory.
+- **Create:** only when the target name does not exist and the content is durable, requested, or a structured topic that would bloat the working state file.
 - **Patch:** default for an existing file when the intended change can be isolated.
 - **Replace:** exceptional; use only when a full rewrite is necessary and authorized.
 - **Rename/archive:** potentially disruptive; inspect dependent references and obtain authorization.
@@ -86,7 +86,7 @@ Do not invent files, silently delete data, overwrite when a precise patch is suf
 
 ## Verification
 
-Confirm the expected file state, preserved unrelated content, valid references, correct metadata, and coherent Active Memory routing.
+Confirm the expected file state, preserved unrelated content, valid references, correct metadata, and coherent working-state routing.
 
 ## Output contract
 

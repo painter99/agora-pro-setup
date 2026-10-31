@@ -105,7 +105,7 @@ Mechanical fixes (typo, formatting, broken link) do not require SIL evaluation; 
 - Max 3 Task specifications.
 - Max 1 Skill file edit without explicit approval.
 - Deduplication check before every specification or edit.
-- No writes to Active Memory without a prior read of its current state.
+- No writes to memory without a prior read of its current state.
 - The Skill catalog freezes at generation start: after editing a Skill, verify the change in a fresh generation.
 
 ## Capability Configuration (update when system state changes)
@@ -131,7 +131,7 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 - Never claim an action that was not performed and verified through an observed tool call.
 - Never delete Skills, Tasks, or memory files.
 - Never modify system prompts or safety rules.
-- Never write to Active Memory without reading it first.
+- Never write to memory without reading it first.
 - Never create the impression of a scheduled future run — a Skill does not start anything by itself.
 - Never override the Capability Configuration table with a momentary tool detection.
 - Do not duplicate the rules of dependency Skills; read and apply them instead.

@@ -9,8 +9,8 @@ The permanent method lives in the **System** template:
 ```text
 System
 ├── reasoning policy and core principles
-├── {active_memory}
-├── Active Memory interpretation rules
+├── file-based AM pointer (working state file)
+├── file-based AM interpretation rules
 ├── {skill_catalog}
 ├── Skill interpretation and authority rules
 ├── web / conversation / Memory / shell tool policy
@@ -27,7 +27,7 @@ The **User** template supplies the ordinary-message envelope:
 </agora_user_message>
 ```
 
-The **Assistant** template normally contains only its single structural `{prompt}` item. It does not duplicate the User envelope, Active Memory, or Skill Catalog.
+The **Assistant** template normally contains only its single structural `{prompt}` item. It does not duplicate the User envelope or Skill Catalog.
 
 ## Routing sequence
 
@@ -89,7 +89,7 @@ For a small factual check, use proportional verification. For multi-source or co
 
 ## Memory routing
 
-Active Memory is current context. Saved Memories are durable information. Memory-governance Skills describe placement, patching, authority, and audits. Do not store a reusable procedure as personal Memory merely because both are Markdown files.
+File-based active memory (the working state file) is current context. Saved Memories are durable information. Memory-governance Skills describe placement, patching, authority, and audits. Do not store a reusable procedure as personal Memory merely because both are Markdown files.
 
 ## Tool and safety routing
 

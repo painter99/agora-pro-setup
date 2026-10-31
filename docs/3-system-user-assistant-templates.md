@@ -4,7 +4,7 @@ Agora 2.1 uses **System / User / Assistant**, not the former **System / Prefix /
 
 ## System
 
-System is the complete provider-visible system message. It contains the compact kernel, `{active_memory}`, `{skill_catalog}`, and the permanent safety/tool policy — including the memory gate (the one procedure the kernel states itself; see `docs/20-memory-gate.md`) and the tool-call budget rule (`docs/21-tool-call-budget.md`).
+System is the complete provider-visible system message. It contains the compact kernel, `{skill_catalog}`, and the permanent safety/tool policy (the maintained instance replaces `{active_memory}` with the file-based-AM pointer sentence, see `docs/4`) — including the memory gate (the one procedure the kernel states itself; see `docs/20-memory-gate.md`) and the tool-call budget rule (`docs/21-tool-call-budget.md`).
 
 ## User
 
