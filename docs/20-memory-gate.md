@@ -68,26 +68,24 @@ instance (verified 2026-10-27).
 
 ## The gate (normative text)
 
-The kernel carries a compact version — roughly 100 words, not the v2 wall of
+The kernel carries a compact version — roughly 120 words, not the v2 wall of
 text:
 
 ```text
-Persistent writes are gated. Before any memory_create, memory_edit, or
-memory_delete call, and before any write to the working state file, read — via
-the Skill file tools (skill_read), never via memory tools — the Skill
-memory-master-index (a Skill in the Skill Catalog, not a Saved Memory file)
-and the governance Skill it routes to (Saved Memory: memory-file-operations;
-current status: file-based-active-memory). Choose the layer first: durable
-fact -> Saved Memory, reusable procedure -> Skill, current status -> the
-working state file, transient -> no write. Do not use Active Memory update
-tools; injected Active Memory is disabled in this instance and the working
-state file replaces it. Prefer a unique patch over replacement;
-deletion and full replacement require explicit approval for the exact scope;
-back up before a full replacement. After the write, re-read the result and
-check dependent references, including the Archive Index in the working state
-file. If tools are unavailable, say so instead of simulating a write. When
-this gate applied, end the task with one line stating that it was loaded and
-followed.
+Persistent writes (Saved Memory + the working state file) are gated. Before
+any memory_create/memory_edit/memory_delete call or state-file write: read
+via skill_read — never via memory tools — the Skill memory-master-index (a
+Skill in the Skill Catalog, not a Saved Memory file) and the governance Skill
+it routes to (Saved Memory: memory-file-operations; current status:
+file-based-active-memory). Choose the layer first: durable fact -> Saved
+Memory, reusable procedure -> a Skill, current status -> the working state
+file, transient detail -> no write (no Active Memory update tool exists; the
+working state file replaces injected AM). Patch instead of replace; deletion
+and full replacement require explicit approval for the exact scope, with a
+backup first. After the write, read back and verify dependent references,
+including the Archive Index. Tools unavailable = say so, never simulate a
+write. When this gate applied, end the task with one line stating that it was
+loaded and followed.
 ```
 
 Design constraints honored:

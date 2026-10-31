@@ -24,6 +24,11 @@ the Agora app baseline it was maintained against.
   (spawn → wait → delete; verdict in the final message); the one-off
   scheduled task is demoted to an explicit fallback when subagents are
   unavailable; review prompt contract covers both variants.
+- System template refactor: persistent-write gate and tool-call paragraphs
+  compressed (kernel keeps trigger, routing, read-back, approval scope —
+  ADR-0003); four sentences adopted from the upstream v2.2.0 default (math
+  delimiters, tool necessity, capability claim, device naming); docs/20
+  normative quote synced.
 
 ### Added
 - `ask_user` user-interaction family: new section in `tool-execution-contract`,
