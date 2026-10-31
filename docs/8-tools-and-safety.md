@@ -48,6 +48,20 @@ Security Cheat Sheet):
 ## Asking the user (ask_user)
 From Agora v2.2.0 the model may ask the user during a run: a blocking call waits for the answer, a non-blocking call continues and delivers the answer later. Use it when a decision genuinely needs the user and guessing would waste work; answers arrive once, to the asking conversation, and rank as user input — never overriding permissions or approval gates. Pending questions and approvals are indicated in the UI.
 
+## Credential hygiene in scheduled audits
+
+Scheduled audit tasks may inspect credential-bearing paths with metadata only:
+`stat`/listing output (path, permissions, owner, size, mtime), never file
+content. Unknown files fail closed — their metadata and path go to the
+report, the content is never read by any tool. A report that discusses
+credentials is self-scanned before every write (secret-pattern grep must
+return zero findings), and only a sanitized summary leaves the machine.
+Hard blocklist: key material, `.netrc`, git credential stores, token
+configurations, and environment files are never read — no tool, no
+exception. Access-integrity spot checks (per-repository deploy keys versus
+account keys, SFTP chroot presence) likewise read names and counts, not
+contents.
+
 ## Approval required before
 
 - delete or irreversible modification;
