@@ -17,6 +17,9 @@ the Agora app baseline it was maintained against.
 - Compatibility: maintained against Agora app v2.2.x (canonical tool
   names, `ask_user`, todo tools, subagents); the app license from v2.2.0 is
   GPL-3.0 — this repository stays MIT.
+- docs/16: marked partially delivered — app v2.2.0 Subagents cover bounded
+  manager/worker delegation; run-time profiles and the capability registry
+  remain open.
 
 ### Added
 - `ask_user` user-interaction family: new section in `tool-execution-contract`,

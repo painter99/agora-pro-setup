@@ -1,6 +1,9 @@
 # Multi-Agent System for Agora
 
-> Status: proposal for discussion and future implementation
+> Status: proposal — PARTIALLY DELIVERED by Agora v2.2.0 (2026-10-31): native
+> Subagents delegate work to isolated conversations (parent-scoped limits,
+> model allowlist in settings, deletion gated off by default); see §15.
+> Manager-mode orchestration (§5.1) and run-time profiles (§6.1) remain open.
 > Scope: native Agora architecture, not a requirement for the current app
 
 ## 1. Purpose
@@ -391,6 +394,17 @@ The current `agora-pro-setup` architecture already provides useful foundations:
 - tool execution contracts and verification;
 - coordinator repository awareness;
 - sequential thinking for complex work.
+
+**Update 2026-10-31 (app v2.2.0):** Agora shipped native **Subagents** — the
+model can delegate work to isolated conversations with parent-scoped limits
+(total/concurrent), a model allowlist configured in the Subagents settings,
+and idle-subagent deletion behind a separate, default-off setting. This
+delivers a bounded version of the manager/worker pattern (§5.1) and context
+isolation (§10) at the app level. Still open: the run-time profile lifecycle
+(§6.1), the capability registry (§6), and native per-generation budgets
+(§2 principle 10). Subagents are unusable until at least one model is added
+in the Subagents settings (observed on v2.2.0).
+
 
 The next practical step does not require pretending that Skills are already independent agents. We can define the contracts and profiles now, test them as one-agent routing, and leave the native MAS runtime as a future Agora feature.
 
