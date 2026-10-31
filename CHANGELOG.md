@@ -20,6 +20,10 @@ the Agora app baseline it was maintained against.
 - docs/16: marked partially delivered — app v2.2.0 Subagents cover bounded
   manager/worker delegation; run-time profiles and the capability registry
   remain open.
+- coding-loop: second-agent review's primary mechanism is a subagent
+  (spawn → wait → delete; verdict in the final message); the one-off
+  scheduled task is demoted to an explicit fallback when subagents are
+  unavailable; review prompt contract covers both variants.
 
 ### Added
 - `ask_user` user-interaction family: new section in `tool-execution-contract`,
