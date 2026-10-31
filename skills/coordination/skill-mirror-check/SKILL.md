@@ -42,9 +42,9 @@ A difference confined to these sections is expected, not drift. A repository fil
 
 ## Workflow
 
-1. `list_skill_files` → the current local catalog; map every local Skill to its repository path `skills/<family>/<name>/SKILL.md`.
+1. `skill_list` → the current local catalog; map every local Skill to its repository path `skills/<family>/<name>/SKILL.md`.
 2. Coverage check: a local Skill without a repository counterpart, or a repository Skill without a local counterpart, is a finding.
-3. For every Skill: fresh `read_skill_file`, write the returned content verbatim into `/home/agora/tmp/mirror-check/<name>.md`, and `diff` it against the repository file.
+3. For every Skill: fresh `skill_read`, write the returned content verbatim into `/home/agora/tmp/mirror-check/<name>.md`, and `diff` it against the repository file.
 4. Classify every difference:
    - **CONTENT DRIFT** — different words or sections outside the overlay areas → blocking finding. Do not auto-fix.
    - **EXPECTED OVERLAY** — differences confined to the overlay table → OK.

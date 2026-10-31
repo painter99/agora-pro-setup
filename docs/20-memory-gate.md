@@ -56,7 +56,7 @@ referenced names (`memory-master-index.md`, `memory-file-operations.md`,
 `active-memory-design.md`) are indistinguishable from Saved Memory filenames by
 naming convention alone.
 
-Fix: the gate sentence now names the tool family explicitly (`read_skill_file`,
+Fix: the gate sentence now names the tool family explicitly (`skill_read` — canonical names since v2.2.0; pre-2.2.0 texts quote `read_skill_file`,
 never memory tools) and states that `memory-master-index` is a Skill in the
 Skill Catalog, not a Saved Memory file. The Skill Catalog paragraph additionally
 states that any Skill name mentioned in the System template is a Skill, read
@@ -72,16 +72,16 @@ The kernel carries a compact version — roughly 100 words, not the v2 wall of
 text:
 
 ```text
-Persistent writes are gated. Before any create_memory_file, edit_memory_file,
-or delete_memory_file call, and before any write to the working state file,
-read — via the Skill file tools (read_skill_file), never via memory tools —
-the Skill memory-master-index (a Skill in the Skill Catalog, not a Saved
-Memory file) and the governance Skill it routes to (Saved Memory:
-memory-file-operations; current status: file-based-active-memory). Choose the
-layer first: durable fact -> Saved Memory, reusable procedure -> Skill,
-current status -> the working state file, transient -> no write. Do not use
-update_active_memory; injected Active Memory is disabled in this instance and
-the working state file replaces it. Prefer a unique patch over replacement;
+Persistent writes are gated. Before any memory_create, memory_edit, or
+memory_delete call, and before any write to the working state file, read — via
+the Skill file tools (skill_read), never via memory tools — the Skill
+memory-master-index (a Skill in the Skill Catalog, not a Saved Memory file)
+and the governance Skill it routes to (Saved Memory: memory-file-operations;
+current status: file-based-active-memory). Choose the layer first: durable
+fact -> Saved Memory, reusable procedure -> Skill, current status -> the
+working state file, transient -> no write. Do not use Active Memory update
+tools; injected Active Memory is disabled in this instance and the working
+state file replaces it. Prefer a unique patch over replacement;
 deletion and full replacement require explicit approval for the exact scope;
 back up before a full replacement. After the write, re-read the result and
 check dependent references, including the Archive Index in the working state
@@ -127,7 +127,7 @@ operator keeping injected Active Memory routes current status there instead.
 After changing the System template, confirm by behavior, not by reading:
 
 1. Ask for a durable fact to be remembered; check that the response shows a
-   `read_memory_file`/`read_skill_file` call on the router **before** the write.
+   `memory_read`/`skill_read` call on the router **before** the write.
 2. Check the attestation line is present.
 3. Check the write landed in the correct layer and that the Archive Index in
    the working state file was updated.

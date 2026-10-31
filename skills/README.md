@@ -4,7 +4,7 @@ This directory contains generic Markdown instructions intended for Agora's nativ
 
 ## Skill model
 
-A Skill is a durable, user-owned instruction file with a name and optional short description. Agora exposes a compact catalog through `{skill_catalog}` when Skill access is enabled. The model reads a relevant Skill body on demand through `read_skill_file`.
+A Skill is a durable, user-owned instruction file with a name and optional short description. Agora exposes a compact catalog through `{skill_catalog}` when Skill access is enabled. The model reads a relevant Skill body on demand through `skill_read`.
 
 There is no Active Skill singleton. Do not create an `active_skill.md`, an active-Skill toggle, or a parallel Skill execution pipeline.
 

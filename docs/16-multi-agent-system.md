@@ -141,10 +141,10 @@ skills:
   - skill-governance
   - memory-audits
 tools:
-  - list_skill_files
-  - read_skill_file
-  - list_memory_files
-  - read_memory_file
+  - skill_list
+  - skill_read
+  - memory_list
+  - memory_read
   - web_fetch
 permissions:
   memory_write: deny

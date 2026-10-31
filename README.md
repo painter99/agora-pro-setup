@@ -125,7 +125,7 @@ System template
 ├── {skill_catalog}
 └── compact authority, tool, and safety rules
         ↓
-read_skill_file for a relevant Skill
+skill_read for a relevant Skill
         ↓
 Memory, web, shell, or other tools
         ↓
