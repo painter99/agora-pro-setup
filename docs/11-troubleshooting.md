@@ -20,6 +20,8 @@ Place `{active_memory}` in **System** and check Access Active Memory. Custom tem
 
 Check selected device, authentication, host-key policy, confirmation setting, and durable `job_id`. Stop retrying structural or permission failures.
 
+After an app upgrade, an SSH device may require re-pinning its host key (the trust-and-pin step in the shell settings); adding a new client key does not resolve the `HostKey has been changed` error — a client key is a client identity, not a host-key pin. Verify the server fingerprints from an independent transport before re-accepting.
+
 ## Repeated failed tool calls
 
 The model repeats a failed call with unchanged parameters, or loops on the same query type. The setup's retry discipline lives in `docs/21-tool-call-budget.md` and `tool-execution-contract`: never repeat an identical failed call, adjust after two consecutive failures, exhaust a query type after three failed rounds. If the model breaks this rule, tighten the System-template sentence — prompt-level enforcement is not guaranteed; a native per-generation budget would be (see `docs/16` §12).

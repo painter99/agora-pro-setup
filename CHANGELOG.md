@@ -7,6 +7,13 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Changed
+- docs/11 troubleshooting: SSH device may require a host-key re-pin (trust-and-pin
+  step) after an app upgrade; adding a client key does not resolve the
+  `HostKey has been changed` error — a client key is a client identity, not a
+  host-key pin. Verify server fingerprints from an independent transport before
+  re-accepting.
+
 ## [1.4.0] - 2026-10-31
 
 Tool-name canonization to the canonical v2.2.0 forms with an app v2.2.x
