@@ -23,4 +23,6 @@ never carry the only copy of one.
 - The kernel stays small but normative.
 - Kernel wording changes are behavior-bearing: they need the same care as
   code changes and a verification pass after deployment.
-- Two kernel rules exist today: the memory gate and the tool-call budget.
+- Kernel rules as of 2026-10-31: the memory gate, the tool-call budget, and
+  the user register (friendly, collegial tone; automatic informal address in
+  T/V languages; the lean ReAct loop remains for agentic runs).
