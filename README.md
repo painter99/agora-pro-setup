@@ -220,8 +220,8 @@ Do not install workflow instructions as Saved Memories merely because both are M
 
 ## Limitations
 
-Behavior depends on the Agora version, enabled permissions, configured devices, provider support, model capability, context budget, and the exact generation path. A prompt cannot guarantee correct behavior. Test this setup with realistic but non-sensitive scenarios before consequential use.
+This setup is maintained against Agora app v2.2.x. Behavior depends on the Agora version, enabled permissions, configured devices, provider support, model capability, context budget, and the exact generation path. A prompt cannot guarantee correct behavior. Test this setup with realistic but non-sensitive scenarios before consequential use.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The license covers this repository only; the Agora application is developed and licensed separately by its author.
+MIT — see [LICENSE](LICENSE). The license covers this repository only; the Agora application is developed and licensed separately by its author (from app v2.2.0 under GPL-3.0; earlier app versions MIT).
