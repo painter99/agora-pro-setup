@@ -14,6 +14,10 @@ the Agora app baseline it was maintained against.
   classification and repair authority.
 
 ### Changed
+- System template: friendly, collegial register as kernel text — an informal
+  user always gets their language's informal second person (imperatives
+  included, never the formal pronoun); agentic runs keep the lean ReAct loop,
+  and the register governs user-facing prose only.
 - Weekly retrospective (v5): self-review of the task's own prompt (at most one
   procedural `SELF:` delta; the permission scope may only be tightened, never
   widened) and a read-only live-task audit (`task-drift` findings:
