@@ -25,6 +25,8 @@ repository-sync tasks.
 - the escalation log, the eval log, previous retrospectives
 - outputs of the scheduled tasks, the observability decision log and dashboard
 - the Skills health state (full-audit baseline and last verdicts)
+- the live task inventory (name, schedule, enabled state, model, prompt), when
+  a task-listing tool is available
 
 ## Workflow
 
@@ -55,11 +57,27 @@ repository-sync tasks.
 7. Send exactly one notification: findings count, delta count, report path.
 8. Deliver a copy of the report and a refreshed copy of the eval log to the
    operator's delivery directory — the only permitted write there.
+9. Self-review of this task's own prompt against the just-finished run: stale
+   or renamed tools, steps that degraded or failed, budget overruns,
+   contradictions, duplication. At most one `SELF:` delta; it may change only
+   procedural aspects (tool names, step order, budgets, report format) — the
+   permission scope (read/write boundaries, approval gates, hard rules) may
+   only be tightened, never widened, and a widening SELF delta is invalid.
+   "No self-delta" is a valid result.
+10. Task audit (when a task-listing tool is available): map every live task
+    (name, schedule, enabled state, model, prompt) and compare against the
+    task cards, the night schedule, and the Skills catalog; findings form the
+    `task-drift` category (card↔instance drift, ghost tasks, schedule
+    collisions, tool-name drift in prompts). Read-only; corrections are
+    proposals — application happens only after operator approval.
 
 ## Hard rules
 
 - No writes to Skills or memory (read-only), no git commit or push, no
   task/loop management, no decision-log status changes.
+- The task audit is read-only: tasks are listed and read, never created,
+  deleted, or modified. Personal data seen in task prompts never reaches the
+  repository; card porting stays with the repository-sync task (anonymized).
 - Shell only for reading, the report write, and the delivery copy; nothing in
   the delivery directory is moved, renamed, or deleted.
 - The live report is written in the operator's language with a mechanical

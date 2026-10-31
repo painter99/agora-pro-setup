@@ -7,7 +7,21 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+- Daily drift-watch task: a fast detector of Skills drift (repository ↔
+  deployed store ↔ remote/local `main`) with a count invariant and a
+  find-only notification policy; the weekly mirror-check remains the
+  classification and repair authority.
+
 ### Changed
+- Weekly retrospective (v5): self-review of the task's own prompt (at most one
+  procedural `SELF:` delta; the permission scope may only be tightened, never
+  widened) and a read-only live-task audit (`task-drift` findings:
+  card↔instance drift, ghost tasks, schedule collisions, tool-name drift in
+  prompts).
+- Weekly stack observability (v8): upstream release check of the agent
+  application (metadata-only API read) against the compatibility baseline; a
+  newer upstream becomes a decision-log proposal, never an autonomous upgrade.
 - docs/11 troubleshooting: SSH device may require a host-key re-pin (trust-and-pin
   step) after an app upgrade; adding a client key does not resolve the
   `HostKey has been changed` error — a client key is a client identity, not a

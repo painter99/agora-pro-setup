@@ -39,7 +39,13 @@ rolling dashboard.
    sweep includes credential hygiene: credential-bearing paths are inspected
    metadata-only (permissions, owner, timestamps — never content), unknown
    files fail closed, and the report is self-scanned for secret patterns
-   before every write.
+   before every write. The sweep also includes an upstream release check: the
+   latest stable release of the agent application's upstream repository is
+   read via its public API (no token, metadata only — version and date) and
+   compared against the compatibility baseline recorded in the repository
+   texts; equality is silence, a newer upstream version becomes a proposal
+   entry in the decision log plus a line in the report and dashboard, and
+   starting an upgrade is always the operator's decision.
 3. Connectivity and integrity audit across the four stack nodes (agent app ↔
    public repository ↔ host machine ↔ operator's app): live MCP endpoints and
    timers, exchange watcher and notification path, the skills-count invariant
