@@ -1,6 +1,6 @@
 ---
 name: memory-master-index
-description: "Routes Active Memory, Saved Memory, conversation recall, and Skills without confusing their roles."
+description: "Routes the working state file (file-based active memory), Saved Memory, conversation recall, and Skills without confusing their roles."
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Catalog description
 
-Routes Active Memory, Saved Memory, conversation recall, and Skills without confusing their roles.
+Routes the working state file (file-based active memory), Saved Memory, conversation recall, and Skills without confusing their roles.
 
 ## Purpose
 
@@ -33,7 +33,7 @@ Govern persistent-information decisions in Agora. This is the entry point; load 
 - **Conversation recall:** prior discussion and one-session context that should not become durable memory.
 - **Skill:** reusable procedure, framework, decision rule, checklist, or output contract. Do not put personal facts in a Skill.
 
-Prefer the cheapest layer that reliably serves the need: Active Memory is expensive recurring context; Saved Memory is the durable archive; Skills are procedures, not information.
+Prefer the cheapest layer that reliably serves the need: the working state file is cheap and verifiable; Saved Memory is the durable archive; Skills are procedures, not information.
 
 ## Dependencies
 
@@ -56,7 +56,7 @@ Use the current Agora tool definitions as authority. Load only what is needed:
 ## Workflow
 
 1. Confirm that a real durable-memory need exists.
-2. Choose Active Memory, Saved Memory, conversation recall, or Skill.
+2. Choose the working state file, Saved Memory, conversation recall, or Skill.
 3. Load the specialized Skill required by the operation.
 4. Check authority, reversibility, permissions, and approval requirements.
 5. Inspect the current state before editing.
