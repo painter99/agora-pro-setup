@@ -35,38 +35,56 @@ rolling dashboard.
 1. Pick the next domain from the rotation state.
 2. Sweep the whole stack (failed units, listeners, firewall, hardening index,
    pending upgrades, disk/RAM, error journal); compare against the baseline and
-   report only deviations and persistent trends; then refresh the baseline.
-3. Deep research on the domain: 3–7 sub-questions (current versions vs ours,
+   report only deviations and persistent trends; then refresh the baseline. The
+   sweep includes credential hygiene: credential-bearing paths are inspected
+   metadata-only (permissions, owner, timestamps — never content), unknown
+   files fail closed, and the report is self-scanned for secret patterns
+   before every write.
+3. Connectivity and integrity audit across the four stack nodes (agent app ↔
+   public repository ↔ host machine ↔ operator's app): live MCP endpoints and
+   timers, exchange watcher and notification path, the skills-count invariant
+   and the latest mirror-check report, repository sync + CI status + manifest
+   freshness, access-integrity spot checks (per-repo deploy keys, SFTP chroot —
+   names and counts only), and the working-state file's existence and
+   freshness (missing or stale = high finding).
+4. Deep research on the domain: 3–7 sub-questions (current versions vs ours,
    newer alternatives, recent advisories, concrete improvements), query
    diversification, source scoring, evidence matrix, explicit "what cannot be
    proven", bounded tool budget. Local versions are verified on the machine,
    never from memory.
-4. Write the report: decision-log status first (what awaits approval, what
+5. Write the report: decision-log status first (what awaits approval, what
    closed since the last run), executive summary, key findings, sweep
    deviations and trends, evidence matrix, unprovable items, ranked
    recommendations with new decision-log IDs, source registry, methodology
    note, next domain.
-5. Update the per-domain state file; rewrite the dashboard (date, next domain,
+6. Update the per-domain state file; rewrite the dashboard (date, next domain,
    top risks, hardening index + trend, recommendations awaiting approval,
    summary of the last report, the skills-health graph from the weekly
    retrospective, and the repo-graph snapshot from the weekly repository
    sync — both local log files; a missing file is reported as no data yet).
-6. Append new decision-log entries as proposals only; never change existing
+7. Append new decision-log entries as proposals only; never change existing
    statuses (operator-only); mark superseded chains in notes.
-7. Copy the report and dashboard to the operator's delivery directory; send
+8. Copy the report and dashboard to the operator's delivery directory; send
    exactly one notification (high priority on security findings).
 
 ## Meta-review
 
 Every 4th completed run adds a KPI section: run completion ratio,
 decision-log status counts, realization ratio, self-improvement eval KPIs from
-the local eval log, and a quality/cost review of the loop itself.
+the local eval log, and a quality/cost review of the loop itself. Every 4th
+run also proposes up to three architectural deltas from the month's evidence
+(sweep deviations, connectivity findings, docs-versus-reality drift), each
+with an effort/benefit estimate; they enter the decision log as proposals.
 
 ## Hard rules
 
 - Read-only on the system except: the state directory, the two delivery copies,
   one notification. No installs, upgrades, configuration changes, restarts,
   deletion, git push, printing, e-mail, or task management.
+- Credential-bearing paths are metadata-only; the hard blocklist (key
+  material, credential stores, token configurations, environment files) is
+  never read; the report is self-scanned for secret patterns before every
+  write.
 - Decision-log statuses are changed only by the operator.
 - Without web tools: sweep + dashboard only, do not advance the rotation,
   report the limitation.

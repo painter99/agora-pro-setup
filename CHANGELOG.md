@@ -29,6 +29,10 @@ the Agora app baseline it was maintained against.
 - `ask_user` user-interaction family: new section in `tool-execution-contract`,
   new section in docs/8, capability rows in `agora-coordinator` (ask_user, todo
   tools, subagents).
+- Credential hygiene and connectivity audit in the weekly observability loop:
+  docs/8 section (metadata-only credential inspection, hard blocklist, report
+  self-scan) and task-card additions (connectivity step across four stack
+  nodes, architectural deltas in the meta-review).
 
 - New Skill `skills/memory-governance/file-based-active-memory/SKILL.md`: content
   policy and read/write discipline for the working state file that replaces
