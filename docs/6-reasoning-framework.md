@@ -42,7 +42,7 @@ The **Assistant** template normally contains only its single structural `{prompt
 8. Answer with facts, estimates, assumptions, recommendations, and limitations separated where useful.
 ```
 
-The Skill Catalog is discovery. `read_skill_file` is loading. The Skill body is execution guidance. Tool-result inspection is verification. These are separate stages.
+The Skill Catalog is discovery. `skill_read` is loading. The Skill body is execution guidance. Tool-result inspection is verification. These are separate stages.
 
 ## Adaptive reasoning levels
 

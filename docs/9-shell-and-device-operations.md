@@ -4,7 +4,7 @@ Agora may expose Local Sandbox, Conch, SSH, and device-file tools depending on b
 
 ## Device selection
 
-Use `list_shells` when the target is ambiguous. Do not assume Local Sandbox is the intended device.
+Use `shell_list` when the target is ambiguous. Do not assume Local Sandbox is the intended device.
 
 ## Conch and SSH
 

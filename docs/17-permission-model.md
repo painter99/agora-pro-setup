@@ -28,12 +28,12 @@ A single agent must decide, for every action:
 
 | Class | Meaning | Examples |
 |---|---|---|
-| **Observe** | Read current configuration, Skills, memory, conversations, tool availability | `list_skill_files`, `read_memory_file`, `list_shells` |
+| **Observe** | Read current configuration, Skills, memory, conversations, tool availability | `skill_list`, `memory_read`, `shell_list` |
 | **Retrieve** | Read external sources | `web_search`, `web_fetch`, conversation search, MCP read tools |
 | **Transform** | Draft, summarize, analyze, calculate, generate proposals | writing a plan, refactoring text, computing a comparison |
 | **Modify** | Edit Skills, memory, files, local configuration | `create/edit memory file`, sandbox `file_write`, shell `git commit` (local) |
 | **External effect** | Reach beyond the user's own environment | push, publish, send, purchase, delete remote data, system-altering commands |
-| **Orchestrate** | Create or change automation, delegate, schedule | `create_task`, `start_loop`, recursive Task creation |
+| **Orchestrate** | Create or change automation, delegate, schedule | `task_create`, `loop_start`, recursive Task creation |
 
 ## Approval bands
 

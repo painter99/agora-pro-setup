@@ -7,7 +7,18 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Changed
+- Canonical tool names: repository texts updated from pre-2.2.0 legacy names
+  (`read_skill_file`-style) to the canonical v2.2.0 forms (`memory_*`, `skill_*`,
+  `task_*`, `conversation_*`, `shell_*`); historical mentions kept verbatim
+  (docs/20 version table and incident record).
+- `update_active_memory` references resolved: no Active Memory update tool
+  exists from v2.2.0 (file-based AM per ADR-0017).
+
 ### Added
+- `ask_user` user-interaction family: new section in `tool-execution-contract`,
+  new section in docs/8, capability rows in `agora-coordinator` (ask_user, todo
+  tools, subagents).
 
 - New Skill `skills/memory-governance/file-based-active-memory/SKILL.md`: content
   policy and read/write discipline for the working state file that replaces

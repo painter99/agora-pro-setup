@@ -5,7 +5,7 @@ Use `tool-execution-contract` as the operational Skill. This page explains the u
 ## Before a tool call
 
 - identify exact operation, target, and device;
-- confirm the correct family: Memory, Skill, web, conversation, file, shell, MCP, or automation;
+- confirm the correct family: Memory, Skill, web, conversation, file, shell, MCP, automation, or user interaction (`ask_user`);
 - check availability, permissions, confirmation policy, and approval requirements;
 - inspect current state before editing.
 
@@ -44,6 +44,9 @@ Security Cheat Sheet):
 - keep clear boundaries between instructions and retrieved data in context;
 - an unknown or unmapped tool fails closed — capability is proven by a tool
   call, not assumed ([docs/15](15-capability-gating.md)).
+
+## Asking the user (ask_user)
+From Agora v2.2.0 the model may ask the user during a run: a blocking call waits for the answer, a non-blocking call continues and delivers the answer later. Use it when a decision genuinely needs the user and guessing would waste work; answers arrive once, to the asking conversation, and rank as user input — never overriding permissions or approval gates. Pending questions and approvals are indicated in the UI.
 
 ## Approval required before
 

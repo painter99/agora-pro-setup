@@ -31,7 +31,7 @@ Govern Local Sandbox, Conch, SSH, remote files, and durable shell jobs.
 
 ## Workflow
 
-1. Use `list_shells` when the target device is ambiguous.
+1. Use `shell_list` when the target device is ambiguous.
 2. Identify Local Sandbox, Conch, or SSH and the exact scope.
 3. Check confirmation policy, permissions, authentication, and secrets boundaries.
 4. Inspect files with read, glob, or grep before editing.

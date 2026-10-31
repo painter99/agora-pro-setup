@@ -2,7 +2,7 @@
 
 ## Skill does not load
 
-Check Skill access, the saved file, short catalog description, exact flat name, `{skill_catalog}` in System, and whether the model actually called `read_skill_file`.
+Check Skill access, the saved file, short catalog description, exact flat name, `{skill_catalog}` in System, and whether the model actually called `skill_read`.
 
 ## Wrong memory layer is used
 

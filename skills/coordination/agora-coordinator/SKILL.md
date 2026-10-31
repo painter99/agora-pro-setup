@@ -78,7 +78,7 @@ Repository access is read-only and limited to the two repositories above. The co
 ## Workflow
 
 1. **Bootstrap** (start of every run, before any planning):
-   - `list_skill_files` → current catalog;
+   - `skill_list` → current catalog;
    - read relevant Skills including this file and `skill-governance.md`;
    - verify tool availability with real read-only calls (memory read, tasks tools, MCP, web) — never from declarations;
    - if a tool is missing, mark that area UNAVAILABLE, claim no actions in it, continue with what is available;
@@ -123,6 +123,9 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | MCP | `[fill per runtime detection]` | Availability is per server and per tool |
 | Web / repository checks | `[fill after verification]` | Read-only, two whitelisted repositories, URL-level verification; only during full audits or on explicit request |
 | GitHub write | ❌ prohibited | No commits, pushes, issues, PRs, releases, or repository changes |
+| User interaction (ask_user) | ✅ verified 2026-10-31 (chat run, paged card) | Blocking/non-blocking; answers delivered once, to the asking conversation |
+| Todo list (todo_read/todo_update) | ✅ verified 2026-10-31 (chat run) | Shared across conversations; survives restarts |
+| Subagents (agent_spawn et al.) | ⚠️ present, unusable until a model is added | Subagents settings: add models first |
 
 **Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table.
 

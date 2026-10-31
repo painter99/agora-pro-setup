@@ -46,35 +46,36 @@ Help select the correct Memory, conversation-recall, or Skill operation without 
 Memory tools may include:
 
 ```text
-list_memory_files
-read_memory_file
-create_memory_file
-edit_memory_file
-delete_memory_file
-update_active_memory
+memory_list
+memory_read
+memory_create
+memory_edit
+memory_delete
 ```
 
-An instance may disable injected Active Memory and keep a file-based working
-state file instead; `update_active_memory` then remains unused (see
+From v2.2.0 no Active Memory update tool exists. An instance may disable
+injected Active Memory and keep a file-based working state file instead (see
 `file-based-active-memory`).
 
 Conversation recall tools may include:
 
 ```text
-search_conversations
-list_conversations
-read_conversation
+conversation_search
+conversation_list
+conversation_read
 ```
 
 Skill tools are a separate family:
 
 ```text
-list_skill_files
-read_skill_file
-create_skill_file
-edit_skill_file
-delete_skill_file
+skill_list
+skill_read
+skill_create
+skill_edit
+skill_delete
 ```
+
+Canonical names (v2.2.0+): built-in tools use the short `memory_*`/`skill_*`/`task_*`/`conversation_*`/`shell_*` forms; texts written before v2.2.0 quote legacy `*_file`-style names for the same families — new texts use canonical forms and verify against the live tool list.
 
 The wording "may include" is deliberate: the current generation's tool list and the official Agora user manual override this reference whenever they differ.
 

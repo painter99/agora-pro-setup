@@ -22,7 +22,7 @@ Verification          inspection, approval, and result reporting
 User message
 → User template ({sent_date}, {sent_time}, {prompt})
 → System template ({skill_catalog}, kernel; file-based AM via file tools)
-→ relevant Skill read through `read_skill_file`
+→ relevant Skill read through `skill_read`
 → required Memory or external tools
 → result verification
 → Assistant template ({prompt})
