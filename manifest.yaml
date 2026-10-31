@@ -17,7 +17,7 @@
 
 meta:
   inventory_version: 3
-  last_verified: "2026-10-30"
+  last_verified: "2026-10-31"
 
 components:
   # --- deployed into the Agora app ---
@@ -43,9 +43,9 @@ components:
     target: "Agora > Active Memory (copy, then customize)"
   - name: skill-set
     kind: skill-set
-    # 28 skills; one directory per Skill, Agent Skills layout
+    # 25 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 28
+    files: 25
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set
