@@ -1,14 +1,14 @@
 # Memory Governance
 
-This repository uses a hybrid procedure architecture for Agora memory work. The goal is to keep reusable instructions in Skills while keeping personal and project information in Active Memory or Saved Memory.
+This repository uses a hybrid procedure architecture for Agora memory work. The goal is to keep reusable instructions in Skills while keeping personal and project information in the working state file or Saved Memory.
 
 ## Layer model
 
 ```text
 System template
   = permanent authority, safety, routing, and tool-use rules
-Active Memory
-  = compact current context injected into every request
+File-based active memory
+  = compact current context in a working state file
 Saved Memory
   = durable personal/project information and long-form references
 Conversation recall
@@ -26,17 +26,16 @@ Import these Markdown files individually into Agora's native Skills. Agora expos
 | Skill | Role |
 |---|---|
 | `memory-master-index` | Entry router; selects the correct layer and specialized procedure. |
-| `active-memory-design` | Decides what belongs in Active Memory and controls size/duplication. |
-| `active-memory-authority` | Controls authorization, patch versus replace, recovery, and verification for AM. |
+| `file-based-active-memory` | Decides what belongs in the working state file and controls size, R/W discipline, and authority. |
 | `memory-file-operations` | Handles precise Saved Memory creation, patching, rename/archive, and deletion gates. |
 | `memory-audits` | Audits stale data, contradictions, references, duplication, bloat, and failure modes. |
 | `tool-execution-contract` | Shared inspection, approval, retry, and verification contract for all tool domains. |
 
 ## Routing examples
 
-- **Where should a durable fact go?** Read `memory-master-index`, then `active-memory-design` if placement is unclear.
+- **Where should a durable fact go?** Read `memory-master-index`, then `file-based-active-memory` if placement is unclear.
 - **Patch a Saved Memory file:** Read `memory-file-operations`; check the tool list in the current generation and the official Agora user manual when tool names or arguments are uncertain.
-- **Change Active Memory:** Read `active-memory-design` and `active-memory-authority`.
+- **Change the working state file:** Read `file-based-active-memory`.
 - **Audit the memory layer:** Read `memory-audits`, plus the relevant placement/operation Skill for approved corrections.
 - **Use a tool:** Read `tool-execution-contract` and the domain-specific Skill before acting.
 
@@ -92,8 +91,8 @@ The earlier memory-management material provided valuable operational detail: uni
 
 ## Installation checklist
 
-- Import the seven relevant files into Agora Skills, preserving each exact filename and catalog description.
-- Ensure `{active_memory}` and `{skill_catalog}` are present in the System template.
-- Keep personal facts in Active Memory/Saved Memory, not in the repository's generic Skills.
-- Test harmless scenarios: read, unique patch, failed/non-unique patch, AM authorization, audit report, and a blocked delete.
+- Import the memory-governance Skills into Agora, preserving each exact filename and catalog description.
+- Ensure `{skill_catalog}` is present in the System template and the file-based-AM pointer sentence names the working state file.
+- Keep personal facts in the working state file or Saved Memory, not in the repository's generic Skills.
+- Test harmless scenarios: read, unique patch, failed/non-unique patch, state-file authorization, audit report, and a blocked delete.
 - Review the actual tool output and enabled permissions; this documentation never outranks live application behavior.

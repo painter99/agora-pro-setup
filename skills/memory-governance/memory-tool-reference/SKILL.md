@@ -29,17 +29,16 @@ Help select the correct Memory, conversation-recall, or Skill operation without 
 
 - `memory-master-index` — routing between memory layers;
 - `memory-file-operations` — Saved Memory file operations;
-- `active-memory-design` — Active Memory placement and size;
-- `active-memory-authority` — AM authorization and approval;
+- `file-based-active-memory` — working state file placement, size, and R/W discipline;
 - `tool-execution-contract` — shared inspection and verification contract.
 
 ## Workflow
 
-1. Identify the operation family: Saved Memory file, Active Memory, conversation recall, or Skill.
+1. Identify the operation family: Saved Memory file, working state file, conversation recall, or Skill.
 2. Check the current tool definitions — they are the authority; this reference lists the expected interface, not a guarantee.
 3. Select the smallest tool that performs the operation.
 4. Check permissions and the confirmation policy before any write or destructive call.
-5. Route the procedure to the domain Skill (`memory-file-operations`, `active-memory-design`, `active-memory-authority`); this reference does not replace them.
+5. Route the procedure to the domain Skill (`memory-file-operations`, `file-based-active-memory`); this reference does not replace them.
 6. Verify the result by reading back the affected state.
 
 ### Expected tool families
@@ -54,6 +53,10 @@ edit_memory_file
 delete_memory_file
 update_active_memory
 ```
+
+An instance may disable injected Active Memory and keep a file-based working
+state file instead; `update_active_memory` then remains unused (see
+`file-based-active-memory`).
 
 Conversation recall tools may include:
 

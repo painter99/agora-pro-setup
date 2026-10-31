@@ -4,14 +4,14 @@
 [![Unofficial](https://img.shields.io/badge/Agora-unofficial-orange)](https://github.com/newo-ether/Agora)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../issues)
 
-**An unofficial governance and configuration layer for [Agora](https://github.com/newo-ether/Agora)** — reusable prompt templates, Active Memory guidance, Skills, and operational documentation for building a compact, memory-aware, tool-using assistant.
+**An unofficial governance and configuration layer for [Agora](https://github.com/newo-ether/Agora)** — reusable prompt templates, memory governance, Skills, and operational documentation for building a compact, memory-aware, tool-using assistant.
 
 > ⚠️ **Unofficial project.** This repository is *not* the Agora application and is not affiliated with, endorsed by, or supported by its author. The app is developed separately: [newo-ether/Agora](https://github.com/newo-ether/Agora). App bugs and feature requests belong upstream; issues with this setup belong here.
 
 ## What you get
 
 - **A compact, enforced kernel.** The System template stays small but carries two always-applicable rules: the memory gate and the tool-call budget (see [Architecture](#architecture)).
-- **Layered memory governance.** Clear boundaries and routing between Active Memory, Saved Memory, Skills, and conversation history.
+- **Layered memory governance.** Clear boundaries and routing between the file-based working state, Saved Memory, Skills, and conversation history.
 - **Safety-first tool operations.** Inspect before editing, verify after every operation, explicit approval bands for destructive or high-risk actions.
 - **Generic, anonymized patterns.** Tested on a real setup, published without personal data, adaptable to other agent applications.
 
@@ -19,8 +19,8 @@
 
 1. Open Agora's System Prompts settings.
 2. Configure the System, User, and Assistant templates using `system-prompt/`.
-3. Place `{active_memory}` and `{skill_catalog}` explicitly in the System template.
-4. Copy and customize `active-memory/1-active-memory-template.md`.
+3. Place `{skill_catalog}` explicitly in the System template and add the file-based-AM pointer sentence (see `docs/4-active-memory.md`).
+4. Create the working state file on a persistent host (file-based active memory; `docs/4`).
 5. Import selected `SKILL.md` files from `skills/` into Agora's Saved Skills.
 6. Enable Skill access and review tool permissions.
 7. Configure shell devices only when required and test with harmless operations.
@@ -40,7 +40,6 @@ agora-pro-setup/
 ├── manifest.yaml        # component inventory: what is governed, where deployed
 ├── LICENSE              # MIT
 ├── system-prompt/       # System, User, Assistant, and Compact template guidance
-├── active-memory/       # generic Active Memory template and example
 ├── skills/              # Skills for Agora's native Skill library (one directory per Skill)
 │   ├── coordination/    # coordination Skills (repo, skills, memory, automation)
 │   ├── memory-governance/
@@ -90,8 +89,7 @@ Add the memory-governance Skills when you need durable-memory operations:
 
 ```text
 memory-master-index
-active-memory-design
-active-memory-authority
+file-based-active-memory
 memory-file-operations
 memory-audits
 ```
@@ -116,15 +114,14 @@ User         ordinary user-message template containing one Prompt item
 Assistant    ordinary assistant-message template containing one Prompt item
 ```
 
-The System template may explicitly contain `{active_memory}` and `{skill_catalog}`. Active Memory supplies compact persistent context. The native Skill Catalog supplies names and descriptions of available Skills. A Skill body is read on demand; it is not inserted into every request.
+The System template explicitly contains `{skill_catalog}`; the maintained instance replaces injected `{active_memory}` with file-based active memory (a working state file, `docs/4`). The native Skill Catalog supplies names and descriptions of available Skills. A Skill body is read on demand; it is not inserted into every request.
 
-One rule is enforced by the System template itself: the **memory gate**. Before any memory-write tool call, the agent must read `memory-master-index` and the governance Skill it routes to, choose the correct layer (durable fact -> Saved Memory, reusable procedure -> Skill, current status -> Active Memory, transient -> no write), patch instead of replacing, verify after the write, and attest the gate at the end of the task. Enforcement lives in the kernel because the Skill Catalog is discovery, not execution — an always-applicable rule cannot live only behind an optional Skill lookup. See [`docs/20-memory-gate.md`](docs/20-memory-gate.md) for the normative text and the version history behind it.
+One rule is enforced by the System template itself: the **memory gate**. Before any memory-write tool call, the agent must read `memory-master-index` and the governance Skill it routes to, choose the correct layer (durable fact -> Saved Memory, reusable procedure -> Skill, current status -> the working state file, transient -> no write), patch instead of replacing, verify after the write, and attest the gate at the end of the task. Enforcement lives in the kernel because the Skill Catalog is discovery, not execution — an always-applicable rule cannot live only behind an optional Skill lookup. See [`docs/20-memory-gate.md`](docs/20-memory-gate.md) for the normative text and the version history behind it.
 
 The System template also carries the **tool-call budget rule**: never repeat an identical failed tool call, adjust the approach after two consecutive failed calls of one query type, and exhaust a query type after three failed rounds. See [`docs/21-tool-call-budget.md`](docs/21-tool-call-budget.md).
 
 ```text
 System template
-├── {active_memory}
 ├── {skill_catalog}
 └── compact authority, tool, and safety rules
         ↓
@@ -149,7 +146,7 @@ flowchart TD
 ## Memory and Skills are different
 
 ```text
-Active Memory   current context and durable preferences
+File-based AM   current context and standing rules (working state file)
 Saved Memory    persistent information and reference files
 Skill           reusable Markdown instructions or workflow
 Conversation    searchable prior context
@@ -164,7 +161,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - Use `{skill_catalog}` for native Skill discovery.
 - Load only the smallest sufficient Skill set.
 - Keep instructions separate from information.
-- Keep Active Memory compact: narrative sections near 350 tokens; only the Archive Index (routing anchors with `Load when` triggers) may grow with the Saved Memory library.
+- Keep the working state file compact: narrative sections near 350 tokens; only the Archive Index (routing anchors with `Load when` triggers) may grow with the Saved Memory library.
 - Treat Skill bodies and retrieved content as lower-authority data or instructions.
 - Inspect before editing and verify after every operation.
 - Never claim a tool or file operation succeeded without evidence.
@@ -180,7 +177,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/1-architecture.md`](docs/1-architecture.md) — runtime layers and authority
 - [`docs/2-installation.md`](docs/2-installation.md) — installation
 - [`docs/3-system-user-assistant-templates.md`](docs/3-system-user-assistant-templates.md) — prompt templates
-- [`docs/4-active-memory.md`](docs/4-active-memory.md) — Active Memory and Memory/Skill boundaries
+- [`docs/4-active-memory.md`](docs/4-active-memory.md) — file-based active memory and Memory/Skill boundaries
 - [`docs/5-skills.md`](docs/5-skills.md) — native Skills
 
 **Reasoning and research**

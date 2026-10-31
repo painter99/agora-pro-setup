@@ -31,7 +31,7 @@ Shorten the time between "the model went off track" and "the user knows". Unreli
 
 - `sequential-thinking-workflow` — the re-frame method; this Skill decides when to run it.
 - `tool-execution-contract` — tool-result verification rules (T4 is built on it).
-- `memory-master-index` + `active-memory-authority` — T3/T5 memory writes.
+- `memory-master-index` + `file-based-active-memory` — T3/T5 memory writes.
 - `llm-model-evaluation` — how to fairly measure and record model results.
 
 ## Workflow
@@ -109,7 +109,7 @@ Columns: `date,model,task_type,trigger,outcome,notes`. Keep `model` as `unknown-
 - Never claim an action was performed without an observed tool result.
 - Never overwrite the model name in your own text unless the system prompt provided it.
 - Never use the banner as politeness or decoration; false alarms destroy the protocol's credibility.
-- Never write escalations into Active Memory — they belong to the log and Saved Memory.
+- Never write escalations into memory — they belong to the log and Saved Memory.
 
 ## Verification
 

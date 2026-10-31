@@ -8,7 +8,7 @@ Agora Pro Setup is a public configuration collection for the Agora AI applicatio
 System template       permanent routing, authority, and safety
 User template         ordinary user-message structure
 Assistant template    ordinary assistant-message structure
-Active Memory         compact current context via {active_memory}
+File-based AM         compact current context via the working state file
 Skill Catalog         native Skill discovery via {skill_catalog}
 Skills                reusable procedures read on demand
 Saved Memories        persistent information and references
@@ -21,7 +21,7 @@ Verification          inspection, approval, and result reporting
 ```text
 User message
 → User template ({sent_date}, {sent_time}, {prompt})
-→ System template ({active_memory}, {skill_catalog}, kernel)
+→ System template ({skill_catalog}, kernel; file-based AM via file tools)
 → relevant Skill read through `read_skill_file`
 → required Memory or external tools
 → result verification
@@ -31,8 +31,8 @@ User message
 
 ## Core distinctions
 
-- A System template is not Active Memory.
-- Active Memory is not Saved Memory.
+- A System template is not memory.
+- File-based AM (working state file) is not Saved Memory.
 - A Skill is not a Saved Memory.
 - Memory-governance Skills define procedures; they do not contain the user's personal memory.
 - Skill discovery is not Skill execution.

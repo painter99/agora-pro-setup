@@ -76,7 +76,7 @@ Naturalness of language and tone; empathy/mentoring; interpretation accuracy; co
 
 - Every claim about a model has a source: own test / benchmark / vendor — labeled.
 - Test scenarios ran under identical conditions.
-- Results are recorded in the designated evaluation memory file, not in Active Memory.
+- Results are recorded in the designated evaluation memory file, not in the working state file.
 
 ## Output contract
 

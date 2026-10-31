@@ -16,10 +16,10 @@ A domain is described by five layers. Most domains need only two or three.
 | Layer | Where it lives | Content | Optional? |
 |---|---|---|---|
 | **Domain Skill(s)** | Saved Skills | Reusable procedure for the domain's recurring work (see `skills/skill-format.md`) | only if the domain has a repeatable procedure |
-| **Active Memory block** | Active Memory | Compact current status, priorities, constraints (2–6 lines) | no — this is the routing anchor |
+| **File-based AM block** | working state file | Compact current status, priorities, constraints (2–6 lines) | no — this is the routing anchor |
 | **Saved Memory file(s)** | Saved Memory | Durable facts, decisions, references, history | when durable knowledge accumulates |
 | **Permission overrides** | noted in the domain Skill | Stricter approval bands per class (see `docs/17-permission-model.md`); stricter only, never laxer | only if the domain carries elevated risk |
-| **Catalog routing hints** | AM "Optional Saved Memory References" + Skill descriptions | Which file/Skill loads when | no |
+| **Catalog routing hints** | state-file reference list + Skill descriptions | Which file/Skill loads when | no |
 
 ## What must NOT go into a domain
 
@@ -32,15 +32,15 @@ A domain is described by five layers. Most domains need only two or three.
 
 1. **Classify.** What type of work recurs here? Does it need a procedure (Skill)
    or only knowledge (Memory)? Decision rule from `docs/4-active-memory.md`:
-   procedure → Skill; durable fact → Saved Memory; current status → AM.
-2. **Write the Active Memory block.** Two to six lines: status, priorities,
+   procedure → Skill; durable fact → Saved Memory; current status → file-based AM.
+2. **Write the file-based AM block** (in the working state file). Two to six lines: status, priorities,
    constraints. This is what makes the domain routable in ordinary conversation.
 3. **Write the domain Skill** (if needed) using `skills/skill-format.md`.
    Declare dependencies (usually `tool-execution-contract`; add
    `multi-source-research` or `shell-and-device-operations` when relevant).
 4. **Assign permission overrides** (if needed) as a small table in the Skill:
    capability class → stricter band, with one-line justification.
-5. **Register references.** Add the Saved Memory files to the AM reference list
+5. **Register references.** Add the Saved Memory files to the state-file reference list
    with a "Load when" hint. Keep the catalog description concrete.
 6. **Verify.** Ask a harmless in-domain question and confirm the right Skill
    gets loaded and the right Memory referenced; check that no other domain's
@@ -50,7 +50,7 @@ A domain is described by five layers. Most domains need only two or three.
 
 Domain: *Home brewing*.
 
-- **AM block:**
+- **State-file block:**
   `### Home brewing — equipment: 20 l kettle, fermentation fridge; active
   batch: none; constraint: budget ~50 EUR/batch.`
 - **Skill:** `brewing-batch-log.md` — procedure for planning and logging a

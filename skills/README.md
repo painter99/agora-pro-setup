@@ -12,7 +12,7 @@ There is no Active Skill singleton. Do not create an `active_skill.md`, an activ
 
 - Skill: how to perform a recurring task.
 - Saved Memory: information about a person, project, decision, or reference subject.
-- Active Memory: compact context injected into requests.
+- File-based active memory: compact current status in a working state file on the instance host.
 
 ## Installation
 

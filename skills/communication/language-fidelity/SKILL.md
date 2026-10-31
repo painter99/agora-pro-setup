@@ -97,7 +97,7 @@ Reasoning tokens are billed as output; the reasoning language is a direct cost i
 - Never claim a check was performed if the detector did not run and the text was not read.
 - Never persist text with foreign-script characters or knowingly malformed forms.
 - Never switch languages mid-sentence or use foreign phrases as style.
-- Never move findings into Active Memory — they belong to the escalation log and Saved Memory.
+- Never move findings into memory — they belong to the escalation log and Saved Memory.
 
 ## Verification
 

@@ -18,7 +18,7 @@ repository contains and *how* to install it.
 │ 3. Skills — procedures loaded on demand                      │
 │    how to work; no personal facts                            │
 ├──────────────────────────────────────────────────────────────┤
-│ 4. Memory — Active (current context) + Saved (durable facts) │
+│ 4. Memory — file-based AM (current) + Saved (durable facts)  │
 ├──────────────────────────────────────────────────────────────┤
 │ 5. Domains — packages of 3 + 4 for life areas                │
 ├──────────────────────────────────────────────────────────────┤
@@ -39,7 +39,8 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 2. **Progressive disclosure.** The kernel stays compact; Skills load only when
    relevant. Catalog discovery ≠ Skill loading ≠ execution.
 3. **Instructions ≠ information.** Procedures are Skills; facts are Memory;
-   current status is Active Memory. Mixing them is the main source of drift.
+   current status is the file-based AM working state file. Mixing them is the
+   main source of drift.
 4. **Runtime evidence wins.** Settings screens and documentation prove nothing;
    a capability exists only when a tool call proves it (`docs/15`).
 5. **Permission floor.** Every layer may tighten approval bands, never loosen
@@ -83,7 +84,7 @@ New content
 ├─ A durable fact, decision, or reference?
 │   → Saved Memory
 ├─ Current status / priority / constraint?
-│   → Active Memory (2–6 lines)
+│   → file-based AM (working state file, 2–6 lines)
 ├─ Recurring work in a specific life area?
 │   → Domain package (docs/18)
 ├─ An architectural decision worth recording?

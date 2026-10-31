@@ -38,7 +38,7 @@ Split the concern by layer instead of choosing one:
 |---|---|---|
 | System template (kernel) | **the trigger and the obligation**: which tool calls are gated, that the routing Skill must be read first, that writes must be verified, that the gate must be attested | always injected; cannot be skipped |
 | `memory-master-index` | **the decision guide**: which layer, which specialized Skill | procedure detail, loaded on demand |
-| `active-memory-design`, `active-memory-authority`, `memory-file-operations`, `memory-audits` | **the specialized procedures** | progressive disclosure |
+| `file-based-active-memory`, `memory-file-operations`, `memory-audits` | **the specialized procedures** | progressive disclosure |
 | `tool-execution-contract` | inspection, approval, retry, verification | shared safety floor |
 | `docs/17-permission-model.md` | memory writes = **Modify** class, band B/C | normative approval bands |
 
@@ -72,19 +72,22 @@ The kernel carries a compact version — roughly 100 words, not the v2 wall of
 text:
 
 ```text
-Memory writes are gated. Before any create_memory_file, edit_memory_file,
-delete_memory_file, or update_active_memory call, read — via the Skill file
-tools (read_skill_file), never via memory tools — the Skill
-memory-master-index (a Skill in the Skill Catalog, not a Saved Memory file)
-and the governance Skill it routes to (Active Memory: active-memory-design +
-active-memory-authority; Saved Memory: memory-file-operations). Choose the
-layer first: durable fact -> Saved Memory, reusable procedure -> Skill, current
-status -> Active Memory, transient -> no write. Prefer a unique patch over
-replacement; deletion and full replacement require explicit approval for the
-exact scope. After the write, re-read the result and check dependent references,
-including the Active Memory Archive Index. If memory tools are unavailable, say
-so instead of simulating a write. When this gate applied, end the task with one
-line stating that it was loaded and followed.
+Persistent writes are gated. Before any create_memory_file, edit_memory_file,
+or delete_memory_file call, and before any write to the working state file,
+read — via the Skill file tools (read_skill_file), never via memory tools —
+the Skill memory-master-index (a Skill in the Skill Catalog, not a Saved
+Memory file) and the governance Skill it routes to (Saved Memory:
+memory-file-operations; current status: file-based-active-memory). Choose the
+layer first: durable fact -> Saved Memory, reusable procedure -> Skill,
+current status -> the working state file, transient -> no write. Do not use
+update_active_memory; injected Active Memory is disabled in this instance and
+the working state file replaces it. Prefer a unique patch over replacement;
+deletion and full replacement require explicit approval for the exact scope;
+back up before a full replacement. After the write, re-read the result and
+check dependent references, including the Archive Index in the working state
+file. If tools are unavailable, say so instead of simulating a write. When
+this gate applied, end the task with one line stating that it was loaded and
+followed.
 ```
 
 Design constraints honored:
@@ -96,7 +99,17 @@ Design constraints honored:
   patches, band C for deletion/full replacement.
 - **Observable:** the attestation line makes a skipped gate visible to the user.
 - **Index-coupled:** every new Saved Memory file must be reachable from the
-  Active Memory Archive Index, otherwise it is invisible to future sessions.
+  Archive Index in the working state file, otherwise it is invisible to future
+  sessions.
+
+## Instance variant (2026-10-31): file-based active memory
+
+The maintained instance replaced injected Active Memory with a **working state
+file** (file-based active memory): current-status writes route to file tools,
+`file-based-active-memory` is the routing Skill, and the retired
+`active-memory-design`/`active-memory-authority` Skills moved their invariants
+there (ADR-0017, `docs/4`). The kernel sentence above is the instance form; an
+operator keeping injected Active Memory routes current status there instead.
 
 ## What was deliberately NOT restored
 
@@ -116,8 +129,8 @@ After changing the System template, confirm by behavior, not by reading:
 1. Ask for a durable fact to be remembered; check that the response shows a
    `read_memory_file`/`read_skill_file` call on the router **before** the write.
 2. Check the attestation line is present.
-3. Check the write landed in the correct layer and that the Archive Index was
-   updated.
+3. Check the write landed in the correct layer and that the Archive Index in
+   the working state file was updated.
 4. Ask a transient question; confirm **no** memory write happens (the gate must
    not create write pressure).
 

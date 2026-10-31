@@ -9,6 +9,10 @@ the Agora app baseline it was maintained against.
 
 ### Added
 
+- New Skill `skills/memory-governance/file-based-active-memory/SKILL.md`: content
+  policy and read/write discipline for the working state file that replaces
+  injected Active Memory (file-based active memory); ADR-0017; docs/4 rewritten
+  as the file-based-AM design; manifest skill-set 25→24, decision-records 17→18.
 - New Skill `skills/coding/coding-loop/SKILL.md`: goal-based coding loop (spec
   gate, small increments, tested steps, second-agent review, bounded fix
   rounds, anti-reward-hacking guards). New `coding` family with Treat line,
@@ -29,6 +33,10 @@ the Agora app baseline it was maintained against.
 
 ### Changed
 
+- Memory gate (kernel sentence, docs/20) and the memory-governance Skills:
+  current-status writes route to file tools via `file-based-active-memory`; the
+  maintained instance no longer uses injected Active Memory
+  (`update_active_memory` unused); docs/1, 2, 3, 5, 6, 13, 18, 22, 30 aligned.
 - coding-loop Skill hardening from the first dogfood run (D-20261030-04):
   spec gate now requires a test path per behavior and malformed-input
   coverage; reviewer mechanics add the shell-time rule for the cron (`date`,
@@ -43,6 +51,10 @@ the Agora app baseline it was maintained against.
 
 ### Removed
 
+- Retired Skills `active-memory-design` and `active-memory-authority` (the
+  file-based-AM switch; their invariants moved into `file-based-active-memory`).
+- Removed the `active-memory/` template and example (injected-AM templates;
+  content recoverable from git history).
 - Removed the repo-only `skills/examples/` family (two minimal format demos
   and the event photo-sharing operator template): zero local use, removes
   the 28-vs-25 skill-count mismatch and the weekly mirror-check repo-only

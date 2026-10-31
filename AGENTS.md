@@ -17,7 +17,7 @@ maintained against observed reality (see `docs/28-update-observability.md`).
 
 A documentation-and-governance layer for the
 [Agora](https://github.com/newo-ether/Agora) application: prompt templates,
-Active Memory guidance, Skills, operational documentation, and task cards.
+memory governance, Skills, operational documentation, and task cards.
 There is no build. Content changes are Markdown-only; `scripts/` contains
 validation tooling, and CI runs the same checks on every push (see Validation).
 
@@ -30,7 +30,6 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 - `skills/` — Skills (reusable procedures), one directory per Skill with a
   `SKILL.md` inside; format defined in `skills/skill-format.md`.
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
-- `active-memory/` — generic Active Memory template and example.
 - `tasks/` — task cards (genericized descriptions, not verbatim prompts).
 - `platform/` — parameterized host-level systemd unit templates + install
   manifest (`docs/31`); placeholders only, no host-specific values.

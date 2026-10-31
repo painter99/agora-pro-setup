@@ -20,18 +20,17 @@ Tool names quoted inside the System template (for example `read_skill_file` in t
 
 ## 2. Add runtime variables
 
-Place these explicitly in the System template:
+Place the Skill Catalog explicitly in the System template:
 
 ```text
-{active_memory}
 {skill_catalog}
 ```
 
-A variable is not necessarily available when its access setting is disabled. Confirm the current Agora version and settings.
+A variable is not necessarily available when its access setting is disabled. Confirm the current Agora version and settings. The maintained instance runs file-based active memory instead of the injected `{active_memory}` (see `docs/4`); an operator preferring the injected feature keeps that variable instead.
 
-## 3. Configure Active Memory
+## 3. Configure file-based active memory
 
-Copy and customize `active-memory/1-active-memory-template.md`. Keep it short. Do not copy complete Skills into Active Memory.
+Create the working state file on a persistent host the agent reaches with file tools, and put its path into the System pointer sentence (see `docs/4`). Keep it short; do not copy complete Skills into it. The instance path is instance-specific (`docs/30`) and never committed to this repository.
 
 ## 4. Install Skills
 

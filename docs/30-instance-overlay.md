@@ -16,8 +16,8 @@ instance is the live setup that actually runs.
 
 ## What flows in each direction
 
-**Base → instance (imports).** Skills, prompt templates, the Active Memory
-template, and patterns (`docs/`) are imported into the instance. An import
+**Base → instance (imports).** Skills, prompt templates, and patterns
+(`docs/`) are imported into the instance. An import
 may be localized and may gain instance-only hooks (for example an extra
 kernel sentence), but keeps the derivable shape of the base file so future
 updates can be diffed.
@@ -28,7 +28,8 @@ through the standard branch-and-GO flow. Live task prompts are never exported
 verbatim (ADR-0008).
 
 **Never exported:** personal facts, names, schedules, hardware models,
-network details, ports, credentials, live prompts.
+network details, ports, credentials, live prompts, the working state file and
+its path (ADR-0017).
 
 ## Derivation and precedence
 

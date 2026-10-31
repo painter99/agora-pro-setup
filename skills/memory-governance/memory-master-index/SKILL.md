@@ -28,7 +28,7 @@ Govern persistent-information decisions in Agora. This is the entry point; load 
 
 ## Storage decision guide
 
-- **Active Memory:** compact current state, durable communication preferences, active priorities, short anchors, and essential boundaries injected into every request.
+- **File-based active memory (working state file):** compact current state, standing communication preferences, active priorities, short anchors, and essential boundaries on the instance host; read it when current context matters.
 - **Saved Memory:** durable personal facts, history, decisions, project context, completed work, and long-form references.
 - **Conversation recall:** prior discussion and one-session context that should not become durable memory.
 - **Skill:** reusable procedure, framework, decision rule, checklist, or output contract. Do not put personal facts in a Skill.
@@ -39,8 +39,7 @@ Prefer the cheapest layer that reliably serves the need: Active Memory is expens
 
 Use the current Agora tool definitions as authority. Load only what is needed:
 
-- `active-memory-design` for placement and size;
-- `active-memory-authority` for AM authorization, recovery, and approval;
+- `file-based-active-memory` for the working state file (placement, size, R/W discipline);
 - `memory-file-operations` for Saved Memory creation, patching, renaming, archiving, or deletion;
 - `memory-tool-reference` when exact tool names or arguments are uncertain (expected tool families; the current generation's tool list and the official Agora user manual remain the authority);
 - `memory-audits` for audits and contradictions;
