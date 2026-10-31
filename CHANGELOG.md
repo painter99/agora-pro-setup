@@ -18,6 +18,10 @@ the Agora app baseline it was maintained against.
   user always gets their language's informal second person (imperatives
   included, never the formal pronoun); agentic runs keep the lean ReAct loop,
   and the register governs user-facing prose only.
+- System template: model self-identification opening — the kernel opens with
+  `You are <current_model_id>{current_model_id}</current_model_id>, …` so every
+  response names the model that produced it (multi-model routing); keep the
+  wrapper only with an app version that offers the variable in its editor.
 - Weekly retrospective (v5): self-review of the task's own prompt (at most one
   procedural `SELF:` delta; the permission scope may only be tightened, never
   widened) and a read-only live-task audit (`task-drift` findings:
