@@ -153,7 +153,7 @@ change — a half-applied configuration is never left behind.
 A raw shell is the bootstrap transport, not the only interface. Once the host is stable,
 a structured tool layer — the Model Context Protocol — can sit on top:
 
-**App capabilities (verified in source, app v2.1.x):** the MCP client speaks
+**App capabilities (verified in source through app v2.1.x; v2.2.0 release notes report no MCP-layer change):** the MCP client speaks
 **Streamable HTTP** (protocol 2025-11-25 with fallbacks) and legacy **SSE**
 (2024-11-05); endpoints must be `http`/`https`; **custom headers** are supported for
 authentication; there is **no stdio transport** — MCP servers run remotely on the host,

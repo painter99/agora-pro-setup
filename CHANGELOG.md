@@ -14,6 +14,9 @@ the Agora app baseline it was maintained against.
   (docs/20 version table and incident record).
 - `update_active_memory` references resolved: no Active Memory update tool
   exists from v2.2.0 (file-based AM per ADR-0017).
+- Compatibility: maintained against Agora app v2.2.x (canonical tool
+  names, `ask_user`, todo tools, subagents); the app license from v2.2.0 is
+  GPL-3.0 — this repository stays MIT.
 
 ### Added
 - `ask_user` user-interaction family: new section in `tool-execution-contract`,
