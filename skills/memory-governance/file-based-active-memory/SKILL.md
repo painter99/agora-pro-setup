@@ -55,6 +55,8 @@ Keep the current-status layer compact, current, and verifiable when injected Act
 
 Read-back confirms the intended change, preserved unrelated content, valid index references, respected size budget, and authorization matching the scope.
 
+When a status bullet that references a detail source is migrated or rewritten, verify it against the referenced detail source before writing; never propagate a status line forward on the strength of a read-back alone (observed failure 2026-10-31: a stale status bullet was migrated verbatim into the working state file while the referenced Saved Memory file held the current truth).
+
 ## Output contract
 
 Report the exact change, evidence (read-back), authorization basis, and any pending items or limits.

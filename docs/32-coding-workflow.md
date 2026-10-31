@@ -43,6 +43,10 @@ live paths:
   the repository is the versioning source of truth.
 - Change procedure: edit the live file → copy into the repo → byte-compare
   (`cmp`) → commit → push. The agent commits on every change it makes.
+- Scope of the coding loop: the full loop (spec gate, review task, acceptance)
+  is for spec-driven implementation work; trivial mechanical tweaks to mirrored
+  scripts (for example editing a source list) follow the change procedure and
+  the testing policy above directly.
 - Excluded by design: employer code (goes to the employer's system only),
   projects with their own repositories, `.bak` backups (git history replaces
   them), secrets and tokens, data and reports.

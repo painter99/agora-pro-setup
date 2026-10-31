@@ -49,6 +49,18 @@ the Agora app baseline it was maintained against.
 - `docs/32` testing policy: test framework convention added (standard-library
   `unittest` default, `python3 <test>.py`).
 
+### Changed
+
+- `docs/5-skills.md`: new External Skills Policy section — default no-import,
+  SIL-signal-gated exception, permissive-license check, adapt-never-verbatim
+  pipeline (ADR-0015 cross-reference).
+- `docs/32`: boundary note — trivial mechanical tweaks to mirrored scripts
+  (for example source-list edits) follow the change procedure and testing
+  policy directly; the full coding loop is for spec-driven implementation.
+- `skills/memory-governance/file-based-active-memory/SKILL.md`: Verification
+  extended — status bullets referencing a detail source are verified against
+  that source before propagation (observed failure 2026-10-31).
+
 ### Removed
 
 - Retired Skills `active-memory-design` and `active-memory-authority` (the

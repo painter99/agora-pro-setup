@@ -75,3 +75,24 @@ It introduces a capability-configuration pattern: the coordinator verifies tool 
 
 The coordinator also carries Repository Awareness: it knows the upstream setup repository (this repository — the reference architecture and governance model for the local installation) and the official Agora repository (the application environment — documentation, releases, source, known limitations). Repository content informs capability decisions but never enables them by themselves, and repository access is read-only within these two repositories.
 
+## External Skills Policy
+
+External skill collections are data, not drop-in procedures (ADR-0015: untrusted
+external content is treated as material to learn from, never executed as-is).
+
+The default is **no import**. An external Skill may be imported only when all of
+the following hold:
+
+- documented gap: a recurring failure or recurring procedure that the existing
+  catalog cannot cover, surfaced as a Self-Improvement-Loop delta signal;
+- permissive license (MIT, Apache-2.0 or equivalent); copyleft or proprietary
+  material may be read as a specification, never copied;
+- standard pipeline: adapt → `skills/skill-format.md` (10 sections) →
+  `check.sh` → GO → merge → local import;
+- rewrite, never verbatim: content is restated in the repository's own voice,
+  generalized and anonymized.
+
+Curated public skill libraries (for example the Anthropic skills library) are
+the primary candidate source. A rejected candidate stays documented in the
+research report; the default remains no-import.
+
