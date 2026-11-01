@@ -8,6 +8,12 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Added
+- New `design` family with two Skills: `graphic-design-art-director` (brief,
+  visual direction, vector and print production, verified handoff) and
+  `ai-drawing-workflow` (CPU-only generation pipeline for print-ready
+  line art and pencil sketches, A-series 300 dpi outputs, mandatory visual
+  verification). Both are generalized, anonymized procedures; instance paths
+  and model picks stay in the deployed overlay.
 - Daily drift-watch task: a fast detector of Skills drift (repository ↔
   deployed store ↔ remote/local `main`) with a count invariant and a
   find-only notification policy; the weekly mirror-check remains the

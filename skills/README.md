@@ -29,6 +29,7 @@ Import individual `SKILL.md` files (one directory per Skill) into Agora's Skills
 - Treat `skills/android-development/` as the Android/Kotlin development family (spec-first, TDD, code review); import each Skill individually.
 - Treat `skills/cad-development/` as the CAD/3D part development family (spec-driven workflow for AI-assisted modeling); import each Skill individually.
 - Treat `skills/communication/` as the output-quality family (language fidelity for non-English user-facing output); import each Skill individually.
+- Treat `skills/design/` as the visual creation family (graphic design direction; AI-generated print-ready artwork); import each Skill individually.
 - Treat `skills/memory-governance/` as the hybrid memory-procedure family; import its files individually into Agora.
 - Treat `skills/reasoning/` as reusable reasoning procedures; import each Skill individually and use it proportionally.
 - Treat `skills/self-improvement/` as the agent self-improvement family (retrospectives, improvement deltas, evals, harness-level improvements); import each Skill individually.

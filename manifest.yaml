@@ -39,9 +39,9 @@ components:
     target: "Agora > System Prompts > Compact"
   - name: skill-set
     kind: skill-set
-    # 24 skills; one directory per Skill, Agent Skills layout
+    # 26 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 24
+    files: 26
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set

@@ -53,7 +53,7 @@ sketch/intent → spec.yaml (schema-validated, human-approved) → model (build1
 
 ### Phase 1 — Intent and spec
 
-1. Transcribe the sketch/description into `specs/<part>/spec.yaml`: every dimension, tolerance and assumption explicit; no "I assumed that".
+1. Transcribe the sketch/description into `specs/<part>/spec.yaml`: every dimension, tolerance and assumption explicit; no "I assumed that". When the intent comes from a visual design phase (poster, product graphic, concept illustration), treat the approved design artifact as the sketch input — cite its path in the spec and verify the model against it in previews and acceptance; when that phase has not happened yet, route to `graphic-design-art-director`.
 1a. Validate the spec's structure against `schemas/spec.schema.json` (`tools/validate_spec.py`, also a CI step) — catch structural errors before the model, not inside it.
 2. Offer the interpretation for an explicit veto (what runs along, what across, rectangle orientation, directions) — dimensions read from a sketch are the biggest error source.
 3. Derive functional dimensions from the part's use (e.g. pocket depth = how deep the object sits; rib height follows the seating, not aesthetics).
