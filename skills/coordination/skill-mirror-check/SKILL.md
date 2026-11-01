@@ -30,6 +30,7 @@ The repository is the source of truth for Skill texts; the local store is the de
 - `tool-execution-contract` — verification and safety layer for all tool operations.
 - `skill-governance` — what counts as a Skill defect and which changes need approval.
 - `shell-and-device-operations` — shell execution for the diff step.
+- `github-release-workflow` — a repository port of a locally newer Skill goes through the standard branch workflow (step 7).
 
 ## Expected overlays (allowed differences)
 

@@ -14,6 +14,12 @@ the Agora app baseline it was maintained against.
   classification and repair authority.
 
 ### Changed
+- Skills: declared previously missing dependencies (`coding-loop` →
+  `process-design` and `self-improvement-loop`, `skill-mirror-check` →
+  `github-release-workflow`), added the `process-design` row to the
+  tool-execution-contract domain routing, and normalized two Skill
+  references in the coordinator workflow (dropped `.md` suffixes).
+  Mechanical hygiene from the weekly audit; no decision rules changed.
 - System template: friendly, collegial register as kernel text — an informal
   user always gets their language's informal second person (imperatives
   included, never the formal pronoun); agentic runs keep the lean ReAct loop,

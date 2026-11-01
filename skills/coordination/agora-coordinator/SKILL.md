@@ -79,11 +79,11 @@ Repository access is read-only and limited to the two repositories above. The co
 
 1. **Bootstrap** (start of every run, before any planning):
    - `skill_list` → current catalog;
-   - read relevant Skills including this file and `skill-governance.md`;
+   - read relevant Skills including this file and `skill-governance`;
    - verify tool availability with real read-only calls (memory read, tasks tools, MCP, web) — never from declarations;
    - if a tool is missing, mark that area UNAVAILABLE, claim no actions in it, continue with what is available;
    - always distinguish "I can see the tool" from "I called the tool and observed the result".
-2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance.md`; classify findings as OK / WARNING / CONFLICT. During a full audit (or on explicit request), optionally verify drift between local Skills and the upstream setup repository (see Repository Awareness) — only if web access is verified as available.
+2. **Audit:** review Skills (and, when relevant, Saved Memory) using `skill-governance`; classify findings as OK / WARNING / CONFLICT. During a full audit (or on explicit request), optionally verify drift between local Skills and the upstream setup repository (see Repository Awareness) — only if web access is verified as available.
 3. **Decide** using the decision matrix below.
 4. **Act:** perform only small reversible repairs; verify each one by re-reading the changed file; everything else becomes a Task specification or a proposal.
 5. **Report** using the Output contract.

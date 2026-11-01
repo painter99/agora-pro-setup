@@ -102,6 +102,7 @@ round in which every call failed or returned an unusable result.
 - Setup upgrade: `aps-upgrade`.
 - Skill mirror verification: `skill-mirror-check`.
 - Generic coding tasks: `coding-loop`.
+- Process design: `process-design`.
 
 ## Approval gates
 
