@@ -25,6 +25,8 @@ Run coding tasks as a closed loop with a deterministic stop condition instead of
 
 ## Dependencies
 - `tool-execution-contract` — retry discipline, tool-call budget, verification of every step.
+- `process-design` — script safety gate for agent-written scripts (see Forbidden behavior).
+- `self-improvement-loop` — step 7 handoff: recurring fix patterns become deltas instead of instance-only fixes.
 
 ## Workflow
 
