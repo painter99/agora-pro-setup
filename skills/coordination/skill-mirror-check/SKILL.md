@@ -38,6 +38,8 @@ The repository is the source of truth for Skill texts; the local store is the de
 |---|---|---|
 | `agora-coordinator` | Capability Configuration table | docs/30-instance-overlay.md |
 | `model-escalation-protocol` | Model stack table (§1), Static routing table (§6) | docs/30-instance-overlay.md |
+| `graphic-design-art-director` | Instance overlay section (tool and renderer paths) | docs/30-instance-overlay.md |
+| `ai-drawing-workflow` | Instance overlay section (tools directory, hardware timings, default model and seeds) | docs/30-instance-overlay.md |
 
 A difference confined to these sections is expected, not drift. A repository file containing personal data is a privacy defect (skill-governance), never an overlay.
 

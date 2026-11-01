@@ -51,6 +51,7 @@ agora-pro-setup/
 │   ├── communication/
 │   ├── self-improvement/
 │   ├── coding/
+│   ├── design/
 │   ├── skill-catalog.md # catalog description conventions
 │   ├── skill-format.md  # Skill file format
 │   └── tool-execution-contract/
@@ -99,6 +100,8 @@ Tool names, arguments, and availability are defined by the Agora application its
 For Android/Kotlin development, the `android-development/` family ships three Skills — `android-spec-first`, `android-dev-tdd`, and `android-code-review` — import each individually.
 
 For AI-assisted 3D part design (CAD as code), the `cad-development/` family ships `cad-spec-driven-workflow` — the agent-side procedure for the [cad-workshop](https://github.com/painter99/cad-workshop) pattern; import it individually.
+
+For visual design, the `design/` family ships `graphic-design-art-director` (brief, visual direction, vector and print production, verified handoff) and `ai-drawing-workflow` (CPU-only generation pipeline for print-ready line art and pencil sketches). The two link into the CAD chain: an approved design or concept image becomes the sketch/intent input of `cad-spec-driven-workflow` for 3D realization; import each individually.
 
 Add a short description when importing a Skill — the frontmatter `description` of its `SKILL.md` is what `{skill_catalog}` shows; keep it identical to the body's Catalog description.
 
