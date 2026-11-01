@@ -14,6 +14,15 @@ the Agora app baseline it was maintained against.
   classification and repair authority.
 
 ### Changed
+- System template: one sentence in the tool-use paragraph now asks the model
+  to delegate the judgment of consequential results (code, deltas, memory or
+  Skill edits, security-sensitive claims) to a fresh-context subagent when the
+  toolset provides one — the reviewer receives only the task text, never the
+  author's reasoning, and is deleted after its verdict. `AGENTS.md` Definition
+  of done gains the matching bullet. Rationale: fresh-context review was
+  already mandatory inside `coding-loop` and the weekly retrospective task, but
+  ordinary chat work had no review discipline; self-certification is the known
+  weak point of agent-run verification.
 - Skills: declared previously missing dependencies (`coding-loop` →
   `process-design` and `self-improvement-loop`, `skill-mirror-check` →
   `github-release-workflow`), added the `process-design` row to the
