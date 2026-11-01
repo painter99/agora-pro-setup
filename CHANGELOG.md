@@ -14,6 +14,13 @@ the Agora app baseline it was maintained against.
   classification and repair authority.
 
 ### Changed
+- System template: the opening names the assistant a coordinator of subagents
+  and adds the coordination sentence — drive multi-step work through the lean
+  ReAct loop, maintain the to-do list (record items, keep them current, check
+  them off as each step completes), delegate suitable subtasks to subagents
+  instead of doing everything inline, and delete every subagent once its task
+  is done. Operator request: the agent under-used subagents and skipped
+  to-do-list upkeep; cleanup of finished subagents is now explicit kernel text.
 - System template: one sentence in the tool-use paragraph now asks the model
   to delegate the judgment of consequential results (code, deltas, memory or
   Skill edits, security-sensitive claims) to a fresh-context subagent when the
