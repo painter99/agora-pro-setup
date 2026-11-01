@@ -35,6 +35,12 @@ the Agora app baseline it was maintained against.
   instead of doing everything inline, and delete every subagent once its task
   is done. Operator request: the agent under-used subagents and skipped
   to-do-list upkeep; cleanup of finished subagents is now explicit kernel text.
+- Skills: delegation wiring for subagents — `multi-source-research` may
+  delegate bounded fan-out via `agents/research-fan-out.md`, `coding-loop`
+  points to the generic `agents/fresh-review.md` contract, and
+  `agora-coordinator`'s Subagents row reflects the verified state with a
+  pointer to the templates. `docs/16` §15 records the practice: Skills
+  orchestrate subagents; they do not replace them.
 - System template: one sentence in the tool-use paragraph now asks the model
   to delegate the judgment of consequential results (code, deltas, memory or
   Skill edits, security-sensitive claims) to a fresh-context subagent when the

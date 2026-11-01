@@ -405,6 +405,12 @@ isolation (§10) at the app level. Still open: the run-time profile lifecycle
 (§2 principle 10). Subagents are unusable until at least one model is added
 in the Subagents settings (observed on v2.2.0).
 
+**Update 2026-11-01 (practice):** delegation now runs through reusable subagent
+task templates in `agents/` (fresh review, research fan-out, context
+quarantine). Skills decide when to delegate and how results are verified;
+templates define the self-contained task text. Procedures remain Skills — the
+working pattern is Skills orchestrating subagents, not replacing them.
+
 
 The next practical step does not require pretending that Skills are already independent agents. We can define the contracts and profiles now, test them as one-agent routing, and leave the native MAS runtime as a future Agora feature.
 
