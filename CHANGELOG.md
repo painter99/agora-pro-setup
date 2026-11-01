@@ -41,6 +41,14 @@ the Agora app baseline it was maintained against.
   `agora-coordinator`'s Subagents row reflects the verified state with a
   pointer to the templates. `docs/16` §15 records the practice: Skills
   orchestrate subagents; they do not replace them.
+- System template: the two subagent sentences refined after a fresh-context
+  review (verdict KEEP-WITH-FIXES) — delegation triggers are thresholded
+  (independent, parallelizable, or context-heavy work; small sequential tasks
+  stay inline), deletion requires a delivered result and a prior wait with a
+  rejected deletion noted rather than retried, review briefs must be fully
+  self-contained, evidence is verified against primary artifacts, and a
+  subagent verdict never substitutes for an approval gate or a governance
+  Skill.
 - System template: one sentence in the tool-use paragraph now asks the model
   to delegate the judgment of consequential results (code, deltas, memory or
   Skill edits, security-sensitive claims) to a fresh-context subagent when the
