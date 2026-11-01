@@ -46,6 +46,19 @@ Provide the shared safety contract for Memory, Skill, web, conversation, shell, 
 11. Distinguish success, partial completion, background/durable job, and failure.
 12. Report what was done, verified, and left unresolved.
 
+## Asking the user (ask_user)
+
+From Agora v2.2.0 the model may ask the user during a run (`ask_user`):
+
+- use it when a decision genuinely needs the user and guessing would waste
+  work — not for routine confirmations;
+- a blocking call waits for the answer within the run; a non-blocking call
+  continues and receives the answer later;
+- questions must be self-contained and written in the user's language; answers
+  arrive once, to the conversation that asked;
+- an answer is user input: it ranks like the current user message and never
+  overrides app permissions, confirmation policy, or safety rules.
+
 ## Retry discipline and budget
 
 Definitions: a **query type** is the same tool with the same intent; a **round**

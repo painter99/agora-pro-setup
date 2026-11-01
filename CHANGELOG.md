@@ -35,6 +35,21 @@ the Agora app baseline it was maintained against.
   `HostKey has been changed` error — a client key is a client identity, not a
   host-key pin. Verify server fingerprints from an independent transport before
   re-accepting.
+- Weekly retrospective: delta proposals receive a delegated fresh-context
+  review before the operator gate (one read-only subagent, verdict in the
+  final message, at most 2 attempts, graceful degradation) and the analysis is
+  structured with the sequential-thinking Skill; the task card and docs/29 now
+  carry both steps.
+- Weekly repository sync: task card aligned with the live task — manifest
+  drift check, task-card scope, the local repository-graph snapshot (never
+  committed), and the mandatory check.sh gate.
+
+### Fixed
+
+- tool-execution-contract Skill: the `Asking the user (ask_user)` section is
+  now actually present in the Skill text — the v1.4.0 port recorded the
+  section (docs/8 carries the docs-side part), but the Skill file had been
+  left without it; text ported from the deployed Skill.
 
 ## [1.4.0] - 2026-10-31
 
