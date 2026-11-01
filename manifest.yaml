@@ -16,7 +16,7 @@
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 3
+  inventory_version: 4
   last_verified: "2026-11-01"
 
 components:
@@ -82,4 +82,10 @@ components:
     # README, catalog conventions, format spec — not Skills
     source: "skills/*.md"
     files: 3
+    target: none
+  - name: agent-templates
+    kind: reference
+    # 3 subagent task templates + README index; skills decide when, these define the task text
+    source: "agents/*.md"
+    files: 4
     target: none

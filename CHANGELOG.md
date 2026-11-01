@@ -18,6 +18,14 @@ the Agora app baseline it was maintained against.
   deployed store ↔ remote/local `main`) with a count invariant and a
   find-only notification policy; the weekly mirror-check remains the
   classification and repair authority.
+- `agents/` library: reusable subagent task templates — `fresh-review`
+  (fresh-context review of consequential results, generalizing the coding-loop
+  reviewer contract), `research-fan-out` (bounded research delegation per
+  independent sub-question), and `context-quarantine` (read-only analysis of
+  context-heavy side tasks), plus a README defining delegation triggers, the
+  spawn → wait → verify → delete lifecycle, and the rule that a subagent
+  verdict never substitutes for an approval gate. Manifest gains the matching
+  `agent-templates` entry.
 
 ### Changed
 - System template: the opening names the assistant a coordinator of subagents
@@ -27,6 +35,20 @@ the Agora app baseline it was maintained against.
   instead of doing everything inline, and delete every subagent once its task
   is done. Operator request: the agent under-used subagents and skipped
   to-do-list upkeep; cleanup of finished subagents is now explicit kernel text.
+- Skills: delegation wiring for subagents — `multi-source-research` may
+  delegate bounded fan-out via `agents/research-fan-out.md`, `coding-loop`
+  points to the generic `agents/fresh-review.md` contract, and
+  `agora-coordinator`'s Subagents row reflects the verified state with a
+  pointer to the templates. `docs/16` §15 records the practice: Skills
+  orchestrate subagents; they do not replace them.
+- System template: the two subagent sentences refined after a fresh-context
+  review (verdict KEEP-WITH-FIXES) — delegation triggers are thresholded
+  (independent, parallelizable, or context-heavy work; small sequential tasks
+  stay inline), deletion requires a delivered result and a prior wait with a
+  rejected deletion noted rather than retried, review briefs must be fully
+  self-contained, evidence is verified against primary artifacts, and a
+  subagent verdict never substitutes for an approval gate or a governance
+  Skill.
 - System template: one sentence in the tool-use paragraph now asks the model
   to delegate the judgment of consequential results (code, deltas, memory or
   Skill edits, security-sensitive claims) to a fresh-context subagent when the
