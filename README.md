@@ -13,6 +13,7 @@
 - **A compact, enforced kernel.** The System template stays small but carries two always-applicable rules: the memory gate and the tool-call budget (see [Architecture](#architecture)).
 - **Layered memory governance.** Clear boundaries and routing between the file-based working state, Saved Memory, Skills, and conversation history.
 - **Safety-first tool operations.** Inspect before editing, verify after every operation, explicit approval bands for destructive or high-risk actions.
+- **Subagent delegation templates.** A small `agents/` library of reusable, self-contained task templates (fresh review, research fan-out, context quarantine) that Skills point to when the coordinator delegates bounded work to native subagents.
 - **Generic, anonymized patterns.** Tested on a real setup, published without personal data, adaptable to other agent applications.
 
 ## Quick start

@@ -18,6 +18,14 @@ the Agora app baseline it was maintained against.
   deployed store ↔ remote/local `main`) with a count invariant and a
   find-only notification policy; the weekly mirror-check remains the
   classification and repair authority.
+- `agents/` library: reusable subagent task templates — `fresh-review`
+  (fresh-context review of consequential results, generalizing the coding-loop
+  reviewer contract), `research-fan-out` (bounded research delegation per
+  independent sub-question), and `context-quarantine` (read-only analysis of
+  context-heavy side tasks), plus a README defining delegation triggers, the
+  spawn → wait → verify → delete lifecycle, and the rule that a subagent
+  verdict never substitutes for an approval gate. Manifest gains the matching
+  `agent-templates` entry.
 
 ### Changed
 - System template: the opening names the assistant a coordinator of subagents
