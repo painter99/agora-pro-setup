@@ -16,8 +16,8 @@
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 4
-  last_verified: "2026-11-01"
+  inventory_version: 5
+  last_verified: "2026-11-03"
 
 components:
   # --- deployed into the Agora app ---
@@ -39,9 +39,9 @@ components:
     target: "Agora > System Prompts > Compact"
   - name: skill-set
     kind: skill-set
-    # 26 skills; one directory per Skill, Agent Skills layout
+    # 27 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 26
+    files: 27
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set

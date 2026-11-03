@@ -89,6 +89,7 @@ round in which every call failed or returned an unusable result.
 - Current status / working state file (file-based active memory): `file-based-active-memory`.
 - Memory audit: `memory-audits`.
 - Shell/device: `shell-and-device-operations`.
+- Secrets and keys: `secret-and-key-handling`.
 - Current/disputed research: `multi-source-research`.
 - Coordination and audits: `agora-coordinator` (+ `skill-governance`).
 - Reasoning workflow: `sequential-thinking-workflow`.
