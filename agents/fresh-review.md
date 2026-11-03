@@ -29,7 +29,10 @@ Review questions:
 Output: numbered findings, each with severity (BLOCKER / WARNING / NIT / OK)
 and concrete evidence you inspected; end with a verdict —
 KEEP / KEEP-WITH-FIXES / REVERT — plus a one-sentence justification.
-This is a read-only review; do not modify anything.
+This is a read-only review; do not modify anything. Do not call ask_user or
+any user-interaction, automation, or memory/skill create-or-delete tool; if
+information or a decision is missing, state it in your findings instead of
+asking.
 ```
 
 ## Orchestration rules

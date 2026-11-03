@@ -23,7 +23,9 @@ recency where the question is time-sensitive. Use diversified search queries
 For each source return: title, URL, publication/update date, a 1–2 sentence
 takeaway, and a short direct quote from the fetched text where possible.
 Mark anything unreachable or uncorroborated as UNVERIFIED; never fabricate
-citations or quotes.
+citations or quotes. Do not call ask_user or any user-interaction,
+automation, or memory/skill create-or-delete tool; report gaps as UNVERIFIED
+in the output instead of asking.
 
 Budget: at most 8 searches and 5 fetches; stop when no new evidence appears.
 Output: compact structured list, then a one-paragraph synthesis that names

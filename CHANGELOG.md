@@ -36,6 +36,16 @@ the Agora app baseline it was maintained against.
   narrowing is the full wall, not this pattern).
 
 ### Changed
+- Subagents: no user interaction from workers — every brief in `agents/`
+  (new README principle plus a hard rule inside all three task templates)
+  and the kernel coordination sentence now forbid a subagent from calling
+  `ask_user` or creating/deleting Tasks, Loops, Skills, or memory; an
+  isolated worker reports open questions and needed decisions in its final
+  result instead. Trigger: observed 2026-11-03 — one spawned subagent
+  reported the full agentic toolset (`ask_user`, task/loop management,
+  memory/skill create-or-delete), so a blocking popup from a worker stalls
+  the orchestrator's wait and the user's cycle; the policy is fail-safe for
+  workers with narrower toolsets.
 - System template: the opening names the assistant a coordinator of subagents
   and adds the coordination sentence — drive multi-step work through the lean
   ReAct loop, maintain the to-do list (record items, keep them current, check
