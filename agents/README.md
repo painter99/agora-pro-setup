@@ -29,7 +29,16 @@ library replaces neither the Skill catalog nor the single-agent default.
 4. **No gate substitution.** A subagent verdict never substitutes for an
    approval gate, a governance Skill, or the operator's GO. A reviewer
    subagent is advisory input to the orchestrator, which remains accountable.
-5. **Fallback.** If the toolset lacks subagents or no subagent model is
+5. **No user interaction from a worker.** A spawned subagent receives the
+   full agentic toolset — runtime-verified 2026-11-03: a spawned subagent
+   reported `ask_user`, task/loop management, and memory/skill write and
+   delete among its tools. Every brief must therefore forbid user
+   interaction and persistent automation: no `ask_user`, no creating or
+   deleting Tasks, Loops, Skills, or memory. An isolated worker reports
+   open questions and needed decisions in its final result; the
+   orchestrator asks the user and decides. A blocking popup from a worker
+   stalls the orchestrator's wait and the user's cycle.
+6. **Fallback.** If the toolset lacks subagents or no subagent model is
    configured, judge inline and note the unavailability; for review work use
    the one-off task fallback described in `skills/coding/coding-loop`.
 

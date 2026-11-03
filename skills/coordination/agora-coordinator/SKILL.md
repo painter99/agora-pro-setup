@@ -125,7 +125,7 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | GitHub write | ❌ prohibited | No commits, pushes, issues, PRs, releases, or repository changes |
 | User interaction (ask_user) | ✅ verified 2026-10-31 (chat run, paged card) | Blocking/non-blocking; answers delivered once, to the asking conversation |
 | Todo list (todo_read/todo_update) | ✅ verified 2026-10-31 (chat run) | Shared across conversations; survives restarts |
-| Subagents (agent_spawn et al.) | ✅ verified 2026-10-31 (spawn → wait → delete end-to-end, chat and task runs) | Models must be added in Subagents settings first; task text must be fully self-contained; reusable task templates live in `agents/` |
+| Subagents (agent_spawn et al.) | ✅ verified 2026-10-31 (spawn → wait → delete end-to-end, chat and task runs); subagent toolset verified 2026-11-03 (spawned subagent's self-report) | Models must be added in Subagents settings first; task text must be fully self-contained; reusable task templates live in `agents/`; the subagent toolset includes `ask_user`, task/loop management, and memory/skill writes — every brief must forbid user interaction and persistent automation (`agents/README.md` principle 5) |
 
 **Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table.
 
