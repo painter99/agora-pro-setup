@@ -30,8 +30,8 @@ library replaces neither the Skill catalog nor the single-agent default.
    approval gate, a governance Skill, or the operator's GO. A reviewer
    subagent is advisory input to the orchestrator, which remains accountable.
 5. **No user interaction from a worker.** A spawned subagent receives the
-   full agentic toolset — runtime-verified 2026-11-03: a spawned subagent
-   reported `ask_user`, task/loop management, and memory/skill write and
+   full agentic toolset — observed 2026-11-03: one spawned subagent
+   reported `ask_user`, task/loop management, and memory/skill create and
    delete among its tools. Every brief must therefore forbid user
    interaction and persistent automation: no `ask_user`, no creating or
    deleting Tasks, Loops, Skills, or memory. An isolated worker reports

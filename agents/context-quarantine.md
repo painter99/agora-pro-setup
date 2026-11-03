@@ -16,9 +16,9 @@ Limits: <what to ignore; any length or count bound>
 
 Output: a compact summary (at most <N> words), the key evidence excerpts with
 file and line pointers, and an explicit list of what you did not check.
-Do not modify anything. Do not call ask_user or any user-interaction or
-automation tool; list missing inputs in the "did not check" section instead
-of asking.
+Do not modify anything. Do not call ask_user or any user-interaction,
+automation, or memory/skill create-or-delete tool; list missing inputs in
+the "did not check" section instead of asking.
 ```
 
 ## Orchestration rules
