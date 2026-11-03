@@ -26,6 +26,14 @@ the Agora app baseline it was maintained against.
   spawn → wait → verify → delete lifecycle, and the rule that a subagent
   verdict never substitutes for an approval gate. Manifest gains the matching
   `agent-templates` entry.
+- `secret-and-key-handling` Skill (shell family): secrets and keys are
+  generated and rotated only through scripts (CSPRNG, ssh-keygen), never
+  written or displayed by the agent; script outputs are limited to
+  fingerprints, application happens through applier scripts, and delivery to
+  operator devices carries exactly one current version. Includes repository /
+  deploy key rules (one key per repository, Ed25519, fingerprint verification,
+  platform-side registration by the operator) and honest limits (sudoers
+  narrowing is the full wall, not this pattern).
 
 ### Changed
 - System template: the opening names the assistant a coordinator of subagents
