@@ -411,6 +411,18 @@ quarantine). Skills decide when to delegate and how results are verified;
 templates define the self-contained task text. Procedures remain Skills — the
 working pattern is Skills orchestrating subagents, not replacing them.
 
+**Update 2026-11-05 (source-verified toolset + worker profile):** direct
+reading of the v2.2.0 source confirmed the subagent toolset mechanics:
+worker runs inherit the parent tool context and only `agent_*` tools and
+conversation recall are runtime-excluded; `agent_spawn` takes only
+`name`, `model_id`, and `task` — no per-spawn tool or skill scoping exists,
+and skill access is governed by global toggles. The worker-profile pattern
+is therefore enforced at the brief level (agents/ principle 7, ADR-0018)
+until the runtime provides per-spawn scoping; scoped tool allowlists, a
+skill preload list, and routed worker questions are proposed upstream,
+with per-agent configuration in the Claude Agent SDK and OpenAI Agents SDK
+as design precedents.
+
 
 The next practical step does not require pretending that Skills are already independent agents. We can define the contracts and profiles now, test them as one-agent routing, and leave the native MAS runtime as a future Agora feature.
 

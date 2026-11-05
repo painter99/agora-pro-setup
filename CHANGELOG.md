@@ -8,6 +8,14 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Added
+- docs/16 §15 update (2026-11-05): source-verified subagent toolset mechanics
+  (inherited tool context; only agent_* tools and conversation recall are
+  runtime-excluded; no per-spawn scoping; global skill toggles) and the
+  brief-level worker profile (ADR-0018, agents/ principle 7).
+- `tasks/upstream-watch-weekly.md` card: weekly read-only watch of the
+  upstream application repository (releases, commits, tracked issue
+  reactions, open pull requests) with material-finding-only notifications;
+  manifest task-cards count updated.
 - `agents/` principle 7 (scoped skills in the brief): every subagent brief
   declares its skill scope — default none, named Skills only when the
   procedure benefits — and all three templates carry the explicit
