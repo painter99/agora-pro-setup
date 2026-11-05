@@ -8,6 +8,16 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Added
+- `agents/` principle 7 (scoped skills in the brief): every subagent brief
+  declares its skill scope — default none, named Skills only when the
+  procedure benefits — and all three templates carry the explicit
+  skill-scope line. Grounded in source verification of the v2.2.0 subagent
+  toolset (no per-spawn scoping; the catalog is inherited via the prompt
+  template; skill access is global-toggle only).
+- ADR-0018: worker capability scope lives in the brief until the runtime
+  provides per-spawn scoping; the shared skill catalog stays the single
+  source of truth (no worker namespace), skill writes remain forbidden to
+  workers, and worker-question escalation is owned by the orchestrator.
 - New `design` family with two Skills: `graphic-design-art-director` (brief,
   visual direction, vector and print production, verified handoff) and
   `ai-drawing-workflow` (CPU-only generation pipeline for print-ready

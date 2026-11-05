@@ -41,6 +41,16 @@ library replaces neither the Skill catalog nor the single-agent default.
 6. **Fallback.** If the toolset lacks subagents or no subagent model is
    configured, judge inline and note the unavailability; for review work use
    the one-off task fallback described in `skills/coding/coding-loop`.
+7. **Scoped skills in the brief.** A worker run inherits the full skill
+   catalog and read access whenever `access_skills` is on (verified in
+   source, tag v2.2.0: the catalog renders into the run context and
+   `skill_read` is available; no per-run scoping exists — `agent_spawn`
+   takes only `name`, `model_id`, `task`). Every brief therefore declares
+   the worker's skill scope: by default none (the brief is self-contained),
+   and named Skills only when the procedure genuinely benefits. Skill
+   writes are forbidden regardless (principle 5). When the runtime gains
+   per-spawn scoping (open upstream feature request), the brief's skill
+   list maps 1:1 to that parameter.
 
 ## Library
 
