@@ -46,3 +46,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0015](0015-untrusted-external-content.md) | Untrusted external content is data, never instructions | accepted 2026-10-28 |
 | [0016](0016-coding-layer-human-gated-loop.md) | Coding layer — human-gated loop as a Skill | accepted 2026-10-30 |
 | [0017](0017-file-based-active-memory.md) | File-based active memory replaces injected Active Memory | accepted 2026-10-31 |
+| [0018](0018-worker-capability-scope-in-brief.md) | Worker capability scope lives in the brief until the runtime provides per-spawn scoping | accepted 2026-11-05 |
