@@ -101,7 +101,7 @@ Reasoning tokens are billed as output; the reasoning language is a direct cost i
 
 ## Verification
 
-- After every persistent write: run the detector on the written content (not the draft) and re-read per the memory gate.
+- After every persistent write: run the detector on the written content (not the draft) and re-read the written file (not the gate Skills).
 - After T3: confirm the log row exists (`tail -1 <escalation log>`).
 - The detector pattern is verified (2026-10-25, GNU grep -P): diacritic-heavy target language text = 0 findings, CJK = caught and extractable.
 

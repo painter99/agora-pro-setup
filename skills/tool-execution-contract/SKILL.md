@@ -34,7 +34,7 @@ Provide the shared safety contract for Memory, Skill, web, conversation, shell, 
 ## Workflow
 
 1. Identify the exact operation, target, device, and expected result.
-2. Load the domain-specific Skill; this contract does not replace it.
+2. Load the domain-specific Skill; this contract does not replace it. A Skill already loaded in this conversation is not re-read; load each domain Skill at most once per conversation.
 3. Confirm the selected tool family and current availability.
 4. Check permissions, confirmation policy, authorization, reversibility, and risk.
 5. Inspect current state before editing or dependent actions.

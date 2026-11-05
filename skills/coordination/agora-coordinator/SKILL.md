@@ -77,7 +77,7 @@ Repository access is read-only and limited to the two repositories above. The co
 
 ## Workflow
 
-1. **Bootstrap** (start of every run, before any planning):
+1. **Bootstrap** (start of every conversation, not every generation; skip any step already completed in this conversation):
    - `skill_list` → current catalog;
    - read relevant Skills including this file and `skill-governance`;
    - verify tool availability with real read-only calls (memory read, tasks tools, MCP, web) — never from declarations;

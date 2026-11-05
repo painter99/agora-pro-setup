@@ -7,6 +7,17 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Changed
+- Skill-loading idempotence (root-cause fix for redundant `skill_read` loops
+  observed on a literal-following model): the kernel memory gate now reads
+  its Skills once per conversation ("if they are already in context, proceed
+  without re-reading"); `agora-coordinator` Bootstrap runs per conversation,
+  not per generation, and skips completed steps; `tool-execution-contract`
+  caps each domain Skill at one load per conversation; `language-fidelity`
+  Verification clarifies that the written file — not the gate Skills — is
+  re-read. `model-escalation-protocol` gains trigger **T9** (redundant
+  successful calls) as the detection net for any remaining loop.
+
 ### Added
 - docs/16 §15 update (2026-11-05): source-verified subagent toolset mechanics
   (inherited tool context; only agent_* tools and conversation recall are

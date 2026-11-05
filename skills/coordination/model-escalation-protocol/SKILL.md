@@ -58,6 +58,7 @@ Keep this table current. Escalation recommendations must match it; if the escala
 | **T6** | Stagnation: 4+ rounds without new evidence or reduced unknowns | `sequentialthinking` re-frame; then either a new plan or T2. |
 | **T7** | **Preventive:** 3+ mutually dependent unknowns, OR an irreversible action, OR a multi-file refactor, OR money/publication/career | `sequentialthinking` **BEFORE** the first action. |
 | **T8** | Scope creep (doing what the user did not ask for) | Stop, confirm the task definition, continue only after confirmation. |
+| **T9** | Redundant successful calls: same tool + same target 2× in one conversation without new information (e.g., re-reading a Skill already in context) | Stop calling; answer from context; banner + log row; inspect the instruction texts that induced the re-read (kernel/skill wording) and propose a wording fix |
 
 ### 3. Reaction ladder (always in order, not flat)
 
@@ -100,6 +101,7 @@ Columns: `date,model,task_type,trigger,outcome,notes`. Keep `model` as `unknown-
 ### 7. Verification cadence
 
 - After banner T1/T2: a changed approach or an explicit handback must follow — never another identical attempt.
+- After banner T9: the next action must come from context, never another identical call; the inducing instruction text gets a wording-fix proposal.
 - Confirm the log row landed: `tail -1 /home/agora/logs/escalations.csv`.
 - Every ~2 weeks: aggregate by `task_type`/`trigger` (`awk -F,`) → update the routing table and record it in the model-evaluation memory.
 
