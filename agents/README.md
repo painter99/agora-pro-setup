@@ -39,8 +39,12 @@ library replaces neither the Skill catalog nor the single-agent default.
    orchestrator asks the user and decides. A blocking popup from a worker
    stalls the orchestrator's wait and the user's cycle.
 6. **Fallback.** If the toolset lacks subagents or no subagent model is
-   configured, judge inline and note the unavailability; for review work use
-   the one-off task fallback described in `skills/coding/coding-loop`.
+   configured, judge inline only for work inside the current model's approved
+   role; for work outside that role, report the partial or unverified state and
+   hand the decision back instead of silently substituting a weaker path. Never
+   use any fallback (inline, one-off task, another provider) to bypass a
+   delegation budget. For review work use the one-off task fallback described
+   in `skills/coding/coding-loop`.
 7. **Scoped skills in the brief.** A worker run inherits the full skill
    catalog and read access whenever `access_skills` is on (verified in
    source, tag v2.2.0: the catalog renders into the run context and
@@ -51,6 +55,16 @@ library replaces neither the Skill catalog nor the single-agent default.
    writes are forbidden regardless (principle 5). When the runtime gains
    per-spawn scoping (open upstream feature request), the brief's skill
    list maps 1:1 to that parameter.
+8. **Delegation requests are proposals.** A worker may end its result with a
+   structured request for further delegation (required capability, evidence,
+   objective, acceptance criteria, tool/output limits, artifact references,
+   fallback). The orchestrator — never the worker — validates the request
+   against the routing Skill, deduplicates it (including semantically repeated
+   ones), checks the shared delegation budget, chooses the model, and owns the
+   decision. Worker-to-worker chains and worker-initiated spawning do not
+   exist in this runtime. A rejected request executes the worker's declared
+   fallback: report the unresolved uncertainty, not a forced rerun.
+   Contract: `model-escalation-protocol` §6a.
 
 ## Library
 
