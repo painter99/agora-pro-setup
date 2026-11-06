@@ -7,6 +7,11 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-06
+
+Maintained against the Agora app v2.2.x baseline; routing and
+worker-delegation behavior require validation in the target instance.
+
 ### Changed
 - Budgeted coordination in the kernel template (ADR-0019, operator request):
   a default delegation budget per user task (at most two spawn attempts
