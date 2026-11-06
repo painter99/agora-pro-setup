@@ -8,6 +8,30 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Changed
+- Budgeted coordination in the kernel template (ADR-0019, operator request):
+  a default delegation budget per user task (at most two spawn attempts
+  including failures and reviews, one running worker, continuation never
+  resets it, no bypass via tasks/loops/providers/direct APIs), early role
+  routing via `model-escalation-protocol` before solving expert categories,
+  no unqualified inline fallback for expert work, and an explicit
+  no-override rule for unqualified coordinators. The template states that the
+  application client keeps its own permission and budget rules; prompt
+  budgets are behavioral guards, not enforcement.
+- `agents/README.md` principle 6: inline fallback only inside the current
+  model's approved role; work outside it is reported as partial/unverified
+  and handed back; no fallback may bypass a delegation budget. New
+  principle 8: worker-initiated delegation requests are proposals the
+  orchestrator validates within the shared budget (no worker-to-worker
+  chains; contract in `model-escalation-protocol` §6a).
+- `model-escalation-protocol`: new §6a (generic role tiers with placeholders,
+  the delegation-request JSON contract, one shared budget for all
+  delegation) and T2 semantics (stop local attempts; delegate only with
+  remaining operator-approved budget, otherwise hand back).
+- `skills/coding/coding-loop`: spawn attempts and review rounds count
+  against the operator-approved delegation budget; the one-off task fallback
+  covers tool absence, never budget bypass.
+- docs/3: the System paragraph lists the budgeted coordination rule with
+  ADR-0019 as its rationale.
 - Skill-loading idempotence (root-cause fix for redundant `skill_read` loops
   observed on a literal-following model): the kernel memory gate now reads
   its Skills once per conversation ("if they are already in context, proceed
@@ -19,6 +43,8 @@ the Agora app baseline it was maintained against.
   successful calls) as the detection net for any remaining loop.
 
 ### Added
+- ADR-0019: budget-capped expertise routing with worker-initiated delegation
+  requests; decisions index and manifest counts updated.
 - docs/16 §15 update (2026-11-05): source-verified subagent toolset mechanics
   (inherited tool context; only agent_* tools and conversation recall are
   runtime-excluded; no per-spawn scoping; global skill toggles) and the
