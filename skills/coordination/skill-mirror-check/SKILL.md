@@ -40,6 +40,7 @@ The repository is the source of truth for Skill texts; the local store is the de
 | `model-escalation-protocol` | Model stack table (§1), Static routing table (§6) | docs/30-instance-overlay.md |
 | `graphic-design-art-director` | Instance overlay section (tool and renderer paths) | docs/30-instance-overlay.md |
 | `ai-drawing-workflow` | Instance overlay section (tools directory, hardware timings, default model and seeds) | docs/30-instance-overlay.md |
+| `secret-and-key-handling` | Instance overlay section (instance paths, tooling, and operational notes) | docs/30-instance-overlay.md |
 
 A difference confined to these sections is expected, not drift. A repository file containing personal data is a privacy defect (skill-governance), never an overlay.
 
@@ -49,7 +50,7 @@ A difference confined to these sections is expected, not drift. A repository fil
 2. Coverage check: a local Skill without a repository counterpart, or a repository Skill without a local counterpart, is a finding.
 3. For every Skill: fresh `skill_read`, write the returned content verbatim into `/home/agora/tmp/mirror-check/<name>.md`, and `diff` it against the repository file.
 4. Classify every difference:
-   - **CONTENT DRIFT** — different words or sections outside the overlay areas → blocking finding. Do not auto-fix.
+   - **CONTENT DRIFT** — different words or sections outside the overlay areas → blocking finding. Do not auto-fix, except the narrow repository→local repair in step 7 with proven direction and valid authorization for the exact scope.
    - **EXPECTED OVERLAY** — differences confined to the overlay table → OK.
    - **COSMETIC** — trailing newline at end of file, a missing/extra blank line after a heading, whitespace-only → non-blocking; list for optional normalization.
 5. A difference that disappears when the read is repeated is a transcription artifact, not drift — re-read before reporting drift, and state the verification method either way.
@@ -58,12 +59,13 @@ A difference confined to these sections is expected, not drift. A repository fil
    - Repository clearly the newer truth (a recent repository change was never imported) → repair = re-import the repository version into the local store; this proceeds on the operator's standing authorization (2026-10-28) and is recorded in the report with diff evidence.
    - Local version genuinely newer (content that exists only locally and belongs in the repository) → do not import; propose a repository port through the standard branch workflow (GO per github-release-workflow).
    - Ambiguous direction → report the diff and wait for the operator.
+   Repairs under the first bullet are patch-in-place only, never delete+recreate; preserve every overlay, record diff evidence and authorization, and verify with a fresh read-back. Repository-newer without valid authorization, local-newer, and ambiguous direction remain read-only or wait for GO.
    No repair is ever silent: every applied repair is recorded in the report with its evidence and authorization basis.
 8. Persist the dated report under `/home/agora/logs/skill-mirror-check/` and send exactly one notification with the summary (higher priority when drift was found).
 
 ## Forbidden behavior
 
-- Never edit, create, or delete a Skill (local or repository) as part of this check — read-only; fixes go through the skill-governance gates.
+- Never edit, create, or delete a Skill (local or repository) as part of this check, except the narrow repository→local patch in step 7 with proven direction and valid authorization for the exact scope; never delete+recreate a Skill, and preserve overlays. All other fixes go through the skill-governance gates.
 - Never classify an overlay difference as drift, or drift as overlay.
 - Never claim mirror integrity for a Skill whose diff did not actually run.
 - Never write personal data into the repository.

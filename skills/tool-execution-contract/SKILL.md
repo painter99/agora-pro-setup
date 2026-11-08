@@ -96,6 +96,8 @@ round in which every call failed or returned an unusable result.
 - Self-improvement: `self-improvement-loop`.
 - Git/release: `github-release-workflow`.
 - CAD: `cad-spec-driven-workflow`.
+- AI-generated artwork: `ai-drawing-workflow`.
+- Graphic design: `graphic-design-art-director`.
 - Android: `android-spec-first` (entry point of the Android trio).
 - Language fidelity: `language-fidelity`.
 - Escalation: `model-escalation-protocol`.

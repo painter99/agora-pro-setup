@@ -7,6 +7,12 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+- SIL integration hygiene (D-20261108-01): tool-execution routing for AI-generated artwork and graphic design, conditional research/design dependencies, and the narrowly scoped `secret-and-key-handling` instance-overlay registration.
+
+### Fixed
+- `skill-mirror-check` (D-20261108-02): the read-only rule now consistently names the sole exception — a proven, authorized repository→local patch in place, with overlays preserved, diff evidence, and read-back; all other directions remain read-only or gated.
+
 ## [1.5.0] - 2026-11-06
 
 Maintained against the Agora app v2.2.x baseline; routing and
