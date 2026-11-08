@@ -20,6 +20,7 @@ Turn "draw me a picture of X" into a reproducible, verified artifact on hardware
 ## Dependencies
 - `tool-execution-contract` — verification and retry discipline for every step.
 - `shell-and-device-operations` — detached background jobs and file handling on the host.
+- `multi-source-research` — only when evaluating a new model, engine, or post-processing tool for adoption.
 ## Workflow
 1. **Write a task list.** Create a small JSON task list; per task: prompt, output path, seed, step count, pixel size, model id, mode (`lineart` or `sketch`), and threshold. First iteration: two variants of the subject (sketch plus coloring page) with different seeds. Distilled few-step models have no usable negative prompt, so describe everything positively and in detail, starting from the matching template below. When the artwork is part of a larger design (poster, layout, identity), consult `graphic-design-art-director` for the brief and composition first; for a standalone picture request this Skill alone suffices.
    - Coloring page template: "A black and white coloring book page of a friendly SUBJECT in side profile. Bold clean vector-style outlines with uniform thick line weight, large clearly separated regions, closed outlines suitable for coloring, pure white background, black line art only, no shading, no gradients, no crosshatching, no background objects, generous white margins."

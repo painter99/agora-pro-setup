@@ -21,6 +21,7 @@ Produce coherent, purposeful graphic artifacts from user intent: solve message, 
 ## Dependencies
 - `tool-execution-contract` — whenever tools, files, or external services are used.
 - `shell-and-device-operations` — when creating, converting, or verifying files on a device.
+- `multi-source-research` — only when an existing brand requires evidence before committing to a design direction.
 Load only the dependencies relevant to the concrete job.
 ## Workflow
 1. **Frame the brief.** Establish purpose, audience, medium and dimensions, exact content, tone, constraints (colors, identity, contrast, language, license) and required output formats from available context. Ask at most one to three decisive questions on material ambiguity; otherwise state working assumptions and proceed. When the design must follow an existing brand, apply `multi-source-research` for evidence before committing to a direction.
