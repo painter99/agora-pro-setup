@@ -1,6 +1,6 @@
 ---
 name: android-spec-first
-description: "Entry point of the Android trio: spec-first development for Android/Kotlin apps — PRD as source of truth, gated workflow with human validation, scope-creep defense. Routes to android-dev-tdd and android-code-review."
+description: "Entry point of the Android trio: spec-first development for Android/Kotlin apps — PRD as source of truth, gated workflow with human validation, scope-creep defense. Routes to `android-dev-tdd` and `android-code-review`."
 license: MIT
 ---
 
