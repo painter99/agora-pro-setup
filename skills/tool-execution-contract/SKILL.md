@@ -85,10 +85,12 @@ round in which every call failed or returned an unusable result.
 
 ## Domain routing
 
-Use the injected `<skill_catalog>` to discover the relevant installed Skills.
-Read the applicable Skill before following it; check its relevant dependencies
-and entry points (do not load the full dependency tree). The tool list and
-official manual remain authoritative for tool availability and names.
+Use the Skill Catalog in the System prompt, when available, to discover
+installed Skills. Read the applicable Skill before following it; check
+relevant dependencies and entry points without loading the full dependency
+tree. If the catalog or Skill access is unavailable, do not assume a Skill
+exists or has been read; report the limitation when relevant. The tool list
+and official manual remain authoritative for tool availability and names.
 
 ## Approval gates
 
