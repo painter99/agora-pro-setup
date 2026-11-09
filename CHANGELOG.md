@@ -12,6 +12,7 @@ the Agora app baseline it was maintained against.
 - `context-management` Skill (2026-11-09): context routing across Agora layers and subagents with provenance separation, transfer-fidelity checks for self-contained worker briefs, worker-result verification and reconciliation, worker-initiated delegation requests handled as data via `model-escalation-protocol` §6a, and recovery after interruption. Adapted from the public `self-managed-context` Skill; harness-dependent live-context mechanisms were deliberately not ported. Cross-references added to `memory-master-index` and `model-escalation-protocol` dependencies.
 
 ### Changed
+- `android-spec-first` (2026-11-09): catalog description now names it as the entry point of the Android trio and routes to `android-dev-tdd` and `android-code-review`; the trio entry-point hint previously lived only in the removed `tool-execution-contract` routing list.
 - `tool-execution-contract` (2026-11-09): the hand-maintained `## Domain routing` skill list was replaced by a short reference to the `<skill_catalog>` injected in the system prompt (generated from the manifest, always current). Removes recurring routing-list drift (the new `context-management` Skill was already missing from the list on its merge day); saves ~300 tokens per contract load. Dependency chains and entry points remain in each Skill's own Dependencies section; the tool list and official manual stay authoritative for tool names.
 
 ### Fixed
