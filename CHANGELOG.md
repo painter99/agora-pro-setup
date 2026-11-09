@@ -8,6 +8,7 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Added
+- docs/11 (D-20261109-01): troubleshooting section for provider 402 errors — distinguishes credit/max-tokens exhaustion (structural blocker; operator-only remediation; verify partial artifacts) from prompt-token limit exceeded (reduce input size); no cause inference from the HTTP status alone.
 - SIL integration hygiene (D-20261108-01): tool-execution routing for AI-generated artwork and graphic design, conditional research/design dependencies, and the narrowly scoped `secret-and-key-handling` instance-overlay registration.
 - `context-management` Skill (2026-11-09): context routing across Agora layers and subagents with provenance separation, transfer-fidelity checks for self-contained worker briefs, worker-result verification and reconciliation, worker-initiated delegation requests handled as data via `model-escalation-protocol` §6a, and recovery after interruption. Adapted from the public `self-managed-context` Skill; harness-dependent live-context mechanisms were deliberately not ported. Cross-references added to `memory-master-index` and `model-escalation-protocol` dependencies.
 
