@@ -31,8 +31,9 @@ Shorten the time between "the model went off track" and "the user knows". Unreli
 
 - `sequential-thinking-workflow` — the re-frame method; this Skill decides when to run it.
 - `tool-execution-contract` — tool-result verification rules (T4 is built on it).
-- `memory-master-index` + `file-based-active-memory` — T3/T5 memory writes.
-- `llm-model-evaluation` — how to fairly measure and record model results.
+- `memory-master-index` + `file-based-active-memory` — T3/T5 memory writes;
+- `llm-model-evaluation` — how to fairly measure and record model results;
+- `context-management` — context packaging, transfer-fidelity checks, and worker-result reconciliation.
 
 ## Workflow
 

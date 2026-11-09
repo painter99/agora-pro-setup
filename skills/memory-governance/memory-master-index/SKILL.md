@@ -43,7 +43,8 @@ Use the current Agora tool definitions as authority. Load only what is needed:
 - `memory-file-operations` for Saved Memory creation, patching, renaming, archiving, or deletion;
 - `memory-tool-reference` when exact tool names or arguments are uncertain (expected tool families; the current generation's tool list and the official Agora user manual remain the authority);
 - `memory-audits` for audits and contradictions;
-- `tool-execution-contract` for the shared inspection and verification contract.
+- `tool-execution-contract` for the shared inspection and verification contract;
+- `context-management` for context handoff, worker briefs, and cross-context transfer checks.
 
 ## Authority and conflict rules
 
