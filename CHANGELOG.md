@@ -9,6 +9,7 @@ the Agora app baseline it was maintained against.
 
 ### Added
 - SIL integration hygiene (D-20261108-01): tool-execution routing for AI-generated artwork and graphic design, conditional research/design dependencies, and the narrowly scoped `secret-and-key-handling` instance-overlay registration.
+- `context-management` Skill (2026-11-09): context routing across Agora layers and subagents with provenance separation, transfer-fidelity checks for self-contained worker briefs, worker-result verification and reconciliation, worker-initiated delegation requests handled as data via `model-escalation-protocol` §6a, and recovery after interruption. Adapted from the public `self-managed-context` Skill; harness-dependent live-context mechanisms were deliberately not ported. Cross-references added to `memory-master-index` and `model-escalation-protocol` dependencies.
 
 ### Fixed
 - `skill-mirror-check` (D-20261108-02): the read-only rule now consistently names the sole exception — a proven, authorized repository→local patch in place, with overlays preserved, diff evidence, and read-back; all other directions remain read-only or gated.
