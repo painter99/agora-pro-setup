@@ -85,27 +85,10 @@ round in which every call failed or returned an unusable result.
 
 ## Domain routing
 
-- Saved Memory: `memory-master-index` → `memory-file-operations`; exact tool names and arguments: `memory-tool-reference` (the current generation's tool list and the official Agora user manual remain the authority).
-- Current status / working state file (file-based active memory): `file-based-active-memory`.
-- Memory audit: `memory-audits`.
-- Shell/device: `shell-and-device-operations`.
-- Secrets and keys: `secret-and-key-handling`.
-- Current/disputed research: `multi-source-research`.
-- Coordination and audits: `agora-coordinator` (+ `skill-governance`).
-- Reasoning workflow: `sequential-thinking-workflow`.
-- Self-improvement: `self-improvement-loop`.
-- Git/release: `github-release-workflow`.
-- CAD: `cad-spec-driven-workflow`.
-- AI-generated artwork: `ai-drawing-workflow`.
-- Graphic design: `graphic-design-art-director`.
-- Android: `android-spec-first` (entry point of the Android trio).
-- Language fidelity: `language-fidelity`.
-- Escalation: `model-escalation-protocol`.
-- Model evaluation: `llm-model-evaluation`.
-- Setup upgrade: `aps-upgrade`.
-- Skill mirror verification: `skill-mirror-check`.
-- Generic coding tasks: `coding-loop`.
-- Process design: `process-design`.
+Use the injected `<skill_catalog>` to discover the relevant installed Skills.
+Read the applicable Skill before following it; check its dependencies and
+entry points. The tool list and official manual remain authoritative for
+tool availability and names.
 
 ## Approval gates
 
