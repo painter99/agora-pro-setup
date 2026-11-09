@@ -106,9 +106,9 @@ Generic role tiers — exact model IDs live only in the instance overlay; this f
 | Role tier | Typical tasks | Placeholder |
 |---|---|---|
 | Primary / coordinator | routine work, routing, verification, short edits | `<primary model>` |
-| Specialist | architecture, cross-module refactors, hard security judgments, qualified fresh review | `<strongest approved model>` |
-| Structured worker | single-file code, extraction, report assembly | `<mid-tier model>` |
-| Light worker | mechanical, easily verifiable lookups, fan-out with a strict output contract | `<cheap model>` |
+| Specialist | architecture, cross-module refactors, hard security judgments, qualified fresh review | `<approved specialist>` |
+| Structured worker | single-file code, extraction, report assembly | `<approved structured worker>` |
+| Light worker | mechanical, easily verifiable lookups, fan-out with a strict output contract | `<approved light worker>` |
 
 Rules:
 
