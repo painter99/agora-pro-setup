@@ -48,3 +48,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0017](0017-file-based-active-memory.md) | File-based active memory replaces injected Active Memory | accepted 2026-10-31 |
 | [0018](0018-worker-capability-scope-in-brief.md) | Worker capability scope lives in the brief until the runtime provides per-spawn scoping | accepted 2026-11-05 |
 | [0019](0019-budget-capped-expertise-routing.md) | Budget-capped expertise routing with worker-initiated delegation requests | accepted 2026-11-06 |
+| [0020](0020-worker-retention-until-task-completion.md) | Retain worker context until operator-confirmed task completion | accepted 2026-11-10 |
