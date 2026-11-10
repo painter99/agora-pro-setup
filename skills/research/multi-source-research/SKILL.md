@@ -58,7 +58,7 @@ Do not run Level 3 merely because the user used the words “deep dive.” Match
 1. Restate the decision or factual question in one sentence.
 2. Identify the scope, date boundary, geography, and intended use.
 3. Split the question into 3–7 sub-questions when it is genuinely multi-part.
-4. Choose Level 1, 2, or 3 and state why.
+4. Choose Level 1, 2, or 3 and state why. Digest-only extraction from an already-consumed long-form input needs no Level — follow `External input digesting` below; the digest trigger takes precedence over the exclusions above whenever adoption candidates or durable conclusions are at stake.
 5. For substantial or high-impact Level 3 research, present a concise plan when an approval mechanism is available. For a small check, proceed proportionally.
 
 ### Phase 1 — Triage and query diversification

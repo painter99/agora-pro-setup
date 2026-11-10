@@ -146,7 +146,7 @@ A change in this repository is done when:
 - affected cross-references, routing rows, and the component inventory (`manifest.yaml`) are updated in the same change;
 - `CHANGELOG.md` carries an entry for user-visible changes;
 - the branch is merged `--no-ff`, the run on `main` is verified `success`, and the branch is cleaned up after `merge-base --is-ancestor`;
-- a non-trivial change received a fresh-context review (subagent, or a one-off task as fallback) whose verdict is recorded before any done claim;
+- a non-trivial change received a fresh-context review by an approved reviewer mechanism (subagent; scheduled Tasks and Loops are not review fallbacks) whose verdict is recorded before any done claim — if no qualified reviewer is available or the delegation budget is exhausted, the change is reported as unreviewed, not done;
 - findings outside the task scope are reported — not silently fixed, not silently dropped.
 
 ## Last verified
