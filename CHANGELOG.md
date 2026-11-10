@@ -16,6 +16,7 @@ the Agora app baseline it was maintained against.
 - `agents/context-quarantine.md`, `agents/fresh-review.md`, `agents/research-fan-out.md` (2026-11-10): deletion-on-delivery steps replaced with kernel lifecycle-policy references, retained-worker caveats (quarantine persists; refreshed continuation context; retained conclusions are not automatically current; a retained reviewer is not fresh).
 - `tasks/self-improvement-retrospective-weekly.md` (2026-11-10): the reviewer step and hard rules aligned with the kernel worker lifecycle policy — the reviewer is retained or released per policy instead of deleted immediately after the verdict.
 - `AGENTS.md` (2026-11-10): the Definition-of-done review bullet now requires an approved reviewer mechanism and reports unavailable review as unreviewed instead of the removed one-off task fallback.
+- `tasks/self-improvement-retrospective-weekly.md` (2026-11-10): Reads and workflow now cover operator substrate notes (`pending-delta` files) and a dedicated strategic-assessment report section — stated variants including keeping the current approach, facts vs. hypotheses, verified vs. unverified, and a scope-coverage assessment for recurring cross-repository optimization; the section changes no permissions, limits, or approval gates.
 
 ### Added
 - ADR-0020 records the operator-approved worker-retention policy, its slot and permission boundaries, and the independent-review requirement.
