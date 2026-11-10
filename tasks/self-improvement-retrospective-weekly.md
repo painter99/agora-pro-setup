@@ -91,8 +91,9 @@ repository-sync tasks.
 
 ## Hard rules
 
-- No writes to Skills or memory (read-only), no git commit or push, no
-  task/loop management, no decision-log status changes.
+- No writes to Skills or memory (read-only) apart from the task's own single
+  narrow diagnostic memory-edit attempt (fixed rules, max 1 attempt); no git
+  commit or push, no task/loop management, no decision-log status changes.
 - The reviewer subagent is read-only and single-purpose: spawned and waited on
   within the run (at most 2 attempts); after the verdict it is retained or
   released per the kernel's worker lifecycle policy; its verdict counts only
