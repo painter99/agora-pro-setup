@@ -28,6 +28,8 @@ repository-sync tasks.
 - the Skills health state (full-audit baseline and last verdicts)
 - the live task inventory (name, schedule, enabled state, model, prompt), when
   a task-listing tool is available
+- operator substrate notes in the local retrospectives directory
+  (`pending-delta` files), when present
 
 ## Workflow
 
@@ -38,7 +40,13 @@ repository-sync tasks.
    retrospectives, open decision-log recommendations and superseded chains,
    baseline+diff trends, and the outcomes of deltas applied at least 7 days
    ago (helpful/harmful/neutral, appended to the eval log as `OUTCOME:`
-   notes).
+   notes). An operator substrate note requesting a strategic repository
+   assessment is processed in a dedicated report section: compare its stated
+   variants including keeping the current approach, separate facts from
+   hypotheses, mark what was verified and what remains unverified, and assess
+   whether the current scope covers recurring cross-repository optimization
+   and refactor proposals; the section changes no permissions, limits, or
+   approval gates and authorizes no refactor by itself.
 3. Evaluate and propose at most 3 signal deltas, each in a fixed table: id,
    what, evidence, proposed patch, risk, eval plan. Every delta gets a dated
    ID; a delta realizing a decision-log recommendation references it.
