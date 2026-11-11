@@ -115,6 +115,10 @@ Branch deletion, history rewrite, and publication are separate approvals.
 - CI status: <active (verification path) | DEFERRED (merge justification)>
 - Language: internal EN / operator chat <lang> / external <lang>
 - Terminology: <glossary ref or none>
+- Canonical sources: <where spec, decisions, status, evidence, and the role
+  overlay live>
+- Execution scope: <authorized actions per process slice; process-card
+  references>
 - Extra gates: <e.g. anonymization + owner GO before publication>
 ```
 
