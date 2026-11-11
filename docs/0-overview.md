@@ -71,6 +71,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Instance overlay | `docs/30` | — |
 | Platform layer (host units) | `docs/31` | — |
 | Coding workflow | `docs/32` | `coding-loop` |
+| Programming agent roles | `docs/33` | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -109,3 +110,5 @@ New content
 - Host-level services (MCP servers, exchange watcher): `docs/31`, with the
   host walkthrough in `docs/23`.
 - Coding tasks (the agent writes code): `docs/32`.
+- Who does what in programming projects (roles, delegation, merge GO):
+  `docs/33`.
