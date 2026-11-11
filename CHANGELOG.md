@@ -20,6 +20,7 @@ the Agora app baseline it was maintained against.
 - `tasks/self-improvement-retrospective-weekly.md` (2026-11-10): the hard-rules text now mentions the task's single narrow diagnostic memory-edit exception (fixed rules, max 1 attempt) instead of an unqualified read-only statement.
 
 ### Added
+- docs/33 (2026-11-11): generic programming-agent roles and delegation policy — role/decision-rights matrix (coordinator+junior, code reviewer, specialist), authority order across overlays, author–reviewer separation, exact-route resolution, permissions/budgets/lifecycle, merge evidence, project-overlay template; concrete model assignments remain in the instance overlay (docs/30).
 - ADR-0020 records the operator-approved worker-retention policy, its slot and permission boundaries, and the independent-review requirement.
 - docs/11 (D-20261109-01): troubleshooting section for provider 402 errors — distinguishes credit/max-tokens exhaustion (structural blocker; operator-only remediation; verify partial artifacts) from prompt-token limit exceeded (reduce input size); no cause inference from the HTTP status alone.
 - SIL integration hygiene (D-20261108-01): tool-execution routing for AI-generated artwork and graphic design, conditional research/design dependencies, and the narrowly scoped `secret-and-key-handling` instance-overlay registration.

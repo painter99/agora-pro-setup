@@ -220,6 +220,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/30-instance-overlay.md`](docs/30-instance-overlay.md) — instance overlay pattern: public generic base ↔ private localized instance, derivation and export rules, privacy gates
 - [`docs/31-platform-layer.md`](docs/31-platform-layer.md) — platform layer: parameterized host systemd units (MCP server, sequential-thinking bridge, exchange watcher) with an install manifest; placeholders resolved from the instance overlay
 - [`docs/32-coding-workflow.md`](docs/32-coding-workflow.md) — coding workflow: the human-gated coding loop (spec → increments → tests → review → bounded fixes → acceptance), scripts-repository versioning pattern, per-effect-class testing policy
+- [`docs/33-programming-agent-roles.md`](docs/33-programming-agent-roles.md) — programming agent roles and delegation: role/decision-rights matrix (coordinator+junior, code reviewer, specialist), author–reviewer separation, exact-route resolution, permissions and budgets, merge evidence, project-overlay template
 - [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync, quarterly replication dry-run), documented as genericized cards — not verbatim prompts
 
 ## Limitations
