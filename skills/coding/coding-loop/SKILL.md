@@ -34,7 +34,7 @@ Run coding tasks as a closed loop with a deterministic stop condition instead of
 Before writing code, state the specification: inputs, outputs, constraints, and what "done" means in observable terms. If the spec cannot say what done and failed look like, stop and get it from the user. Every behavior in the spec needs a test path — a mechanism (an override, a fixture) or an explicit deferral with a reason — and the spec must cover malformed inputs (missing or wrong header, empty input). A small task may hold the spec in the reply; a recurring or multi-step task gets it written down first.
 
 ### 2. Implement in small increments
-Prefer the smallest change that moves toward the spec. One increment is one verifiable step. Reward hacking concentrates in large single-shot implementations — the measured gap grows with the size of the change — so a large change needs an explicit reason.
+Prefer the smallest change that moves toward the spec. One increment is one verifiable step. Reward hacking concentrates in large single-shot implementations — the measured gap grows with the size of the change — so a large change needs an explicit reason. For a non-obvious choice between viable approaches, briefly state the chosen approach, its principal failure risk, and whether a simpler alternative satisfies the acceptance criteria.
 
 ### 3. Test
 Run the tests and read the report; an exit code is not evidence, the test output is. Tests are artifacts under review, not judges: never weaken, skip, or delete an assertion to make a run pass; never edit the test suite or CI configuration to fit the implementation without stating the reason and getting approval. If no test exists for the change, write the smallest test that would catch the bug or the regression.
@@ -57,7 +57,9 @@ Goal: Assess the supplied artifact against the specification and acceptance crit
 Inputs: Specification, final diff, final touched-file contents, relevant tests,
         and reviewed revision or content hashes.
 Checks: Correctness; test adequacy; hard-coded passing behavior;
-        weakened or skipped assertions; out-of-scope changes.
+        weakened or skipped assertions; out-of-scope changes;
+        for consequential design choices: strongest failure scenario,
+        missing evidence, simpler alternative.
 Output: Final message with finding, severity, evidence, and suggested fix;
         overall verdict PASS / PASS-with-notes / FAIL.
 Permissions: Read only the explicitly supplied or allowlisted artifacts.
@@ -67,9 +69,11 @@ Stop: Missing, unreadable, inconsistent, or stale inputs — report the gap;
       do not invent findings or expand access.
 ```
 
-The coordinator verifies the verdict, resolves findings, and records remaining limitations. A review pass covers only the inspected artifact state.
+The coordinator verifies the verdict, resolves findings, and records remaining limitations. A review pass covers only the inspected artifact state. For consequential design choices the review includes a bounded challenge pass — strongest failure scenario, counter-evidence, simpler alternative — within the existing review, not an extra worker or jury.
 
 ### 5. Bounded fix loop
+For a non-obvious bug, record before fixing: candidate hypotheses, the supporting observation for each, and the discriminating test that separates them. Use the test result to narrow the hypotheses; apply the smallest justified fix and verify it against the reproduction and regression tests. A numerical confidence is optional and only with a defensible basis.
+
 Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap. Fix-round review policy: fixes for minor findings need re-tests and a fix-diff artifact; fixes that change behavior or the spec need a fresh re-review with a new fresh-context reviewer using an available approved subagent mechanism; if unavailable, report the updated work as unreviewed.
 
 ### 6. Acceptance against reality

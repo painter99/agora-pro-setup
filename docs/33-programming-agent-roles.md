@@ -58,6 +58,12 @@ tests, review, fix rounds) to the mid tier where the operator approved it.
   Skill).
 - A merge-GO decision by the specialist is a gate decision, **not** a
   substitute for a mandatory code review.
+- Review of consequential design choices includes a bounded challenge
+  pass — strongest failure scenario, missing evidence, simpler
+  alternative — using the existing review, not additional workers.
+- Worker briefs follow the brief-quality checklist in the
+  `context-management` Skill; trimming applies to the brief, never to
+  source artifacts.
 
 ## Permissions, budgets and lifecycle
 

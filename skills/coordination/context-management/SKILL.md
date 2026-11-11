@@ -112,7 +112,7 @@ Task ID:
 Bounded objective:
 Original user request — verbatim:
 Accepted amendments and constraints:
-Acceptance criteria:
+Acceptance criteria (each with an observable check or an explicit deferral):
 Required output and artifacts:
 Evidence supplied:
   - reference, relevant content, provenance, verification status
@@ -125,6 +125,8 @@ Required result format:
 ```
 
 Workers receive a task, not an unrestricted copy of the parent context.
+
+Compression applies to the brief only; source artifacts are never deleted or altered to make a brief smaller, and provenance references survive trimming.
 
 ### 5. Check transfer fidelity and access
 
