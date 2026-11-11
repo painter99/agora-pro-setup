@@ -33,9 +33,15 @@ defines the tiers and their decision rights.
 | **Coordinator + junior** (main conversation model) | context, planning, worker briefs, operator communication, mechanical execution (file ops, git mechanics after an approved GO), small bounded edits; may write first-draft code | no merge decisions, no architecture calls, must not override specialist evidence |
 | **Code reviewer** (mid tier) | code review of junior-written code in a **separate fresh context**, test design, bounded fix-round verdicts | no merge decisions, no cross-module architecture |
 | **Specialist / architect** (top tier) | architecture, cross-module design, qualified fresh review (final instance), product decisions, process/Skill proposals, **merge GO where a project overlay delegates it** | not routine loop work (last resort only); no authority beyond explicitly delegated repos |
+| **Light worker** (cheapest approved model per the instance overlay — may be another instance of the coordinator's own model class) | mechanical, easily verifiable tasks, research fan-out with strict output contracts, routine lookups and file edits | no design, review, or merge authority; results are verified by the orchestrator before use |
 
 Default rule: **anything not explicitly delegated in a project overlay
 remains with the operator.**
+
+Cost rule: **prefer the cheapest qualified role** for each task; escalate to
+higher tiers only when the task requires them. Fan-out to multiple light
+workers draws from the same shared task budget, and every light-worker
+result is verified by the orchestrator before it is used.
 
 The default division of labor for coding: the junior role writes the code,
 the reviewer role reviews it — always from a self-contained, high-quality
