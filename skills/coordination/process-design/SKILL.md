@@ -80,11 +80,17 @@ Steps:        1..n — each idempotent, with the expected output
 Verification: per-step checks plus the end-to-end check
 Rollback:     how to undo or restore
 Escalation:   when to stop and who or what takes over
+Execution
+scope:        observe / propose-for-approval / explicitly authorized
+              bounded execution
+Authorization: scope, approver, limitations (reference)
 Logs/state:   where state, logs, and artifacts live
 Known risks:  top failure modes and their mitigations
 ```
 
 Keep the card critical and short — cover the steps that are catastrophic if missed or easily forgotten, and keep any operational checklist inside it within roughly nine items. The card is SOP-shaped (routine, repeatable work); exception-handling procedures additionally need symptom descriptions, impact assessment, and diagnostic branching, while escalation criteria remain mandatory in both cases. Validate the card against a real supervised run before relying on it — a validated date is not the last-edited date.
+
+Classify each process slice by execution scope. Promotion to a wider scope applies to one slice, requires explicit approval, and needs evidence: verification results, monitoring, and stop/recovery criteria. Human decisions supply candidate lessons through the self-improvement loop; they never change policy automatically. Classification documents existing authorization; it grants no permissions and never overrides tool/device policy or action-specific approval gates.
 
 ### 8. Review cycle
 
