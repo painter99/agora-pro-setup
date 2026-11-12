@@ -137,6 +137,17 @@ approvals.
 - Extra gates: <e.g. anonymization + owner GO before publication>
 ```
 
+## Model profile structure (generic)
+
+Instance model profiles (instance overlay, never this repository) follow one structure so that a model can read a peer's profile quickly:
+
+1. **Essence** — the role, when to use it, and when to escalate.
+2. **Map** — a compact text tree (role → use → escalation), not a diagram; diagrams cost tokens without evidence of benefit.
+3. **Route and evidence** — exact route only from the instance overlay, plus observed benchmark figures with variant, index version, date and source link. Every figure carries its source and date or is marked UNVERIFIED.
+4. **Connections** — links to other roles and to the policy sections that govern them.
+
+Rules: a benchmark is orientation, not a measurement of our routes; effort or variant labels do not prove equivalence across model families; an executable route is UNVERIFIED until a live schema check. The structure is adopted provisionally; its benefit must be measured on golden tasks before it is treated as proven.
+
 ## Maintenance
 
 - A role change is a **proposal** (from the specialist or the operator) →
