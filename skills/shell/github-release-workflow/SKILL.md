@@ -43,8 +43,16 @@ git push origin <branch>
 # AFTER explicit GO from the user:
 git checkout main && git merge --no-ff <branch> -m "Merge ..."
 git push origin main
-git merge-base --is-ancestor <branch> main \
-  && git branch -d <branch> && git push origin --delete <branch>
+# Branch deletion gate (default RETAIN): delete only when all checks pass —
+# exact ref identity (never the default or a protected branch), a fresh fetch
+# with known local and remote tips, tip ancestry into the verified destination
+# (a squash/rebase merge needs separately approved equivalence evidence), a
+# paginated open-PR check (no pull request with this branch as head or base,
+# forks included), an expected-SHA conditional remote delete with the local
+# tip re-checked immediately before deletion, and an explicit operator GO or
+# an operator-delegated PASS (a PASS never deletes by itself and never
+# replaces operator approval). After deletion, verify the ref is gone locally
+# and remotely; any failed, incomplete or ambiguous check means RETAIN.
 ```
 
 ### Identity and keys on a build host
@@ -70,7 +78,7 @@ git merge-base --is-ancestor <branch> main \
 1. **Always show diff stat before committing** — never push blind.
 2. **GO from the user before pushing** — exception: explicit "send it" / "do the merge".
 3. **`--no-ff` merges** — keep the branch visible in history.
-4. **Cleanup after merge** — locally and on the remote, **but only after `git merge-base --is-ancestor` proves the merge** (see the cleanup gate above).
+4. **Cleanup after merge** — default RETAIN; delete only via the branch-deletion gate (exact ref identity, fresh tips, ancestry or approved squash/rebase evidence, paginated open-PR check, expected-SHA conditional remote delete, operator GO or delegated PASS).
 5. **Read repository state from the repository, not from memory** — a note saying "waiting for merge GO" is a hypothesis; `git log main` and `ls-remote` are evidence. Precedent: a merge that had already landed three hours earlier kept being reported as pending.
 6. **CI verification before merge** — an API conclusion of "success" is NOT sufficient; required depth is defined in "CI verification before merge" below. Precedent: a real incident where `tee` without `pipefail` masked an assembleDebug failure, producing a falsely green run with an empty APK artifact.
 
@@ -183,3 +191,4 @@ v1.0 — distilled from hands-on mobile-first Git operations in a constrained Al
 v1.1 — added the CI verification gate before merge (full mirrored log for merge runs; an API conclusion alone is insufficient), including the CDN-cache gotcha of raw log reads.
 v1.2 — added docs-only changes under a CI gate, CI efficiency rules (concurrency + cancel-in-progress, job timeouts, paths-ignore, shallow checkout, Gradle caching), token-less CI polling, backup refs before destructive operations, and the GITHUB_TOKEN / notification / rate-limit gotchas. Cross-checked against GitHub Docs (workflow concurrency, triggering workflows) and gradle/actions docs, 2026-09-26.
 v1.3 — added build-host reality: shell identity vs. repository ownership ("dubious ownership"), missing commit identity in fresh clones, per-repo deploy keys behind SSH aliases, single-branch clones hiding remote branches, and a mandatory `merge-base` gate before branch cleanup; anonymised 2026-10-12.
+v1.4 — branch-deletion gate (operator decision 2026-11-12): default RETAIN after a verified merge; deletion requires exact-ref identity, fresh tips, ancestry or approved squash/rebase evidence, a paginated open-PR check (heads and bases, forks included), an expected-SHA conditional remote delete, and an explicit operator GO or an operator-delegated PASS (a PASS never deletes alone).
