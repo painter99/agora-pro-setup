@@ -64,10 +64,10 @@ git push origin main
 ### Branch state: where branches actually are
 - A **single-branch clone** (`remote.origin.fetch = +refs/heads/main:…`) **never shows your own branch** as `origin/<branch>`. `git branch -a` in such a clone is not evidence about the remote.
 - Read remote state with `git ls-remote --heads origin`; after fetching one branch, work through `FETCH_HEAD`.
-- **Cleanup gate (mandatory before any deletion):**
+- **Branch deletion gate (mandatory before any deletion; full rule in Standard procedure and GO rule 4):** an ancestry result is necessary but never sufficient. Also require the paginated open-PR check, the expected-SHA lease, and an explicit operator GO or delegated PASS. Default is RETAIN.
   ```bash
   git fetch origin <branch>
-  git merge-base --is-ancestor FETCH_HEAD main && echo "merged → safe to delete" || echo "NOT merged → keep and report"
+  git merge-base --is-ancestor FETCH_HEAD main && echo "ancestry OK — gate checks still required" || echo "NOT merged → RETAIN and report"
   ```
   A branch that looks like post-merge leftovers may be unbacked work. Precedent: a feature branch with two commits that was not in `main` would have been deleted by an unconditional cleanup step.
 
@@ -170,7 +170,7 @@ Only proceed with the destructive step after the backup ref provably exists on t
 - Pushing without GO unless explicit consent was given.
 - Never pushing to `main` without GO or an explicit exception.
 - Never pushing personal data into a public repo.
-- Never deleting a branch before verifying the merge succeeded — with `merge-base --is-ancestor`, not with a feeling.
+- Never deleting a branch on ancestry alone — the full branch-deletion gate (PR check, expected-SHA lease, operator GO or delegated PASS) must pass; default RETAIN.
 - Never treating `git branch -a` of a single-branch clone as proof about remote state.
 - Never running git as root inside clones owned by an unprivileged service user.
 - Never force pushing, rewriting history, or deleting a remote branch without a verified backup ref and explicit GO for the exact scope.
