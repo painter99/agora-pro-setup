@@ -40,7 +40,7 @@ Generator → Reflector → GO gate → Curator → Eval
 | Retrospectives | agent host `logs/sil-retrospectives/YYYY-MM-DD.md` | weekly Reflector output |
 | Observability decision log + dashboard | measurement store (docs/28 §4–5) | Reflector signal source; `D-` ↔ `DR-` cross-reference |
 | Scheduled task `sil-weekly-retrospective` | weekly cron (Sunday night), read-only | automated Reflector |
-| Scheduled task `repo-sync-weekly` | weekly cron (Sunday night, after the retrospective) | autonomous repository maintenance (§5) |
+| Scheduled task `repo-sync-weekly` | weekly cron (Sunday night, after the retrospective) local repository-proposal preparation, no publication (§5) |
 
 Task-agent constraints apply: no injected active memory, no automation tools — all rules live in the task prompt (see docs/28 §7 for the pattern).
 
@@ -65,19 +65,19 @@ Fill in per installation. The concrete corpus is personal data and stays local �
 
 ## 5. Autonomous repository-maintenance policy
 
-Standing authorization by the operator (2026-10-26): the agent maintains this repository autonomously so that it matches the current reality of the stack.
+Historical note: the operator's standing authorization of 2026-10-26 (autonomous maintenance including publication) is superseded for publication. The current policy is local-proposal only: the sync task prepares an unpublished local commit and grants no push, PR, merge or publication right. The goal is unchanged: keep the repository matching the current reality of the stack.
 
 Rules for the autonomous sync task:
 
 - **Allowed:** `docs/*.md`, `skills/**`, and `tasks/**` — English,
   anonymized, generic; new Skills, updated procedures, task-card refresh, doc
   refresh when stack reality drifts. Inventory (`manifest.yaml`) and
-  changelog metadata are updated in the same change as the component. Local
+  changelog metadata are reported to the operator for separate handling, not changed by the sync task. Local
   observability artifacts (the run report, the repository-graph snapshot)
   stay on the agent host and are never committed.
-- **Forbidden without explicit GO:** code, `.github/` workflows, `system-prompt/` templates, file deletions, history rewrite, force-push, secrets, personal data.
-- **Traceability:** one commit per sync batch with an explicit message; max 1 push per run; no change → no push, no notification.
-- **Verification before push:** identifier scan (names, projects, hardware, models, paths, IPs, dates/plans) = 0 hits; language check for any non-English text; `git diff --stat` reviewed; push verified via `git ls-remote`; remote content verified via `git show origin/main:<file>`. This repository has CI (`.github/workflows/check.yml`): a docs-only commit triggers a check run — verify its conclusion is `success` for the pushed head before considering the push done.
+- **Forbidden without explicit GO:** code, `.github/` workflows, `system-prompt/` templates, file deletions, history rewrite, force-push, secrets, personal data, publication (push, PR, merge).
+- **Traceability:** one local commit per sync batch with an explicit message; no push, PR or merge by this task; no change → no commit, no notification.
+- **Verification before any separately approved publication:** identifier scan (names, projects, hardware, models, paths, IPs, dates/plans) = 0 hits; language check for any non-English text; `git diff --stat` reviewed; push verified via `git ls-remote`; remote content verified via `git show origin/main:<file>`. This repository has CI (`.github/workflows/check.yml`): a docs-only commit triggers a check run — verify its conclusion is `success` for the pushed head before considering an approved publication done. Remote CI for an unpublished local commit is NOT RUN.
 - **Uncertainty:** missing evidence → no change; unverifiable → `UNVERIFIED` in the run report; failure → notification with priority low.
 
 ## 6. Safety rules
