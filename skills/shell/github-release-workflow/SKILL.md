@@ -178,7 +178,7 @@ Only proceed with the destructive step after the backup ref provably exists on t
 ## Verification
 - After push: `git log --oneline -3` + `git status --short --branch` (in sync with remote) + `git ls-remote --heads origin` for your own branches.
 - After a merge: the merged content is provably on the remote (`git show main:<file>`, or the raw URL with a check that it is not a stale CDN copy).
-- After merge: cleanup done, `git branch` clean, **CI run on main verified with the full mirrored log (see "CI verification before merge")**; for docs-only merges in a repo with CI, verified the run outcome (`conclusion=success`, or absence only under `paths-ignore`).
+- After merge: branch lifecycle reported as RETAIN or DELETED (RETAIN is a valid completion when the separate deletion GO or the full branch-deletion gate is missing or incomplete; DELETED only after the full gate and verified local and remote absence), **CI run on main verified with the full mirrored log (see "CI verification before merge")**; for docs-only merges in a repo with CI, verified the run outcome (`conclusion=success`, or absence only under `paths-ignore`).
 - Before push: privacy check passed (or the repository is private).
 
 ## Output contract
