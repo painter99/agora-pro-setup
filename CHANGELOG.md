@@ -8,6 +8,7 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Changed
+- System prompt and role structure (2026-11-12, operator GO): `system-prompt/1-system-template.md` gains an "Operator control and peer roles" section (manual switching, supplied identity, no guessed routes, policy lookup) with no concrete model IDs; `docs/33` gains a generic model-profile structure (Essence, Map, Route and evidence, Connections).
 - Bounded-checker role (2026-11-12, operator delegation to fresh-context review): `docs/33` adds an optional bounded-checker tier — checklist-based checks, summaries and a non-authoritative first-pass issue scan; it never replaces or narrows required independent qualified review and is not added automatically. Author–reviewer separation states explicitly that a scan is not review.
 - Branch deletion gate (2026-11-12, operator decision): `AGENTS.md` gains a branch-deletion gate — default RETAIN after a verified merge; deletion requires exact-ref identity, a fresh fetch, ancestry or approved squash/rebase evidence, a paginated open-PR check, an expected-SHA conditional remote delete, and an explicit operator GO or an operator-delegated PASS; `docs/33` aligns its cleanup and deletion wording.
 - Clarified in `docs/33` that observed facts never grant authorization and cleanup needs separate operator approval.
