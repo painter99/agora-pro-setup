@@ -51,10 +51,13 @@ Weekly (Sunday night), after the retrospective and the mirror-check tasks.
    models, local paths, notification topics, ...). A hit = drop that file and
    note the drop in the run report.
 9. Stage exactly the intended files; whitespace check; review the staged diff.
-10. Commit with the repository identity; push to the default branch; verify
-    the push (status + remote heads).
-11. Verify the content actually arrived on the remote, and that the CI check
-    run for the pushed head commit finished with conclusion=success.
+10. Commit with the repository identity. Publish only to a topic branch after
+    explicit operator GO; verify the push (status + remote heads). If standing
+    sync authorization conflicts with repository publication rules or its scope
+    is not verified, do not publish; report and request operator resolution.
+11. If publication was authorized and performed, verify the content actually
+    arrived on the remote, and that the CI check run for the pushed head commit
+    finished with conclusion=success.
 12. Exactly one notification when something was synced (files, commit hash,
     state). No change = no commit, no push, no notification.
 
