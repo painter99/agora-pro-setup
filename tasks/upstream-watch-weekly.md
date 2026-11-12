@@ -18,14 +18,17 @@ Weekly, once per week (the instance sets the exact slot); read-only.
 ## Workflow
 1. Read the previous report and its pointer (last check date, last seen head).
 2. Query the upstream feeds with plain read-only HTTP GETs; no credentials.
+   Respect pagination and verify the tracked pull request directly; absence
+   from the open list does not prove closure or merge.
 3. Diff against the previous report: new release? new commits? reactions on
    tracked issues? new or merged pull requests?
 4. Classify each finding: MATERIAL (a release, a reaction to a tracked
    issue, a merged pull request) versus context (small commits, unrelated
    activity).
-5. Write a dated report into the instance log directory, including an
-   explicit "no changes" statement when nothing moved, and update the
-   pointer for the next run.
+5. Write and read back a dated report including per-feed evidence. Update the
+   pointer to the collection start only after the report is verified and all
+   mandatory feeds and required comments are complete. Partial or unverified
+   collection leaves the pointer unchanged.
 
 ## Hard rules
 - Read-only toward all external systems; HTTP GET only, no authentication.
@@ -37,10 +40,11 @@ Weekly, once per week (the instance sets the exact slot); read-only.
   as UNVERIFIED.
 
 ## Delivery and notifications
-- Notify only when a MATERIAL finding exists; otherwise stay silent
-  (bounded notification budget, same pattern as the mirror check).
-- A new upstream release is the highest-priority trigger: it starts the
-  instance upgrade procedure.
+- At most one notification attempt, including failures: material findings take
+  priority; a partial run without material findings uses low priority. A fully
+  verified run without material findings is silent.
+- A new upstream release is a high-priority notice to the operator; it does
+  not start an upgrade.
 
 ## Failure behavior
 - Feed unreachable or rate-limited: retry once with a pause, then write a
@@ -48,5 +52,6 @@ Weekly, once per week (the instance sets the exact slot); read-only.
 - Missing previous pointer: proceed with a 7-day lookback and note it.
 
 ## Verification
-- Report exists with the check date and per-feed results; pointer matches.
+- Report read-back confirms the check date and per-feed results; the pointer
+  advances only after a fully verified collection.
 - Every claim in the report traces to a fetched feed (URL and timestamp).

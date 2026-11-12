@@ -6,9 +6,9 @@
 
 ## Purpose
 
-Autonomously mirror the current reality of the agent stack (Skills,
-documentation) into the public reference repository, under a standing operator
-authorization. Everything committed is English, anonymized, and generic;
+Prepare a local topic-branch proposal reflecting the current reality of the
+agent stack (Skills, documentation, task cards) in the reference repository.
+Publication and merge require separate operator action and approval. Everything committed is English, anonymized, and generic;
 personal facts stay in local memory.
 
 ## Schedule
@@ -26,24 +26,21 @@ Weekly (Sunday night), after the retrospective and the mirror-check tasks.
 
 1. Read conventions and gotchas; map stack reality (skill catalog, logs, task
    list where available).
-2. Map the repository: pull with fast-forward only, list directories, read the
-   format specification.
+2. Verify clean `main`, local and remote refs and absence of an outstanding
+   proposal before a fast-forward-only pull; otherwise stop without switching,
+   stashing or resetting. Record the base and map the repository.
 3. Find up to 5 changes the repository does not reflect (a new or changed
    Skill without a current repository version, a new pattern without
    documentation, stale docs, a task card that no longer matches the live
    task instance). Every change needs evidence; without evidence, no change.
 4. Manifest drift check: compare manifest.yaml against the actual tree
    (existence, glob counts) and against the deployed stack (components
-   without repository coverage); update the inventory in the same change as
-   the component it describes.
-5. Repository-graph snapshot: rebuild the oriented graph of the repository
-   (docs, Skills, task cards, decision records, scripts; edges from relative
-   links, Skill dependencies, card-to-live-task bindings when a task-listing
-   tool is available, and supersede chains) and overwrite the local
-   observability artifact in the agent's log directory — it is never
-   committed.
-6. Write the English, anonymized, generic versions (Skills follow the
-   skill-format spec).
+   without repository coverage). Inventory and changelog are outside this
+   task's write scope; report required changes rather than making them.
+5. Graph snapshots are owned by the daily drift-watch task; do not regenerate
+   them here.
+6. Create a unique local topic branch from the verified base and write the
+   English, anonymized, generic versions (Skills follow the format spec).
 7. Run ./scripts/check.sh and require exit 0 before the commit (hard `&&`);
    a failure = fix the change or drop the affected file, and note it in the
    run report.
@@ -51,25 +48,20 @@ Weekly (Sunday night), after the retrospective and the mirror-check tasks.
    models, local paths, notification topics, ...). A hit = drop that file and
    note the drop in the run report.
 9. Stage exactly the intended files; whitespace check; review the staged diff.
-10. Commit with the repository identity. Publish only to a topic branch after
-    explicit operator GO; verify the push (status + remote heads). If standing
-    sync authorization conflicts with repository publication rules or its scope
-    is not verified, do not publish; report and request operator resolution.
-11. If publication was authorized and performed, verify the content actually
-    arrived on the remote, and that the CI check run for the pushed head commit
-    finished with conclusion=success.
-12. Exactly one notification when something was synced (files, commit hash,
-    state). No change = no commit, no push, no notification.
+10. Commit with the repository identity. Do not push, open a PR or merge.
+11. Verify the complete diff, allowed paths and anonymization. Save a local
+    patch and run report, record base and commit, and return to unchanged main
+    only if safe. Remote CI for the unpublished commit is NOT RUN.
+12. At most one notification when a proposal is prepared; no change means no
+    commit, push or notification.
 
 ## Hard rules
 
-- Scope: documentation, Skills, and task-card directories only; the inventory
-  (manifest.yaml) and CHANGELOG.md are updated in the same change as the
-  component they describe. No code, no CI workflows, no system-prompt
-  templates, no decision records, no file deletion, no force-push, no history
-  rewrite, no secrets or personal data.
-- The repository-graph snapshot and the run report are local artifacts (the
-  agent's log directory) — never committed to the repository.
+- Scope: documentation, Skills, and task-card directories only. Inventory and
+  CHANGELOG changes are reported for operator handling, never made by the task.
+  No code, CI workflows, system-prompt templates, decision records, file
+  deletion, push, PR, merge, history rewrite, secrets or personal data.
+- The full patch and run report are local artifacts — never committed.
 - The repository is English, anonymized, generic — always.
 - Uncertainty is marked, never invented; a missing proof means no change.
 - A failed push is never retried with force; it is reported factually.
@@ -77,7 +69,7 @@ Weekly (Sunday night), after the retrospective and the mirror-check tasks.
 
 ## Delivery and notifications
 
-- Exactly one notification when something was synced; silence when nothing
+- At most one notification for a prepared local proposal; silence when nothing
   changed.
 
 ## Failure behavior
@@ -86,5 +78,5 @@ Every failure is reported factually; nothing fails silently.
 
 ## Verification
 
-Remote content check (`git show`), CI-run check via the public API,
-local/remote sync status.
+Verify the complete local diff, base and commit, branch state and local checks.
+Unpublished remote content and CI are not claimed as verified.

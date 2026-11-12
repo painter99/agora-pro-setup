@@ -26,8 +26,10 @@ tasks).
 ## Workflow
 
 1. Read the Skill `skill-mirror-check`; follow its workflow.
-2. Fresh-read every local Skill, write verbatim working copies to a scratch
-   directory, and `diff` each against its repository file.
+2. Map Skills to their actual repository paths, including flat and family
+   layouts; missing or ambiguous matches are findings. Fresh-read every local
+   Skill, write verbatim working copies to a scratch directory, and `diff` each
+   against its repository file.
 3. Classify every difference: content drift (blocking) / expected overlay /
    cosmetic.
 4. Write the dated report to the local mirror-check log directory; exactly one
@@ -52,12 +54,15 @@ tasks).
   the repository version may be imported into the local store in place (never
   a wholesale delete+re-import), recorded with diff evidence; repository
   ports and ambiguous directions stay behind operator GO.
-- Writes only to: the scratch directory, the mirror-check log directory, and
-  one notification.
+- Ordinary writes are limited to the scratch directory, the mirror-check log
+  directory, and one notification; the only additional exception is the
+  authorized in-place local Skill patch described above.
 - A difference that does not reproduce on re-read is a transcription artifact,
   not drift — re-read before reporting.
-- Overlay areas (coordinator capability table; escalation stack/routing
-  tables) are expected differences, not drift.
+- Only the defined instance overlays are expected differences: coordinator
+  capability table; escalation stack/routing tables; graphic-design and
+  drawing workflow instance overlays; and the narrowly scoped secret-handling
+  instance overlay. Differences outside those areas are not overlays.
 
 ## Failure behavior
 

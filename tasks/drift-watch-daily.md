@@ -37,10 +37,11 @@ Daily, all seven days of the week (early morning).
 3. Repository graph: run the graph script with stdout redirected to a scratch
    file. Only on success, validate the scratch file (today's date, node-count
    line) and copy it to the observability snapshot; then verify the target. On
-   any failure, do not copy — the previous snapshot stays.
+   script or scratch-validation failure, do not copy — the previous snapshot
+   stays. Report copy or target-verification failures without assuming it stays.
 4. System-prompt graph: the same pattern with the history script; validation
    checks non-empty output, today's date and the version-table heading.
-5. Write the dated run log after steps 4 and 5, so it records their actual
+5. Write the dated run log after both graph steps, so it records their actual
    results ("in sync" only when every check passed).
 6. Notification: only on a finding or an error. A run in sync sends nothing.
 
@@ -64,7 +65,9 @@ Daily, all seven days of the week (early morning).
 ## Failure behavior
 
 A failed step is logged factually and reported; the run continues with the
-remaining checks. A failed graph write never removes the previous snapshot.
+remaining checks. A failed script or scratch validation prevents copying and
+preserves the previous snapshot; after a copy or target-verification failure,
+report the failure without claiming the previous snapshot was preserved.
 
 ## Verification
 
