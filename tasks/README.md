@@ -4,8 +4,8 @@ Documented instances of the scheduled-task pattern from
 [`docs/28-update-observability.md`](../docs/28-update-observability.md). Tasks
 currently running in this setup: daily maintenance tasks, weekly loop tasks
 (stack observability + research, self-improvement retrospective, repository
-sync, skill mirror check), a weekly upstream watch, a daily drift watch, and
-a quarterly replication dry-run.
+sync, skill mirror check), a weekly upstream watch, a daily drift watch, a
+monthly repository architecture audit, and a quarterly replication dry-run.
 
 ## What these files are — and are not
 

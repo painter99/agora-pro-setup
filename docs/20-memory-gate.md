@@ -124,13 +124,19 @@ operator keeping injected Active Memory routes current status there instead.
 
 After changing the System template, confirm by behavior, not by reading:
 
-1. Ask for a durable fact to be remembered; check that the response shows a
-   `memory_read`/`skill_read` call on the router **before** the write.
+1. Ask for a durable fact to be remembered; check for a `skill_read` call on
+   the router **before** the write, or evidence that the complete router was
+   already loaded in this conversation.
 2. Check the attestation line is present.
 3. Check the write landed in the correct layer and that the Archive Index in
    the working state file was updated.
 4. Ask a transient question; confirm **no** memory write happens (the gate must
    not create write pressure).
+
+A `memory_read` call on a Skill name does not satisfy the gate. Reuse an already
+loaded complete routing Skill; inspect the target memory before a write and read
+back the changed target afterward. Verify dependent references, including the
+Archive Index, as required by the gate.
 
 ## Related docs
 

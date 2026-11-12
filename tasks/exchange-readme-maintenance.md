@@ -29,8 +29,10 @@ Daily, night window (exact time is instance-specific).
 4. Compare: directory structure vs the documented paths; pending inbox items vs
    the current-state section; project directories in the outbox; total size.
 5. Nothing changed → end with "no change", write nothing.
-6. Something changed → back up the README first, then edit it with exact
-   in-place string replacements (never a full rewrite): refresh the
+6. Something changed → back up the README first with a unique timestamped
+   name; verify the target does not already exist, the copy succeeded and it
+   matches the original. If backup verification fails, do not edit. Then edit
+   with exact in-place string replacements (never a full rewrite): refresh the
    current-state section, adjust the paths section only if a branch appeared or
    disappeared, append one history line.
 

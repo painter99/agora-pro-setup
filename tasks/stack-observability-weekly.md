@@ -35,7 +35,8 @@ rolling dashboard.
 1. Pick the next domain from the rotation state.
 2. Sweep the whole stack (failed units, listeners, firewall, hardening index,
    pending upgrades, disk/RAM, error journal); compare against the baseline and
-   report only deviations and persistent trends; then refresh the baseline. The
+   report deviations and persistent trends; refresh only successfully observed
+   baseline keys with their observation dates, preserving unverified values. The
    sweep includes credential hygiene: credential-bearing paths are inspected
    metadata-only (permissions, owner, timestamps — never content), unknown
    files fail closed, and the report is self-scanned for secret patterns
@@ -43,8 +44,9 @@ rolling dashboard.
    latest stable release of the agent application's upstream repository is
    read via its public API (no token, metadata only — version and date) and
    compared against the compatibility baseline recorded in the repository
-   texts; equality is silence, a newer upstream version becomes a proposal
-   entry in the decision log plus a line in the report and dashboard, and
+   texts; verified equality is recorded in the report and dashboard without a
+   separate alert, a newer upstream version becomes a proposal entry in the
+   decision log plus a line in the report and dashboard, and
    starting an upgrade is always the operator's decision.
 3. Connectivity and integrity audit across the four stack nodes (agent app ↔
    public repository ↔ host machine ↔ operator's app): live MCP endpoints and
@@ -53,24 +55,28 @@ rolling dashboard.
    freshness, access-integrity spot checks (per-repo deploy keys, SFTP chroot —
    names and counts only), and the working-state file's existence and
    freshness (missing or stale = high finding).
-4. Deep research on the domain: 3–7 sub-questions (current versions vs ours,
+4. Check the model registry with a bounded evidence budget: update only verified
+   facts and their dates, increment the registry version only on actual change,
+   and propose rather than apply role changes. Do not launch model tests.
+5. Deep research on the domain: 3–7 sub-questions (current versions vs ours,
    newer alternatives, recent advisories, concrete improvements), query
    diversification, source scoring, evidence matrix, explicit "what cannot be
    proven", bounded tool budget. Local versions are verified on the machine,
    never from memory.
-5. Write the report: decision-log status first (what awaits approval, what
+6. Write the report: decision-log status first (what awaits approval, what
    closed since the last run), executive summary, key findings, sweep
    deviations and trends, evidence matrix, unprovable items, ranked
-   recommendations with new decision-log IDs, source registry, methodology
+   recommendations with existing or new decision-log IDs (without duplicates),
+   source registry, methodology
    note, next domain.
-6. Update the per-domain state file; rewrite the dashboard (date, next domain,
+7. Update the per-domain state file; rewrite the dashboard (date, next domain,
    top risks, hardening index + trend, recommendations awaiting approval,
    summary of the last report, the skills-health graph from the weekly
-   retrospective, and the repo-graph snapshot from the weekly repository
-   sync — both local log files; a missing file is reported as no data yet).
-7. Append new decision-log entries as proposals only; never change existing
+   retrospective, daily repo and system-prompt graph snapshots, and model
+   registry health; missing files are reported as no data yet).
+8. Append new decision-log entries as proposals only; never change existing
    statuses (operator-only); mark superseded chains in notes.
-8. Copy the report and dashboard to the operator's delivery directory; send
+9. Copy the report and dashboard to the operator's delivery directory; send
    exactly one notification (high priority on security findings).
 
 ## Meta-review

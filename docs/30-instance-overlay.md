@@ -35,8 +35,10 @@ its path (ADR-0017).
 
 - Instance files derived from base files keep the same section structure;
   a base update is applied by diffing, not by re-deriving from scratch.
-- Runtime precedence: observed instance reality wins over stale base
-  documentation — the same precedence rule the repository states for agents.
+- Verify observed instance reality when it conflicts with stale base
+  documentation. Verified observations determine factual state only; they never
+  grant authorization or override instructions, permissions or approval gates.
+  Report unresolved conflicts.
 - When instance practice evolves a better pattern, generalizing it back to
   the base is a deliberate step (privacy scan + GO), after which both layers
   carry it.

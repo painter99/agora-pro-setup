@@ -124,10 +124,10 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 | Web / repository checks | `[fill after verification]` | Read-only, two whitelisted repositories, URL-level verification; only during full audits or on explicit request |
 | GitHub write | ❌ prohibited | No commits, pushes, issues, PRs, releases, or repository changes |
 | User interaction (ask_user) | ✅ verified 2026-10-31 (chat run, paged card) | Blocking/non-blocking; answers delivered once, to the asking conversation |
-| Todo list (todo_read/todo_update) | ✅ verified 2026-10-31 (chat run) | Shared across conversations; survives restarts |
+| Todo list (todo_read/todo_update) | ✅ verified 2026-10-31 (chat run) | Scoped to this conversation; shared across branches and survives restarts, not across independent conversations. |
 | Subagents (agent_spawn et al.) | ✅ verified 2026-10-31 (spawn → wait → delete end-to-end, chat and task runs); subagent toolset observed 2026-11-03 (one spawned subagent's self-report) | Models must be added in Subagents settings first; task text must be fully self-contained; reusable task templates live in `agents/`; the subagent toolset includes `ask_user`, task/loop management, and memory/skill create-or-delete — every brief must forbid user interaction and persistent automation (`agents/README.md` principle 5) |
 
-**Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table.
+**Switch rule:** enable a capability only after practical verification (a Run now test with a real tool call), never from release notes. Record the verification date in this table. Historical capability verification never proves present availability. Current tool absence or failure disables that operation for this run; enabling new capability still requires successful runtime verification and date. Apply this to the unavailable or failed path and any unverified claim, not as a permanent capability ban; retain bounded retries and other permitted, verified paths. Runtime success does not grant authorization.
 
 ## Forbidden behavior
 
@@ -136,7 +136,7 @@ Runtime capability gating: the coordinator must not assume tools exist based on 
 - Never modify system prompts or safety rules.
 - Never write to memory without reading it first.
 - Never create the impression of a scheduled future run — a Skill does not start anything by itself.
-- Never override the Capability Configuration table with a momentary tool detection.
+- Never treat the Capability Configuration table as proof of current availability or authorization; report current runtime failures and respect the switch rule.
 - Do not duplicate the rules of dependency Skills; read and apply them instead.
 - Do not make domain decisions that belong to a specialized Skill.
 

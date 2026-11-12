@@ -45,9 +45,9 @@ components:
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set
-    # 9 cards + README index; cards, not verbatim prompts
+    # 10 cards + README index; cards, not verbatim prompts
     source: "tasks/*.md"
-    files: 10
+    files: 11
     target: "Agora > Tasks (instances maintained separately)"
 
   # --- deployed onto the host ---

@@ -23,8 +23,9 @@ Daily, early night window (exact time is instance-specific), before the operator
 
 ## Workflow
 
-1. Run the sweep script (read-only against the external sources).
-2. Read the report it produced.
+1. Run the sweep script (read-only against the external sources); verify its
+   exit status and that the report is fresh for this run.
+2. Read the verified report it produced.
 3. Filter new entries against the fit criteria; keep at most 5 candidates, each
    with: name, key numbers, location, link, why it fits / what to verify.
    Ambiguous entries are questions to verify, not fits. Entries older than a
@@ -41,13 +42,15 @@ Daily, early night window (exact time is instance-specific), before the operator
 
 ## Delivery and notifications
 
-- Exactly one notification per run, and only when candidates exist — no
-  candidates means silence, not a "nothing found" message.
+- At most one notification per run: candidates when found, an error on failure,
+  or silence when a successful run finds no candidates.
 
 ## Failure behavior
 
-Script failure → exactly one low-priority notification with the error; no
-retries within the run.
+Script failure or unverifiable report freshness → do not select candidates or
+send a candidate notification from stale data. Send at most one low-priority
+error notification and record that selection was not performed and the actual
+notification state.
 
 ## Verification
 

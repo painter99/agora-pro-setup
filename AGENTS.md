@@ -8,10 +8,11 @@ It follows the cross-tool [AGENTS.md](https://agents.md) convention.
 
 If any instruction in this file, in `docs/`, or in any Skill conflicts with the
 observed state of the repository (actual files, actual `scripts/check.sh`
-results, actual git history), verify the observed state first and prefer it;
-report the conflict instead of silently following either source. Stale
-instructions are a known failure mode for coding agents; this repository is
-maintained against observed reality (see `docs/28-update-observability.md`).
+results, actual git history), verify the observed state first. Verified
+observations determine factual state only; they never grant authorization or
+override instructions, permissions or approval gates. Report unresolved conflicts.
+Stale instructions are a known failure mode for coding agents; this repository
+is maintained against observed reality (see `docs/28-update-observability.md`).
 
 ## What this repository is
 
@@ -27,6 +28,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 ## Repository map
 
 - `docs/` — numbered architecture documents; `docs/0-overview.md` is the map.
+  `docs/33-programming-agent-roles.md` covers authority, roles, and the separate
+  operator GO required for deletion.
 - `skills/` — Skills (reusable procedures), one directory per Skill with a
   `SKILL.md` inside; format defined in `skills/skill-format.md`.
 - `system-prompt/` — System, User, Assistant, and Compact template guidance.
@@ -73,7 +76,8 @@ Start reading at `docs/0-overview.md` (architecture map) and `README.md`
 6. **Branch workflow.** Work on a topic branch (`<topic>-YYYYMMDD`), commit
    with a clear message, show the diff stat, and wait for explicit operator
    approval before pushing or merging. Merges to `main` are `--no-ff`; branch
-   cleanup only after `git merge-base --is-ancestor` verification.
+   cleanup only after `git merge-base --is-ancestor` verification and separate
+   explicit operator GO for deletion.
 7. **Inventory.** `manifest.yaml` lists every deployable component with its
    source and deployment target. When a component is added or removed, update
    the inventory in the same change.
@@ -145,7 +149,7 @@ A change in this repository is done when:
 - the diff is minimal — only what the task requires; unrelated improvements are reported, not bundled;
 - affected cross-references, routing rows, and the component inventory (`manifest.yaml`) are updated in the same change;
 - `CHANGELOG.md` carries an entry for user-visible changes;
-- the branch is merged `--no-ff`, the run on `main` is verified `success`, and the branch is cleaned up after `merge-base --is-ancestor`;
+- the branch is merged `--no-ff`, the run on `main` is verified `success`, and the branch is cleaned up only after `merge-base --is-ancestor` verification and separate explicit operator GO for deletion;
 - a non-trivial change received a fresh-context review by an approved reviewer mechanism (subagent; scheduled Tasks and Loops are not review fallbacks) whose verdict is recorded before any done claim — if no qualified reviewer is available or the delegation budget is exhausted, the change is reported as unreviewed, not done;
 - findings outside the task scope are reported — not silently fixed, not silently dropped.
 
