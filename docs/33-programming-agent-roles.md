@@ -146,7 +146,7 @@ Instance model profiles (instance overlay, never this repository) follow one str
 3. **Route and evidence** — exact route only from the instance overlay, plus observed benchmark figures with variant, index version, date and source link. Every figure carries its source and date or is marked UNVERIFIED.
 4. **Connections** — links to other roles and to the policy sections that govern them.
 
-Rules: a benchmark is orientation, not a measurement of our routes; effort or variant labels do not prove equivalence across model families; an executable route is UNVERIFIED until a live schema check. The structure is adopted provisionally; its benefit must be measured on golden tasks before it is treated as proven.
+Rules: a benchmark is orientation, not a measurement of our routes; effort or variant labels do not prove equivalence across model families; a route is schema-selectable only after a live schema check, and its execution remains UNVERIFIED until a successful run (a successful run establishes execution for that run, not independent provider-model identity). The structure is adopted provisionally; its benefit must be measured on golden tasks before it is treated as proven.
 
 ## Maintenance
 
