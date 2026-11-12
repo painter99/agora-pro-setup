@@ -38,6 +38,7 @@ defines the tiers and their decision rights.
 | **Code reviewer** (mid tier) | code review of junior-written code in a **separate fresh context**, test design, bounded fix-round verdicts | no merge decisions, no cross-module architecture |
 | **Specialist / architect** (top tier) | architecture, cross-module design, qualified fresh review (final instance), product decisions, process/Skill proposals, **merge GO where a project overlay delegates it** | not routine loop work (last resort only); no authority beyond explicitly delegated repos |
 | **Light worker** (cheapest approved model per the instance overlay — may be another instance of the coordinator's own model class) | mechanical, easily verifiable tasks, research fan-out with strict output contracts, routine lookups and file edits | no design, review, or merge authority; results are verified by the orchestrator before use |
+| **Bounded checker** (optional, per the instance overlay) | bounded checks and summaries against an explicit checklist; an optional first-pass issue scan that returns evidence for a qualified reviewer | never a qualified review or final verdict; a scan is non-authoritative and never replaces or narrows required independent qualified review; not added automatically (consumes a shared spawn attempt) |
 
 Default rule: **anything not explicitly delegated in a project overlay
 remains with the operator.**
@@ -65,7 +66,8 @@ tests, review, fix rounds) to the mid tier where the operator approved it.
 
 - A context that produced an artifact **never independently reviews it**;
   review runs in a fresh context (see `docs/32`, and the coding-loop
-  Skill).
+  Skill). An optional bounded-checker scan (see the role matrix) is not
+  review and does not satisfy this requirement.
 - A merge-GO decision by the specialist is a gate decision, **not** a
   substitute for a mandatory code review.
 - Review of consequential design choices includes a bounded challenge
