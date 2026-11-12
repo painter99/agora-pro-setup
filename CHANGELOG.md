@@ -8,6 +8,7 @@ the Agora app baseline it was maintained against.
 ## [Unreleased]
 
 ### Changed
+- Branch deletion gate (2026-11-12, operator decision): `AGENTS.md` gains a branch-deletion gate — default RETAIN after a verified merge; deletion requires exact-ref identity, a fresh fetch, ancestry or approved squash/rebase evidence, a paginated open-PR check, an expected-SHA conditional remote delete, and an explicit operator GO or an operator-delegated PASS; `docs/33` aligns its cleanup and deletion wording.
 - Clarified in `docs/33` that observed facts never grant authorization and cleanup needs separate operator approval.
 - Updated task cards for daily sweep freshness, safe graph snapshots, verified backups, bounded replication checks, local-only sync proposals, Skill mirror mapping, observability evidence, and upstream checkpoint handling.
 - Audit fixes (2026-11-12): `multi-source-research` Dependencies now list conditional routes; `tasks/drift-watch-daily.md` now matches the live daily lite run (all seven days, graph snapshots through validated scratch copies, no content diff); `tasks/self-improvement-retrospective-weekly.md` adds the architecture-audit and working-state inputs and the unverified-status rule; `tasks/README.md` index lists the monthly audit.

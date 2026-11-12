@@ -103,8 +103,9 @@ A merge to a protected branch requires, where delegation exists:
 4. post-merge proof: `ls-remote` local = remote, merge-base check;
 5. missing CI log = **"unverified", never "success"**.
 
-Cleanup and deletion require separate explicit operator GO, even after a
-verified merge. Branch deletion, history rewrite, and publication are separate
+Branch deletion follows the branch-deletion gate in `AGENTS.md`: the default
+is RETAIN, and deletion requires an explicit operator GO or an
+operator-delegated gate PASS. History rewrite and publication remain separate
 approvals.
 
 ## Conflicts and unavailable routes
