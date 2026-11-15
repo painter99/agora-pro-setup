@@ -226,6 +226,18 @@ Reinspect mutable artifacts before dependent actions. A historical completion no
 
 If operation status or budget accounting cannot be recovered, report the gap and stop duplicate or consequential execution.
 
+## Packet manifest and handoff state ladder (ported from Manus skill set, 2026-11-15)
+
+**Packet manifest.** A disk packet that will be reviewed, replayed, or handed on carries a SHA-256 manifest. Use the stdlib-only script shipped with this Skill (`scripts/packet_manifest.py`; deployed to `/home/agora/tools/packet_manifest.py`): it writes a Markdown table of paths, hash prefixes, byte and line counts (optional JSON sidecar), and `--check` re-hashes the files and exits non-zero on drift (`CHANGED`/`MISSING`). Run `--check` immediately before dispatching a reviewer or worker and again before accepting a returned verdict; drift is a loud report, never a silent re-baseline. The script also warns when a packet exceeds a size limit and suggests passing paths instead of content.
+
+**Handoff state ladder.** Every handoff carries exactly one state word from the fixed ladder:
+
+```text
+proposed → edited locally → committed → pushed → merged
+```
+
+Never claim a state later than the evidence supports: a local commit is not a push; a green test is not a confirmed merge or deployment; a file path in one app or sandbox is not reachable from another app or device — embed the content or verify reachability explicitly. The brief template includes this state field.
+
 ## Forbidden behavior
 
 - Do not claim to edit, pin, evict, roll back, or restore live conversation messages.

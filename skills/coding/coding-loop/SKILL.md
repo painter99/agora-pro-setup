@@ -43,7 +43,7 @@ Run the tests and read the report; an exit code is not evidence, the test output
 
 Before declaring a non-trivial change done, obtain qualified review in a separate fresh context. Supply the specification, final diff, final contents of touched files, relevant tests, and acceptance criteria — not the implementation reasoning or author conversation. The reviewer checks specification compliance, test adequacy, hard-coded behavior, weakened assertions, and scope violations.
 
-**Reviewer mechanics (Agora).** Use an available, approved subagent mechanism under the kernel's role, permission, spawn-budget, and concurrency rules. Verify exact tool names against the live schema. A Loop or self-review in the author conversation is not independent review. If no qualified fresh-context reviewer is available, or the approved budget is exhausted, stop and report the work as unreviewed. Do not use scheduled Tasks, Loops, providers, or direct APIs as a review fallback or budget bypass. A trivial change may use self-review with deterministic evidence; mandatory review for non-trivial changes is not waived.
+**Reviewer mechanics (Agora).** Use an available, approved subagent mechanism under the kernel's role, permission, spawn-budget, and concurrency rules. Verify exact tool names against the live schema. A Loop or self-review in the author conversation is not independent review. If no qualified fresh-context reviewer is available, or the approved budget is exhausted, stop and report the work as unreviewed. Do not use scheduled Tasks, Loops, providers, or direct APIs as a review fallback or budget bypass. A trivial change may use self-review with deterministic evidence; mandatory review for non-trivial changes is not waived. The reviewer reads existing evidence instead of running side-effecting commands; any needed new verification is handed back to the phase owner, never simulated (ported from Manus `mobile-code-review`, 2026-11-15).
 
 **Freshness and lifecycle.** Immediately before reviewer dispatch, inspect the live artifacts and verify that the supplied final contents and diff match them. Record the reviewed revision or content hashes. Treat the supplied review inputs as immutable. Wait for the terminal result; a timeout permits another wait, not a duplicate spawn. Verify the verdict and follow the kernel's worker lifecycle policy.
 
@@ -91,6 +91,7 @@ Recurring fix patterns, review comments, and user corrections become system rule
 - Tests and test configuration are reviewable artifacts; changes to them require justification and approval.
 - Small increments by default.
 - Never modify evaluation scripts, CI workflows, or checkers to make results look better.
+- Canonical checker vs regression test (ported from Manus `mobile-coding-loop`, 2026-11-15): a regression test that passes on an assertion of a known defect does not make the canonical checker pass. A known issue is not a waiver; a gate that requires a clean checker stays blocked unless an explicitly scoped exception is approved.
 - Report failures with the same prominence as successes.
 
 ## Forbidden behavior
