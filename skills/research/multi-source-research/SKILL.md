@@ -161,7 +161,30 @@ Use proportional bounds:
 
 For Level 3, if two consecutive iterations produce no new evidence or five iterations remain stuck, stop adding tools and reconceptualize the sub-question. Re-run only the affected phase. Report the boundary instead of pretending completeness.
 
-### External input digesting
+## Nested mode: development research (ported from Manus skill set, 2026-11-15)
+
+When research runs inside a development task (not as a standalone answer), it is a tool: answer the blocking question, free the work, move on.
+
+| | Nested (development) | Standalone (general) |
+|---|---|---|
+| Default level | 1–2 by risk | 1–2 by scope; 3 when it matters |
+| Budget | 2–6 calls | ≤ 8 (L2); ≤ 15 searches + ≤ 10 fetches (L3) |
+| Output | short note at the decision point | chat answer or report |
+| Ends when | the blocking question is answered | question answered or boundary named |
+
+Nested research needing more than ~8 calls is no longer a side task: say so and continue as L3, or return the question.
+
+Sub-rules:
+1. **Pinned version first.** Before opening current docs, check what the project actually pins (lockfile, `pyproject.toml`, `libs.versions.toml`, package manifest). Answer for the pinned version; flag version deltas separately.
+2. **One maintenance probe.** A single GitHub API call answers archived status and latest release; do not browse.
+3. **Do-not-research list.** The repo answers it (code, tests, config, lockfile); an unread stack trace is not a research question; internal style decisions are not research.
+4. **Note cap.** A nested evidence note is at most ~5 lines at the decision point.
+
+### Mechanical evidence check
+
+For L2–L3, the evidence matrix may be validated mechanically with the stdlib-only script shipped with this Skill (`scripts/evidence_check.py`; deployed to `/home/agora/tools/evidence_check.py`): closed enums for provenance and status (aliases normalized), required date fields, superlative lint (an absolute superlative must cite a named metric), and soft provenance (`MODEL_OUTPUT`, `CROWDSOURCED`, `INTERPOLATED`, `UNKNOWN`) blocked from `verified` status without independent corroboration. Run it on the evidence matrix before finalizing; failures are fixed or downgraded, never argued away.
+
+## External input digesting
 
 When a long-form external input (podcast, talk, long article) has been consumed and yields adoption candidates or durable conclusions, produce a compact digest before using those candidates or conclusions:
 

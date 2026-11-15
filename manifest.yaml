@@ -16,8 +16,8 @@
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 5
-  last_verified: "2026-11-03"
+  inventory_version: 6
+  last_verified: "2026-11-15"
 
 components:
   # --- deployed into the Agora app ---
@@ -39,9 +39,9 @@ components:
     target: "Agora > System Prompts > Compact"
   - name: skill-set
     kind: skill-set
-    # 28 skills; one directory per Skill, Agent Skills layout
+    # 29 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 28
+    files: 29
     target: "Agora > Saved Skills (flat namespace)"
   - name: task-cards
     kind: task-card-set
@@ -63,6 +63,14 @@ components:
     kind: tooling
     source: scripts/
     target: "run in a repository checkout (python3, git, bash)"
+  - name: packet-manifest-tool
+    kind: tooling
+    source: skills/coordination/context-management/scripts/packet_manifest.py
+    target: /home/agora/tools/packet_manifest.py
+  - name: evidence-check-tool
+    kind: tooling
+    source: skills/research/multi-source-research/scripts/evidence_check.py
+    target: /home/agora/tools/evidence_check.py
 
   # --- reference only ---
   - name: decision-records
