@@ -16,8 +16,8 @@
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 6
-  last_verified: "2026-11-15"
+  inventory_version: 7
+  last_verified: "2026-11-16"
 
 components:
   # --- deployed into the Agora app ---
@@ -39,10 +39,16 @@ components:
     target: "Agora > System Prompts > Compact"
   - name: skill-set
     kind: skill-set
-    # 34 skills; one directory per Skill, Agent Skills layout
+    # 35 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 34
+    files: 35
     target: "Agora > Saved Skills (flat namespace)"
+  - name: agent-skill-set
+    kind: skill-set
+    # Same Agent Skills layout, deployed to the coding agent
+    source: "skills/**/SKILL.md"
+    files: 35
+    target: "Goose > ~/.agents/skills (project copies in .agents/skills)"
   - name: task-cards
     kind: task-card-set
     # 10 cards + README index; cards, not verbatim prompts
@@ -83,7 +89,7 @@ components:
     kind: reference
     # number 19 is retired
     source: "docs/*.md"
-    files: 33
+    files: 34
     target: none
   - name: author-docs
     kind: reference

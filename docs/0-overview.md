@@ -72,6 +72,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Platform layer (host units) | `docs/31` | — |
 | Coding workflow | `docs/32` | `coding-loop` |
 | Programming agent roles | `docs/33` | — |
+| Two-agent bridge (coordination ↔ coding agent) | `docs/34` | `agora-goose-bridge` |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
