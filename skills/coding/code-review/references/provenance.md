@@ -1,28 +1,28 @@
-# Provenience a rozsah adaptace
+# Provenance and scope of adaptation
 
-Vytvořeno 2026-11-14 jako český Manus derivát `mobile-code-review`.
+Created 2026-11-14 as an English Manus derivative of `mobile-code-review`.
 
-## Licencovaný výchozí zdroj
+## Licensed source basis
 
-- Repozitář: `painter99/agora-pro-setup`.
-- Zdroj: `skills/android-development/android-code-review/SKILL.md`.
-- Revize uvedená v build-contract: `552034846217c035ce802aad276fb826d0aaedf4`.
-- Přečten lokální zdroj; revize nebyla znovu ověřována sítí ani Git operací.
-- Zachovat upstream MIT notice `Copyright (c) 2026 Pavel Mareš`; celé znění licence je beze změny v [LICENSE.txt](../LICENSE.txt).
-- Upstream skill sám uvádí adaptaci z `addyosmani/agent-skills/skills/code-review-and-quality` (v1.0, nikoli verbatim copy). Jde o převzatou informaci o původu; tento další zdroj nebyl samostatně načten ani ověřen.
+- Repository: `painter99/agora-pro-setup`.
+- Source: `skills/android-development/android-code-review/SKILL.md`.
+- Revision recorded in the build contract: `552034846217c035ce802aad276fb826d0aaedf4`.
+- The local source was read; the revision was not re-verified over the network or with Git operations.
+- Preserve the upstream MIT notice; the complete license text remains unchanged in [LICENSE.txt](../LICENSE.txt).
+- The upstream skill itself states that it was adapted from `addyosmani/agent-skills/skills/code-review-and-quality` (v1.0, not a verbatim copy). This is inherited provenance information; that additional source was not independently retrieved or verified.
 
-## Projektové a metodické podklady
+## Project and methodological materials
 
-Přečteny `skill-build-contract.md`, `aipt-tdd-coding-loop-navrh.md`, `skill-creator/SKILL.md` a jeho workflow/output patterns. Konkrétní příklady review a hranice jsou dány těmito podklady; nevytvářet novou projektovou policy.
+Read `skill-build-contract.md`, `aipt-tdd-coding-loop-navrh.md`, `skill-creator/SKILL.md`, and its workflow/output patterns. Specific review examples and boundaries are set by these materials; do not create new project policy.
 
-AIPT podklady přečtené 2026-11-14: `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md`, `TODO.md`. Návrh/build-contract uvádějí revizi `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; tento build ji nezávisle znovu neověřoval. Živý stav musí ověřit každé budoucí použití.
+AIPT materials read 2026-11-14: `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md`, `TODO.md`. The proposal/build contract cite revision `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; this build did not independently re-verify it. Each future use must verify the live state.
 
-AIPT slouží jen jako projektový kontext, nikoli licence pro copied code. Nekopírovat jeho kód, data, historii ani úplný adapter; AIPT chybějící licenci tímto derivátem neměnit. Jediný uložený projektový adapter má patřit `aipt-project-workflow/references/project-context.md`, mimo tento balíček.
+AIPT serves only as project context, not as a license for copied code. Do not copy its code, data, history, or complete adapter; this derivative does not change AIPT's missing license. The only stored project adapter belongs in `aipt-project-workflow/references/project-context.md`, outside this package.
 
-## Hlavní změny proti originálu
+## Main changes from the original
 
-Zachovat pět os, standard zlepšení code health, posouzení velikosti a konkrétní strukturální remedy. Odstranit Android/Kotlin/Compose specifika, pevné dependencies a automatickou merge gate. Zavést read-only review finálního snapshotu bez editů, testových side effects, delegace a získávání permissions; ponechat jedinou spec gate v coding loopu.
+Preserve the five axes, the code-health improvement standard, the size assessment, and concrete structural remedies. Remove Android/Kotlin/Compose specifics, fixed dependencies, and the automatic merge gate. Introduce read-only review of the final snapshot without edits, test side effects, delegation, or permission acquisition; retain the single spec gate in the coding loop.
 
-Rozlišit qualified fresh-context reviewer, advisory checker a `UNREVIEWED`; navázat závěr na úplný touched file set, diff, test evidence a snapshot identity. Nepovažovat chybějící pokrytí za „clean“. Pro AIPT přidat evidence fidelity, reproducibility a privacy, čtyři odlišné evidence/acceptance hranice a přesnou determinističnost sémantického obsahu bez falešné byte-identity celého bundle.
+Distinguish a qualified fresh-context reviewer, an advisory checker, and `UNREVIEWED`; tie the conclusion to the complete touched-file set, diff, test evidence, and snapshot identity. Do not treat missing coverage as “clean.” For AIPT, add evidence fidelity, reproducibility, and privacy; four distinct evidence/acceptance boundaries; and exact determinism of semantic content without false byte-identity claims for the entire bundle.
 
-Použít jednosměrnou kompozici podle přesných katalogových jmen, bez rekurzivního spuštění routeru, hardcoded model routes či instalací podmíněných cest. Netvrdit import, runtime ověření, produktovou akceptaci ani nová oprávnění. Licence se vztahuje k tomuto derivátu; jeho notice zachovat při dalším šíření.
+Use one-way composition according to exact catalog names, without recursively running the router, hard-coded model routes, or installation-conditional paths. Do not claim import, runtime verification, product acceptance, or new permissions. The license applies to this derivative; preserve its notice upon further distribution.

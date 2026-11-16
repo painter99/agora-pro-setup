@@ -1,29 +1,29 @@
-# Původ a licenční hranice
+# Origin and license boundary
 
-## Přímý metodický zdroj
+## Direct methodological source
 
-Odvodit tento český skill z `agora-pro-setup`, soubor `skills/android-development/android-dev-tdd/SKILL.md`, revize `552034846217c035ce802aad276fb826d0aaedf4`. Zdrojový soubor byl celý lokálně přečten 2026-11-14; identifikátor zdrojové revize převzít ze závazného build-contractu, nikoli vydávat za nové Git ověření.
+Derive this English skill from `agora-pro-setup`, file `skills/android-development/android-dev-tdd/SKILL.md`, revision `552034846217c035ce802aad276fb826d0aaedf4`. The source file was read in full locally on 2026-11-14; take the source revision identifier from the binding build contract, not as a claim of a new Git verification.
 
-Zachovat upstream MIT notice a celé licenční znění v `../LICENSE.txt` beze změny: Copyright (c) 2026 Pavel Mareš. Licence pokrývá tento metodický derivát, nikoli cizí projektový kód či data.
+Preserve the upstream MIT notice and the complete license text unchanged in `../LICENSE.txt`. The license covers this methodological derivative, not third-party project code or data.
 
-Původní skill uvádí vlastní adaptaci z `addyosmani/agent-skills/skills/test-driven-development` (RED–GREEN–REFACTOR, Prove-It, test pyramid, Beyoncé rule). Uvést tuto sekundární atribuci jako převzatý údaj upstreamu; sekundární zdroj nebyl v tomto úkolu samostatně čten ani ověřován.
+The original skill states its own adaptation from `addyosmani/agent-skills/skills/test-driven-development` (RED–GREEN–REFACTOR, Prove-It, test pyramid, and the named rule). Present this secondary attribution as information inherited from upstream; the secondary source was not separately read or verified for this task.
 
-## Adaptace — 2026-11-14
+## Adaptation — 2026-11-14
 
-- Zachovat tests-first, behaviorální reprodukci bugu, minimální opravu, regresi a fixture-first přístup.
-- Nahradit Android/Kotlin/Compose/Gradle konvence stdlib Python `unittest`, `unittest.mock` a dočasnými adresáři; nepřevzít nástroje ani procentní test pyramid.
-- Opravit „Tests are proof“ na konkrétní software evidenci oddělenou od pravdivosti, source support a přijetí operátorem.
-- Přidat ihned zelenou characterization, test-only hranici, integritu fixture kopií, přesné snapshot/FAIL/PASS záznamy, známé checker blokace a limit opravných kol.
-- Zachovat jednosměrnou kompozici: testovací metoda uvnitř coding loopu, bez vlastní spec gate, zpětného volání routeru, Git zápisů nebo live akceptace.
+- Preserve tests-first, behavioral bug reproduction, minimal fix, regression, and fixture-first approach.
+- Replace Android/Kotlin/Compose/Gradle conventions with stdlib Python `unittest`, `unittest.mock`, and temporary directories; do not adopt tools or percentage-based test pyramids.
+- Correct “Tests are proof” to concrete software evidence separated from truth, source support, and operator acceptance.
+- Add immediately-green characterization, a test-only boundary, fixture-copy integrity, exact snapshot/FAIL/PASS records, known checker blockers, and a fix-round limit.
+- Preserve one-way composition: the testing method sits inside the coding loop, without its own spec gate, callback to the router, Git writes, or live acceptance.
 
-## Projektový podklad, nikoli kopírovaný software
+## Project material, not copied software
 
-Lokálně přečíst návrh `agora-manus-adaptation/aipt-tdd-coding-loop-navrh.md` a jeho `skill-build-contract.md` z 2026-11-14. Jako kontext načíst živé AIPT `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md` a `TODO.md` (přístup 2026-11-14). Build-contract a návrh uvádějí projektovou revizi `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; v tomto úkolu nebyla nezávisle ověřena Git příkazem.
+Read the local `agora-manus-adaptation/aipt-tdd-coding-loop-navrh.md` proposal and its `skill-build-contract.md` on 2026-11-14. As context, load the live AIPT `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md`, and `TODO.md` (accessed 2026-11-14). The build contract and proposal cite project revision `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; it was not independently verified with a Git command for this task.
 
-Nekopírovat AIPT kód, fixture ani historická data; neodvozovat reuse licenci z tohoto skillu a neměnit chybějící projektovou licenci. Jediné uložené místo AIPT adapteru ponechat v `aipt-project-workflow/references/project-context.md`; zde ponechat pouze obecnou testovací metodu a pokyny k načtení živého kontextu. Dated podklad nepovažovat za trvalý runtime důkaz ani nové oprávnění.
+Do not copy AIPT code, fixtures, or historical data; do not infer a reuse license from this skill or change the project's missing license. Keep the only stored AIPT adapter at `aipt-project-workflow/references/project-context.md`; here retain only the general testing method and instructions for loading live context. Treat dated material neither as permanent runtime evidence nor as new permission.
 
-Strukturální validaci balíčku odlišit od použití skillu, importu, testové/runtime správnosti, review a produktové akceptace. Návrhové scénáře v SKILL.md označit **NEPROVEDENÉ**; jejich uvedení není provedení ani autorizace implementace.
+Distinguish structural package validation from use of the skill, import, test/runtime correctness, review, and product acceptance. Mark the design scenarios in SKILL.md as **NOT PERFORMED**; their inclusion is not execution or authorization to implement.
 
-## Zpřesnění po uživatelském auditu — 2026-11-14
+## Clarification after user audit — 2026-11-14
 
-Omezit stdlib-only policy na AIPT podle jeho aktuálních pravidel; ostatní Python projekty řídit jejich existujícími konvencemi a toolingem. Zachovat metodu tohoto skillu se stdlib unittest, zákaz zavádění nových závislostí jen kvůli TDD a předání odlišné předepsané metody bez vynucené migrace. Tato změna upravuje instrukce; není runtime zkouškou, importem ani změnou projektového kódu.
+Limit the stdlib-only policy to AIPT according to its current rules; other Python projects follow their existing conventions and tooling. Preserve this skill's method using stdlib `unittest`, the ban on adding new dependencies solely for TDD, and handoff of a different prescribed method without forcing migration. This change updates instructions; it is not a runtime test, import, or project-code change.

@@ -1,11 +1,11 @@
-# Původ a rozsah adaptace
+# Origin and scope of adaptation
 
-Odvozeno z uživatelského repozitáře painter99/agora-pro-setup, skillu sequential-thinking-workflow, revize `552034846217c035ce802aad276fb826d0aaedf4`, přečtené 2026-11-14.
+Derived from the user repository `painter99/agora-pro-setup`, skill `sequential-thinking-workflow`, revision `552034846217c035ce802aad276fb826d0aaedf4`, read 2026-11-14.
 
-Zdroj: https://github.com/painter99/agora-pro-setup/blob/552034846217c035ce802aad276fb826d0aaedf4/skills/reasoning/sequential-thinking-workflow/SKILL.md
+Source: https://github.com/painter99/agora-pro-setup/blob/552034846217c035ce802aad276fb826d0aaedf4/skills/reasoning/sequential-thinking-workflow/SKILL.md
 
-Zachovat minimální plánování, průběžné pozorování nástrojů, rozlišení faktů a předpokladů, omezené opakování chyb a vědomou podmínku ukončení. Nahradit pevné Agora dependencies vyhledáním dostupných doménových skills Manusu. Přidat hranici aplikací, revizí a oprávnění a předávací kontrakt vhodný pro telefon.
+Preserve minimal planning, ongoing observation of tools, distinction between facts and assumptions, bounded retries, and a deliberate stop condition. Replace fixed Agora dependencies with discovery of available Manus domain skills. Add application, revision, and permission boundaries and a handoff contract suitable for a phone.
 
-Toto je samostatný importní derivát, ne změna upstream repozitáře a ne náhrada vestavěné bezpečnosti Manusu. Nevychází z ověřeného přístupu k projektu ai-project-team; stack a konkrétní workflow zjistit až z aktuálního projektu.
+This is a standalone import derivative, not a change to the upstream repository and not a replacement for Manus's built-in safety. It is not based on verified access to the ai-project-team project; determine the stack and specific workflow only from the current project.
 
-Původní MIT oznámení a podmínky jsou zachovány v LICENSE.txt. Adaptace: Manus AI, připravena na žádost uživatele. Datum není důkazem runtime testu ani instalace.
+The original MIT notice and terms are preserved in LICENSE.txt. Adaptation: Manus AI, prepared at the user's request. The date is not evidence of a runtime test or installation.

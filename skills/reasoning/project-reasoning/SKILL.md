@@ -1,6 +1,6 @@
 ---
 name: project-reasoning
-description: "Structured solving of complex project tasks with result verification and safe handoff between applications or environments. Use for multi-step tasks outside code change — planning, diagnostics, documentation, operational and configuration changes, cross-application handoff; for implementation, bugfix, and refactoring use the coding loop. Not for simple answers."
+description: "Structured solving of complex non-code project tasks with result verification and safe handoff between applications or environments: outcome definition, shortest reliable plan, observed-state work cycle, permission and application boundaries, verifiable handoff state, and evidence-based termination."
 license: MIT
 ---
 
@@ -113,7 +113,7 @@ For a mobile or chat output start with the result. Concisely add evidence actual
 
 Absolute paths (instance overlay; this skill is stored flat in the Agora skill store).
 
-- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/handoff-contract.md` — cross-application handoff card fields (Czech).
-- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/acceptance-scenarios.md` — verification scenarios (Czech).
-- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/provenance.md` — adaptation origin (Czech).
-- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/LICENSE.txt` — original MIT notice; keep intact.
+- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/handoff-contract.md` — cross-application handoff card fields.
+- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/acceptance-scenarios.md` — verification scenarios.
+- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/references/provenance.md` — adaptation origin.
+- `/home/agora/work/agora-pro-setup/skills/reasoning/project-reasoning/LICENSE.txt` — upstream MIT notice; keep intact.

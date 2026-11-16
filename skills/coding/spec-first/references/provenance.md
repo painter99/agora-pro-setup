@@ -1,21 +1,21 @@
 # Provenance — mobile-spec-first
 
-## Původ a licence
+## Origin and license
 
-Český metodický derivát Agora skillu `android-spec-first`. Přečtený původní zdroj: `skills/android-development/android-spec-first/SKILL.md` v repozitáři `agora-pro-setup`, revize dle build-contract `552034846217c035ce802aad276fb826d0aaedf4`; datum čtení 2026-11-14. Zachovat původní MIT notice `Copyright (c) 2026 Pavel Mareš`; soubor [LICENSE.txt](../LICENSE.txt) je nezměněná kopie licence Agora repozitáře.
+English methodological derivative of the Agora skill `android-spec-first`. Source read: `skills/android-development/android-spec-first/SKILL.md` in the `agora-pro-setup` repository, revision per the build contract `552034846217c035ce802aad276fb826d0aaedf4`; read date 2026-11-14. Preserve the upstream MIT notice; [LICENSE.txt](../LICENSE.txt) is an unchanged copy of the Agora repository license.
 
-Původní skill uvádí v1.0 a metodickou adaptaci z `addyosmani/agent-skills/skills/spec-driven-development`. Jde o převzatý údaj z jeho sekce Sources, nikoli zde provedené externí ověření či přímé kopírování dalšího upstream zdroje.
+The original skill states v1.0 and a methodological adaptation from `addyosmani/agent-skills/skills/spec-driven-development`. This is information inherited from its Sources section, not external verification performed here or direct copying from that additional upstream source.
 
-## Rozdíly adaptace
+## Adaptation differences
 
-Zachovat assumptions-first, šest oblastí specifikace, pozorovatelná acceptance kritéria a ochranu non-goals. Nahradit Android/Kotlin/Gradle specifika obecnou metodou odvozenou od aktuálního projektu. Přidat krátkou kartu pro jednoznačné změny, přímou spec-only cestu, rozlišení připravenosti a autorizace a task-local načtení živých podkladů bez rekurzivního routeru.
+Preserve assumptions-first, the six specification areas, observable acceptance criteria, and protection of non-goals. Replace Android/Kotlin/Gradle specifics with a general method derived from the current project. Add a short card for unambiguous changes, a direct spec-only path, distinction between readiness and authorization, and task-local loading of live materials without a recursive router.
 
-Odstranit vlastní fáze IMPLEMENT a čtyři schvalovací gate, automatické směrování do Android TDD/review a implicitní souhlas mlčením. Jedinou spec gate ponechat `mobile-coding-loop`; tento skill dodává tvar kontraktu a nepřebírá řízení, implementaci ani oprávnění. Rozlišovat software evidence, sémantickou podporu a přijetí operátorem.
+Remove its own IMPLEMENT phases and four approval gates, automatic routing to Android TDD/review, and implicit consent by silence. Leave the single spec gate to `mobile-coding-loop`; this skill provides the contract shape and does not take over control, implementation, or permissions. Distinguish software evidence, semantic support, and operator acceptance.
 
-## Projektový podklad a omezení
+## Project material and limitations
 
-Přečíst lokální návrh `aipt-tdd-coding-loop-navrh.md` a celý `skill-build-contract.md` ze složky `agora-manus-adaptation`, dále živé AIPT `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md` a `TODO.md`; čtení 2026-11-14. Kontextový návrh a build-contract uvádějí AIPT revizi `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; nejde o zde nově ověřený remote stav.
+Read the local `aipt-tdd-coding-loop-navrh.md` proposal and the complete `skill-build-contract.md` from the `agora-manus-adaptation` directory, as well as the live AIPT `AGENTS.md`, `README.md`, `docs/principles.md`, `docs/project-status.md`, `docs/decisions/effective-index.md`, `docs/milestone-3-spec.md`, `contracts/offline-replay-v1.md`, and `TODO.md`; read on 2026-11-14. The context proposal and build contract cite AIPT revision `04772f3cdee2a0fe8e6560e8ee1799fed8ac44cb`; this is not a newly verified remote state here.
 
-AIPT slouží pouze jako projektový podklad pro požadavky a příklad acceptance kritéria. Nekopírovat jeho kód ani data; MIT tohoto derivátu neposkytuje licenci pro AIPT a nemění jeho chybějící licenci. Neuchovávat zde projektový snapshot: jediný uložený adapter patří do `aipt-project-workflow/references/project-context.md`, při použití vždy ověřit relevantní živé zdroje.
+AIPT serves only as project material for requirements and an acceptance-criteria example. Do not copy its code or data; this derivative's MIT license does not license AIPT or change its missing license. Do not retain a project snapshot here: the only stored adapter belongs in `aipt-project-workflow/references/project-context.md`; always verify relevant live sources when using it.
 
-Použít `skill-creator` a jeho vzory workflows/output-patterns pro inicializaci, strukturu a výstup. Strukturální kontrolu oddělit od použití skillu; návrhové scénáře v SKILL.md zůstávají **NEPROVEDENÉ**. Netvrdit import, instalaci, runtime správnost ani provedenou AIPT implementaci.
+Use `skill-creator` and its workflow/output-patterns for initialization, structure, and output. Distinguish structural checking from use of the skill; design scenarios in SKILL.md remain **NOT PERFORMED**. Do not claim import, installation, runtime correctness, or AIPT implementation performed.

@@ -1,6 +1,6 @@
 ---
 name: project-workflow-router
-description: "Project entry point and task router: determine current context and choose the smallest set of skills for plan-only, spec-only, authorized bugfix/refactoring, test-only, review-only, docs/research, or a standalone Git phase. Use when starting or taking over a project task; only route — never run a second coding loop, spec gate, product research pipeline, or automatic import. Not needed for plain translation or short answers."
+description: "Project entry point that classifies an incoming task and routes it to the smallest sufficient set of methods: plan-only diagnostics takeover spec-only authorized implementation test-only review-only docs/research or a standalone Git phase. Ends after routing with a handoff card — it never implements manages fix rounds dispatches review or runs acceptance."
 license: MIT
 ---
 
@@ -152,7 +152,7 @@ Until an adapter exists methods get by with live entry files and report `UNAVAIL
 Absolute paths (instance overlay; this skill is stored flat in the Agora skill store).
 
 - `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/references/project-context.md` — project adapter template (neutral; copy per project and fill in).
-- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/references/acceptance-scenarios.md` — routing verification scenarios (Czech).
-- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/references/provenance.md` — adaptation origin (Czech).
-- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/examples/project-context-aipt.md` — worked AIPT adapter example (Czech).
-- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/LICENSE.txt` — original MIT notice; keep intact.
+- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/references/acceptance-scenarios.md` — routing verification scenarios.
+- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/references/provenance.md` — adaptation origin.
+- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/examples/project-context-aipt.md` — worked AIPT adapter example.
+- `/home/agora/work/agora-pro-setup/skills/coordination/project-workflow-router/LICENSE.txt` — upstream MIT notice; keep intact.

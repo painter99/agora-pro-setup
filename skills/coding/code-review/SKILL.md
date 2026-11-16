@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Read-only review of a final code snapshot before handoff, after a feature, bugfix, or refactoring, including AI-authored changes. Covers correctness, readability, architecture, security, and performance; for data and research projects additionally evidence fidelity, reproducibility, and privacy. Distinguishes qualified fresh-context review from advisory checks; never implements and never delegates."
+description: "Read-only review of a final code snapshot before handoff, after a feature, bugfix, or refactoring, including AI-authored changes. Five general axes plus three data-project axes; explicit review-qualification modes; findings with severity, anchor, evidence, and remedy; verdict PASS / PASS-with-notes / FAIL."
 license: MIT
 ---
 
@@ -145,5 +145,5 @@ If no qualified reviewer is available, report "implemented/tested per available 
 
 Absolute paths (instance overlay; this skill is stored flat in the Agora skill store).
 
-- `/home/agora/work/agora-pro-setup/skills/coding/code-review/references/provenance.md` — adaptation origin and license boundaries (Czech; read when auditing provenance).
-- `/home/agora/work/agora-pro-setup/skills/coding/code-review/LICENSE.txt` — original MIT notice; keep intact.
+- `/home/agora/work/agora-pro-setup/skills/coding/code-review/references/provenance.md` — adaptation origin and license boundaries (read when auditing provenance).
+- `/home/agora/work/agora-pro-setup/skills/coding/code-review/LICENSE.txt` — upstream MIT notice; keep intact.

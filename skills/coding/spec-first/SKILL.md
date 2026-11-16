@@ -1,6 +1,6 @@
 ---
 name: spec-first
-description: "Creation of a specification or a concise change card with observable acceptance criteria for one increment. Use for explicit spec-only assignments or on request from a coding loop; for an unambiguous fix use the short card. For code changes the entry point is the coding loop. Never open a new contract when a valid one for the increment already exists. Never implement and never run approvals: the single spec gate is owned by the coding loop."
+description: "Creation of a specification or concise change card with observable acceptance criteria for one increment: goal with measurable criteria, real commands, scope with protected files, conventions and compatibility, test and acceptance strategy, Always / Ask first / Never boundaries."
 license: MIT
 ---
 
@@ -154,5 +154,5 @@ Before handoff verify: coverage of all six areas (or their economical equivalent
 
 Absolute paths (instance overlay; this skill is stored flat in the Agora skill store).
 
-- `/home/agora/work/agora-pro-setup/skills/coding/spec-first/references/provenance.md` — adaptation origin (Czech; read when auditing provenance).
-- `/home/agora/work/agora-pro-setup/skills/coding/spec-first/LICENSE.txt` — original MIT notice; keep intact.
+- `/home/agora/work/agora-pro-setup/skills/coding/spec-first/references/provenance.md` — adaptation origin (read when auditing provenance).
+- `/home/agora/work/agora-pro-setup/skills/coding/spec-first/LICENSE.txt` — upstream MIT notice; keep intact.

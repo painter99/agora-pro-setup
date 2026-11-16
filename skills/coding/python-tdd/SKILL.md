@@ -1,6 +1,6 @@
 ---
 name: python-tdd
-description: "Test-driven development for Python logic with stdlib unittest: new behavior via RED-GREEN-REFACTOR, bug reproduction and fix via the Prove-It pattern, characterization tests before refactoring. Supplies hermetic fixture tests and concrete test evidence. Direct use only for test-only work; for code changes the entry point is the coding loop. Not for pure docs, non-Python frontends, spec approval, live acceptance, or final done claims."
+description: "Test-driven development for Python logic with stdlib unittest: RED-GREEN-REFACTOR for new behavior, the Prove-It pattern for bug fixes, characterization testing before refactoring. Hermetic fixture discipline, assertion selection by contract invariants, concrete test evidence, and bounded fix rounds."
 license: MIT
 ---
 
@@ -150,5 +150,5 @@ Hand the phase owner the final contract snapshot and tests for `code-review` if 
 
 Absolute paths (instance overlay; this skill is stored flat in the Agora skill store).
 
-- `/home/agora/work/agora-pro-setup/skills/coding/python-tdd/references/provenance.md` — adaptation origin (Czech; read when auditing provenance).
-- `/home/agora/work/agora-pro-setup/skills/coding/python-tdd/LICENSE.txt` — original MIT notice; keep intact.
+- `/home/agora/work/agora-pro-setup/skills/coding/python-tdd/references/provenance.md` — adaptation origin (read when auditing provenance).
+- `/home/agora/work/agora-pro-setup/skills/coding/python-tdd/LICENSE.txt` — upstream MIT notice; keep intact.

@@ -1,21 +1,21 @@
-# Původ routeru a licence
+# Router origin and license
 
-## Agora glue derivát
+## Agora glue derivative
 
-Nový český projektový rozcestník pro Manus vytvořit jako glue adaptaci metod z `painter99/agora-pro-setup`, zejména `skills/coding/coding-loop/SKILL.md`, upstream revize **`552034846217c035ce802aad276fb826d0aaedf4`** dle build-contractu. Původní lokální skill a upstream `LICENSE` byly přečteny 2026-11-14; uvedená upstream revize nebyla při této tvorbě nově síťově ověřena. Zachovat úplný původní MIT notice `Copyright (c) 2026 Pavel Mareš`; přiložený `LICENSE.txt` je nezměněná bajtová kopie upstream `LICENSE`.
+Create a new English project router for Manus as a glue adaptation of methods from `painter99/agora-pro-setup`, especially `skills/coding/coding-loop/SKILL.md`, upstream revision **`552034846217c035ce802aad276fb826d0aaedf4`** according to the build contract. The original local skill and upstream `LICENSE` were read on 2026-11-14; the stated upstream revision was not newly verified over the network during this creation. Preserve the complete upstream MIT notice; the attached `LICENSE.txt` is an unchanged byte-for-byte copy of the upstream `LICENSE`.
 
-Oproti původnímu coding loopu **neimplementovat další loop ani spec gate**: pouze klasifikovat zadání, načíst datovanou projektovou referenci a předat odpovědnost jedinému `mobile-coding-loop`, přímé spec/test/review metodě či odpovídajícímu nativnímu workflow. Rozlišit development coding loop a produktový `ResearchLoop`; nahradit instalační/Agora kernel předpoklady aktuálním katalogem a platform permissions. Neimportovat dependencies, nekopírovat soukromé instance/model policy a nevynucovat Android stack.
+Unlike the original coding loop, **do not implement another loop or spec gate**: only classify the task, load the dated project reference, and hand responsibility to the sole `mobile-coding-loop`, a direct spec/test/review method, or an appropriate native workflow. Distinguish the development coding loop from the product `ResearchLoop`; replace installation/Agora-kernel assumptions with the current catalog and platform permissions. Do not import dependencies, copy private instance/model policy, or force an Android stack.
 
-## Přečtená kompozice a projektové podklady
+## Read composition and project materials
 
-Při sestavení byly celé přečteny finální `mobile-spec-first`, `mobile-python-tdd`, `mobile-code-review`, `mobile-coding-loop` a existující `mobile-project-reasoning`, `mobile-github-release-workflow` (jejich SKILL.md, 2026-11-14). Jejich obsah nebyl upraven. Zápis na disku a přečtení není import, instalace ani automatická dostupnost v jiné relaci.
+During assembly, the final `mobile-spec-first`, `mobile-python-tdd`, `mobile-code-review`, `mobile-coding-loop`, and existing `mobile-project-reasoning`, `mobile-github-release-workflow` were read in full (their SKILL.md files, 2026-11-14). Their contents were not modified. Writing to disk and reading does not constitute import, installation, or automatic availability in another session.
 
-Pracovní `skill-build-contract.md` a `aipt-tdd-coding-loop-navrh.md` jsou brief/návrh adaptace, nikoli nové permissions. Navigační projektové podklady a jejich úroveň evidence jsou uvedeny pouze v [project-context.md](project-context.md); revize AIPT je převzata z briefu/návrhu, ne z nového Git či remote ověření tohoto autora.
+The working `skill-build-contract.md` and `aipt-tdd-coding-loop-navrh.md` are an adaptation brief/proposal, not new permissions. Navigational project materials and their evidence level are listed only in [project-context.md](project-context.md); the AIPT revision is inherited from the brief/proposal, not from new Git or remote verification by this author.
 
-AIPT použít jako projektový kontext, **nikoli licenční zdroj pro copied code/data**. Nepřevzít jeho kód, ledger, historické provozní záznamy ani private data. MIT routeru nelicencuje AIPT; jeho chybějící projektovou licenci neřešit a repo docs nepřepisovat. Adapter ukládat pouze zde, ne do core skills nebo průvodce.
+Use AIPT as project context, **not as a licensing source for copied code/data**. Do not adopt its code, ledger, historical operational records, or private data. The router's MIT license does not license AIPT; do not resolve its missing project license or rewrite repository docs. Store the adapter only here, not in core skills or the guide.
 
-## Rozsah ověření
+## Verification scope
 
-Skill byl inicializován předepsaným `init_skill.py`; generovaná šablona byla celá přečtena před nahrazením a nepoužité examples byly odstraněny. Výsledek skutečné strukturální validace a doplňkových statických kontrol uvést odděleně v průvodci/delivery. Strukturální PASS neprokazuje chování po importu.
+The skill was initialized with the prescribed `init_skill.py`; the generated template was read in full before replacement and unused examples were removed. Report the actual structural validation result and supplementary static checks separately in the guide/delivery. Structural PASS does not prove behavior after import.
 
-Akceptační scénáře v [acceptance-scenarios.md](acceptance-scenarios.md), ruční import, runtime použití sady, review dispatch a projektové testy/akceptace: **NEPROVEDENÉ** v této tvorbě. Bez sítě, další delegace, Git zápisů a změn AIPT nebo Agora zdrojů. Provenance ani licence nepřidělují práva.
+Acceptance scenarios in [acceptance-scenarios.md](acceptance-scenarios.md), manual import, runtime use of the set, review dispatch, and project tests/acceptance: **NOT PERFORMED** during this creation. No network, further delegation, Git writes, or changes to AIPT or Agora sources. Provenance and license do not grant rights.
