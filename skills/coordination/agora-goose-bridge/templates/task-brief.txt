@@ -1,0 +1,48 @@
+TASK BRIEF — two-agent dispatch
+================================
+
+Mode:            execute | ideate | review
+Working dir:     <absolute path>
+Model route:     <route identifier, no credentials>
+Budget:          <turn limit and cost ceiling for this dispatch>
+Output file:     <path the agent must write, if any>
+
+GOAL
+<One or two sentences: what must be true when the dispatch is finished.>
+
+SCOPE
+- In scope: <files, directories, topics the agent may touch>
+- Protected files (must not be modified): <paths>
+- Out of scope: <explicitly excluded work>
+
+CONSTRAINTS
+- <Stack, tooling, style or contract constraints>
+- <Rules that come from the repository or the operator>
+
+ACCEPTANCE CRITERIA
+1. <observable criterion>
+2. <observable criterion>
+
+PERMITTED TOOLS
+- <tool or extension the agent may use>
+- <tools it may use only for reading>
+
+OUTPUT CONTRACT
+- <what the final report must contain, in order>
+- <what the report must not contain>
+
+FORBIDDEN ACTIONS
+- No commits, pushes or merges unless stated here.
+- No credentials, keys or personal data in any file.
+- No changes outside the scope above.
+- No deletions.
+
+STOP CONDITIONS
+- Stop and report when: <condition that ends the dispatch without a full result>
+- Stop and report when the task needs a decision the operator owns.
+
+PERMITTED FILES
+- <exact list of files the agent may create or modify, one per line>
+
+VALIDATION TO RUN AND REPORT
+- <command> — <what a passing result looks like>

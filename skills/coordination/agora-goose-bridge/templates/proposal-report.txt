@@ -1,0 +1,32 @@
+RETURNED REPORT — the coding agent's answer, one section per block below.
+This file is the "Returned" block of the operator-facing dispatch report.
+============================================================
+
+DISPATCHED
+- Mode: <execute | ideate | review>
+- Scope: <what was in scope>
+- Model route: <route identifier>
+- Artifacts: <paths touched or written>
+
+RESULT
+<One paragraph: what was done, or what was proposed.>
+
+WHAT CHANGED (execute mode)
+- <file> — <what changed and why>
+
+WHAT WAS PROPOSED (ideate mode)
+- Option A — <idea> — <trade-off>
+- Option B — <idea> — <trade-off>
+- Recommendation: <option> — <reason>
+
+FINDINGS (review mode)
+- <finding> — <evidence>
+
+VALIDATION
+- <command> — <observed result, exactly as observed>
+
+OPEN QUESTIONS
+- <decision the operator still owns, or "none">
+
+NOT DONE
+- <work that was deliberately left out, and why>
