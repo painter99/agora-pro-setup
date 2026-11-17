@@ -12,10 +12,12 @@ This document has two halves that belong together.
   report contract, where the shared skills live, and the decision log.
 
 The generic dispatch contract lives in the skill `agora-goose-bridge`. The
-project-specific operating procedure lives in the project repository. Neither
-side copies the other: a change to the contract changes this document and is
-refreshed into the project copies; a change to the project procedure changes the
-project repository only.
+public generic operating-procedure base is [`docs/35-two-agent-operating-procedure.md`](35-two-agent-operating-procedure.md);
+each project's topology, commands, paths and approved deviations stay in its
+private project adapter. Neither side copies the other: a change to the shared
+contract changes this document and is refreshed into the project copies; a
+change to the public base is reviewed against each adapter, and local details
+remain private.
 
 Status: case study and workflow record, updated 2026-11-17. This document is a
 working agreement and a research record, not an authorization. The operator's
@@ -740,16 +742,21 @@ canonical file.
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
 | 2026-11-17 | The brief template's budget field must name the cost ceiling, or state that none applies and name the outer bound that does. | A behaviour pilot found the field under-specified in a real brief. |
 | 2026-11-17 | This document becomes the case study of the two-agent working environment as well as the workflow record; the case study is Part 1, the contract is Part 2. | Operator instruction: study the reference product and the community, describe how the local workflow works and how the two correspond. |
+| 2026-11-17 | Publish a generic operating-procedure base in `docs/35`; keep each project's topology, commands, paths, and approved deviations in its private adapter. The public base is adaptation guidance, not a duplicate of the Skill contract. | Operator chose the logically stable public/private split: reusable procedure is public, instance-specific overlay remains private. When the public base changes, compare each adapter with the new base and update it deliberately; do not silently assume local policy changed. This qualifies the earlier project-procedure placement decision. |
 
 ## Where the project-specific procedure lives
 
-The shared skill keeps the generic contract: the brief and report templates, the
-dispatch modes and the delegation policy with impact tiers. The operating
-procedure of one project — its task cycle, its record discipline, its service
-topology and its stop rules — belongs to that project's repository, not here.
-Neither side copies the other: a change to the contract changes this repository
-and is refreshed into the project copies, and a change to the project procedure
-changes the project repository only.
+The shared skill keeps the generic dispatch contract: the brief and report
+templates, the dispatch modes and the delegation policy with impact tiers. The
+public generic operating-procedure base is
+[`docs/35-two-agent-operating-procedure.md`](35-two-agent-operating-procedure.md).
+Each project's topology, commands, paths, record locations and approved
+deviations belong in its private adapter, not in the shared Skill or public
+base. Neither side copies the other: contract changes are refreshed into
+project copies; changes to the public base are checked against each adapter;
+private project details remain in the project repository. The adapter's
+revision and drift handling are defined locally, following the decision logged
+above.
 
 ## Rules that always apply
 

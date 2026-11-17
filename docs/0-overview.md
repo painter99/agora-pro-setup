@@ -73,6 +73,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Coding workflow | `docs/32` | `coding-loop` |
 | Programming agent roles | `docs/33` | — |
 | Two-agent bridge (coordination ↔ coding agent) and the case study of the two-agent working environment | `docs/34` | `agora-goose-bridge` |
+| Generic two-agent operating-procedure adaptation guide | `docs/35` | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -113,3 +114,6 @@ New content
 - Coding tasks (the agent writes code): `docs/32`.
 - Who does what in programming projects (roles, delegation, merge GO):
   `docs/33`.
+- Adopting the generic two-agent operating process: `docs/35`; use the shared
+  Skill and `docs/34` for the binding dispatch contract, and keep local details
+  in a private project adapter.
