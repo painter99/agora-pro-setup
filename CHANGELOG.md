@@ -7,6 +7,9 @@ the Agora app baseline it was maintained against.
 
 ## [Unreleased]
 
+### Added
+- `docs/34` Part 1 (2026-11-17, operator instruction): a case study of the two-agent working environment. It describes how the reference cloud agent product works according to its own documentation (persistent project workspaces with a master instruction and a knowledge base, file-based skills with progressive disclosure, scheduled and event-triggered routines, parallel decomposition, local execution with permission modes, running against the user's own provider key, and the vendor-stated cost model), what independent users report about it — one-off versus recurring work, ownership of the workflow, visible and rerunnable steps, script-based completion checks, a claim ledger with snapshot diffs, and durability over weeks — and how the local two-agent workflow corresponds: roles, dispatch modes, impact tiers, the brief and report contract, the task cycle, the record discipline, and the operator card. The document states what the evidence cannot prove, keeps vendor statements separate from user reports, and lists the source registry with access dates.
+
 ### Changed
 - `agora-goose-bridge` brief template (2026-11-17, behaviour pilot): the budget field now asks for the cost ceiling, or states that none applies and names the outer bound. A behaviour pilot found this field under-specified in a real brief.
 - `agora-goose-bridge` and `docs/34` (2026-11-17, coherence audit): the operator-facing report contract now names the same three parts everywhere (`Dispatched`, `Returned`, `Assessment`) instead of describing two blocks in one place and three in another; the Skill states that its templates and the shared record live in the shared skills repository and are not contained in a deployed copy, and that the project-specific procedure lives in the project repository. The generic contract and the project procedure no longer compete for the same wording.

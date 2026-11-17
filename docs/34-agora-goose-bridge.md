@@ -1,18 +1,564 @@
-# Agora ↔ Goose Bridge
+# Two-agent bridge and the Manus-style working environment
 
-Shared workflow record between two agents that work on the same repositories:
+This document has two halves that belong together.
 
-- the **coordinating agent** (Agora chat) plans, dispatches, verifies and talks to the operator;
-- the **coding agent** (Goose) executes, proposes and reviews inside an explicitly bounded scope.
+- **Part 1 is a case study.** How a reference cloud agent product (Manus)
+  actually works according to its own documentation, what independent users
+  report about it, and how a two-agent setup — a coordinating agent and a
+  coding agent working on the same repositories — reproduces the properties
+  that make such a product feel like a personal working environment.
+- **Part 2 is the operating contract.** The shared workflow record both agents
+  read: division of labour, delegation policy, dispatch modes, the brief and
+  report contract, where the shared skills live, and the decision log.
 
-This document is the single place both sides read to learn the current agreement. The
-generic dispatch contract lives in the skill `agora-goose-bridge`; the
+The generic dispatch contract lives in the skill `agora-goose-bridge`. The
+project-specific operating procedure lives in the project repository. Neither
+side copies the other: a change to the contract changes this document and is
+refreshed into the project copies; a change to the project procedure changes the
+project repository only.
+
+Status: case study and workflow record, updated 2026-11-17. This document is a
+working agreement and a research record, not an authorization. The operator's
+current instruction and each repository's `AGENTS.md` decide every approval.
+
+---
+
+# Part 1 — Case study: a Manus-style working environment, built locally
+
+## 1.1 Why this case study exists
+
+An operator asked for a personal working environment with the properties the
+Manus workflow appears to have: context that survives a session, reusable
+procedures, a research trail with sources, explicit human gates, and artifacts
+that outlive the turn that produced them. The question behind the request was
+not which product is best. It was: **which mechanisms actually create that
+feeling, and which of them can be reproduced on a machine the operator owns.**
+
+That question needs evidence about the reference product rather than memory of
+it, and the evidence has to be separated by quality. Three independent bodies of
+material were collected for this document:
+
+1. the product's own documentation and help centre (primary, but vendor
+   statements about what the product offers, not about how well it performs);
+2. independent user reports from a public forum and a public news aggregator
+   (anecdotal, but about real usage);
+3. the project's own issue tracker (the only substantial public channel of the
+   application this repository documents).
+
+The result is deliberately bounded. Where the evidence is thin, this document
+says so instead of filling the gap with a plausible story.
+
+## 1.2 How the reference product actually works
+
+All statements in this section come from the product's own documentation and
+help centre, accessed 2026-11-17. They describe what the product offers. They
+are not evidence of how reliably it delivers.
+
+### The execution model
+
+Manus is described as an autonomous general agent that takes a task and delivers
+a result rather than answering a question. It runs in a sandbox environment — a
+virtual computer with internet access, a persistent file system, the ability to
+install software and create tools — and it can connect to the user's own
+applications (mail, notes, chat, code hosting) through connectors. The
+documentation's own framing is "a virtual colleague with its own computer".
+
+A desktop application extends the same model to the user's own machine. The
+agent gets access to a chosen folder, the terminal and the hardware; it can
+work on files, run command-line tools and use local compute. Local actions are
+governed by a permission mode with three levels: ask for approval on every
+local action, approve safe actions automatically and ask only when a decision is
+needed, or run everything without approval. In the two gated modes the agent
+stays inside the task workspace, and network access, writes outside the
+workspace and a change of working folder all require approval.
+
+### Persistent workspaces (Projects)
+
+A Project is a persistent workspace with a **master instruction** and a
+**knowledge base** of files. Every new task created inside the project inherits
+that configuration, which removes the repeated setup that makes recurring work
+expensive. Instruction changes apply to the current task; file changes apply
+only to tasks created afterwards, so earlier tasks keep the configuration they
+were started with. Projects and tasks are private by default; an invited
+collaborator sees the shared instruction and knowledge base but only the tasks
+they created themselves.
+
+### Reusable procedures (Skills)
+
+Skills are file-system-based packages that encode a capability or a workflow:
+an instruction file with optional scripts, references and templates. They are
+loaded on demand rather than injected into every request, and the documentation
+describes this as progressive disclosure. Four acquisition paths are documented:
+ask the agent to package a successful interaction as a skill, upload a local
+archive or folder, install from the curated official library, or import directly
+from a public repository. A skill is invoked with a slash command. The
+documentation also tells users to audit community skills before use, because
+they can contain code and shell commands, and it gives the exact prompt to use
+for that audit.
+
+### Work that continues without the user (Automations)
+
+Three kinds are documented:
+
+| Kind | Starts when | Documented example |
+|---|---|---|
+| Schedule | a chosen time | a daily brief, a weekly report, recurring research |
+| Triggered task | an event in a connected app | a pull request is opened, a refund is created, an invoice mail arrives |
+| Advanced automation | a natural-language description | a routine that combines several sources, conditions and actions |
+
+The triggered form is the interesting one for engineering work: the documented
+example reacts to a pull request being opened, filters on the base branch and
+draft status, summarises the change, identifies high-risk files, checks whether
+the main behaviour is covered by tests, and posts a review only when there is a
+clear actionable finding — otherwise it sends the summary to the user.
+
+### Splitting work (Parallel Tasks and Wide Research)
+
+**Parallel Tasks** lets a request be decomposed into separate tasks, each with
+its own chat and its own result, all running at the same time. The task that
+made the request stays in charge: it checks progress, reads the results and can
+steer one task or all of them. A new task does not see the chat history of the
+main task, so it must be given a self-contained brief. The documented best
+practice is to start in a Project, because the Project carries the shared
+context.
+
+**Wide Research** is the same decomposition applied at scale. The main agent
+analyses the request, splits it into independent sub-tasks, assigns each to a
+dedicated agent with a fresh context window, and synthesises the results into
+one output. The stated reason is a context-window effect: when many similar
+items are processed sequentially, later items degrade as the context fills, and
+the vendor cites a "fabrication threshold" around eight to ten items. The
+architectural claim is that item two hundred fifty receives the same depth of
+analysis as item one.
+
+### Branching and running on your own key
+
+A **Branch** takes any reply into a new task while keeping everything up to
+that point, leaving the original task unchanged. **Flex** lets the agent run
+with the user's own inference provider key: the user chooses the provider, the
+model and the effort level, the provider bills the model usage, and the
+platform credits cover the sandbox and the media features. The documented
+providers include several large model houses and three inference partners.
+The documentation is explicit that provider rate limits and quotas apply, that
+quality and speed depend on the chosen model, and that the platform does not
+guarantee third-party model performance.
+
+### What it costs (vendor-stated)
+
+From the help centre, updated during October and November 2026 and accessed
+2026-11-17: a free plan with a daily credit refresh, one concurrent task and
+two scheduled automations; two paid tiers starting at a monthly price with
+monthly credit bundles, twenty concurrent tasks and twenty scheduled automations
+each; and a team plan priced per seat. The credit rules page states that
+consumption follows model tokens, virtual machines and third-party APIs, that
+it varies with task complexity and duration, that completed tasks keep their
+storage without further credit, and that a task failing for a technical reason
+on the vendor's side is refunded. Daily credits are capped, are usable only in
+the lightest agent mode, and monthly credits do not roll over. A separate page
+states that **both** chat and agent modes consume credits, which makes older
+statements about free chat stale.
+
+Two cautions on these numbers: they are vendor statements on the access date,
+not independent measurements, and the vendor itself points readers to the live
+pricing page. A public forum comment from an earlier period complains about
+price and limited credits; that is a dated impression without plan or usage
+details and must not be merged into the current table.
+
+## 1.3 What independent users report
+
+### A public agent forum (accessed through a public archive)
+
+Direct requests to the forum were refused by the platform's network policy
+during this research, so the material was read through a public archive of
+public posts. The sample is small and concentrated: four threads in one
+subreddit, twelve distinct comments, all from November 2026, all in threads
+asking which alternatives to a Manus-like agent exist for recurring work. The
+comments are user reports, not measurements, and several of them are
+promotional posts by vendors with referral links; those are excluded from any
+consensus and are listed separately.
+
+The independent comments name five things that decide the choice, and they
+line up remarkably well with the mechanisms in the previous section:
+
+| What the comment says | Mechanism it points at |
+|---|---|
+| "Manus is solid for one-off web browsing tasks, but for ongoing repetitive tasks" the user wants something else | one-off task versus a durable recurring routine |
+| "Manus is nice as a demo but the moment you need to customise a step you hit a wall, so I would rather own the workflow" | ownership of the workflow as the decisive property |
+| "less polished than manus, but you can see every step it took and rerun it, which is the part I'd miss from anything hosted" | visibility and rerunnability of the steps |
+| "the browser piece is where a lot of the manus feel comes from, since much of that list happens on sites you're logged into" | the browser session with the user's own accounts as the source of the "feel" |
+| "context retention, browser access, tool permissions, and recovery when something fails can make a big difference once workflows get more complex" | context, access, permissions and recovery as the four evaluation axes |
+
+Three more comments describe what a durable routine needs, and they are the most
+useful sentences in the whole sample:
+
+- **Verification by script, not by the agent's own word.** "done" should mean
+  the count and link checks passed, not that the agent got tired.
+- **A claim ledger plus a snapshot diff.** The diff tells you something
+  changed; the ledger tells you which downstream artifact the change breaks.
+  This is exactly the shape of an evidence store with a validator.
+- **Durability over time.** A research tool "will do the first report fine, the
+  hard part is week three and that's the part to test". The same commenter adds
+  the human rule that follows from it: open the files yourself.
+
+One further comment describes a working setup in which many agents run in sync
+for a business, and says the product was used "a lot with success for certain
+tasks" — a single enthusiastic report, and the only one in the sample that
+describes sustained multi-agent use.
+
+The promotional comments are worth naming as a category rather than quoting:
+several replies recommend a specific commercial product, one of them with a
+referral parameter in the link, and one discloses a commercial interest in the
+product it recommends. A forum thread about agent choice is a marketing
+surface; any future research on this topic must classify replies before
+counting them.
+
+### A public news aggregator
+
+The largest thread about the product in the sample is about its acquisition,
+not its mechanics: a thread with several hundred points and a couple of
+hundred comments. What it shows is attention and scepticism in equal measure —
+much of the discussion is about the wording of the announcement rather than the
+product — and one comment asks whether the product is simply a well-known model
+plus browser automation inside a virtual machine. That question is the same
+question the vendor's own engineering post answers directly: the product is an
+agent framework built on top of frontier models rather than a trained
+end-to-end agent, and the interesting engineering is in context management.
+
+An earlier thread on the product's economics contains the specialisation
+argument in its sharpest form: a commenter says they do not want an agent that
+can kind of do several unrelated things, because for each of those things they
+would rather have a program that does that one thing very well. That is the
+same trade-off the two-agent setup below makes deliberately: narrow agents with
+a written contract, not one agent that does everything adequately.
+
+### The application's own issue tracker
+
+The application this repository documents is distributed as an open-source
+Android client that talks to the user's own model providers, with local
+conversation storage, agent tools, memory, skills, scheduled tasks and remote
+shell access. Its public community is thin and concentrated in the issue
+tracker; the discussions endpoint is not available on the repository, and no
+separate forum was found.
+
+Repository activity on the access date: 617 stars, 121 forks and 107 open
+issues. These are activity indicators, not user counts. The user-authored
+threads that were read describe six concrete situations:
+
+| Thread | What the user reports or asks for |
+|---|---|
+| local workspace request | per-session workspaces for code and files on the device |
+| local model report | several small local models tested on one device class, with a hang during inference |
+| provider image generation | an image endpoint that returns a job identifier instead of image data, with a proposed endpoint-level fix |
+| spawned agent tool scope | a diagnostic run of a spawned agent, with the concern that workers get too broad a toolset; the author labels it a single self-reported run |
+| project organisation | folders and scoped conversation search for topic-based work |
+| conditional monitoring | a scheduled check that should notify only when a condition is met |
+
+The useful convention visible across those threads is a reporting style:
+provider, model, version and device details, plus an expected-versus-actual
+description. That makes a report reproducible, and it is the same discipline
+this repository's own check scripts impose.
+
+What the tracker does **not** contain is any evidence of a large community
+practice, a shared skill library, a common memory scheme, or a population-level
+reliability picture. A thin community is a finding, not a gap to be filled with
+assumptions.
+
+## 1.4 What the evidence supports, and what it does not
+
+Supported by more than one independent source:
+
+- The reference product is strongest on **bounded, browser-heavy, one-off
+  tasks** with a visible finish line, and weakest on **long-running recurring
+  work** and on **customisation**.
+- The decisive property for experienced users is **ownership**: seeing every
+  step, rerunning it, and holding the workflow rather than renting it.
+- The recurring complaint about any agent in this class is that **"done" is
+  self-declared**. The proposed remedy in the forum sample is scriptable
+  checks, a claim ledger, and a human opening the files.
+- **Durability is the real test.** A first report is easy; the third week of a
+  recurring routine is where the value and the failure live.
+
+Supported by one source only, and labelled as such: the multi-agent business
+report; the claim that the browser session with the user's own accounts is the
+main source of the product's feel; the pricing and credit figures (vendor
+statements).
+
+Not supported by the collected evidence, and therefore not asserted anywhere in
+this document:
+
+- a reliability rate, a success rate, or a defect rate for the reference
+  product;
+- a community consensus on which mechanism matters most;
+- the adoption or size of any skill library, scheduled-routine population or
+  third-party ecosystem;
+- any head-to-head comparison between the reference product and the
+  application this repository documents;
+- the number of active users of either product;
+- the current price a particular user would pay, which the vendor itself
+  resolves at the live pricing page.
+
+## 1.5 The two-agent workflow in this setup
+
+The local answer to the same question is not a copy of the product. It is a
+**control plane with two agents and a repository**: a coordinating agent that
+talks to the operator, plans, dispatches, verifies and reports, and a coding
+agent that executes inside an explicitly bounded scope and proposes. The
+operator talks to the coordinating agent only; the coding agent never asks the
+operator a question and never reads silence as approval.
+
+### Roles
+
+| Concern | Coordinating agent | Coding agent | Operator |
+|---|---|---|---|
+| Talking to the operator | yes | never | decides |
+| Choosing mode, impact tier and scope | yes | no | — |
+| Writing the brief | yes | no | — |
+| Editing files inside the dispatched scope | only when the brief says so | yes, inside the scope | — |
+| Running the validation commands | verifies | runs and reports | — |
+| Recording the outcome | yes | no | — |
+| Approving commits, pushes, merges | asks | never | approves |
+| Approving high-impact work | confirms | asks in the brief | may confirm directly |
+
+### Dispatch modes
+
+| Mode | Write access | Purpose | Expected return |
+|---|---|---|---|
+| `execute` | bounded by the brief | perform an agreed change and prove it with tests | changed files, commands run, test result |
+| `ideate` | read-only | propose options, tools and next increments | proposal with options and trade-offs |
+| `review` | read-only | check an artifact against a stated checklist | findings against the stated checklist |
+
+An `ideate` or `review` dispatch that modified files is a failed dispatch. It is
+reported as such, the files are inspected, and the mode is restored.
+
+### Impact tiers
+
+| Tier | Typical work | Who authorises it |
+|---|---|---|
+| low | web research about the project, options analysis, documentation, tests, refactors without behaviour change, small isolated fixes | the coding agent proceeds inside the brief |
+| medium | new features inside an existing module, behaviour changes without new dependencies, changes to the web UI or the live path | the coding agent proceeds; the coordinating agent confirms the brief and verifies the result |
+| high | schema or contract changes, the evidence ledger or the checker, licence or ADR status, budget, hosting or publication, deletions, anything touching historical data | explicit confirmation by the coordinating agent or the operator before the dispatch starts |
+
+A dispatch states its tier and the source of its authorisation in the brief and
+in the returned report. A dispatch that crosses into a higher tier stops and is
+re-briefed. A high-impact increment is split into low and medium parts so the
+groundwork can proceed while the confirmation is pending.
+
+### The brief and the report contract
+
+The brief is a file, never inline text with credentials. It states: goal,
+scope, protected files, constraints, acceptance criteria, permitted tools,
+output contract, forbidden actions, stop conditions, impact tier, authorisation
+source and budget. A field that does not apply is written as "not applicable"
+with a reason, never silently dropped.
+
+The returned report is data, not fact. Every load-bearing claim is verified
+against the artifacts — the working tree, the diff, the test output, the
+checker output — before it is used. The operator-facing report has three named
+parts and never merges the two voices:
+
+1. `Dispatched` — mode, scope, model route, impact tier, authorisation source,
+   artifact locations.
+2. `Returned` — the coding agent's own words, quoted or summarised without
+   silent editing.
+3. `Assessment` — what the coordinating agent verified, what it doubts, and the
+   decision the operator still owes. The coding agent never writes this part.
+
+### The task cycle
+
+1. **Intake and route.** Read the request, the repository entry points and only
+   the records the task needs. Take a fresh snapshot of the repository state.
+   A previous brief, adapter, test result or recorded approval is evidence, not
+   fresh authorisation.
+2. **Choose the mode and the impact tier.** If the scope could reach a higher
+   tier, split the safe groundwork from the gated work.
+3. **Write the brief** from the shared template, with every field filled.
+4. **Dispatch once.** Check for a running matching session first; never start a
+   second one for the same task. The turn limit bounds the tool iterations and
+   therefore the token spend; the money ceiling belongs to the operator's
+   standing budget and to the project's own live-path limits, and a dispatch
+   that would exceed either is stopped before it starts, not measured
+   afterwards.
+5. **Verify the return** against the artifacts, not against the report text.
+6. **Record** in the same authorised change as the work: changelog, status,
+   progress, decision records. Never record progress for a proposal.
+7. **Report to the operator** in the three named blocks, and ask only when a
+   real operator decision is missing or when a dispatch has produced the
+   evidence that frames the question.
+
+### Records and the operator card
+
+| What happened | Where it is recorded | When |
+|---|---|---|
+| any change to code, docs, tests or configuration | the changelog | in the same commit as the change |
+| current scope, evidence and acceptance limits | the project status record | in the same change, when the state moved |
+| implementation progress and the next increments | the progress list | in the same change |
+| a durable decision | a decision record or an open-question entry | when the decision is made, not later |
+| a dispatch and its outcome | the brief file, the report and the transcript | during the dispatch |
+
+Every dispatch ends with a one-page card in a fixed shape: verified, proposed,
+blocked, decisions needed, next action, artifact locations. A run that produced
+no card produced no handoff.
+
+### Where the shared skills live
+
+| Location | Content | Used by |
+|---|---|---|
+| shared skills repository, `skills/<family>/<name>/SKILL.md` | canonical text | both |
+| project repository, `.agents/skills/<name>/SKILL.md` | project-scoped copy | coding agent inside that repository |
+| agent home, `~/.agents/skills/<name>/SKILL.md` | globally available copy | coding agent in every session |
+| agent skill store (flat namespace) | deployed copy | coordinating agent |
+
+The coding agent discovers skills in the project directory and in the agent home
+without further configuration; the standard requires one directory per skill, a
+`SKILL.md` file with frontmatter, and a directory name equal to the skill name.
+A project-scoped copy is a copy. Canonical text changes first, then the copies
+are refreshed, then a drift check compares each deployed copy with the
+canonical file.
+
+## 1.6 Mapping: reference mechanism to local equivalent
+
+| Reference mechanism | Equivalent here | Gap | Increment | Impact |
+|---|---|---|---|---|
+| persistent project workspace with a master instruction and knowledge base | project repository entry points, the project context adapter, the shared skill set | no maintained specification of the working environment itself | a versioned design record for the environment | medium |
+| decision memo and decision log | decision records and an open-question list in the project repository | no accepted record for the working-state path, retention and memory boundaries | same increment | medium |
+| evidence store with a validator | the project's evidence ledger and its checker | no manifest links a decision to its evidence and status | freeze manifest | high |
+| checklist and acceptance scenarios | repository validation scripts, the session checklist | no cross-agent behaviour result recorded | behaviour pilot | low |
+| reusable skills | canonical skills and their deployed copies | no inventory of source, copy, owner and last check | skill inventory and drift check | low |
+| operator summary | the three-part dispatch report and the operator card | no agreed short card in use | session checklist and card | low |
+| frozen evaluation package | a draft manifest with unfilled items | not frozen | freeze manifest | high |
+| scheduled and triggered routines | scheduled tasks in the application, plus the dispatch cycle as a manual routine | no unattended trigger path for the two-agent seam | automation design | medium |
+
+The increments are ordered so that the cheap, low-impact ones close first and
+the high-impact ones wait for the operator's decisions. A behaviour pilot is the
+first one: a read-only dispatch that carries three deliberately untrue statements
+and one unfilled brief field, and asks the coding agent to check them. The
+observed result was the point of the exercise — the agent refuted the stale
+claim with repository commands, refused an approval that no record supported,
+reported an unreadable file as unreadable instead of substituting another
+source, and named the missing field. A seam that has not been tested is an
+assumption.
+
+## 1.7 Where the local setup differs, and why that is not a defect
+
+| Dimension | Reference product | Local setup | Consequence |
+|---|---|---|---|
+| Execution | hosted sandbox, with a desktop app that can run on the user's machine | the user's own machine and repositories, with a local gateway to model providers | data and code stay on the operator's machine; the operator owns the runtime and its failure modes |
+| Cost model | credits, refreshed daily or monthly, with the vendor billing the sandbox | the operator's own provider account and a local proxy, with explicit spend ceilings on the live path | spend is visible and bounded by the operator, not by a plan |
+| Structure | one agent with many modes | two agents with a written contract between them | every task has an owner, a scope, a tier and a verification step; the cost is one extra hop |
+| Recurrence | scheduled and triggered routines inside the product | scheduled tasks in the application, plus a manual dispatch cycle | the two-agent seam has no unattended trigger path yet; that is a known gap, not a solved one |
+| Verification | the agent's own report and the user's inspection of the files | the same, plus a repository checker and a required verification step before any claim | "done" is never the agent's word alone |
+| Customisation | the product's own feature set | the repository, the skills and the local tooling are all editable | the "customisation wall" the forum complains about is the thing this setup is built to remove |
+
+## 1.8 Guidance for power users
+
+Derived from the evidence above, and from the operating contract in Part 2.
+
+1. **Own the workflow.** A tool you cannot change at the step level becomes a
+   demo. Keep the procedure in files you can edit.
+2. **Make every step visible and rerunnable.** A transcript you cannot replay
+   is not a process.
+3. **Let scripts decide "done".** Counts, links and checks decide completion;
+   the agent's confidence does not.
+4. **Keep a claim ledger.** One row per assertion, with its source, its
+   passage, its date and its status. A validator checks the shape; a human
+   checks the truth.
+5. **Test the third week, not the first run.** The first report is the easy
+   part; recurring work is where a setup proves itself.
+6. **Open the files yourself.** The community rule that survives every
+   framework: the deliverable is the file, not the summary of the file.
+7. **Split recurring work into a project-like context.** Shared instructions
+   and shared files, inherited by every new task, beat re-explaining.
+8. **Package a successful procedure once, reuse it everywhere.** A skill is a
+   procedure with a file format, not a paragraph in a prompt.
+9. **Give the browser the right session, and audit what it can do.** The
+   browser with the user's own accounts is where the "feel" comes from, and
+   also where the risk lives.
+10. **Keep the human gate where it costs the most.** Schema, contracts, the
+    evidence store, licences, budget, publication, deletions and historical
+    data are the operator's decisions, not the agent's.
+11. **Treat community threads as marketing surfaces.** Classify replies before
+    counting them; a recommendation with a referral link is not a consensus.
+12. **Write the session down.** Context that lives only in a chat window dies
+    with the window. Records, not recall, are what makes an environment
+    personal.
+
+## 1.9 Open questions
+
+- Can a follow-up with a larger, accessible forum sample establish how many
+  independent users describe a recurring routine with the same shape as the
+  one documented here?
+- What is the actual failure distribution of a two-agent seam under repeated
+  use, and which failure mode appears first?
+- Which of the twelve guidance points above is load-bearing in practice, and
+  which are folklore?
+- Can the unattended trigger path for the seam be built without weakening the
+  human gate?
+- What does a mature skill library look like when it is maintained rather than
+  collected, and how does drift get caught early?
+
+## 1.10 Source registry
+
+Every source was accessed on 2026-11-17. Quality is scored on authority,
+recency, specificity and independence; an anecdotal user report stays weak
+evidence even when it is independent.
+
+| # | Source | URL | Date | Supports | Quality |
+|---|---|---|---|---|---|
+| S1 | Manus documentation index | https://manus.im/docs/llms.txt | accessed 2026-11-17 | the product's own feature map | 5/5/4/1 |
+| S2 | Manus — welcome and execution model | https://manus.im/docs/introduction/welcome | accessed 2026-11-17 | sandbox, persistence, connectors | 5/5/4/1 |
+| S3 | Manus — Projects | https://manus.im/docs/features/projects | accessed 2026-11-17 | master instruction, knowledge base, inheritance rules | 5/5/5/1 |
+| S4 | Manus — Skills | https://manus.im/docs/features/skills | accessed 2026-11-17 | skill packages, progressive disclosure, acquisition paths, auditing | 5/5/5/1 |
+| S5 | Manus — Automations | https://manus.im/docs/automations | accessed 2026-11-17 | schedule, triggered task, advanced automation | 5/5/5/1 |
+| S6 | Manus — Parallel Tasks | https://manus.im/docs/features/parallel-tasks | accessed 2026-11-17 | decomposition, self-contained briefs, main-task control | 5/5/5/1 |
+| S7 | Manus — Wide Research | https://manus.im/docs/features/wide-research | accessed 2026-11-17 | parallel per-item agents, context-window argument | 5/4/5/1 |
+| S8 | Manus — desktop application | https://manus.im/docs/features/desktop | accessed 2026-11-17 | local execution, permission modes, workspace rules | 5/5/5/1 |
+| S9 | Manus — running with your own key | https://manus.im/docs/models/manus-flex | accessed 2026-11-17 | provider choice, effort level, cost split, provider limits | 5/4/5/1 |
+| S10 | Manus help centre — membership pricing | https://help.manus.im/en/articles/11711111-what-is-the-current-membership-pricing-for-manus | updated 2026-11 | plan structure, credits, concurrency, scheduled automations | 5/5/5/1 |
+| S11 | Manus help centre — credit rules | https://help.manus.im/en/articles/11711097-what-are-the-rules-for-credits-consumption-and-how-can-i-obtain-them | updated 2026-11 | what consumes credits, refunds, expiry | 5/5/5/1 |
+| S12 | Manus help centre — Wide Research | https://help.manus.im/en/articles/11960169-what-is-wide-research | updated 2026-09 | subtask cap, automatic triggering, paid-only | 5/4/4/1 |
+| S13 | Manus help centre — sharing and using skills | https://help.manus.im/en/articles/14753565-how-to-share-and-use-skills-in-manus | updated 2026-10 | skill packaging and portability | 5/4/4/1 |
+| S14 | Manus help centre — chat and agent modes | https://help.manus.im/en/articles/17768086-what-are-the-differences-between-chat-mode-and-agent-mode | updated 2026-10 | mode boundary, both modes consume credits | 5/5/4/1 |
+| S15 | Manus engineering blog — context engineering | https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus | 2025-07-18 | action/observation loop, context growth, external memory | 5/3/5/1 |
+| S16 | Hands-on comparison of two autonomous agents | https://www.alpsencer.com/blog/2025/manus-vs-devin/ | 2025-03, updated 2026-08 | observed task examples, mistakes found, the author's own limits | 3/3/4/5 |
+| S17 | Public news aggregator thread on the product's acquisition | https://news.ycombinator.com/item?id=46426534 | 2025-12-29 | community attention, scepticism, the "model plus browser" question | 3/3/3/5 |
+| S18 | Public news aggregator thread on the product's economics | https://news.ycombinator.com/item?id=43307713 | 2025-03 | the specialisation argument | 3/3/3/5 |
+| S19 | Public agent forum thread — alternatives for work that must end in files | https://reddit.com/r/AI_Agents/comments/1xofraq/whats_the_closest_manus_alternative_when_the_job/ | 2026-11 | one-off versus recurring, ownership of the workflow | 3/5/3/4 |
+| S20 | Public agent forum thread — research tools whose reports can be updated | https://reddit.com/r/AI_Agents/comments/1xq8yu5/what_ai_research_tool_actually_makes_it_easy_to/ | 2026-11 | claim ledger plus snapshot diff, scriptable checks, durability | 3/5/4/4 |
+| S21 | Public agent forum thread — alternatives for building agent workflows | https://reddit.com/r/AI_Agents/comments/1xxbxr1/what_are_some_good_alternatives_to_manus_for/ | 2026-11 | customisation wall, visible and rerunnable steps, browser sessions | 3/5/3/4 |
+| S22 | Public agent forum thread — evaluation axes for agent workflows | https://reddit.com/r/AI_Agents/comments/1xpurfh/how_good_are_the_new_grok_bots_really/ | 2026-11 | context, access, permissions, recovery | 3/5/3/4 |
+| S23 | Application repository and readme | https://github.com/newo-ether/Agora | accessed 2026-11-17 | product identity, feature set, distribution channels | 5/5/4/1 |
+| S24 | Application release notes, latest observed release | https://github.com/newo-ether/Agora/releases/tag/v2.2.0 | 2026-10-31 | version, licence change, agent-related features | 5/5/4/1 |
+| S25 | Application user manual | https://newo-ether.github.io/Agora/ | accessed 2026-11-17 | memory, skills, automation, shell and privacy behaviour | 5/5/4/1 |
+| S26 | Application issue tracker — six user-authored threads | https://github.com/newo-ether/Agora/issues | 2026-08 to 2026-11 | local workspaces, local inference, provider compatibility, worker tool scope, project organisation, conditional monitoring | 3/5/3/4 |
+
+Access notes, recorded because they affect how the evidence was obtained: the
+forum platform refused direct requests during this research, so the forum
+material was read through a public archive of public posts and the reply count
+is a thread count, not a distinct-author count; several replies in those
+threads are vendor promotions and are excluded from the consensus; the
+application's discussions endpoint was not available; the search engines
+returned interstitials or unusable results for targeted queries.
+
+---
+
+# Part 2 — The operating contract
+
+The shared workflow record between two agents that work on the same
+repositories:
+
+- the **coordinating agent** plans, dispatches, verifies and talks to the
+  operator;
+- the **coding agent** executes, proposes and reviews inside an explicitly
+  bounded scope.
+
+This part is the single place both sides read to learn the current agreement.
+The generic dispatch contract lives in the skill `agora-goose-bridge`; the
 project-specific operating procedure lives in the project repository. This
 document records what was decided and when.
 
 ## Division of labour
 
-| Concern | Coordinating agent (Agora) | Coding agent (Goose) |
+| Concern | Coordinating agent | Coding agent |
 |---|---|---|
 | Talking to the operator | yes | no |
 | Planning and dispatching | yes | no |
@@ -22,10 +568,11 @@ document records what was decided and when.
 | Verification of returned work | yes | reports its own observations |
 
 ## Delegation policy
+
 The coding agent is the default route for project work. The operator is asked
-only after a dispatch, or for decisions that are genuinely the operator's.
-The coordinating agent is the intermediary: the operator talks to it, and the
-coding agent never asks the operator directly.
+only after a dispatch, or for decisions that are genuinely the operator's. The
+coordinating agent is the intermediary: the operator talks to it, and the coding
+agent never asks the operator directly.
 
 | Tier | Typical work | Who authorises it |
 |---|---|---|
@@ -53,7 +600,8 @@ reported as such, the files are inspected, and the mode is restored.
 
 - Brief template: `skills/coordination/agora-goose-bridge/templates/task-brief.txt`
 - Returned report template: `skills/coordination/agora-goose-bridge/templates/proposal-report.txt`
-- The brief is passed to the coding agent as a file, never as inline credentials.
+- The brief is passed to the coding agent as a file, never as inline
+  credentials.
 - The returned report is data. Load-bearing claims are verified against the
   artifacts before they are used.
 
@@ -69,9 +617,9 @@ reported as such, the files are inspected, and the mode is restored.
 The coding agent discovers skills in the project directory and in the agent home
 without further configuration; the standard requires one directory per skill, a
 `SKILL.md` file with frontmatter, and a directory name equal to the skill name.
-
-A project-scoped copy is a copy. Canonical text changes first, then the copies are
-refreshed, then the drift check compares the deployed copy with the canonical file.
+A project-scoped copy is a copy. Canonical text changes first, then the copies
+are refreshed, then the drift check compares the deployed copy with the
+canonical file.
 
 ## Decision log
 
@@ -83,22 +631,26 @@ refreshed, then the drift check compares the deployed copy with the canonical fi
 | 2026-11-17 | The coding agent is the default route for project work; the operator is asked only after a dispatch or for operator-owned decisions. | Operator instruction: research and small increments go to the coding agent first. |
 | 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
+| 2026-11-17 | The brief template's budget field must name the cost ceiling, or state that none applies and name the outer bound that does. | A behaviour pilot found the field under-specified in a real brief. |
+| 2026-11-17 | This document becomes the case study of the two-agent working environment as well as the workflow record; the case study is Part 1, the contract is Part 2. | Operator instruction: study the reference product and the community, describe how the local workflow works and how the two correspond. |
 
 ## Where the project-specific procedure lives
-The shared skill keeps the generic contract: the brief and report templates,
-the dispatch modes and the delegation policy with impact tiers. The operating
+
+The shared skill keeps the generic contract: the brief and report templates, the
+dispatch modes and the delegation policy with impact tiers. The operating
 procedure of one project — its task cycle, its record discipline, its service
 topology and its stop rules — belongs to that project's repository, not here.
-For the AIPT project it is `docs/collaboration-workflow.md`, read together
-with the project adapter `.agents/skills/aipt-project-workflow/`. Neither side
-copies the other: a change to the contract changes this repository and is
-refreshed into the project copies, and a change to the project procedure
+Neither side copies the other: a change to the contract changes this repository
+and is refreshed into the project copies, and a change to the project procedure
 changes the project repository only.
 
 ## Rules that always apply
 
-- No credential, key or personal datum travels in a brief, a task file or a report.
-- No push, merge, release or publication happens on a proposal alone; the operator
-  approves each of them explicitly.
+- No credential, key or personal datum travels in a brief, a task file or a
+  report.
+- No push, merge, release or publication happens on a proposal alone; the
+  operator approves each of them explicitly.
 - Two agents never write to the same file in the same round.
-- When the operator changes a decision mid-flight, the dispatch stops and is re-briefed.
+- When the operator changes a decision mid-flight, the dispatch stops and is
+  re-briefed.
+- A returned report is never presented as a verified fact.
