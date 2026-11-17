@@ -6,8 +6,9 @@ Shared workflow record between two agents that work on the same repositories:
 - the **coding agent** (Goose) executes, proposes and reviews inside an explicitly bounded scope.
 
 This document is the single place both sides read to learn the current agreement. The
-procedure lives in the skill `agora-goose-bridge`; this document records what was
-decided and when.
+generic dispatch contract lives in the skill `agora-goose-bridge`; the
+project-specific operating procedure lives in the project repository. This
+document records what was decided and when.
 
 ## Division of labour
 
@@ -78,7 +79,7 @@ refreshed, then the drift check compares the deployed copy with the canonical fi
 |---|---|---|
 | 2026-11-16 | The coding agent receives the shared skills as standard skills, in the project directory and in the agent home. | Canonical text stays in the shared skills repository; the copies are refreshed from it. |
 | 2026-11-16 | Three dispatch modes: execute, ideate, review. | Ideate and review are read-only. |
-| 2026-11-16 | The operator-facing report keeps the returned proposal and the coordinating assessment in two separate blocks. | A proposal is never reported as a verified fact. |
+| 2026-11-16 | The operator-facing report has three named parts — `Dispatched`, `Returned`, `Assessment` — and keeps the returned proposal and the coordinating assessment as two separate voices. | A proposal is never reported as a verified fact. |
 | 2026-11-17 | The coding agent is the default route for project work; the operator is asked only after a dispatch or for operator-owned decisions. | Operator instruction: research and small increments go to the coding agent first. |
 | 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
