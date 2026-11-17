@@ -177,55 +177,67 @@ details and must not be merged into the current table.
 Direct requests to the forum platform were refused by its network policy during
 this research, so the material was read through a public archive of public
 posts. The archive query returned 120 records that resolve to **10 distinct
-comment bodies across 4 threads** in one subreddit, all from November 2026; the
-archive's pagination repeated the same page set, which is why the record count
-is larger than the distinct count. All four threads ask which agent to use for
-work that must end in real files or keep running over time.
+comment bodies across 4 threads** in one subreddit, with comment dates from
+2026-11-07 to 2026-11-16; the archive's pagination repeated the same page set,
+which is why the record count is larger than the distinct count. The four
+threads ask four different questions: which agent to use for building agent
+workflows, which tool keeps a research report updatable when its sources
+change, which alternative to use when the job must end in real files, and how
+a competing bot product is performing.
 
 A thread about agent choice is also a marketing surface, so every distinct
-comment is classified below. Six of the ten carry a commercial interest, a
-referral link or a self-disclosure; four are unmarked opinions.
+comment is classified below. Three of the ten carry a referral link, an invite
+link or an explicit disclosure of a commercial interest; two more are
+self-promotion or opinions that recommend named products; one is a self-report
+with no commercial link and no recommendation.
 
 | # | Thread (short) | Date | Class | What it says |
 |---|---|---|---|---|
-| 1 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | "Manus is solid for one-off web browsing tasks, but for ongoing repetitive tasks you might want to look at Squad." |
+| 1 | alternatives for agent workflows | 2026-11-16 | opinion naming an alternative product | "Manus is solid for one-off web browsing tasks, but for ongoing repetitive tasks you might want to look at Squad." |
 | 2 | alternatives for agent workflows | 2026-11-16 | self-promotion with a referral link | offers the author's own application as a Manus-like tool |
-| 3 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | "Manus is nice as a demo but the moment you need to customise a step you hit a wall, so I would rather own the workflow." |
-| 4 | alternatives for agent workflows | 2026-11-16 | opinion plus an invite link | splits the choice into the workflow builder and the agent between steps; names context retention, browser access, tool permissions and recovery as the deciding axes |
+| 3 | alternatives for agent workflows | 2026-11-16 | opinion naming alternative products | "Manus is nice as a demo but the moment you need to customise a step you hit a wall, so I would rather own the workflow." |
+| 4 | alternatives for agent workflows | 2026-11-16 | opinion with an invite link | splits the choice into the workflow builder and the agent between steps; names context retention, browser access, tool permissions and recovery as the deciding axes |
 | 5 | alternatives for agent workflows | 2026-11-16 | promotion with disclosure | "the browser piece is where a lot of the manus feel comes from, since much of that list happens on sites you're logged into"; the author states they build a competing product and that they are biased |
-| 6 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | a terminal-based coding agent with a few tool servers covers most of it; "less polished than manus, but you can see every step it took and rerun it, which is the part I'd miss from anything hosted" |
-| 7 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | the choice is between something that works out of the box and a platform where the user builds and controls the workflow; lists several workflow tools |
-| 8 | a thread about competing bots | 2026-11-13 | self-report | a business running many agents in sync, and having used the product "a lot with success for certain tasks" |
+| 6 | alternatives for agent workflows | 2026-11-16 | opinion naming alternative products | a terminal-based coding agent with a few tool servers covers most of it; "less polished than manus, but you can see every step it took and rerun it, which is the part I'd miss from anything hosted" |
+| 7 | alternatives for agent workflows | 2026-11-16 | opinion naming alternative products | the choice is between something that works out of the box and a platform where the user builds and controls the workflow; lists several workflow tools |
+| 8 | a thread about a competing bot product | 2026-11-13 | self-report, no commercial link | a business running many agents in sync, and having used the product "a lot with success for certain tasks" |
 | 9 | research tools whose reports can be updated | 2026-11-07 | promotion with disclosure | "The claim ledger + page snapshot replies are the right shape"; "perplexity or manus will do the first report fine, the hard part is week 3 and that's the part to test" |
 | 10 | alternatives when the job must end in files | 2026-11-07 | promotion with disclosure | "the scriptable checks reply above is the real answer whatever tool u use. \"done\" should mean the count and link scripts passed, not that the agent got tired"; ends with "still open the files yourself" |
 
-What the four unmarked opinions have in common is a preference for **ownership
-over polish**: one-off browsing is called solid, customisation is called a
-wall, and the thing a hosted product cannot offer is a workflow the user owns,
-can see and can rerun. One further comment is a single enthusiastic self-report
-of many agents running in sync for a business. These are four opinions in one
-subreddit in one week; they are not a measurement and not a consensus.
+Two of the comments without a commercial link point the same way, and it is
+worth quoting them exactly because they are the reason this case study exists.
+Comment 3 calls the product "nice as a demo" but says that the moment a step
+needs customising "you hit a wall, so I would rather own the workflow".
+Comment 6 prefers a terminal-based agent because there "you can see every step
+it took and rerun it". Comment 1 draws a related line between one-off browsing
+and ongoing repetitive work. These are three opinions in one subreddit over ten
+days. They are not a measurement, and they are not a claim about what a hosted
+product can or cannot do — they are the stated reasons why three people
+preferred something else.
 
-The three most useful design ideas in the sample come from the two comments
-that carry a commercial disclosure. They are recorded as **proposals from an
-interested party**, not as community consensus:
+The three most useful design ideas in the sample come from **two separate
+comments that each carry a commercial disclosure**, and they are recorded here
+as proposals from interested parties, not as community consensus:
 
-- a **claim ledger plus a snapshot diff** — the diff says something changed, the
-  ledger says which downstream artifact the change breaks;
-- **scriptable completion checks** instead of the agent's own word: "done"
-  means the count and link checks passed, not that the agent got tired;
-- **durability as the real test** — the first report is easy, the third week is
-  the part to test — with the human rule that follows from it: open the files
-  yourself.
+- comment 9 proposes a **claim ledger plus a snapshot diff** — the diff says
+  something changed, the ledger says which downstream artifact the change
+  breaks — and adds that the first report is easy while "the hard part is week
+  3 and that's the part to test";
+- comment 10 argues for **scriptable completion checks** instead of the agent's
+  own word: "done" should mean the count and link checks passed, not that the
+  agent got tired, and it ends with the human rule "still open the files
+  yourself".
 
-These are useful design patterns, and they are also the kind of advice a
-vendor with a product to sell would give. A reader should hold both facts at
-once.
+Both are useful design patterns, and both are also the kind of advice a vendor
+with a product to sell would give. A reader should hold both facts at once,
+and should not attribute the two proposals to one author: the archive does not
+establish that they share one.
 
-The sample's limits are worth stating plainly: one subreddit, four threads, one
-week, one question. It cannot support statements about the community as a
-whole, and older threads were not reachable through the archive during this
-research.
+The sample's limits are worth stating plainly: one subreddit, four threads over
+ten days, four different questions, and only one comment with no commercial
+link and no product recommendation. It cannot support statements about the
+community as a whole, and older threads were not reachable through the archive
+during this research.
 
 ### A public news aggregator
 
@@ -286,16 +298,21 @@ Supported, with the source named:
   workspaces, reusable skills, scheduled and event-triggered routines, parallel
   decomposition, local execution with permission modes and a bring-your-own-key
   mode. This is a statement about the product's documented feature set.
-- Four unmarked opinions in one forum sample prefer **ownership over polish**:
-  one-off browsing is called solid, customisation is called a wall, and visible,
-  rerunnable steps are the thing a hosted product cannot offer. Four opinions in
-  one subreddit in one week are an anecdote, not a consensus.
-- One commenter with a disclosed commercial interest proposed a **claim ledger
-  with snapshot diffs**, **script-based completion checks** and **testing the
-  third week rather than the first run**. Recorded as a proposal, not as
-  community agreement.
-- One self-report describes **many agents running in sync** for a business and
-  successful use of the product for certain tasks. One report.
+- Three comments without a commercial link prefer **ownership over polish**:
+  comment 3 calls customisation a wall and says the writer would rather own the
+  workflow, comment 6 prefers a terminal-based agent because every step is
+  visible and rerunnable, and comment 1 separates one-off browsing from
+  ongoing repetitive work. Three comments in one subreddit over ten days are an
+  anecdote, not a consensus, and none of them is evidence about what a hosted
+  product can do.
+- Two comments with a disclosed commercial interest proposed, separately, a
+  **claim ledger with snapshot diffs** and the third week as the real test
+  (comment 9), and **script-based completion checks** with the rule to open the
+  files yourself (comment 10). Recorded as proposals from interested parties,
+  not as community agreement.
+- One self-report with no commercial link describes **many agents running in
+  sync** for a business and successful use of the product for certain tasks.
+  One report.
 - The application's own issue tracker shows a **reporting convention** —
   provider, model, version, device, expected versus actual — and a set of
   feature interests around local workspaces, local inference, worker tool scope
@@ -311,6 +328,9 @@ this document:
 - a reliability rate, a success rate, or a defect rate for any product;
 - a community consensus on which mechanism matters most, or how many users run
   recurring routines;
+- that a hosted product cannot offer an owned, visible, rerunnable workflow —
+  that is one commenter's stated reason for preferring a terminal-based agent,
+  not a demonstrated limitation;
 - the adoption or size of any skill library, scheduled-routine population or
   third-party ecosystem;
 - any head-to-head comparison between the reference product and the
@@ -426,19 +446,23 @@ parts and never merges the two voices:
 
 A first dispatch in a fresh repository looks like this:
 
-- **Brief file** — copy the shared template to a task file in the dispatch
-  workspace and fill every field. For a documentation question the scope is
-  one directory, the protected files are the whole repository, the mode is
-  `ideate`, the impact tier is low, and the acceptance criteria are written as
-  checks a reader can perform.
+- **Brief file** — copy the canonical template
+  `skills/coordination/agora-goose-bridge/templates/task-brief.txt` to a task
+  file in the dispatch workspace and fill every field. For a documentation
+  question the scope is one directory, the protected files are the whole
+  repository, the mode is `ideate`, the impact tier is low, and the acceptance
+  criteria are written as checks a reader can perform.
 - **Command** — run the coding agent in the repository directory with the
-  brief file as its input, a bounded turn count, and no credential in the
-  command line.
+  brief file as its input and a bounded turn count. The shape of the command
+  is: run the agent's non-interactive mode, pass the brief file with the
+  input flag, cap the turns, and keep the credential out of the command line.
 - **Verification** — read the returned report, then check the claim against
   the artifact: does the file exist, does the diff contain what the report
   says, does the check script still pass.
-- **Record** — the changelog entry, the status line and the brief file are
-  written in the same change as the work, never after the fact.
+- **Record** — a proposal produces no change records: the changelog, the
+  status line and the progress list are written in the same change as the
+  **executed** work, never after the fact, and never for a proposal that has
+  not been carried out.
 - **Report** — the three blocks, with the artifact paths.
 
 ### Records and the operator card
@@ -480,7 +504,7 @@ canonical file.
 | persistent project workspace with a master instruction and knowledge base | project repository entry points, the project context adapter, the shared skill set | no maintained specification of the working environment itself | a versioned design record for the environment | medium |
 | decision memo and decision log | decision records and an open-question list in the project repository | no accepted record for the working-state path, retention and memory boundaries | same increment | medium |
 | evidence store with a validator | the project's evidence ledger and its checker | no manifest links a decision to its evidence and status | freeze manifest | high |
-| checklist and acceptance scenarios | repository validation scripts, the project session checklist | no cross-agent behaviour result recorded | behaviour pilot — **done 2026-11-17**, see below | low |
+| checklist and acceptance scenarios | repository validation scripts, the project session checklist | one behaviour pilot covers four checks; the wider cross-agent behaviour is untested | behaviour pilot — **done 2026-11-17**, see below | low |
 | reusable skills | canonical skills and their deployed copies | no inventory of source, copy, owner and last check | skill inventory and drift check | low |
 | operator summary | the three-part dispatch report and the project operator card | the card is in the project procedure, not yet in the shared contract | session checklist and card — **in the project procedure since 2026-11-17** | low |
 | frozen evaluation package | a draft manifest with unfilled items | not frozen | freeze manifest | high |
@@ -501,8 +525,8 @@ the missing field. A seam that has not been tested is an assumption.
 
 | Dimension | Reference product | Local setup | Consequence |
 |---|---|---|---|
-| Execution | hosted sandbox, with a desktop app that can run on the user's machine | the operator's own machine and repositories, with a local gateway to model providers | the repositories, the skills and the runtime live on the operator's machine; the prompts and the content still travel to the configured inference provider, so "local" describes where state and execution live, not where inference happens |
-| Cost model | credits, refreshed daily or monthly, with the vendor billing the sandbox | the operator's own provider account and a local proxy, with spend ceilings on the live path where the configuration enforces them | spend is visible and bounded by the operator, not by a plan; the ceiling is a property of the configuration, not a property of the system |
+| Execution | hosted sandbox, with a desktop app that can run on the user's machine | the operator's own machine and repositories, with a local gateway to model providers | the repositories, the skills and the runtime live on the operator's machine; the prompts and the content still travel to the configured inference provider, so "local" describes where state and execution live, not where inference happens. The application can also run a model on the device, but the described setup does not use that path |
+| Cost model | credits, refreshed daily or monthly, with the vendor billing the sandbox | the operator's own provider account and a local proxy, with spend ceilings on the live path where the configuration enforces them | spend is visible to the operator rather than governed by a plan, and the ceiling is a property of a configuration that has to be verified, not a property of the system |
 | Structure | one agent with many modes | two agents with a written contract between them | every task has an owner, a scope, a tier and a verification step; the cost is one extra hop |
 | Recurrence | scheduled and triggered routines inside the product | scheduled tasks in the application, plus a manual dispatch cycle | the two-agent seam has no unattended trigger path yet; that is a known gap, not a solved one |
 | Verification | the agent's own report and the user's inspection of the files | the same, plus a repository checker and a required verification step before any claim | "done" is never the agent's word alone |
@@ -519,9 +543,10 @@ contract.
    demo. Keep the procedure in files you can edit.
 2. **Make every step visible and rerunnable.** A transcript you cannot replay
    is not a process.
-3. **Let scripts decide completion.** Counts, links and checks decide
-   completion; the agent's confidence does not. Checks are necessary evidence,
-   not proof that a claim is true or that a result is accepted.
+3. **Let the checks decide, not the agent.** Counts, links and checks are
+   necessary evidence that a step did what it should. Passing checks is not
+   acceptance: acceptance also needs the requester's judgement. The agent's
+   confidence is not evidence at all.
 4. **Keep a claim ledger.** One row per assertion, with its source, its
    passage, its date and its status. A validator checks the shape; a human
    checks the truth.
