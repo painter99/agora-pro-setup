@@ -89,7 +89,7 @@ components:
     kind: reference
     # number 19 is retired
     source: "docs/*.md"
-    files: 34
+    files: 35
     target: none
   - name: author-docs
     kind: reference
