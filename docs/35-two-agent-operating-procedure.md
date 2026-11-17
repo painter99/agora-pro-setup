@@ -60,30 +60,43 @@ Before acting on a task:
 
 ## The seven-step task cycle
 
-Use this as a process outline. The dispatch contract in the Skill and
-[`docs/34`](34-agora-goose-bridge.md) remains authoritative for how a dispatch
-is formed and governed.
+This outline shows the shape of a dispatch from intake through operator
+handoff. Each step also identifies the local information the private adapter
+must supply; the named contract sections hold the binding rules.
 
-1. **Intake and routing.** Clarify the requested outcome, identify the owning
-   repository and artifacts, and route the work according to the shared
-   delegation policy.
-2. **Mode and tier.** Select the dispatch mode and impact tier using the
-   authoritative contract; confirm the required authorization before proceeding.
-3. **Brief.** Prepare a complete, self-contained brief from the shared
-   template. Its required fields and format are defined by the authoritative
-   Skill contract; this guide does not duplicate them.
-4. **One dispatch.** Send the authorized brief once through the approved route.
-   Continuation or a changed scope follows the shared rules; it is not an
-   implicit extension of the original authorization.
-5. **Verification against artifacts.** Inspect the working tree, diff, and
-   reproducible check output. Treat the returned report as claims to verify,
-   not as verification itself.
-6. **Recording in the same authorized change.** Update only the records and
-   project artifacts covered by the authorization. Keep proposed decisions
-   separate from decisions made by the operator.
-7. **Operator report.** Give the operator a concise, evidence-based handoff
-   using the shared report contract; state verified results, proposals,
-   blockers, decisions needed, and the next action.
+1. **Intake and routing.** Clarify the outcome, owning repository, and relevant
+   artifacts. The adapter supplies local ownership and routing context.
+   Binding delegation and routing rules are in the Skill's **Delegation policy**
+   and Part 2 of [`docs/34`](34-agora-goose-bridge.md), **Delegation policy**.
+2. **Mode and tier.** Identify the kind of work and its impact category. The
+   adapter supplies any local route or permission mapping. The Skill's
+   **Workflow** and **Delegation policy**, and Part 2 of [`docs/34`](34-agora-goose-bridge.md),
+   **Dispatch modes** and **Delegation policy**, define mode selection and
+   authorization.
+3. **Brief.** The brief captures the bounded work in a self-contained handoff.
+   The adapter supplies local paths, protected artifacts, constraints,
+   validation route, and output location. Required fields and dispatch setup
+   are in the Skill's **Workflow** and Part 2 of [`docs/34`](34-agora-goose-bridge.md),
+   **Brief and report contract**.
+4. **Dispatch.** The brief travels through the project's approved channel with
+   the local execution route and bounds supplied by the adapter. The Skill's
+   **Workflow** and **Forbidden behavior**, and Part 2 of [`docs/34`](34-agora-goose-bridge.md),
+   **Delegation policy**, govern dispatch, continuation, and re-briefing.
+5. **Artifact verification.** The coordinator's inspection concerns the
+   returned work, working tree, diff, and check evidence. The adapter supplies
+   access paths and reproducible local check commands. Verification rules are
+   in the Skill's **Workflow** and **Verification**, and Part 2 of
+   [`docs/34`](34-agora-goose-bridge.md), **Brief and report contract**.
+6. **Recording.** The record set follows the authorized work and its
+   governance path. The adapter supplies canonical record locations, owners,
+   and local retention conventions. Recording rules are in the Skill's
+   **Workflow**, and Part 2 of [`docs/34`](34-agora-goose-bridge.md),
+   **Decision log** and **Where the project-specific procedure lives**.
+7. **Operator handoff.** The handoff summarizes the state of the work and the
+   questions or next actions it leaves. The adapter supplies the destination
+   and any local fields. The Skill's **Output contract** and Part 2 of
+   [`docs/34`](34-agora-goose-bridge.md), **Brief and report contract**, define
+   the report form.
 
 ## Record matrix
 
@@ -99,9 +112,11 @@ examples of location fields, not prescribed repository paths.
 | Durable decision | Records an approved decision that should survive the session | After the authorized decision is made, using the project's governance process | `<decision record location>` |
 | Change log | Summarizes user-visible project changes | With the same authorized change that introduces them | `<change log location>` |
 
-Do not turn a proposal into a durable decision without the required approval.
-The project adapter identifies the canonical record for each type and prevents
-competing copies from becoming independent sources of truth.
+For the binding rules on recording outcomes and operator-owned approvals, use
+the Skill's **Workflow** and **Forbidden behavior**, and Part 2 of
+[`docs/34`](34-agora-goose-bridge.md), **Decision log**. The project adapter
+identifies the canonical record for each type and prevents competing copies
+from becoming independent sources of truth.
 
 ## Service topology and lifecycle interface
 
@@ -125,35 +140,40 @@ guide. A lifecycle operation is not authorization to broaden the task.
 
 ## Escalation and stop rules
 
-Stop the affected work and return to the coordinator when any of these applies:
+The private adapter should let participants recognize situations that may need
+escalation, including:
 
-- required authority, repository state, or task context is missing or ambiguous;
-- the requested scope changes, a protected artifact is implicated, or the
-  impact tier may increase;
-- the authorized turn, time, or resource budget is exhausted;
-- a required check fails, cannot be reproduced, or does not cover the claim;
-- the next step requires a decision reserved to the operator;
-- the private adapter conflicts with observed repository state or with a
-  higher-priority instruction.
+- missing or ambiguous authority, repository state, or task context;
+- a scope change, a protected artifact becoming implicated, or a possible
+  impact-tier increase;
+- an exhausted authorized turn, time, or resource budget;
+- a required check that fails, cannot be reproduced, or does not cover the
+  claim;
+- a next step that depends on an operator-reserved decision;
+- a conflict between the private adapter, observed repository state, or a
+  higher-priority instruction;
+- an absent or unclear operator response.
 
-Preserve the current artifacts and report what is known, what is unverified,
-and what authorization or evidence is needed. Do not silently widen scope,
-retry beyond the approved bounds, or treat silence as approval. Apply the
-binding escalation and re-brief rules in the shared Skill and `docs/34`.
+For the binding response to these situations, use the Skill's **Workflow**,
+**Delegation policy**, **Forbidden behavior**, and **Verification**, and Part 2
+of [`docs/34`](34-agora-goose-bridge.md), **Delegation policy** and **Brief and
+report contract**. The adapter supplies local escalation contacts, artifact
+locations, and evidence routes.
 
 ## Session checklist
 
-- [ ] Read current instructions and inspect the working state.
-- [ ] Confirm current authorization, scope, and applicable impact tier.
-- [ ] Resolve the private project adapter and its revision.
-- [ ] Load only relevant context and protect private or sensitive material.
-- [ ] Prepare and dispatch the complete authorized brief.
-- [ ] Check returned claims against the actual artifacts and checks.
-- [ ] Record status, progress, decisions, and changes at their canonical
-      adapter-defined locations.
-- [ ] Stop and escalate any scope, authority, budget, or verification issue.
-- [ ] Prepare the operator card and identify any decision still needed.
-- [ ] Leave the repository and session in the authorized handoff state.
+- [ ] Read current project instructions and inspect the working state.
+- [ ] Resolve the private project adapter and note its revision.
+- [ ] Confirm the adapter supplies local paths, permissions, validation routes,
+      record locations, and any approved deviations.
+- [ ] Load task-relevant context with its provenance and access boundaries.
+- [ ] Identify the adapter-defined locations for the brief, report/transcript,
+      status/progress records, decisions, and change log.
+- [ ] Prepare the operator handoff with artifact locations and validation
+      evidence; note any local fields the adapter adds to the operator card.
+- [ ] For binding requirements on authorization, dispatch, verification,
+      recording, escalation, stop conditions, and report format, use the named
+      sections of the shared Skill and Part 2 of [`docs/34`](34-agora-goose-bridge.md).
 
 ## Operator card
 
