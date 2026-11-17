@@ -103,20 +103,22 @@ must supply; the named contract sections hold the binding rules.
 Keep each record at its adapter-defined location. The placeholders below are
 examples of location fields, not prescribed repository paths.
 
-| Record | Purpose | When written | Placeholder location |
-|---|---|---|---|
-| Dispatch brief | Defines the bounded task and authorization context | Before dispatch; updated only through an authorized re-brief | `<brief location>` |
-| Report and transcript | Preserves the worker's return and the coordinator's separate assessment; retain the transcript when the local policy requires it | After return and verification | `<report location>`; `<transcript location>` |
-| Status | Shows current state, owner, blockers, and next action | At task start and when state changes | `<status location>` |
-| Progress | Captures short-lived work completed, checks run, and remaining steps | During work when continuity or handoff needs it | `<progress location>` |
-| Durable decision | Records an approved decision that should survive the session | After the authorized decision is made, using the project's governance process | `<decision record location>` |
-| Change log | Summarizes user-visible project changes | With the same authorized change that introduces them | `<change log location>` |
+| Record | Purpose | Placeholder location |
+|---|---|---|
+| Dispatch brief | Defines the bounded task and authorization context | `<brief location>` |
+| Report and transcript | Preserves the worker's return and the coordinator's separate assessment; retain the transcript when the local policy requires it | `<report location>`; `<transcript location>` |
+| Status | Shows current state, owner, blockers, and next action | `<status location>` |
+| Progress | Captures short-lived work completed, checks run, and remaining steps | `<progress location>` |
+| Durable decision | Records an approved decision that should survive the session | `<decision record location>` |
+| Change log | Summarizes user-visible project changes | `<change log location>` |
 
-For the binding rules on recording outcomes and operator-owned approvals, use
-the Skill's **Workflow** and **Forbidden behavior**, and Part 2 of
-[`docs/34`](34-agora-goose-bridge.md), **Decision log**. The project adapter
-identifies the canonical record for each type and prevents competing copies
-from becoming independent sources of truth.
+For binding rules on outcomes, approvals, and reporting, use the Skill's
+**Workflow**, **Forbidden behavior**, and **Verification**, and Part 2 of
+[`docs/34`](34-agora-goose-bridge.md), **Brief and report contract** and
+**Rules that always apply**. Part 2's **Decision log** records decisions; it
+is not the source of those binding rules. The project adapter identifies the
+canonical record for each type and prevents competing copies from becoming
+independent sources of truth.
 
 ## Service topology and lifecycle interface
 
