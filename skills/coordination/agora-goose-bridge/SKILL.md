@@ -64,13 +64,13 @@ Rules:
    | `ideate` | What else could be done, and better | read-only | proposal with options and trade-offs |
    | `review` | Is the artifact acceptable | read-only | findings against the stated checklist |
 
-2. Write the brief from `templates/task-brief.txt`. A brief is complete when it states: goal, scope, protected files, constraints, acceptance criteria, permitted tools, output contract, forbidden actions, stop conditions. A missing field is written down as "not applicable" with a reason, never silently dropped.
+2. Write the brief from `templates/task-brief.txt` (the template ships with the canonical Skill; a flat store copy carries the Skill text only). A brief is complete when it states: goal, scope, protected files, constraints, acceptance criteria, permitted tools, output contract, forbidden actions, stop conditions. A missing field is written down as "not applicable" with a reason, never silently dropped.
 
 3. Dispatch. The brief is passed as a file. The dispatch names the mode, the model route and the working directory, and it runs with a bounded turn count and a bounded budget.
 
 4. Read the return value against the output contract of `templates/proposal-report.txt`. Verify every load-bearing claim against the artifacts — the working tree, the test output, the diff — not against the report text.
 
-5. Report to the operator in two separate blocks: what the coding agent proposed, and the assessment of the coordinating agent. The two voices are never merged, and the assessment may contradict the proposal.
+5. Report to the operator in three named parts: `Dispatched` (metadata), `Returned` (the coding agent's own words) and `Assessment` (the coordinating agent's own words). The two voices are never merged, and the assessment may contradict the proposal.
 
 6. Record the outcome in the shared workflow record when a mode, a template, a route or a division of labour changes. The record is the place both agents read next time.
 
@@ -97,7 +97,7 @@ Rules:
 
 ## Output contract
 
-The coding agent returns one report in the shape of `templates/proposal-report.txt`.
+The coding agent returns one report in the shape of `templates/proposal-report.txt` (shipped with the canonical Skill, like the brief template).
 The coordinating agent turns it into an operator-facing dispatch report with three parts:
 
 1. `Dispatched` — mode, scope, model route, impact tier, authorisation source, artifact locations.
@@ -106,5 +106,10 @@ The coordinating agent turns it into an operator-facing dispatch report with thr
 
 ## Related docs
 
+Both references live in the shared skills repository, not inside a deployed copy
+of this Skill. The canonical Skill directory is
+`skills/coordination/agora-goose-bridge/` in that repository.
+
 - `docs/34-agora-goose-bridge.md` — the shared workflow record read by both agents.
 - `skills/coordination/context-management/SKILL.md` — the brief construction rules this Skill relies on.
+- The project-specific operating procedure lives in the project repository (for the AIPT project: `docs/collaboration-workflow.md`), together with the project adapter under `.agents/skills/`. The generic contract stays here; the project specifics stay there.
