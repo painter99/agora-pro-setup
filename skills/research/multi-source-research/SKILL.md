@@ -265,9 +265,3 @@ Before finalizing Level 2 or 3 research, check:
 - [ ] The report states what remains unknown.
 
 If the result fails materially, revise once or mark it `DRAFT — NEEDS HUMAN REVIEW`.
-
-## Sources
-
-v1.0 — distilled from a real research failure where a "deep" verdict was issued without an independent benchmark; anonymized and generalized for public sharing.
-v1.1 — added the evidence matrix, mandatory data-source classification (`DIRECT_STATION` … `UNKNOWN`), three timestamps for time-sensitive data, defined criteria for `INSUFFICIENT ACCESS`, a ban on unsupported absolute superlatives, and the mandatory "What cannot be proven from available data" section for Level 2–3.
-v1.2 — added provenance-marked digests for long-form external inputs, separated digest-only extraction from research Levels, and clarified verification and approval gates for adoption.
