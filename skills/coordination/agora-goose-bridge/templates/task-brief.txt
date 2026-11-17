@@ -2,6 +2,8 @@ TASK BRIEF — two-agent dispatch
 ================================
 
 Mode:            execute | ideate | review
+Impact tier:     low | medium | high
+Authorisation:   <who confirmed this dispatch: an operator instruction, an operator GO, or the coordinating agent under the delegation policy>
 Working dir:     <absolute path>
 Model route:     <route identifier, no credentials>
 Budget:          <turn limit and cost ceiling for this dispatch>

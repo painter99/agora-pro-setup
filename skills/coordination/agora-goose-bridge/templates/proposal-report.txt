@@ -4,6 +4,8 @@ This file is the "Returned" block of the operator-facing dispatch report.
 
 DISPATCHED
 - Mode: <execute | ideate | review>
+- Impact tier: <low | medium | high>
+- Authorisation: <who confirmed this dispatch>
 - Scope: <what was in scope>
 - Model route: <route identifier>
 - Artifacts: <paths touched or written>

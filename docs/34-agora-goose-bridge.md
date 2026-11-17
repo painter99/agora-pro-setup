@@ -20,6 +20,23 @@ decided and when.
 | Approvals, pushes, merges | asks the operator, never decides alone | never |
 | Verification of returned work | yes | reports its own observations |
 
+## Delegation policy
+The coding agent is the default route for project work. The operator is asked
+only after a dispatch, or for decisions that are genuinely the operator's.
+The coordinating agent is the intermediary: the operator talks to it, and the
+coding agent never asks the operator directly.
+
+| Tier | Typical work | Who authorises it |
+|---|---|---|
+| low | web research about the project, options analysis, documentation, tests, refactors without behaviour change, small isolated fixes | the coding agent proceeds inside the brief |
+| medium | new features inside an existing module, behaviour changes without new dependencies, changes to the web UI or the live path | the coding agent proceeds; the coordinating agent confirms the brief and verifies the result |
+| high | schema or contract changes, the evidence ledger or the checker, licence or ADR status, budget, hosting or publication, deletions, anything touching historical data | explicit confirmation by the coordinating agent or the operator before the dispatch starts |
+
+A dispatch states its tier and the source of its authorisation in the brief and
+in the returned report. A dispatch that crosses into a higher tier stops and is
+re-briefed. A high-impact increment may be split into low and medium parts so
+the groundwork can proceed while the confirmation is pending.
+
 ## Dispatch modes
 
 | Mode | Write access | Purpose |
@@ -62,6 +79,9 @@ refreshed, then the drift check compares the deployed copy with the canonical fi
 | 2026-11-16 | The coding agent receives the shared skills as standard skills, in the project directory and in the agent home. | Canonical text stays in the shared skills repository; the copies are refreshed from it. |
 | 2026-11-16 | Three dispatch modes: execute, ideate, review. | Ideate and review are read-only. |
 | 2026-11-16 | The operator-facing report keeps the returned proposal and the coordinating assessment in two separate blocks. | A proposal is never reported as a verified fact. |
+| 2026-11-17 | The coding agent is the default route for project work; the operator is asked only after a dispatch or for operator-owned decisions. | Operator instruction: research and small increments go to the coding agent first. |
+| 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
+| 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
 
 ## Rules that always apply
 
