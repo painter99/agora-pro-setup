@@ -29,6 +29,10 @@ license: MIT
   Skill instead of growing it.
 - Cross-Skill references use the Skill name (the directory name), for example
   `tool-execution-contract`, not a file name.
+- Licensing is expressed by the repository-root `LICENSE` plus the `license:`
+  frontmatter field; do not add per-skill licence files (ADR-0021). A
+  `## Sources` section is used only for genuine adoption of external material;
+  a Skill's own version history belongs to `CHANGELOG.md` and git history.
 
 ## Required sections
 

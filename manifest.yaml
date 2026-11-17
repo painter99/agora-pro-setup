@@ -17,7 +17,7 @@
 
 meta:
   inventory_version: 7
-  last_verified: "2026-11-16"
+  last_verified: "2026-11-17"
 
 components:
   # --- deployed into the Agora app ---
@@ -81,9 +81,9 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    # 20 ADRs (0001-0020) + README index
+    # 21 ADRs (0001-0021) + README index
     source: "decisions/*.md"
-    files: 21
+    files: 22
     target: none
   - name: architecture-docs
     kind: reference
