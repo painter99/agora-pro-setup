@@ -1,6 +1,6 @@
 ---
 name: agora-goose-bridge
-description: "Two-agent workflow between the Agora chat agent and a Goose coding agent: shared brief and proposal templates, three dispatch modes, and the decision record both agents read."
+description: "Two-agent workflow between the Agora chat agent and a Goose coding agent: shared brief and proposal templates, three dispatch modes, the delegation policy with impact tiers, and the decision record both agents read."
 license: MIT
 ---
 
@@ -8,14 +8,16 @@ license: MIT
 
 ## Catalog description
 
-Two-agent workflow between the Agora chat agent and a Goose coding agent: shared brief and proposal templates, three dispatch modes, and the decision record both agents read.
+Two-agent workflow between the Agora chat agent and a Goose coding agent: shared brief and proposal templates, three dispatch modes, the delegation policy with impact tiers, and the decision record both agents read.
 
 ## Purpose
 
-The coordinating agent coordinates, talks to the operator and decides. The coding agent executes and proposes. This Skill defines the seam between them: what a brief must contain, which mode a dispatch uses, what the return value looks like, and where the agreed workflow is recorded, so both sides work from one contract instead of two habits.
+The coordinating agent coordinates, talks to the operator and decides. The coding agent executes and proposes. This Skill defines the seam between them: what a brief must contain, which mode a dispatch uses, what the return value looks like, where the agreed workflow is recorded, and which work is delegated by default, so both sides work from one contract instead of two habits.
+The operator talks to the coordinating agent only. The coordinating agent is the intermediary: it routes work to the coding agent, verifies what comes back and reports it. The coding agent never asks the operator a question directly and never reads silence as approval.
 
 ## Load when
 
+- work around the project could be dispatched to the coding agent instead of being done locally or turned into an operator question;
 - work is dispatched to the coding agent;
 - the operator asks what the coding agent proposed, or how the two sides divide the work;
 - a dispatch mode, a brief template or the decision record changes.
@@ -33,8 +35,27 @@ The coordinating agent coordinates, talks to the operator and decides. The codin
 - `spec-first` — the contract of an increment, when the dispatch implements one.
 - `code-review` — the independent review of a returned artifact.
 
+## Delegation policy
+
+The coding agent is the default route for project work. Dispatch first, ask the operator later.
+
+| Tier | Typical work | Who authorises it |
+|---|---|---|
+| low | web research about the project, options analysis, documentation, tests, refactors without behaviour change, small isolated fixes | the coding agent proceeds inside the brief |
+| medium | new features inside an existing module, behaviour changes without new dependencies, changes to the web UI or the live path | the coding agent proceeds; the coordinating agent confirms the brief and verifies the result |
+| high | schema or contract changes, the evidence ledger or the checker, licence or ADR status, budget, hosting or publication, deletions, anything touching historical data | explicit confirmation by the coordinating agent or the operator before the dispatch starts |
+
+Rules:
+1. Research about the project is dispatched before the operator is asked anything. A question that a dispatch can answer is not an operator question.
+2. The operator is asked only when the impact is high, when the decision is genuinely the operator's, or when a dispatch already produced the evidence that frames the question.
+3. A high-impact increment is split into low and medium parts when that is possible, so the coding agent can do the groundwork while the confirmation is pending.
+4. Every dispatch states its impact tier and the source of its authorisation in the brief and in the returned report.
+5. A dispatch that crosses into a higher tier stops and is re-briefed; the tier never grows silently.
+6. The operator is never asked to choose between options that a dispatch has not yet produced.
+
 ## Workflow
 
+0. Route first. Before asking the operator anything, decide whether the coding agent can do the work: research, options analysis and low or medium increments are dispatched by default. Record the impact tier in the brief.
 1. Choose the mode before writing anything.
 
    | Mode | Question it answers | Write access | Expected return |
@@ -55,6 +76,9 @@ The coordinating agent coordinates, talks to the operator and decides. The codin
 
 ## Forbidden behavior
 
+- Never ask the operator a question that a dispatch could answer first.
+- Never start a high-impact dispatch without the recorded confirmation.
+- Never let a dispatch grow into a higher impact tier without a fresh confirmation.
 - Never present the output of the other agent as verified fact.
 - Never let the second agent decide operator approvals, merges or releases.
 - Never place credentials, keys or personal data into a brief, a task file or a returned report.
@@ -66,6 +90,7 @@ The coordinating agent coordinates, talks to the operator and decides. The codin
 ## Verification
 
 - the brief carries every field of the template, or states why a field does not apply;
+- the brief states the impact tier and the source of its authorisation;
 - the returned report satisfies the output contract;
 - every claimed change is visible in the working tree, and every claimed test result is reproducible;
 - the operator-facing report separates proposal and assessment.
@@ -75,7 +100,7 @@ The coordinating agent coordinates, talks to the operator and decides. The codin
 The coding agent returns one report in the shape of `templates/proposal-report.txt`.
 The coordinating agent turns it into an operator-facing dispatch report with three parts:
 
-1. `Dispatched` — mode, scope, model route, artifact locations.
+1. `Dispatched` — mode, scope, model route, impact tier, authorisation source, artifact locations.
 2. `Returned` — the returned report, quoted or summarized without silent editing. This block carries the sections of `templates/proposal-report.txt`; the coordinating agent does not rewrite them.
 3. `Assessment` — what the coordinating agent verified, what it doubts, and the decision the operator still owes. The coding agent never writes this block.
 
