@@ -83,6 +83,17 @@ refreshed, then the drift check compares the deployed copy with the canonical fi
 | 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
 
+## Where the project-specific procedure lives
+The shared skill keeps the generic contract: the brief and report templates,
+the dispatch modes and the delegation policy with impact tiers. The operating
+procedure of one project — its task cycle, its record discipline, its service
+topology and its stop rules — belongs to that project's repository, not here.
+For the AIPT project it is `docs/collaboration-workflow.md`, read together
+with the project adapter `.agents/skills/aipt-project-workflow/`. Neither side
+copies the other: a change to the contract changes this repository and is
+refreshed into the project copies, and a change to the project procedure
+changes the project repository only.
+
 ## Rules that always apply
 
 - No credential, key or personal datum travels in a brief, a task file or a report.
