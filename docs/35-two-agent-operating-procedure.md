@@ -144,7 +144,10 @@ The adapter defines how to check readiness and how to start, stop, and inspect
 status. Use placeholders in public examples, such as `<service start command>`,
 `<service stop command>`, and `<service status operation>`. Never substitute a
 real service name, executable, path, endpoint, host, or credential in this
-guide. A lifecycle operation is not authorization to broaden the task.
+guide. The rules on scope, tier changes and authorization are in the shared
+Skill's **Delegation policy** and **Forbidden behavior**, and in Part 2
+of [`docs/34`](34-agora-goose-bridge.md), **Delegation policy** and
+**Rules that always apply**.
 
 ## Escalation and stop rules
 
