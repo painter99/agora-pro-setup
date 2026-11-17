@@ -110,6 +110,6 @@ Both references live in the shared skills repository, not inside a deployed copy
 of this Skill. The canonical Skill directory is
 `skills/coordination/agora-goose-bridge/` in that repository.
 
-- `docs/34-agora-goose-bridge.md` — the shared workflow record read by both agents.
+- `docs/34-agora-goose-bridge.md` — the shared workflow record read by both agents, and the case study of the two-agent working environment (Part 1).
 - `skills/coordination/context-management/SKILL.md` — the brief construction rules this Skill relies on.
 - The project-specific operating procedure lives in the project repository (for the AIPT project: `docs/collaboration-workflow.md`), together with the project adapter under `.agents/skills/`. The generic contract stays here; the project specifics stay there.
