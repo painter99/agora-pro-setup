@@ -546,10 +546,12 @@ first four points come from the design ideas in the forum sample, including the
 one proposed by an interested commenter; the rest follow from the local
 contract.
 
-1. **Own the workflow.** A tool you cannot change at the step level becomes a
-   demo. Keep the procedure in files you can edit.
-2. **Make every step visible and rerunnable.** A transcript you cannot replay
-   is not a process.
+1. **Own the workflow.** One commenter in the sample says that the moment a
+   step needs customising they hit a wall, and that they would rather own the
+   workflow. For this setup, keep the procedure in files you can edit.
+2. **Make every step visible and rerunnable.** Another commenter prefers a
+   terminal-based agent because there every step is visible and rerunnable.
+   Where auditability matters, prefer a trace you can replay.
 3. **Let the checks decide, not the agent.** Counts, links and checks are
    necessary evidence that a step did what it should. Passing checks is not
    acceptance: acceptance also needs the requester's judgement. The agent's
