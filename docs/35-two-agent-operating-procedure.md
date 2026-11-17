@@ -41,22 +41,28 @@ authority boundaries, and delegation rules are in Part 2 of
 [`agora-goose-bridge` Skill](../skills/coordination/agora-goose-bridge/SKILL.md).
 
 ## Prerequisites and session setup
-
-Before acting on a task:
-
-1. Read the current repository instructions, working tree, relevant files, and
-   applicable checks; distinguish observed state from any earlier summary.
-2. Confirm that the task's authorization is current and covers its scope. If
-   authority is absent or unclear, pause and ask the coordinator to resolve it
-   with the operator.
-3. Load only the task-relevant shared procedures and project context. Preserve
-   source boundaries when transferring context; do not include secrets or
-   unrelated private material.
-4. Locate and resolve the project's private adapter at
-   `<private adapter location>`. Check that it matches the current project and
-   task; do not infer local commands or topology from this public guide.
-5. Record the selected repository, branch or workspace, output location, and
-   validation route in the authorized task record.
+What a session needs before work starts, and where each item comes from:
+1. **Current state.** The repository instructions, the working tree, the
+   relevant files and the applicable checks, read at the start of the session
+   rather than taken from an earlier summary. The adapter names where the
+   project keeps its own instructions and checks.
+2. **Authority.** The rules on authorization, scope and escalation are in the
+   shared Skill's **Delegation policy** and **Forbidden behavior**, and in Part
+   2 of [`docs/34`](34-agora-goose-bridge.md), **Delegation policy** and
+   **Rules that always apply**. The adapter supplies who holds the authority
+   in this project, where the current record of it lives, and how a request
+   for confirmation reaches the operator.
+3. **Context.** Only the task-relevant shared procedures and project context,
+   transferred with their source boundaries intact. The adapter names the
+   project context entry points and the local access boundaries.
+4. **The private adapter.** The project's adapter at `<private adapter
+   location>`, checked against the current project and task. Local commands
+   and topology are read there, never inferred from this public guide.
+5. **The session's own parameters.** The selected repository, branch or
+   workspace, the output location and the validation route, taken from the
+   adapter and carried into the brief. The brief's own fields are defined in
+   the shared Skill's **Workflow** and in Part 2 of
+   [`docs/34`](34-agora-goose-bridge.md), **Brief and report contract**.
 
 ## The seven-step task cycle
 
