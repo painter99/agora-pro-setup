@@ -186,10 +186,10 @@ change, which alternative to use when the job must end in real files, and how
 a competing bot product is performing.
 
 A thread about agent choice is also a marketing surface, so every distinct
-comment is classified below. Three of the ten carry a referral link, an invite
-link or an explicit disclosure of a commercial interest; two more are
-self-promotion or opinions that recommend named products; one is a self-report
-with no commercial link and no recommendation.
+comment is classified below. Five of the ten carry a referral link, an invite
+link, a self-disclosure or an explicit commercial interest; four more are
+opinions that recommend named products; one is a self-report with no commercial
+link and no product recommendation.
 
 | # | Thread (short) | Date | Class | What it says |
 |---|---|---|---|---|
@@ -204,16 +204,17 @@ with no commercial link and no recommendation.
 | 9 | research tools whose reports can be updated | 2026-11-07 | promotion with disclosure | "The claim ledger + page snapshot replies are the right shape"; "perplexity or manus will do the first report fine, the hard part is week 3 and that's the part to test" |
 | 10 | alternatives when the job must end in files | 2026-11-07 | promotion with disclosure | "the scriptable checks reply above is the real answer whatever tool u use. \"done\" should mean the count and link scripts passed, not that the agent got tired"; ends with "still open the files yourself" |
 
-Two of the comments without a commercial link point the same way, and it is
-worth quoting them exactly because they are the reason this case study exists.
-Comment 3 calls the product "nice as a demo" but says that the moment a step
-needs customising "you hit a wall, so I would rather own the workflow".
-Comment 6 prefers a terminal-based agent because there "you can see every step
-it took and rerun it". Comment 1 draws a related line between one-off browsing
-and ongoing repetitive work. These are three opinions in one subreddit over ten
-days. They are not a measurement, and they are not a claim about what a hosted
-product can or cannot do — they are the stated reasons why three people
-preferred something else.
+Two comments point the same way, and it is worth quoting them exactly because
+they are the reason this case study exists. Comment 3 calls the product "nice
+as a demo" but says that the moment a step needs customising "you hit a wall,
+so I would rather own the workflow". Comment 6 prefers a terminal-based agent
+because there "you can see every step it took and rerun it". A third comment
+makes a different point and is kept separate: comment 1 separates one-off
+browsing from ongoing repetitive work and recommends another product for the
+second case. These are three opinions in one subreddit over ten days. They are
+not a measurement, and they are not a claim about what a hosted product can or
+cannot do — they are the stated reasons why three people preferred something
+else.
 
 The three most useful design ideas in the sample come from **two separate
 comments that each carry a commercial disclosure**, and they are recorded here
@@ -298,11 +299,12 @@ Supported, with the source named:
   workspaces, reusable skills, scheduled and event-triggered routines, parallel
   decomposition, local execution with permission modes and a bring-your-own-key
   mode. This is a statement about the product's documented feature set.
-- Three comments without a commercial link prefer **ownership over polish**:
-  comment 3 calls customisation a wall and says the writer would rather own the
-  workflow, comment 6 prefers a terminal-based agent because every step is
-  visible and rerunnable, and comment 1 separates one-off browsing from
-  ongoing repetitive work. Three comments in one subreddit over ten days are an
+- Two comments prefer **ownership over polish**: comment 3 calls customisation
+  a wall and says the writer would rather own the workflow, and comment 6
+  prefers a terminal-based agent because every step is visible and rerunnable.
+  A third comment, comment 1, makes a narrower point — one-off browsing suits
+  the product, ongoing repetitive work may not — and recommends another
+  product for that case. Three comments in one subreddit over ten days are an
   anecdote, not a consensus, and none of them is evidence about what a hosted
   product can do.
 - Two comments with a disclosed commercial interest proposed, separately, a
@@ -402,11 +404,14 @@ groundwork can proceed while the confirmation is pending.
 
 ### The brief and the report contract
 
-The brief is a file, never inline text with credentials. It states: goal,
-scope, protected files, constraints, acceptance criteria, permitted tools,
-output contract, forbidden actions, stop conditions, impact tier, authorisation
-source and budget. A field that does not apply is written as "not applicable"
-with a reason, never silently dropped.
+The brief is a file, never inline text with credentials. The canonical
+template is authoritative and carries the full field list; the summary below is
+not exhaustive. A brief states: mode, impact tier, authorisation source,
+working directory, model route, budget, output file, goal, scope with its
+protected and out-of-scope parts, constraints, acceptance criteria, permitted
+tools, output contract, forbidden actions, stop conditions, the permitted file
+list, and the validation to run. A field that does not apply is written as "not
+applicable" with a reason, never silently dropped.
 
 The returned report is data, not fact. Every load-bearing claim is verified
 against the artifacts — the working tree, the diff, the test output, the
@@ -453,9 +458,11 @@ A first dispatch in a fresh repository looks like this:
   repository, the mode is `ideate`, the impact tier is low, and the acceptance
   criteria are written as checks a reader can perform.
 - **Command** — run the coding agent in the repository directory with the
-  brief file as its input and a bounded turn count. The shape of the command
-  is: run the agent's non-interactive mode, pass the brief file with the
-  input flag, cap the turns, and keep the credential out of the command line.
+  brief file as its input and a bounded turn count. The invocation has the
+  shape `goose run --with-builtin developer --no-session --max-turns <n> -i
+  <brief file>`, run from the repository directory, with the model route and
+  the provider endpoint supplied through the environment and the credential
+  kept out of the command line.
 - **Verification** — read the returned report, then check the claim against
   the artifact: does the file exist, does the diff contain what the report
   says, does the check script still pass.
@@ -530,7 +537,7 @@ the missing field. A seam that has not been tested is an assumption.
 | Structure | one agent with many modes | two agents with a written contract between them | every task has an owner, a scope, a tier and a verification step; the cost is one extra hop |
 | Recurrence | scheduled and triggered routines inside the product | scheduled tasks in the application, plus a manual dispatch cycle | the two-agent seam has no unattended trigger path yet; that is a known gap, not a solved one |
 | Verification | the agent's own report and the user's inspection of the files | the same, plus a repository checker and a required verification step before any claim | "done" is never the agent's word alone |
-| Customisation | the product's own feature set | the repository, the skills and the local tooling are all editable | the customisation wall the forum complains about is the thing this setup is built to remove |
+| Customisation | the product's own feature set | the repository, the skills and the local tooling are all editable | one commenter calls customisation a wall (comment 3). Editability is a deliberate local design choice, not a measured advantage over any product |
 
 ## 1.8 Guidance for power users
 
@@ -629,9 +636,11 @@ forum platform refused direct requests during this research, so the forum
 material was read through a public archive of public posts (S23); the archive
 query returned 120 records that resolve to 10 distinct comment bodies across
 4 threads, because its pagination repeated the same page set — the distinct
-count is the one used in the text; six of the ten comments carry a commercial
-interest, a referral link or a self-disclosure, and they are marked as such in
-the classification table and excluded from the unmarked-opinion findings; the
+count is the one used in the text; five of the ten comments carry a referral
+link, an invite link, a self-disclosure or an explicit commercial interest, and
+four more recommend named products; every comment is marked with its class in
+the classification table, and the findings drawn from it name the comments they
+rest on; the
 application's discussions endpoint was not available; the search engines
 returned interstitials or unusable results for targeted queries.
 
