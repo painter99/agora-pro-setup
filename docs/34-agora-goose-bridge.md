@@ -35,18 +35,20 @@ not which product is best. It was: **which mechanisms actually create that
 feeling, and which of them can be reproduced on a machine the operator owns.**
 
 That question needs evidence about the reference product rather than memory of
-it, and the evidence has to be separated by quality. Three independent bodies of
-material were collected for this document:
+it, and the evidence has to be separated by quality. Three bodies of material
+were collected for this document:
 
-1. the product's own documentation and help centre (primary, but vendor
-   statements about what the product offers, not about how well it performs);
-2. independent user reports from a public forum and a public news aggregator
-   (anecdotal, but about real usage);
-3. the project's own issue tracker (the only substantial public channel of the
-   application this repository documents).
+1. the product's own documentation and help centre — primary, but vendor
+   statements about what the product offers, not about how well it performs;
+2. independent user reports from a public forum and a public news aggregator —
+   anecdotal, and about real usage;
+3. the project's own issue tracker — the only substantial public channel of the
+   application this repository documents.
 
 The result is deliberately bounded. Where the evidence is thin, this document
-says so instead of filling the gap with a plausible story.
+says so instead of filling the gap with a plausible story. Where a comment
+carries a commercial interest, it is labelled as such and is not counted as
+community opinion.
 
 ## 1.2 How the reference product actually works
 
@@ -70,7 +72,11 @@ governed by a permission mode with three levels: ask for approval on every
 local action, approve safe actions automatically and ask only when a decision is
 needed, or run everything without approval. In the two gated modes the agent
 stays inside the task workspace, and network access, writes outside the
-workspace and a change of working folder all require approval.
+workspace and a change of working folder all require approval. Two limits are
+worth stating explicitly, because they are easy to over-read: the permission
+modes govern **local actions such as commands and file changes, not every read
+the agent performs**, and the planning still happens in the vendor's cloud — the
+desktop application is a remote agent with local reach, not a local model.
 
 ### Persistent workspaces (Projects)
 
@@ -166,51 +172,60 @@ details and must not be merged into the current table.
 
 ## 1.3 What independent users report
 
-### A public agent forum (accessed through a public archive)
+### A public agent forum, read through a public archive
 
-Direct requests to the forum were refused by the platform's network policy
-during this research, so the material was read through a public archive of
-public posts. The sample is small and concentrated: four threads in one
-subreddit, twelve distinct comments, all from November 2026, all in threads
-asking which alternatives to a Manus-like agent exist for recurring work. The
-comments are user reports, not measurements, and several of them are
-promotional posts by vendors with referral links; those are excluded from any
-consensus and are listed separately.
+Direct requests to the forum platform were refused by its network policy during
+this research, so the material was read through a public archive of public
+posts. The archive query returned 120 records that resolve to **10 distinct
+comment bodies across 4 threads** in one subreddit, all from November 2026; the
+archive's pagination repeated the same page set, which is why the record count
+is larger than the distinct count. All four threads ask which agent to use for
+work that must end in real files or keep running over time.
 
-The independent comments name five things that decide the choice, and they
-line up remarkably well with the mechanisms in the previous section:
+A thread about agent choice is also a marketing surface, so every distinct
+comment is classified below. Six of the ten carry a commercial interest, a
+referral link or a self-disclosure; four are unmarked opinions.
 
-| What the comment says | Mechanism it points at |
-|---|---|
-| "Manus is solid for one-off web browsing tasks, but for ongoing repetitive tasks" the user wants something else | one-off task versus a durable recurring routine |
-| "Manus is nice as a demo but the moment you need to customise a step you hit a wall, so I would rather own the workflow" | ownership of the workflow as the decisive property |
-| "less polished than manus, but you can see every step it took and rerun it, which is the part I'd miss from anything hosted" | visibility and rerunnability of the steps |
-| "the browser piece is where a lot of the manus feel comes from, since much of that list happens on sites you're logged into" | the browser session with the user's own accounts as the source of the "feel" |
-| "context retention, browser access, tool permissions, and recovery when something fails can make a big difference once workflows get more complex" | context, access, permissions and recovery as the four evaluation axes |
+| # | Thread (short) | Date | Class | What it says |
+|---|---|---|---|---|
+| 1 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | "Manus is solid for one-off web browsing tasks, but for ongoing repetitive tasks you might want to look at Squad." |
+| 2 | alternatives for agent workflows | 2026-11-16 | self-promotion with a referral link | offers the author's own application as a Manus-like tool |
+| 3 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | "Manus is nice as a demo but the moment you need to customise a step you hit a wall, so I would rather own the workflow." |
+| 4 | alternatives for agent workflows | 2026-11-16 | opinion plus an invite link | splits the choice into the workflow builder and the agent between steps; names context retention, browser access, tool permissions and recovery as the deciding axes |
+| 5 | alternatives for agent workflows | 2026-11-16 | promotion with disclosure | "the browser piece is where a lot of the manus feel comes from, since much of that list happens on sites you're logged into"; the author states they build a competing product and that they are biased |
+| 6 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | a terminal-based coding agent with a few tool servers covers most of it; "less polished than manus, but you can see every step it took and rerun it, which is the part I'd miss from anything hosted" |
+| 7 | alternatives for agent workflows | 2026-11-16 | unmarked opinion | the choice is between something that works out of the box and a platform where the user builds and controls the workflow; lists several workflow tools |
+| 8 | a thread about competing bots | 2026-11-13 | self-report | a business running many agents in sync, and having used the product "a lot with success for certain tasks" |
+| 9 | research tools whose reports can be updated | 2026-11-07 | promotion with disclosure | "The claim ledger + page snapshot replies are the right shape"; "perplexity or manus will do the first report fine, the hard part is week 3 and that's the part to test" |
+| 10 | alternatives when the job must end in files | 2026-11-07 | promotion with disclosure | "the scriptable checks reply above is the real answer whatever tool u use. \"done\" should mean the count and link scripts passed, not that the agent got tired"; ends with "still open the files yourself" |
 
-Three more comments describe what a durable routine needs, and they are the most
-useful sentences in the whole sample:
+What the four unmarked opinions have in common is a preference for **ownership
+over polish**: one-off browsing is called solid, customisation is called a
+wall, and the thing a hosted product cannot offer is a workflow the user owns,
+can see and can rerun. One further comment is a single enthusiastic self-report
+of many agents running in sync for a business. These are four opinions in one
+subreddit in one week; they are not a measurement and not a consensus.
 
-- **Verification by script, not by the agent's own word.** "done" should mean
-  the count and link checks passed, not that the agent got tired.
-- **A claim ledger plus a snapshot diff.** The diff tells you something
-  changed; the ledger tells you which downstream artifact the change breaks.
-  This is exactly the shape of an evidence store with a validator.
-- **Durability over time.** A research tool "will do the first report fine, the
-  hard part is week three and that's the part to test". The same commenter adds
-  the human rule that follows from it: open the files yourself.
+The three most useful design ideas in the sample come from the two comments
+that carry a commercial disclosure. They are recorded as **proposals from an
+interested party**, not as community consensus:
 
-One further comment describes a working setup in which many agents run in sync
-for a business, and says the product was used "a lot with success for certain
-tasks" — a single enthusiastic report, and the only one in the sample that
-describes sustained multi-agent use.
+- a **claim ledger plus a snapshot diff** — the diff says something changed, the
+  ledger says which downstream artifact the change breaks;
+- **scriptable completion checks** instead of the agent's own word: "done"
+  means the count and link checks passed, not that the agent got tired;
+- **durability as the real test** — the first report is easy, the third week is
+  the part to test — with the human rule that follows from it: open the files
+  yourself.
 
-The promotional comments are worth naming as a category rather than quoting:
-several replies recommend a specific commercial product, one of them with a
-referral parameter in the link, and one discloses a commercial interest in the
-product it recommends. A forum thread about agent choice is a marketing
-surface; any future research on this topic must classify replies before
-counting them.
+These are useful design patterns, and they are also the kind of advice a
+vendor with a product to sell would give. A reader should hold both facts at
+once.
+
+The sample's limits are worth stating plainly: one subreddit, four threads, one
+week, one question. It cannot support statements about the community as a
+whole, and older threads were not reachable through the archive during this
+research.
 
 ### A public news aggregator
 
@@ -265,37 +280,47 @@ assumptions.
 
 ## 1.4 What the evidence supports, and what it does not
 
-Supported by more than one independent source:
+Supported, with the source named:
 
-- The reference product is strongest on **bounded, browser-heavy, one-off
-  tasks** with a visible finish line, and weakest on **long-running recurring
-  work** and on **customisation**.
-- The decisive property for experienced users is **ownership**: seeing every
-  step, rerunning it, and holding the workflow rather than renting it.
-- The recurring complaint about any agent in this class is that **"done" is
-  self-declared**. The proposed remedy in the forum sample is scriptable
-  checks, a claim ledger, and a human opening the files.
-- **Durability is the real test.** A first report is easy; the third week of a
-  recurring routine is where the value and the failure live.
-
-Supported by one source only, and labelled as such: the multi-agent business
-report; the claim that the browser session with the user's own accounts is the
-main source of the product's feel; the pricing and credit figures (vendor
-statements).
+- The reference product is **documented** to offer persistent project
+  workspaces, reusable skills, scheduled and event-triggered routines, parallel
+  decomposition, local execution with permission modes and a bring-your-own-key
+  mode. This is a statement about the product's documented feature set.
+- Four unmarked opinions in one forum sample prefer **ownership over polish**:
+  one-off browsing is called solid, customisation is called a wall, and visible,
+  rerunnable steps are the thing a hosted product cannot offer. Four opinions in
+  one subreddit in one week are an anecdote, not a consensus.
+- One commenter with a disclosed commercial interest proposed a **claim ledger
+  with snapshot diffs**, **script-based completion checks** and **testing the
+  third week rather than the first run**. Recorded as a proposal, not as
+  community agreement.
+- One self-report describes **many agents running in sync** for a business and
+  successful use of the product for certain tasks. One report.
+- The application's own issue tracker shows a **reporting convention** —
+  provider, model, version, device, expected versus actual — and a set of
+  feature interests around local workspaces, local inference, worker tool scope
+  and topic organisation.
 
 Not supported by the collected evidence, and therefore not asserted anywhere in
 this document:
 
-- a reliability rate, a success rate, or a defect rate for the reference
-  product;
-- a community consensus on which mechanism matters most;
+- where the reference product is "strongest" or "weakest", or any comparison
+  of its performance with another product — the only sources that characterise
+  performance are the vendor's own material and one hands-on comparison whose
+  author calls his own exploration limited;
+- a reliability rate, a success rate, or a defect rate for any product;
+- a community consensus on which mechanism matters most, or how many users run
+  recurring routines;
 - the adoption or size of any skill library, scheduled-routine population or
   third-party ecosystem;
 - any head-to-head comparison between the reference product and the
   application this repository documents;
 - the number of active users of either product;
 - the current price a particular user would pay, which the vendor itself
-  resolves at the live pricing page.
+  resolves at the live pricing page;
+- any claim that the local setup is more reliable, cheaper or better than the
+  reference product. It is a different shape of thing, and the comparison has
+  not been measured.
 
 ## 1.5 The two-agent workflow in this setup
 
@@ -305,6 +330,11 @@ talks to the operator, plans, dispatches, verifies and reports, and a coding
 agent that executes inside an explicitly bounded scope and proposes. The
 operator talks to the coordinating agent only; the coding agent never asks the
 operator a question and never reads silence as approval.
+
+The generic contract below is the one in the skill `agora-goose-bridge`. The
+canonical operating procedure — the full task cycle, the service topology, the
+record matrix and the stop rules — lives in the project repository, and this
+document summarises it rather than replacing it.
 
 ### Roles
 
@@ -317,7 +347,14 @@ operator a question and never reads silence as approval.
 | Running the validation commands | verifies | runs and reports | — |
 | Recording the outcome | yes | no | — |
 | Approving commits, pushes, merges | asks | never | approves |
-| Approving high-impact work | confirms | asks in the brief | may confirm directly |
+| Confirming high-impact work | confirms within its delegated authority | asks in the brief | may confirm directly |
+
+The last row has a boundary worth stating: a coordinator confirmation covers
+work the coordinator is delegated to authorise. Where a repository rule, a
+licence condition or a deployment policy requires the operator's own explicit
+approval — publication, releases and tags, deletions, licence or decision
+status, budget, hosting — the coordinator's confirmation is not a substitute,
+and the dispatch stops until that approval exists.
 
 ### Dispatch modes
 
@@ -374,16 +411,35 @@ parts and never merges the two voices:
 3. **Write the brief** from the shared template, with every field filled.
 4. **Dispatch once.** Check for a running matching session first; never start a
    second one for the same task. The turn limit bounds the tool iterations and
-   therefore the token spend; the money ceiling belongs to the operator's
-   standing budget and to the project's own live-path limits, and a dispatch
-   that would exceed either is stopped before it starts, not measured
-   afterwards.
+   therefore the token spend. A monetary ceiling applies only where the
+   configuration that enforces it has been verified; the operator's standing
+   budget is the outer bound, and a dispatch that would exceed it is stopped
+   before it starts, not measured afterwards.
 5. **Verify the return** against the artifacts, not against the report text.
 6. **Record** in the same authorised change as the work: changelog, status,
    progress, decision records. Never record progress for a proposal.
 7. **Report to the operator** in the three named blocks, and ask only when a
    real operator decision is missing or when a dispatch has produced the
    evidence that frames the question.
+
+### A first dispatch, concretely
+
+A first dispatch in a fresh repository looks like this:
+
+- **Brief file** — copy the shared template to a task file in the dispatch
+  workspace and fill every field. For a documentation question the scope is
+  one directory, the protected files are the whole repository, the mode is
+  `ideate`, the impact tier is low, and the acceptance criteria are written as
+  checks a reader can perform.
+- **Command** — run the coding agent in the repository directory with the
+  brief file as its input, a bounded turn count, and no credential in the
+  command line.
+- **Verification** — read the returned report, then check the claim against
+  the artifact: does the file exist, does the diff contain what the report
+  says, does the check script still pass.
+- **Record** — the changelog entry, the status line and the brief file are
+  written in the same change as the work, never after the fact.
+- **Report** — the three blocks, with the artifact paths.
 
 ### Records and the operator card
 
@@ -395,9 +451,11 @@ parts and never merges the two voices:
 | a durable decision | a decision record or an open-question entry | when the decision is made, not later |
 | a dispatch and its outcome | the brief file, the report and the transcript | during the dispatch |
 
-Every dispatch ends with a one-page card in a fixed shape: verified, proposed,
-blocked, decisions needed, next action, artifact locations. A run that produced
-no card produced no handoff.
+The project procedure adopted on 2026-11-17 ends every dispatch with a
+one-page card in a fixed shape: verified, proposed, blocked, decisions needed,
+next action, artifact locations. A run that produced no card produced no
+handoff. The card and the session checklist belong to the project procedure;
+this document names them so the two records do not drift apart.
 
 ### Where the shared skills live
 
@@ -422,62 +480,70 @@ canonical file.
 | persistent project workspace with a master instruction and knowledge base | project repository entry points, the project context adapter, the shared skill set | no maintained specification of the working environment itself | a versioned design record for the environment | medium |
 | decision memo and decision log | decision records and an open-question list in the project repository | no accepted record for the working-state path, retention and memory boundaries | same increment | medium |
 | evidence store with a validator | the project's evidence ledger and its checker | no manifest links a decision to its evidence and status | freeze manifest | high |
-| checklist and acceptance scenarios | repository validation scripts, the session checklist | no cross-agent behaviour result recorded | behaviour pilot | low |
+| checklist and acceptance scenarios | repository validation scripts, the project session checklist | no cross-agent behaviour result recorded | behaviour pilot — **done 2026-11-17**, see below | low |
 | reusable skills | canonical skills and their deployed copies | no inventory of source, copy, owner and last check | skill inventory and drift check | low |
-| operator summary | the three-part dispatch report and the operator card | no agreed short card in use | session checklist and card | low |
+| operator summary | the three-part dispatch report and the project operator card | the card is in the project procedure, not yet in the shared contract | session checklist and card — **in the project procedure since 2026-11-17** | low |
 | frozen evaluation package | a draft manifest with unfilled items | not frozen | freeze manifest | high |
 | scheduled and triggered routines | scheduled tasks in the application, plus the dispatch cycle as a manual routine | no unattended trigger path for the two-agent seam | automation design | medium |
 
 The increments are ordered so that the cheap, low-impact ones close first and
-the high-impact ones wait for the operator's decisions. A behaviour pilot is the
-first one: a read-only dispatch that carries three deliberately untrue statements
-and one unfilled brief field, and asks the coding agent to check them. The
-observed result was the point of the exercise — the agent refuted the stale
-claim with repository commands, refused an approval that no record supported,
-reported an unreadable file as unreadable instead of substituting another
-source, and named the missing field. A seam that has not been tested is an
-assumption.
+the high-impact ones wait for the operator's decisions.
+
+The behaviour pilot is the one that is already closed, and it is the reason to
+run one: a read-only dispatch carried three deliberately untrue statements and
+one unfilled brief field, and asked the coding agent to check them. The observed
+result was the point of the exercise — the agent refuted the stale claim with
+repository commands, refused an approval that no record supported, reported an
+unreadable file as unreadable instead of substituting another source, and named
+the missing field. A seam that has not been tested is an assumption.
 
 ## 1.7 Where the local setup differs, and why that is not a defect
 
 | Dimension | Reference product | Local setup | Consequence |
 |---|---|---|---|
-| Execution | hosted sandbox, with a desktop app that can run on the user's machine | the user's own machine and repositories, with a local gateway to model providers | data and code stay on the operator's machine; the operator owns the runtime and its failure modes |
-| Cost model | credits, refreshed daily or monthly, with the vendor billing the sandbox | the operator's own provider account and a local proxy, with explicit spend ceilings on the live path | spend is visible and bounded by the operator, not by a plan |
+| Execution | hosted sandbox, with a desktop app that can run on the user's machine | the operator's own machine and repositories, with a local gateway to model providers | the repositories, the skills and the runtime live on the operator's machine; the prompts and the content still travel to the configured inference provider, so "local" describes where state and execution live, not where inference happens |
+| Cost model | credits, refreshed daily or monthly, with the vendor billing the sandbox | the operator's own provider account and a local proxy, with spend ceilings on the live path where the configuration enforces them | spend is visible and bounded by the operator, not by a plan; the ceiling is a property of the configuration, not a property of the system |
 | Structure | one agent with many modes | two agents with a written contract between them | every task has an owner, a scope, a tier and a verification step; the cost is one extra hop |
 | Recurrence | scheduled and triggered routines inside the product | scheduled tasks in the application, plus a manual dispatch cycle | the two-agent seam has no unattended trigger path yet; that is a known gap, not a solved one |
 | Verification | the agent's own report and the user's inspection of the files | the same, plus a repository checker and a required verification step before any claim | "done" is never the agent's word alone |
-| Customisation | the product's own feature set | the repository, the skills and the local tooling are all editable | the "customisation wall" the forum complains about is the thing this setup is built to remove |
+| Customisation | the product's own feature set | the repository, the skills and the local tooling are all editable | the customisation wall the forum complains about is the thing this setup is built to remove |
 
 ## 1.8 Guidance for power users
 
-Derived from the evidence above, and from the operating contract in Part 2.
+Derived from the evidence above and from the operating contract in Part 2. The
+first four points come from the design ideas in the forum sample, including the
+one proposed by an interested commenter; the rest follow from the local
+contract.
 
 1. **Own the workflow.** A tool you cannot change at the step level becomes a
    demo. Keep the procedure in files you can edit.
 2. **Make every step visible and rerunnable.** A transcript you cannot replay
    is not a process.
-3. **Let scripts decide "done".** Counts, links and checks decide completion;
-   the agent's confidence does not.
+3. **Let scripts decide completion.** Counts, links and checks decide
+   completion; the agent's confidence does not. Checks are necessary evidence,
+   not proof that a claim is true or that a result is accepted.
 4. **Keep a claim ledger.** One row per assertion, with its source, its
    passage, its date and its status. A validator checks the shape; a human
    checks the truth.
 5. **Test the third week, not the first run.** The first report is the easy
    part; recurring work is where a setup proves itself.
-6. **Open the files yourself.** The community rule that survives every
-   framework: the deliverable is the file, not the summary of the file.
+6. **Open the files yourself.** The deliverable is the file, not the summary of
+   the file.
 7. **Split recurring work into a project-like context.** Shared instructions
    and shared files, inherited by every new task, beat re-explaining.
 8. **Package a successful procedure once, reuse it everywhere.** A skill is a
    procedure with a file format, not a paragraph in a prompt.
-9. **Give the browser the right session, and audit what it can do.** The
-   browser with the user's own accounts is where the "feel" comes from, and
-   also where the risk lives.
+9. **Give the browser the right session, and audit what it can do.** One
+   interested commenter attributes much of the product's feel to the browser
+   running inside the user's own logged-in accounts; if that holds, it is also
+   where the risk lives. Treat it as a hypothesis to test, not a finding.
 10. **Keep the human gate where it costs the most.** Schema, contracts, the
     evidence store, licences, budget, publication, deletions and historical
-    data are the operator's decisions, not the agent's.
+    data are operator decisions. Where a repository rule requires the
+    operator's own approval, a coordinator confirmation does not replace it.
 11. **Treat community threads as marketing surfaces.** Classify replies before
-    counting them; a recommendation with a referral link is not a consensus.
+    counting them; a recommendation with a referral link or a disclosure is not
+    a consensus.
 12. **Write the session down.** Context that lives only in a chat window dies
     with the window. Records, not recall, are what makes an environment
     personal.
@@ -500,7 +566,8 @@ Derived from the evidence above, and from the operating contract in Part 2.
 
 Every source was accessed on 2026-11-17. Quality is scored on authority,
 recency, specificity and independence; an anecdotal user report stays weak
-evidence even when it is independent.
+evidence even when it is independent, and a comment with a commercial interest
+is not an independent user report at all.
 
 | # | Source | URL | Date | Supports | Quality |
 |---|---|---|---|---|---|
@@ -522,20 +589,24 @@ evidence even when it is independent.
 | S16 | Hands-on comparison of two autonomous agents | https://www.alpsencer.com/blog/2025/manus-vs-devin/ | 2025-03, updated 2026-08 | observed task examples, mistakes found, the author's own limits | 3/3/4/5 |
 | S17 | Public news aggregator thread on the product's acquisition | https://news.ycombinator.com/item?id=46426534 | 2025-12-29 | community attention, scepticism, the "model plus browser" question | 3/3/3/5 |
 | S18 | Public news aggregator thread on the product's economics | https://news.ycombinator.com/item?id=43307713 | 2025-03 | the specialisation argument | 3/3/3/5 |
-| S19 | Public agent forum thread — alternatives for work that must end in files | https://reddit.com/r/AI_Agents/comments/1xofraq/whats_the_closest_manus_alternative_when_the_job/ | 2026-11 | one-off versus recurring, ownership of the workflow | 3/5/3/4 |
-| S20 | Public agent forum thread — research tools whose reports can be updated | https://reddit.com/r/AI_Agents/comments/1xq8yu5/what_ai_research_tool_actually_makes_it_easy_to/ | 2026-11 | claim ledger plus snapshot diff, scriptable checks, durability | 3/5/4/4 |
-| S21 | Public agent forum thread — alternatives for building agent workflows | https://reddit.com/r/AI_Agents/comments/1xxbxr1/what_are_some_good_alternatives_to_manus_for/ | 2026-11 | customisation wall, visible and rerunnable steps, browser sessions | 3/5/3/4 |
-| S22 | Public agent forum thread — evaluation axes for agent workflows | https://reddit.com/r/AI_Agents/comments/1xpurfh/how_good_are_the_new_grok_bots_really/ | 2026-11 | context, access, permissions, recovery | 3/5/3/4 |
-| S23 | Application repository and readme | https://github.com/newo-ether/Agora | accessed 2026-11-17 | product identity, feature set, distribution channels | 5/5/4/1 |
-| S24 | Application release notes, latest observed release | https://github.com/newo-ether/Agora/releases/tag/v2.2.0 | 2026-10-31 | version, licence change, agent-related features | 5/5/4/1 |
-| S25 | Application user manual | https://newo-ether.github.io/Agora/ | accessed 2026-11-17 | memory, skills, automation, shell and privacy behaviour | 5/5/4/1 |
-| S26 | Application issue tracker — six user-authored threads | https://github.com/newo-ether/Agora/issues | 2026-08 to 2026-11 | local workspaces, local inference, provider compatibility, worker tool scope, project organisation, conditional monitoring | 3/5/3/4 |
+| S19 | Public agent forum thread — alternatives for building agent workflows | https://reddit.com/r/AI_Agents/comments/1xxbxr1/what_are_some_good_alternatives_to_manus_for/ | 2026-11-16 | comments 1–7 of the classification table in 1.3 | 2/5/3/4 |
+| S20 | Public agent forum thread — research tools whose reports can be updated | https://reddit.com/r/AI_Agents/comments/1xq8yu5/what_ai_research_tool_actually_makes_it_easy_to/ | 2026-11-07 | comment 9 of the classification table | 2/5/3/3 |
+| S21 | Public agent forum thread — alternatives when the job must end in files | https://reddit.com/r/AI_Agents/comments/1xofraq/whats_the_closest_manus_alternative_when_the_job/ | 2026-11-05 | comment 10 of the classification table | 2/5/3/3 |
+| S22 | Public agent forum thread — a competing product | https://reddit.com/r/AI_Agents/comments/1xpurfh/how_good_are_the_new_grok_bots_really/ | 2026-11-07 | comment 8 of the classification table | 2/5/3/4 |
+| S23 | Public archive of public forum posts | https://arctic-shift.photon-reddit.com/api/comments/search | accessed 2026-11-17 | the comment bodies behind S19–S22, read because direct requests to the forum platform were refused | 3/5/3/4 |
+| S24 | Application repository and readme | https://github.com/newo-ether/Agora | accessed 2026-11-17 | product identity, feature set, distribution channels | 5/5/4/1 |
+| S25 | Application release notes, latest observed release | https://github.com/newo-ether/Agora/releases/tag/v2.2.0 | 2026-10-31 | version, licence change, agent-related features | 5/5/4/1 |
+| S26 | Application user manual | https://newo-ether.github.io/Agora/ | accessed 2026-11-17 | memory, skills, automation, shell and privacy behaviour | 5/5/4/1 |
+| S27 | Application issue tracker — six user-authored threads | https://github.com/newo-ether/Agora/issues | 2026-08 to 2026-11 | local workspaces, local inference, provider compatibility, worker tool scope, project organisation, conditional monitoring | 3/5/3/4 |
 
 Access notes, recorded because they affect how the evidence was obtained: the
 forum platform refused direct requests during this research, so the forum
-material was read through a public archive of public posts and the reply count
-is a thread count, not a distinct-author count; several replies in those
-threads are vendor promotions and are excluded from the consensus; the
+material was read through a public archive of public posts (S23); the archive
+query returned 120 records that resolve to 10 distinct comment bodies across
+4 threads, because its pagination repeated the same page set — the distinct
+count is the one used in the text; six of the ten comments carry a commercial
+interest, a referral link or a self-disclosure, and they are marked as such in
+the classification table and excluded from the unmarked-opinion findings; the
 application's discussions endpoint was not available; the search engines
 returned interstitials or unusable results for targeted queries.
 
