@@ -705,6 +705,30 @@ the groundwork can proceed while the confirmation is pending.
 An `ideate` or `review` dispatch that modified files is a failed dispatch. It is
 reported as such, the files are inspected, and the mode is restored.
 
+## Model routing and delegated subagents
+
+The coding agent runs on a route chosen per dispatch. Which route is legal for which phase — and
+which routes exist at all — is decided by the operator-approved role policy of the instance; this
+document and the bridge Skill carry the procedure, not the route list, so the two sides never
+disagree about who may run what.
+
+- The brief states the route and the role. The coding agent uses the route it was given and never
+  switches it.
+- The approved route set is small and fixed. A route that is unavailable or unassigned is reported
+  to the operator; it is never silently replaced by a similar model, and a missing route never
+  becomes a reason to skip the review step.
+- The author never reviews its own artifact: a dispatch that changes files is reviewed by a
+  separate dispatch in a fresh context, which receives the artifact, the goal, the constraints and
+  the review checklist — not the author's reasoning.
+- Delegated subagents inside the coding agent are permitted only when the brief says so. The brief
+  names the sub-analyses, the numerical cap and the boundaries (no scope widening, no approvals, no
+  merges, no operator questions). A delegated subagent inherits the parent's prohibitions; its model
+  inheritance is not assumed to differ from the session's.
+- A delegated subagent's output is evidence, not a verdict: it may not stand in for the independent
+  gate review and may not decide operator approvals.
+- Route choice never widens scope. A stronger route is not a licence for a larger task, a different
+  acceptance criterion or an unapproved action.
+
 ## Brief and report contract
 
 - Brief template: `skills/coordination/agora-goose-bridge/templates/task-brief.txt`
@@ -739,6 +763,8 @@ canonical file.
 | 2026-11-16 | The operator-facing report has three named parts — `Dispatched`, `Returned`, `Assessment` — and keeps the returned proposal and the coordinating assessment as two separate voices. | A proposal is never reported as a verified fact. |
 | 2026-11-17 | The coding agent is the default route for project work; the operator is asked only after a dispatch or for operator-owned decisions. | Operator instruction: research and small increments go to the coding agent first. |
 | 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
+| 2026-11-18 | The route is chosen per dispatch and stated in the brief; the approved route set is small and fixed, and an unavailable route is reported rather than substituted. | Operator instruction: use the stronger model in the phases that need it, and keep the route list to the models that actually exist. |
+| 2026-11-18 | Delegated subagents inside the coding agent are allowed only when the brief permits them, with a stated cap; their output is evidence, not a verdict. | Operator instruction: the coding agent may use its own subagents for harder work and review. |
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
 | 2026-11-17 | The brief template's budget field must name the cost ceiling, or state that none applies and name the outer bound that does. | A behaviour pilot found the field under-specified in a real brief. |
 | 2026-11-17 | This document becomes the case study of the two-agent working environment as well as the workflow record; the case study is Part 1, the contract is Part 2. | Operator instruction: study the reference product and the community, describe how the local workflow works and how the two correspond. |
