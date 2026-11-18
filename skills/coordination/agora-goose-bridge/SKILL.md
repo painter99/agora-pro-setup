@@ -74,6 +74,31 @@ Rules:
 
 6. Record the outcome in the shared workflow record when a mode, a template, a route or a division of labour changes. The record is the place both agents read next time.
 
+## Model routing and delegated subagents
+
+The coding agent runs on a route chosen per dispatch. Which route is legal for which phase, and which
+routes exist at all, is decided by the operator-approved role policy of the instance — this Skill
+carries the procedure, not the route list, so the two sides never disagree about who may run what.
+
+Rules that travel with every dispatch:
+
+1. **The brief states the route and the role.** A dispatch that does not say which route runs it and
+   under which role is incomplete; the coding agent uses the route it was given and never switches.
+2. **The route set is small and fixed.** A route that is unavailable or unassigned is reported to the
+   operator; it is never silently replaced by a similar model, and a missing route never becomes a
+   reason to skip the review step.
+3. **The author never reviews its own artifact.** A dispatch that changes files is reviewed by a
+   SEPARATE dispatch in a fresh context, which receives the artifact, the goal, the constraints and
+   the review checklist — not the author's reasoning.
+4. **Delegated subagents are permitted only when the brief says so.** The brief names the
+   sub-analyses, the numerical cap and the boundaries (no scope widening, no approvals, no merges, no
+   operator questions). A delegated subagent inherits the parent's prohibitions and its model
+   inheritance is not assumed to differ from the session's.
+5. **A delegated subagent's output is evidence, not a verdict.** It may not stand in for the
+   independent gate review, and it may not decide operator approvals.
+6. **Route choice never widens scope.** A stronger route is not a licence for a larger task, a
+   different acceptance criterion or an unapproved action.
+
 ## Forbidden behavior
 
 - Never ask the operator a question that a dispatch could answer first.
