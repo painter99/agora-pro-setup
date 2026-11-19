@@ -24,7 +24,7 @@ repository contains and *how* to install it.
 ├──────────────────────────────────────────────────────────────┤
 │ 6. Automation — Tasks/Loops run the same agent later         │
 ├──────────────────────────────────────────────────────────────┤
-│ 7. Future: native multi-agent runtime (doc/16, proposal)     │
+│ 7. Multi-agent: Subagents shipped; profiles open (doc/16)    │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -64,7 +64,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Memory gate (kernel enforcement) | `docs/20` | `memory-master-index` + governance family |
 | Domain routing | `docs/18` | — |
 | Coordination & audits | `docs/11` | `agora-coordinator` |
-| Multi-agent (future) | `docs/16` — proposal for the Agora application | — |
+| Multi-agent | `docs/16` — native Subagents delivered; profiles remain proposals | — |
 | Stack update observability | `docs/28` | — |
 | Self-improvement loop | `docs/29` | `self-improvement-loop` |
 | Decision records | `decisions/` (index: `decisions/README.md`) | — |

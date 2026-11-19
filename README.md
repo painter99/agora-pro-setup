@@ -208,7 +208,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 **Advanced patterns**
 
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
-- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — proposal for a future native multi-agent runtime (feature request to newo-ether)
+- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — multi-agent architecture: native Subagents delivered by the app's v2.2.0; manager-mode orchestration and run-time profiles remain proposals
 - [`docs/22-platform-architecture.md`](docs/22-platform-architecture.md) — phone-orchestrated coding platform pattern: topology, build-host baseline, autonomy levels, state contract, MCP tool layer, bootstrap sequence
 - [`docs/23-bootstrap-walkthrough.md`](docs/23-bootstrap-walkthrough.md) — ordered instantiation of that pattern on a real host: phases 0–7, commands, verification, gotchas
 - [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents

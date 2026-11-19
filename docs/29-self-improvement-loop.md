@@ -73,7 +73,7 @@ Rules for the autonomous sync task:
   anonymized, generic; new Skills, updated procedures, task-card refresh, doc
   refresh when stack reality drifts. Inventory (`manifest.yaml`) and
   changelog metadata are reported to the operator for separate handling, not changed by the sync task. Local
-  observability artifacts (the run report, the repository-graph snapshot)
+  observability artifacts (the run report and patch; graph snapshots belong to the daily drift-watch task)
   stay on the agent host and are never committed.
 - **Forbidden without explicit GO:** code, `.github/` workflows, `system-prompt/` templates, file deletions, history rewrite, force-push, secrets, personal data, publication (push, PR, merge).
 - **Traceability:** one local commit per sync batch with an explicit message; no push, PR or merge by this task; no change → no commit, no notification.
