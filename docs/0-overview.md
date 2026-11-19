@@ -74,6 +74,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Programming agent roles | `docs/33` | — |
 | Two-agent bridge (coordination ↔ coding agent) and the case study of the two-agent working environment | `docs/34` | `agora-goose-bridge` |
 | Generic two-agent operating-procedure adaptation guide | `docs/35` | — |
+| Coordination and optional external research architecture | `docs/36` — preservation draft, not operating policy | — |
 | Models | `docs/10` | — |
 
 ## Decision tree: where does new content belong?
@@ -117,3 +118,5 @@ New content
 - Adopting the generic two-agent operating process: `docs/35`; use the shared
   Skill and `docs/34` for the binding dispatch contract, and keep local details
   in a private project adapter.
+- Proposed coordination and external research architecture: `docs/36` (draft,
+  not independently reviewed after revision or deployed).
