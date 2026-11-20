@@ -676,7 +676,8 @@ approval gates in [docs/33](33-programming-agent-roles.md#permissions-budgets-an
 
 A dispatch states its tier and the source of its authorisation in the brief and
 in the returned report. A dispatch that crosses into a higher tier stops and is
-re-briefed. A high-impact increment may be split into low and medium parts so
+re-briefed. A high-impact increment is split into low and medium parts when
+that is possible, so
 the groundwork can proceed while the confirmation is pending.
 
 ## Dispatch modes
