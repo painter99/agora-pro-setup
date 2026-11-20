@@ -103,9 +103,9 @@ signal only; it is not a schedule dependency.
    verdict, follow the kernel's worker lifecycle policy (the review is done,
    but the worker is retained or released only as that policy permits).
 10. Save the report (dated) to the local retrospectives directory.
-11. Send exactly one notification: findings count, delta count, report path.
-12. Deliver a copy of the report and a refreshed copy of the eval log to the
+11. Deliver a copy of the report and a refreshed copy of the eval log to the
    operator's delivery directory — the only permitted write there.
+12. Send exactly one notification: findings count, delta count, report path.
 
 ## Hard rules
 
