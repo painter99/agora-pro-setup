@@ -424,7 +424,7 @@ with per-agent configuration in the Claude Agent SDK and OpenAI Agents SDK
 as design precedents.
 
 
-The next practical step does not require pretending that Skills are already independent agents. We can define the contracts and profiles now, test them as one-agent routing, and leave the native MAS runtime as a future Agora feature.
+The next practical step does not require pretending that Skills are already independent agents. We can define the contracts and profiles now, test them as one-agent routing, and leave the remaining native MAS capabilities as proposed future Agora features (native subagents are already partially delivered; see the status header).
 
 ## 16. Open questions for Agora
 

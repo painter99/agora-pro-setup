@@ -46,7 +46,9 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 5. **Permission floor.** Every layer may tighten approval bands, never loosen
    them (`docs/17`).
 6. **Automation is not a second agent.** A Task or Loop is the same agent run
-   later, under the same kernel and gates (`docs/16` phases it as future work).
+   later, under the same kernel and gates (`docs/16` phases the remaining
+   proposed capabilities as future work; native subagents are partially
+   delivered).
 
 ## Document map
 
