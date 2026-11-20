@@ -785,3 +785,34 @@ above.
 - When the operator changes a decision mid-flight, the dispatch stops and is
   re-briefed.
 - A returned report is never presented as a verified fact.
+## Lessons from a full-cycle day (2026-11-20)
+One operator-authorized task ran the complete cycle in a single day: a
+specification dispatch, an implementation with two fix rounds, and two
+independent review rounds, in parallel with a free-tier external research
+agent. The lessons below are recorded in the shared record because they
+generalize; the spend policy they motivated lives in
+[`docs/37-spend-observability.md`](37-spend-observability.md).
+- **Swarm parallelism works when scopes are disjoint.** The coordinator ran an
+  external research dispatch and a coding dispatch at the same time; neither
+  touched the other's artifacts, and both results were verified before use.
+  Parallel work stayed bounded by the existing delegation budget, which counts
+  every delegated context — including the external agent — against one task.
+- **A pre-flight scope check is cheaper than a failed start.** The first
+  implementation dispatch stopped correctly because bundle validation code
+  outside its declared file scope rejected the new artifact. A coordinator-side
+  grep of the touched modules and their validators would have caught this
+  before any money was spent; it is now standard practice.
+- **A time bound that kills a dispatch is paid waste.** Two long
+  implementation dispatches were interrupted by their runtime bound and their
+  unfinished state had to be reconciled coordinator-side. Dispatches are now
+  sized to finish inside their bound, or split.
+- **Briefs must state subagent authorization explicitly.** One dispatch
+  attempted to spawn its own review subagent although its brief did not permit
+  it; the subagent was terminated with the parent and the reviewers of the
+  final snapshot explicitly checked whether its output had entered the tree.
+  The existing rule (subagents only when the brief permits) is now also part
+  of the review checklist.
+- **A failed review is the process working.** Two review rounds returned FAIL
+  before PASS-with-notes; each FAIL produced concrete, tested remedies. The
+  cost of the rounds is part of the quality, and the spend loop (doc 37)
+  exists to keep that cost visible rather than to skip the reviews.

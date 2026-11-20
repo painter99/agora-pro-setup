@@ -108,6 +108,7 @@ New content
 - Extending with a new domain: `docs/18`.
 - Governing memory: `docs/13`.
 - Tool-call retry discipline and budget: `docs/21`.
+- Dispatch spend discipline and spend observability: `docs/37`.
 - Stack update observability: `docs/28`.
 - Agent self-improvement and autonomous repository maintenance: `docs/29`.
 - Why the architecture is the way it is: `decisions/` (decision records).
