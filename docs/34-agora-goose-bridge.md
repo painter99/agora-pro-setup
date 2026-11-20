@@ -761,6 +761,23 @@ canonical file.
 | 2026-11-17 | This document becomes the case study of the two-agent working environment as well as the workflow record; the case study is Part 1, the contract is Part 2. | Operator instruction: study the reference product and the community, describe how the local workflow works and how the two correspond. |
 | 2026-11-17 | Publish a generic operating-procedure base in `docs/35`; keep each project's topology, commands, paths, and approved deviations in its private adapter. The public base is adaptation guidance, not a duplicate of the Skill contract. | Operator chose the logically stable public/private split: reusable procedure is public, instance-specific overlay remains private. When the public base changes, compare each adapter with the new base and update it deliberately; do not silently assume local policy changed. This qualifies the earlier project-procedure placement decision. |
 
+## Swarm roles and task assignment
+The swarm pattern used since 2026-11-20 assigns each tool a fixed role and a
+task class; the coordinator owns the assignment and the verification. Written
+here as the operating description (doc 36 explores the same topology as a
+proposal; this section records what is actually in use).
+| Tool / context | Role | Task classes | Never does |
+|---|---|---|---|
+| Coordinating agent (main chat) | swarm lead | intake, scope and approval checks, briefs, routing, verification of returned claims, operator reporting, bounded mechanical edits, cheap local checks | qualified review of its own or others' substantial artifacts; merge, publication, licence, identity, billing decisions |
+| Coding agent (dispatched, e.g. Goose on the specialist route) | builder | specification drafting, implementation, tests, bounded fix rounds | asking the operator directly, spawning unauthorized subagents, committing or pushing unless the brief says so |
+| Coding agent (separate fresh dispatch) | qualified reviewer | read-only review of a final snapshot against a stated checklist | reviewing its own authorship; implementing; deciding operator approvals |
+| Light route / coordinator-side | mechanical worker | record shaping, bulk edits, format fixes, short summaries | qualified review, architecture calls |
+| External research agent (free tier, e.g. Manus) | researcher | bounded public-data research with sources and dates; advisory digests | repository access, credentials, publication, paid usage, connectors unless separately verified and approved |
+Assignment rules: every task states its tool and role in the brief; a task
+class not listed for a tool needs a recorded decision before first use; the
+coordinator verifies every returned claim against artifacts before use; spend
+follows [`docs/37-spend-observability.md`](37-spend-observability.md) (free
+research capacity before paid dispatches).
 ## Where the project-specific procedure lives
 
 The shared skill keeps the generic dispatch contract: the brief and report
