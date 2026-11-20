@@ -24,7 +24,7 @@ repository contains and *how* to install it.
 ├──────────────────────────────────────────────────────────────┤
 │ 6. Automation — Tasks/Loops run the same agent later         │
 ├──────────────────────────────────────────────────────────────┤
-│ 7. Multi-agent: Subagents shipped; profiles open (doc/16)    │
+│ 7. Multi-agent: Subagents partial; profiles open (docs/16)  │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -66,7 +66,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Memory gate (kernel enforcement) | `docs/20` | `memory-master-index` + governance family |
 | Domain routing | `docs/18` | — |
 | Coordination & audits | `docs/11` | `agora-coordinator` |
-| Multi-agent | `docs/16` — native Subagents delivered; profiles remain proposals | — |
+| Multi-agent | `docs/16` — native Subagents partially delivered; remaining MAS features, including profiles, remain proposals | — |
 | Stack update observability | `docs/28` | — |
 | Self-improvement loop | `docs/29` | `self-improvement-loop` |
 | Decision records | `decisions/` (index: `decisions/README.md`) | — |
@@ -98,7 +98,7 @@ New content
 ├─ Should happen later, unattended?
 │   → Task/Loop proposal — creation needs explicit approval (docs/17, Orchestrate)
 └─ A future application capability, not usable today?
-    → document as proposal (like docs/16), never assume it at runtime
+    → document as proposal (like the open features in docs/16), never assume it at runtime
 ```
 
 ## Where to start reading

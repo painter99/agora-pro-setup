@@ -355,10 +355,11 @@ agent that executes inside an explicitly bounded scope and proposes. The
 operator talks to the coordinating agent only; the coding agent never asks the
 operator a question and never reads silence as approval.
 
-The generic contract below is the one in the skill `agora-goose-bridge`. The
-canonical operating procedure — the full task cycle, the service topology, the
-record matrix and the stop rules — lives in the project repository, and this
-document summarises it rather than replacing it.
+The binding dispatch rules are in the shared `agora-goose-bridge` Skill and
+Part 2 of this document; Part 1 is a case-study summary, not another rule
+source. The project-specific operating procedure — the full task cycle, the
+service topology, the record matrix and the stop rules — lives in the project
+repository.
 
 ### Roles
 
@@ -373,36 +374,14 @@ document summarises it rather than replacing it.
 | Approving commits, pushes, merges | asks | never | approves |
 | Confirming high-impact work | confirms within its delegated authority | asks in the brief | may confirm directly |
 
-The last row has a boundary worth stating: a coordinator confirmation covers
-work the coordinator is delegated to authorise. Where a repository rule, a
-licence condition or a deployment policy requires the operator's own explicit
-approval — publication, releases and tags, deletions, licence or decision
-status, budget, hosting — the coordinator's confirmation is not a substitute,
-and the dispatch stops until that approval exists.
+For the authority boundary and operator-reserved approvals, see Part 2,
+[Delegation policy](#delegation-policy).
 
-### Dispatch modes
+### Dispatch modes and impact tiers
 
-| Mode | Write access | Purpose | Expected return |
-|---|---|---|---|
-| `execute` | bounded by the brief | perform an agreed change and prove it with tests | changed files, commands run, test result |
-| `ideate` | read-only | propose options, tools and next increments | proposal with options and trade-offs |
-| `review` | read-only | check an artifact against a stated checklist | findings against the stated checklist |
-
-An `ideate` or `review` dispatch that modified files is a failed dispatch. It is
-reported as such, the files are inspected, and the mode is restored.
-
-### Impact tiers
-
-| Tier | Typical work | Who authorises it |
-|---|---|---|
-| low | web research about the project, options analysis, documentation, tests, refactors without behaviour change, small isolated fixes | the coding agent proceeds inside the brief |
-| medium | new features inside an existing module, behaviour changes without new dependencies, changes to the web UI or the live path | the coding agent proceeds; the coordinating agent confirms the brief and verifies the result |
-| high | schema or contract changes, the evidence ledger or the checker, licence or ADR status, budget, hosting or publication, deletions, anything touching historical data | explicit confirmation by the coordinating agent or the operator before the dispatch starts |
-
-A dispatch states its tier and the source of its authorisation in the brief and
-in the returned report. A dispatch that crosses into a higher tier stops and is
-re-briefed. A high-impact increment is split into low and medium parts so the
-groundwork can proceed while the confirmation is pending.
+For the binding modes, impact tiers, authorisation and re-briefing rules, see
+Part 2, [Dispatch modes](#dispatch-modes) and
+[Delegation policy](#delegation-policy), together with the shared Skill.
 
 ### The brief and the report contract
 
@@ -433,8 +412,8 @@ parts and never merges the two voices:
    the records the task needs. Take a fresh snapshot of the repository state.
    A previous brief, adapter, test result or recorded approval is evidence, not
    fresh authorisation.
-2. **Choose the mode and the impact tier.** If the scope could reach a higher
-   tier, split the safe groundwork from the gated work.
+2. **Choose the mode and the impact tier.** Apply Part 2's
+   [Delegation policy](#delegation-policy) to safe groundwork and gated work.
 3. **Write the brief** from the shared template, with every field filled.
 4. **Dispatch once.** Check for a running matching session first; never start a
    second one for the same task. The turn limit bounds the tool iterations and
@@ -689,9 +668,16 @@ agent never asks the operator directly.
 | medium | new features inside an existing module, behaviour changes without new dependencies, changes to the web UI or the live path | the coding agent proceeds; the coordinating agent confirms the brief and verifies the result |
 | high | schema or contract changes, the evidence ledger or the checker, licence or ADR status, budget, hosting or publication, deletions, anything touching historical data | explicit confirmation by the coordinating agent or the operator before the dispatch starts |
 
+Coordinator confirmation covers only delegated authority; it never replaces
+operator approval where a repository rule, licence condition or deployment
+policy reserves it, including applicable gates for publication, releases and
+tags, deletions, licence or decision status, budget and hosting. See the
+approval gates in [docs/33](33-programming-agent-roles.md#permissions-budgets-and-lifecycle).
+
 A dispatch states its tier and the source of its authorisation in the brief and
 in the returned report. A dispatch that crosses into a higher tier stops and is
-re-briefed. A high-impact increment may be split into low and medium parts so
+re-briefed. A high-impact increment is split into low and medium parts when
+that is possible, so
 the groundwork can proceed while the confirmation is pending.
 
 ## Dispatch modes
@@ -724,8 +710,13 @@ disagree about who may run what.
   names the sub-analyses, the numerical cap and the boundaries (no scope widening, no approvals, no
   merges, no operator questions). A delegated subagent inherits the parent's prohibitions; its model
   inheritance is not assumed to differ from the session's.
-- A delegated subagent's output is evidence, not a verdict: it may not stand in for the independent
-  gate review and may not decide operator approvals.
+- A subagent nested inside the coding agent produces evidence, not a gate verdict: its output may
+  not stand in for the independent gate review or decide operator approvals. An independently
+  dispatched fresh reviewer context is distinct from such a nested subagent; an approved subagent
+  mechanism can provide that reviewer where applicable qualification and independence rules are
+  met. See [docs/33](33-programming-agent-roles.md#authorreviewer-separation),
+  [coding-loop](../skills/coding/coding-loop/SKILL.md) and
+  [code-review](../skills/coding/code-review/SKILL.md).
 - Route choice never widens scope. A stronger route is not a licence for a larger task, a different
   acceptance criterion or an unapproved action.
 
