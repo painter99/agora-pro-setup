@@ -8,6 +8,7 @@ DISPATCHED
 - Authorisation: <who confirmed this dispatch>
 - Scope: <what was in scope>
 - Model route: <route identifier>
+- Delegated subagents used: <none | what was permitted and what was actually used>
 - Artifacts: <paths touched or written>
 
 RESULT
