@@ -37,7 +37,7 @@ The repository is the source of truth for Skill texts; the local store is the de
 | Skill | Overlay sections (local filled, repo placeholders) | Basis |
 |---|---|---|
 | `agora-coordinator` | Capability Configuration table | docs/30-instance-overlay.md |
-| `model-escalation-protocol` | Model stack table (§1), Static routing table (§6) | docs/30-instance-overlay.md |
+| `model-escalation-protocol` | Model stack table (§1), Static routing table (§6), the §6a instance note on the retired bounded-checker route (no live substitute; checklist checks are never a qualified review) | docs/30-instance-overlay.md |
 | `graphic-design-art-director` | Instance overlay section (tool and renderer paths) | docs/30-instance-overlay.md |
 | `ai-drawing-workflow` | Instance overlay section (tools directory, hardware timings, default model and seeds) | docs/30-instance-overlay.md |
 | `secret-and-key-handling` | Instance overlay section (instance paths, tooling, and operational notes) | docs/30-instance-overlay.md |
