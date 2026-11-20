@@ -21,7 +21,7 @@ The default installation should remain useful as a single agent. MAS should be a
 3. **Agents are configured runtimes.** An agent combines instructions, a model, tools, Skills, memory scope, permissions, and an output contract.
 4. **One owner of the user-facing answer.** A manager or supervisor remains responsible for synthesis unless the user explicitly chooses a handoff.
 5. **Read before write.** A worker must inspect state before changing it and verify every consequential result.
-6. **Least privilege.** Each agent receives only the tools, memory, repositories, and permissions it needs.
+6. **Least privilege (target).** Each agent should receive only the tools, memory, repositories, and permissions it needs. Brief-level restrictions are instructions, not verified technical access controls; current Subagent tool-scoping limitations are described in [§15](#15-relevance-to-the-current-setup).
 7. **Human approval at boundaries.** Publishing, deletion, purchases, messages, credentials, system changes, and recurring automation require explicit approval.
 8. **Runtime evidence wins.** Documentation and configuration may describe a capability, but only an observed runtime result proves that it is available in a particular run.
 9. **Observable execution.** The UI should show which agent ran, which tools were used, what was returned, and where approval or failure occurred.
@@ -343,7 +343,10 @@ A built-in test suite could include:
 
 ## 14. Incremental implementation path
 
-### Phase 0 — current Agora
+### Phase 0 — original proposal baseline
+
+This baseline predates the bounded Subagent delivery in [§15](#15-relevance-to-the-current-setup). The delivered
+manager/worker pattern is not the full manager mode proposed in Phase 2.
 
 - one primary agent;
 - native Skills and tools;

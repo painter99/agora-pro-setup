@@ -208,7 +208,7 @@ Do not install workflow instructions as Saved Memories merely because both are M
 **Advanced patterns**
 
 - [`docs/18-domain-routing.md`](docs/18-domain-routing.md) — pattern for adding domain packages to the single agent
-- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — multi-agent architecture: native Subagents delivered by the app's v2.2.0; manager-mode orchestration and run-time profiles remain proposals
+- [`docs/16-multi-agent-system.md`](docs/16-multi-agent-system.md) — multi-agent architecture: native Subagents partially delivered by the app's v2.2.0; full manager-mode orchestration, run-time profiles and other MAS features remain proposals
 - [`docs/22-platform-architecture.md`](docs/22-platform-architecture.md) — phone-orchestrated coding platform pattern: topology, build-host baseline, autonomy levels, state contract, MCP tool layer, bootstrap sequence
 - [`docs/23-bootstrap-walkthrough.md`](docs/23-bootstrap-walkthrough.md) — ordered instantiation of that pattern on a real host: phases 0–7, commands, verification, gotchas
 - [`docs/24-notifications-llm-gateway.md`](docs/24-notifications-llm-gateway.md) — notification layer and local LLM gateway pattern: self-hosted push, credential-free agents
@@ -221,7 +221,10 @@ Do not install workflow instructions as Saved Memories merely because both are M
 - [`docs/31-platform-layer.md`](docs/31-platform-layer.md) — platform layer: parameterized host systemd units (MCP server, sequential-thinking bridge, exchange watcher) with an install manifest; placeholders resolved from the instance overlay
 - [`docs/32-coding-workflow.md`](docs/32-coding-workflow.md) — coding workflow: the human-gated coding loop (spec → increments → tests → review → bounded fixes → acceptance), scripts-repository versioning pattern, per-effect-class testing policy
 - [`docs/33-programming-agent-roles.md`](docs/33-programming-agent-roles.md) — programming agent roles and delegation: role/decision-rights matrix (coordinator+junior, code reviewer, specialist), author–reviewer separation, exact-route resolution, permissions and budgets, merge evidence, project-overlay template
-- [`tasks/`](tasks/README.md) — task cards: the live scheduled tasks that operate this setup (daily data sweep, exchange README maintenance, weekly observability + research, self-improvement retrospective, repository sync, quarterly replication dry-run), documented as genericized cards — not verbatim prompts
+- [`docs/34-agora-goose-bridge.md`](docs/34-agora-goose-bridge.md) — two-agent bridge case study and shared operating contract
+- [`docs/35-two-agent-operating-procedure.md`](docs/35-two-agent-operating-procedure.md) — generic two-agent operating-procedure adaptation guide
+- [`docs/36-coordination-architecture-proposal.md`](docs/36-coordination-architecture-proposal.md) — preserved coordination architecture proposal, not deployed operating rules
+- [`tasks/`](tasks/README.md) — index of genericized task cards, not verbatim prompts or a complete live inventory
 
 ## Limitations
 
