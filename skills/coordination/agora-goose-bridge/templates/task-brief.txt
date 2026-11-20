@@ -7,6 +7,8 @@ Authorisation:   <who confirmed this dispatch: an operator instruction, an opera
 Working dir:     <absolute path>
 Model route:     <route identifier, no credentials>
 Budget:          <turn limit and cost ceiling for this dispatch; when no monetary ceiling applies, say so and name the outer bound that applies>
+Time bound:      <the dispatch must finish inside this bound; size the work to fit, or split it>
+Delegated subagents: <none | named sub-analyses with a numerical cap and boundaries>
 Output file:     <path the agent must write, if any>
 
 GOAL
