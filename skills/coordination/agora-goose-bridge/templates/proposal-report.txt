@@ -9,7 +9,7 @@ DISPATCHED
 - Scope: <what was in scope>
 - Base revision: <verified revision or not applicable with reason>
 - Model route: <route identifier>
-- Child agents: <none; report any violation>
+- Delegated subagents: <none, or one line per delegate: route, max_turns, purpose; evidence only and counted in task accounting; report any violation>
 - Task accounting: <attempts used / maximum; review rounds used / maximum; running / maximum; review capacity; unknown states>
 - Artifacts: <paths touched or written>
 
@@ -37,3 +37,13 @@ OPEN QUESTIONS
 
 NOT DONE
 - <work that was deliberately left out, and why>
+
+PARALLEL-RUN RESULT BLOCK (required for parallel fix/final runs; evidence/proposal only)
+APPLIED
+- <per-file change actually applied, with artifact evidence; or none>
+PROPOSED-NOT-APPLIED
+- <proposal and reason not applied; or none>
+UNCERTAINTIES
+- <unresolved uncertainty; or none>
+
+Final delegate/worker output is not a verdict or final decision. The coordinator (or a designated delegate limited to pre-authorized mechanical integration) records integration; same-file proposals require coordinator resolution, never auto-merge.

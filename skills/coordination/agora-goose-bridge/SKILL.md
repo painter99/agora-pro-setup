@@ -60,9 +60,9 @@ Every dispatched context has a fixed role and a task class; the coordinating age
 | Role | Context | Task classes | Never does |
 |---|---|---|---|
 | coordinator | main chat | conversation, intake, scope and approval checks, compact briefs, bounded preflight, routing, targeted verification and operator reporting | routine implementation; qualified review of substantial artifacts; merge, publication, licence, identity, billing decisions |
-| builder | Goose on an approved qualified route | specification drafting, implementation, tests, setup, system work and bounded fix rounds | asking the operator directly, child agents, worker credential or secret access unless the exact action is explicitly operator-approved under applicable platform policy, committing or pushing unless the exact action is authorized |
-| qualified reviewer | separate fresh dispatch, read-only | review of a final snapshot against a stated checklist | reviewing its own authorship; implementing; deciding operator approvals |
-| mechanical worker | Goose light route when approved and sufficient | record shaping, bulk edits, format fixes, short summaries | qualified review, architecture calls, child agents |
+| builder | Goose on the `<approved light worker>` role; the `<approved specialist>` role is reserved for last-instance escalation and qualified review | specification drafting, implementation, tests, setup, system work and bounded fix rounds | asking the operator directly, Agora subagents, Goose delegate subagents outside the brief caps, worker credential or secret access unless the exact action is explicitly operator-approved under applicable platform policy, committing or pushing unless the exact action is authorized |
+| qualified reviewer | separate fresh dispatch on the `<approved specialist>` role, read-only | review of a final snapshot against a stated checklist | reviewing its own authorship; implementing; deciding operator approvals |
+| mechanical worker | Goose `<approved light worker>` role when approved and sufficient | record shaping, bulk edits, format fixes, short summaries | qualified review, architecture calls, Agora subagents, Goose delegate subagents outside the brief caps |
 | researcher | external research agent on its free tier | bounded public-data research with sources and dates; advisory digests | repository access, credentials, publication, paid usage, connectors unless separately verified and approved |
 
 Assignment rules:
@@ -73,14 +73,14 @@ Assignment rules:
 
 ## Coordination budget and spend discipline
 
-For one operator-authorized task, allow at most **six new delegated-context attempts in total**, including failed starts and independent reviews, and at most **four running delegated contexts at once**. Every Goose or Manus shell-dispatch context, including an independent reviewer, counts against the same task budget; do not create Agora subagents or authorize Goose child agents. A failed start counts. Independent review is capped at **two rounds per task** within the shared budget; if required review remains incomplete at the cap, report UNREVIEWED, never done. A continuation of the same verified context does not reset its identity or the count. Uncertain accounting means stop and report, never restart at zero. The budget is never bypassed through scheduled tasks, loops, additional providers or direct APIs.
+For one operator-authorized task, allow at most **six new delegated-context attempts in total**, including failed starts and independent reviews, and at most **four running delegated contexts at once**. Every Goose or Manus shell-dispatch context, including an independent reviewer and every Goose delegate subagent, counts against the same task budget; do not create Agora subagents. Goose delegate subagents are allowed by default for orchestrators on the light routes within the brief caps, and every delegate counts as an attempt. A failed start counts. Independent review is capped at **two rounds per task** within the shared budget; if required review remains incomplete at the cap, report UNREVIEWED, never done. A continuation of the same verified context does not reset its identity or the count. Uncertain accounting means stop and report, never restart at zero. The budget is never bypassed through scheduled tasks, loops, additional providers or direct APIs.
 
 Spend rules that travel with every dispatch:
 
 1. **Pre-flight scope check.** Before any implementation dispatch, run a cheap coordinator-side inspection of the touched modules and their readers or validators, so a dispatch cannot fail on a foreseeable scope conflict. A pre-flight check is cheaper than a failed start.
 2. **Dispatch sizing.** Size every dispatch to finish inside its time bound. A dispatch killed by its bound is paid waste, and its unfinished state must be reconciled afterwards; split work that does not fit.
 3. **Brief economy.** Briefs point to files and line ranges instead of ordering full-file reads, except that required independent reviewers must read the final contents of all touched files fully; turn bounds stay low without narrowing required review coverage.
-4. **Cheapest qualified route.** The specialist route is for qualified fresh-context review and genuinely complex implementation; mechanical execution goes to an approved Goose light route. If the route, applicable budget or permissions are unknown or unavailable, stop affected execution and report rather than doing the work in Agora.
+4. **Cheapest qualified route.** The `<approved specialist>` role is reserved for qualified fresh-context review and last-instance escalation; default work and mechanical execution go to the `<approved light worker>` role, as resolved by the approved routing overlay. If the route, applicable budget or permissions are unknown or unavailable, stop affected execution and report rather than doing the work in Agora.
 5. **Budget classification.** The provider-side cap is a fire-drill limit, never the working budget. Apply the operator's separate lower working allocations and classify coding/projects separately from necessary setup and system work. Unknown allowance or exceeded target means stop affected work and report; private amounts stay in the instance overlay.
 
 ## Workflow
@@ -94,7 +94,7 @@ Spend rules that travel with every dispatch:
    | `ideate` | What else could be done, and better | read-only | proposal with options and trade-offs |
    | `review` | Is the artifact acceptable | read-only | findings against the stated checklist |
 
-2. Write the brief from `templates/task-brief.txt` (the template ships with the canonical Skill; a flat store copy carries the Skill text only). A brief is complete when it states: goal, scope, protected files, constraints, acceptance criteria, permitted tools, output contract, forbidden actions, stop conditions, the time bound, and an explicit prohibition on Agora subagents and Goose child agents. A missing field is written down as "not applicable" with a reason, never silently dropped.
+2. Write the brief from `templates/task-brief.txt` (the template ships with the canonical Skill; a flat store copy carries the Skill text only). A brief is complete when it states: goal, scope, protected files, constraints, acceptance criteria, permitted tools, output contract, forbidden actions, stop conditions, the time bound, and the delegated-subagent rule: Goose delegate subagents are allowed within the brief caps for orchestrators on the light routes, otherwise none; Agora subagents are always forbidden. A missing field is written down as "not applicable" with a reason, never silently dropped.
 
 3. Dispatch. The brief is passed as a file. The dispatch names the mode, the model route and the working directory, and it runs with a bounded turn count, a bounded budget and a time bound it is sized to meet.
 
@@ -108,7 +108,20 @@ Spend rules that travel with every dispatch:
 
 The operator-approved instance policy determines legal routes and roles; route availability alone proves neither qualification nor cost. Every brief states route, role, permissions, shared attempts, review rounds and running contexts, and review reserve. An unavailable or unassigned route, unknown budget or permissions, or exhausted allowance stops affected work; report instead of silently substituting a route or implementing in Agora.
 
-Do not create Agora subagents or authorize Goose child agents. A separate qualified fresh-context Goose shell dispatch on the approved specialist route reviews every file-changing dispatch and any other required final snapshot, independently of its author, within the shared budget. Supply the artifact, goal, constraints and checklist, not the author's reasoning. If review is unavailable report UNREVIEWED, never done. Route choice never widens scope, permissions or approvals.
+Default roles (operator decision 2026-11-21): work, coordination and implementation use the role assigned by the approved routing overlay; the `<approved specialist>` role is reserved for last-instance escalation and qualified independent review. Agora subagents remain forbidden. A separate qualified fresh-context Goose shell dispatch using the `<approved specialist>` role reviews every file-changing dispatch and any other required final snapshot, independently of its author, within the shared budget. Supply the artifact, goal, constraints and checklist, not the author's reasoning. If review is unavailable report UNREVIEWED, never done. Route choice never widens scope, permissions or approvals.
+
+Delegated subagents (Goose) — canonical delegation rule (2026-11-21, operator decision): an orchestrator dispatched on an approved light-worker route may use the Goose builtin `delegate` by default within the brief caps. Subagents use approved light-worker routes for swarm opinions, mechanical fan-out and checks, with small max_turns (3-6), restricted extensions and a working directory inside the parent working directory. A subagent cannot spawn further delegates. Subagent output is evidence, never a verdict or review, and never replaces qualified fresh-context review. Every delegate counts as an attempt against the shared task budget.
+
+## Parallel review-and-fix pipeline (2026-11-21, operator decision)
+
+For medium and complex changes, the review pipeline recorded in the `model-escalation-protocol` Skill applies: R1 qualified review on the specialist route (medium-high reasoning, exhaustive findings) → parallel fix round → R2 review → parallel final round → closure by one delegate, whose output is a proposal only. The coordinator retains the final decision, subject to operator-owned approvals. Simpler changes keep the single review round above. This section defines the parallel-run mechanics both agents apply inside the pipeline.
+
+- **Frozen inputs and isolation.** Before dispatch, freeze one verified base revision and one immutable context pack for the round; all runs receive identical copies, including the operator decision summary, goal, relevant review findings and ownership map. Each run works in its own isolated writable worktree/copy based on that revision, with no shared writable artifacts (including test outputs, scratch files and logs). Do not use concurrent writes to a shared checkout as a substitute for isolation.
+- **Ownership and drift.** Each brief names the exact files its run alone may create or modify. A run may write only those files. If its base or supplied context differs from the frozen inputs, or it touches/changes a foreign file, it stops; that run's output is discarded as evidence and reported as a scope/drift violation. The coordinator verifies ownership and base before integrating any result.
+- **Forced reasoning aid.** Every parallel fix and final-run worker assigned the `<approved light worker>` role must load the `sequential-thinking-workflow` Skill and use the sequential-thinking MCP tool; this is unconditional, not an availability-based preference, and is stated in the brief. If either required resource is unavailable, stop and report rather than running without it. This requirement does not apply to low-budget closure delegates.
+- **Result block and integration.** Each run ends with exactly these labeled fields: `APPLIED` (per-file changes and evidence), `PROPOSED-NOT-APPLIED` (proposal and reason), and `UNCERTAINTIES` (or `none`). The coordinator, or a designated final delegate performing only pre-authorized mechanical integration, integrates non-conflicting in-scope artifacts and reports what was integrated. Delegate output remains evidence/proposal only; it is never a verdict or final decision. If both runs propose changes to the same file, do not auto-merge: the coordinator decides the resolution. A proposal that widens scope or permissions is rejected.
+- **Budgets.** Closure runs on a low thinking budget (at most medium) for latency and has no forced sequential-thinking MCP requirement. Parallel fix/final runs may use medium to high thinking budgets while still following the forced reasoning-aid rule above. All contexts count against the shared task budget; continuation does not reset an attempt.
+- **Critical infrastructure.** When the change touches authentication, secrets, deploy keys, CI, system services, exchange or gateway components, parallel fan-out is forbidden: one qualified run plus the mandatory review rounds.
 
 ## Forbidden behavior
 
@@ -116,7 +129,7 @@ Do not create Agora subagents or authorize Goose child agents. A separate qualif
 - Never start a high-impact dispatch without the recorded confirmation.
 - Never let a dispatch grow into a higher impact tier without a fresh confirmation.
 - Never start an implementation dispatch without the pre-flight scope check of the touched modules and their validators.
-- Never create Agora subagents or authorize Goose child agents; never substitute coordinator execution for a blocked route.
+- Never create Agora subagents; never authorize Goose delegate subagents outside the brief caps (light-route orchestrators only, small max_turns, no further delegates, evidence-only output); never substitute coordinator execution for a blocked route.
 - Never present the output of the other agent as verified fact.
 - Never let the second agent decide operator approvals, merges or releases.
 - Worker credential or secret access is forbidden by default; an exception requires explicit operator approval of the exact action under applicable platform policy and is never assumed. Never place credentials, keys or personal data into a brief, a task file or a returned report.
@@ -128,7 +141,7 @@ Do not create Agora subagents or authorize Goose child agents. A separate qualif
 ## Verification
 
 - the brief carries every field of the template, or states why a field does not apply;
-- the brief states the impact tier, the source of its authorisation, the time bound and the prohibition on Agora subagents and Goose child agents;
+- the brief states the impact tier, the source of its authorisation, the time bound and the delegated-subagent rule (Goose delegate subagents allowed within the brief caps for light-route orchestrators, otherwise none; Agora subagents always forbidden);
 - a pre-flight scope check of the touched modules and their validators preceded the dispatch;
 - the number of delegated contexts used on the task is within the budget, and the accounting is recorded;
 - the returned report satisfies the output contract;
