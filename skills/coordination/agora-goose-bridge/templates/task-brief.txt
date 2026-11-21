@@ -10,7 +10,7 @@ Review snapshot: <review mode: digest algorithm and digest of the final snapshot
 Model route:     <route identifier, no credentials>
 Budget:          <turn limit and cost ceiling for this dispatch; when no monetary ceiling applies, say so and name the outer bound that applies>
 Time bound:      <the dispatch must finish inside this bound; size the work to fit, or split it>
-Child agents:    none — no Agora subagents or Goose child agents
+Delegated subagents: <allowed for orchestrators on GLM Flash / Luna within the brief caps: small max_turns (3-6), restricted extensions, working dir inside the parent working directory, no further delegates, evidence-only output (not a verdict); otherwise none — no Agora subagents; every delegate counts against the task budget>
 Role:            <author | independent qualified reviewer | researcher | other approved role>
 Task accounting: <attempts used / maximum; review rounds used / maximum; running / maximum; reserved review capacity; unknown states>
 Output file:     <path the agent must write, if any>
@@ -44,7 +44,7 @@ FORBIDDEN ACTIONS
 - No commits, pushes or merges unless the exact action is separately authorized and stated here. An authorized executor may carry out an explicitly separately approved push or merge, but cannot approve it.
 - ADR-0022 controlled Git operations are advisory until the broker path is implemented and its isolation independently demonstrated; they grant no permissions or security boundary.
 - Worker credential or secret access is forbidden by default; an exception requires explicit approval of the exact action under applicable platform policy and is never assumed. No credentials, keys or personal data in any file.
-- No Agora subagents or Goose child agents; no operator interaction or persistent automation.
+- No Agora subagents; Goose delegate subagents only within the caps stated above and never spawning further delegates; no operator interaction or persistent automation.
 - No changes outside the scope above.
 - No deletions.
 
