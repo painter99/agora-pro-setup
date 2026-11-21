@@ -1,6 +1,6 @@
-# Coordinator system prompt — subagent-free variant (reference)
+# Main system prompt — subagent-free variant (REPLACEMENT, operator-approved 2026-11-21)
 
-**Status:** operator-approved reference version (2026-11-21). Records the coordinator system prompt after removing Agora subagents from the operating model: subagents are disabled in the app, delegated work runs exclusively through the established shell-dispatch routes (Goose, Manus), independent review is a separate Goose dispatch on the specialist route, and the prompt adds explicit tool-economy and targeted-reading rules. Placeholders `{current_model_id}` and `{skill_catalog}` are filled by the app at runtime. Sanitized for publication: no instance paths, credentials or private names.
+**Status:** this document IS the replacement text for the app's main system prompt, approved by the operator on 2026-11-21. It fully replaces the previous main prompt. Changes against the previous version: Agora subagents removed from the operating model (disabled in the app; delegated work runs exclusively through the established shell-dispatch routes — Goose, Manus), independent review is a separate Goose dispatch on the specialist route, and explicit tool-economy and targeted-reading rules keep the context window lean. Placeholders `{current_model_id}` and `{skill_catalog}` are filled by the app at runtime. Sanitized for publication: no instance paths, credentials or private names.
 
 ---
 
