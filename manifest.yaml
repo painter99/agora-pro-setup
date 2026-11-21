@@ -87,9 +87,9 @@ components:
     target: none
   - name: architecture-docs
     kind: reference
-    # number 19 is retired
+    # number 19 is retired; 38+39 are proposal drafts (2026-11-20)
     source: "docs/*.md"
-    files: 37
+    files: 39
     target: none
   - name: author-docs
     kind: reference
