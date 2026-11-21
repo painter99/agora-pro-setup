@@ -19,9 +19,7 @@ contract changes this document and is refreshed into the project copies; a
 change to the public base is reviewed against each adapter, and local details
 remain private.
 
-Status: case study and workflow record, updated 2026-11-17. This document is a
-working agreement and a research record, not an authorization. The operator's
-current instruction and each repository's `AGENTS.md` decide every approval.
+Status: Part 1 is a dated case study; Part 2 is the repository operating contract updated 2026-11-21. Historical decisions and observations do not establish current runtime or deployment. This document is not an authorization: current instructions, platform permissions and applicable exact-action approval gates still apply.
 
 ---
 
@@ -368,10 +366,10 @@ repository.
 | Talking to the operator | yes | never | decides |
 | Choosing mode, impact tier and scope | yes | no | — |
 | Writing the brief | yes | no | — |
-| Editing files inside the dispatched scope | only when the brief says so | yes, inside the scope | — |
+| Editing files inside the dispatched scope | routes execution; bounded preflight and verification only | yes, inside the scope | — |
 | Running the validation commands | verifies | runs and reports | — |
 | Recording the outcome | yes | no | — |
-| Approving commits, pushes, merges | asks | never | approves |
+| Approving commits, pushes, merges | obtains required approval | cannot approve; may execute separately approved exact actions when authorized | approves where required |
 | Confirming high-impact work | confirms within its delegated authority | asks in the brief | may confirm directly |
 
 For the authority boundary and operator-reserved approvals, see Part 2,
@@ -415,8 +413,8 @@ parts and never merges the two voices:
 2. **Choose the mode and the impact tier.** Apply Part 2's
    [Delegation policy](#delegation-policy) to safe groundwork and gated work.
 3. **Write the brief** from the shared template, with every field filled.
-4. **Dispatch once.** Check for a running matching session first; never start a
-   second one for the same task. The turn limit bounds the tool iterations and
+4. **Avoid duplicate dispatches.** Check for a running matching session first; never start a
+   second one for the same scope while its state is running or unknown. Disjoint work and independent review remain subject to the shared budget and isolation rules. The turn limit bounds the tool iterations and
    therefore the token spend. A monetary ceiling applies only where the
    configuration that enforces it has been verified; the operator's standing
    budget is the outer bound, and a dispatch that would exceed it is stopped
@@ -650,17 +648,14 @@ document records what was decided and when.
 |---|---|---|
 | Talking to the operator | yes | no |
 | Planning and dispatching | yes | no |
-| Editing files inside a dispatched scope | only when the dispatch says so | yes, inside the scope |
+| Editing files inside a dispatched scope | routes execution; bounded preflight and verification only | yes, inside the scope |
 | Proposing options and trade-offs | assesses them | writes them |
-| Approvals, pushes, merges | asks the operator, never decides alone | never |
+| Approvals, pushes, merges | obtains required approval, never substitutes a proposal for it | cannot approve; may execute separately approved exact actions when authorized |
 | Verification of returned work | yes | reports its own observations |
 
 ## Delegation policy
 
-The coding agent is the default route for project work. The operator is asked
-only after a dispatch, or for decisions that are genuinely the operator's. The
-coordinating agent is the intermediary: the operator talks to it, and the coding
-agent never asks the operator directly.
+Goose is the default route for executable work that can be performed outside Agora, including repository, project, setup, system and mechanical work. The coordinator handles conversation, intake, necessary permissions, compact briefs, bounded preflight and targeted independent verification. Manus is optional only for explicitly authorized public-data research within the free-tier, account, request, access, retention and credit gates below. Ask the operator only for essential missing facts, operator-owned decisions or exact-action approvals; never ask a resolvable technical choice. Workers never ask the operator directly.
 
 | Tier | Typical work | Who authorises it |
 |---|---|---|
@@ -672,7 +667,7 @@ Coordinator confirmation covers only delegated authority; it never replaces
 operator approval where a repository rule, licence condition or deployment
 policy reserves it, including applicable gates for publication, releases and
 tags, deletions, licence or decision status, budget and hosting. See the
-approval gates in [docs/33](33-programming-agent-roles.md#permissions-budgets-and-lifecycle).
+approval gates in [docs/33](33-programming-agent-roles.md#permissions-budgets-and-lifecycle). An authorized executor may carry out an explicitly and separately approved push or merge within its scope, but cannot grant the approval. Under [ADR-0022](../decisions/0022-controlled-git-operations-adoption.md), the controlled Git operations Skill is advisory until the broker path is implemented and its isolation independently demonstrated; it grants no permissions or security boundary.
 
 A dispatch states its tier and the source of its authorisation in the brief and
 in the returned report. A dispatch that crosses into a higher tier stops and is
@@ -693,32 +688,12 @@ reported as such, the files are inspected, and the mode is restored.
 
 ## Model routing and delegated subagents
 
-The coding agent runs on a route chosen per dispatch. Which route is legal for which phase — and
-which routes exist at all — is decided by the operator-approved role policy of the instance; this
-document and the bridge Skill carry the procedure, not the route list, so the two sides never
-disagree about who may run what.
-
-- The brief states the route and the role. The coding agent uses the route it was given and never
-  switches it.
-- The approved route set is small and fixed. A route that is unavailable or unassigned is reported
-  to the operator; it is never silently replaced by a similar model, and a missing route never
-  becomes a reason to skip the review step.
-- The author never reviews its own artifact: a dispatch that changes files is reviewed by a
-  separate dispatch in a fresh context, which receives the artifact, the goal, the constraints and
-  the review checklist — not the author's reasoning.
-- Delegated subagents inside the coding agent are permitted only when the brief says so. The brief
-  names the sub-analyses, the numerical cap and the boundaries (no scope widening, no approvals, no
-  merges, no operator questions). A delegated subagent inherits the parent's prohibitions; its model
-  inheritance is not assumed to differ from the session's.
-- A subagent nested inside the coding agent produces evidence, not a gate verdict: its output may
-  not stand in for the independent gate review or decide operator approvals. An independently
-  dispatched fresh reviewer context is distinct from such a nested subagent; an approved subagent
-  mechanism can provide that reviewer where applicable qualification and independence rules are
-  met. See [docs/33](33-programming-agent-roles.md#authorreviewer-separation),
-  [coding-loop](../skills/coding/coding-loop/SKILL.md) and
-  [code-review](../skills/coding/code-review/SKILL.md).
-- Route choice never widens scope. A stronger route is not a licence for a larger task, a different
-  acceptance criterion or an unapproved action.
+- Resolve an approved route and role before dispatch; availability is not evidence of qualification or spend. No silent substitute when a route is unavailable or unassigned.
+- No Agora subagents or Goose child agents. This rule does not assert that app features are disabled. Every file-changing dispatch and any other required review uses a separate qualified fresh-context Goose shell dispatch on the approved specialist route, independent of the author, with the final snapshot, goal, constraints and checklist, not the author's reasoning. If unavailable or out of budget, report UNREVIEWED, never done.
+- One task shares at most six new Goose/Manus dispatch attempts, including failed starts and reviews, and at most four running contexts. Independent review is capped at two rounds per task within that budget; if required review remains incomplete at the cap, report UNREVIEWED, never done. Record attempts, review rounds, unknown states and reserved review capacity. A continuation of the same verified context does not reset the count. Unknown accounting, applicable budget or permissions, unavailable route or exhausted allowance stops affected work; do not silently implement it in Agora. Stricter task limits apply.
+- Use the cheapest qualified approved Goose route; classify coding/project and necessary setup/system spending against the operator's separate private allocations. The provider cap is not the working budget. See [docs/37](37-spend-observability.md).
+- Manus is free-tier-only for explicitly approved public-data research, not repository writing. Record new use classes before first use; verify applicable account and request restrictions, actual access, connectors, retention and remaining free credits before each dispatch and per-task consumption after every run. Report unexpected consumption. No credentials, private material, unapproved connectors, publication or paid usage. Instructions alone do not establish product restrictions. If gates are unknown or fail, stop that route and report; an approved Goose research route may be used only where independently authorized.
+- Route choice never widens scope, permissions, data access or approval gates.
 
 ## Brief and report contract
 
@@ -726,8 +701,7 @@ disagree about who may run what.
 - Returned report template: `skills/coordination/agora-goose-bridge/templates/proposal-report.txt`
 - The brief is passed to the coding agent as a file, never as inline
   credentials.
-- The returned report is data. Load-bearing claims are verified against the
-  artifacts before they are used.
+- The returned report is data. Keep returns compact, full logs outside chat under applicable access and retention rules, and inspect targeted artifact evidence for load-bearing claims. This does not promise zero context use.
 
 ## Where the shared skills live
 
@@ -752,33 +726,31 @@ canonical file.
 | 2026-11-16 | The coding agent receives the shared skills as standard skills, in the project directory and in the agent home. | Canonical text stays in the shared skills repository; the copies are refreshed from it. |
 | 2026-11-16 | Three dispatch modes: execute, ideate, review. | Ideate and review are read-only. |
 | 2026-11-16 | The operator-facing report has three named parts — `Dispatched`, `Returned`, `Assessment` — and keeps the returned proposal and the coordinating assessment as two separate voices. | A proposal is never reported as a verified fact. |
-| 2026-11-17 | The coding agent is the default route for project work; the operator is asked only after a dispatch or for operator-owned decisions. | Operator instruction: research and small increments go to the coding agent first. |
+| 2026-11-17 | Historical, superseded in part 2026-11-21: the coding agent was the default route for project work and the operator was asked only after a dispatch or for operator-owned decisions. | The current contract also allows essential questions and routes setup/system work. |
 | 2026-11-17 | Impact tiers decide who authorises a dispatch: low and medium proceed inside the brief, high needs explicit confirmation by the coordinating agent or the operator. | Operator instruction: the coordinating agent is the intermediary for everything around the project. |
 | 2026-11-18 | The route is chosen per dispatch and stated in the brief; the approved route set is small and fixed, and an unavailable route is reported rather than substituted. | Operator instruction: use the stronger model in the phases that need it, and keep the route list to the models that actually exist. |
-| 2026-11-18 | Delegated subagents inside the coding agent are allowed only when the brief permits them, with a stated cap; their output is evidence, not a verdict. | Operator instruction: the coding agent may use its own subagents for harder work and review. |
+| 2026-11-18 | Historical, superseded 2026-11-21: delegated subagents inside the coding agent were allowed with a stated cap. | Earlier operator instruction; the current contract prohibits Goose child agents. |
 | 2026-11-17 | The operator talks to the coordinating agent only; the coding agent never asks the operator directly and never reads silence as approval. | Operator instruction. |
 | 2026-11-17 | The brief template's budget field must name the cost ceiling, or state that none applies and name the outer bound that does. | A behaviour pilot found the field under-specified in a real brief. |
 | 2026-11-17 | This document becomes the case study of the two-agent working environment as well as the workflow record; the case study is Part 1, the contract is Part 2. | Operator instruction: study the reference product and the community, describe how the local workflow works and how the two correspond. |
 | 2026-11-17 | Publish a generic operating-procedure base in `docs/35`; keep each project's topology, commands, paths, and approved deviations in its private adapter. The public base is adaptation guidance, not a duplicate of the Skill contract. | Operator chose the logically stable public/private split: reusable procedure is public, instance-specific overlay remains private. When the public base changes, compare each adapter with the new base and update it deliberately; do not silently assume local policy changed. This qualifies the earlier project-procedure placement decision. |
-| 2026-11-20 | The bridge Skill carries the swarm role table, the six-attempt / four-running-contexts coordination budget, the pre-flight scope check, dispatch sizing, brief economy, and explicit delegated-subagent authorisation in the brief template. | Operator request: the Skill now matches the operating reality recorded in the swarm section above and the spend policy in `docs/37`. |
+| 2026-11-20 | Historical, superseded in part 2026-11-21: the bridge Skill carried the swarm roles, shared budget, scope check and delegated-subagent authorization. | Shared budget and checks remain; child-agent authorization is withdrawn. |
+| 2026-11-21 | Route executable work to Goose by default, restrict Manus to authorized public-data free-tier research, and use separately dispatched qualified Goose review. | Repository contract update only; runtime and deployment are unverified. |
 
 ## Swarm roles and task assignment
-The swarm pattern used since 2026-11-20 assigns each tool a fixed role and a
-task class; the coordinator owns the assignment and the verification. Written
-here as the operating description (doc 36 explores the same topology as a
-proposal; this section records what is actually in use).
-| Tool / context | Role | Task classes | Never does |
+
+This table describes the current repository contract, not verified runtime state. The earlier 2026-11-20 swarm description is historical.
+
+| Role | Context | Task classes | Never does |
 |---|---|---|---|
-| Coordinating agent (main chat) | swarm lead | intake, scope and approval checks, briefs, routing, verification of returned claims, operator reporting, bounded mechanical edits, cheap local checks | qualified review of its own or others' substantial artifacts; merge, publication, licence, identity, billing decisions |
-| Coding agent (dispatched, e.g. Goose on the specialist route) | builder | specification drafting, implementation, tests, bounded fix rounds | asking the operator directly, spawning unauthorized subagents, committing or pushing unless the brief says so |
-| Coding agent (separate fresh dispatch) | qualified reviewer | read-only review of a final snapshot against a stated checklist | reviewing its own authorship; implementing; deciding operator approvals |
-| Light route / coordinator-side | mechanical worker | record shaping, bulk edits, format fixes, short summaries | qualified review, architecture calls |
-| External research agent (free tier, e.g. Manus) | researcher | bounded public-data research with sources and dates; advisory digests | repository access, credentials, publication, paid usage, connectors unless separately verified and approved |
-Assignment rules: every task states its tool and role in the brief; a task
-class not listed for a tool needs a recorded decision before first use; the
-coordinator verifies every returned claim against artifacts before use; spend
-follows [`docs/37-spend-observability.md`](37-spend-observability.md) (free
-research capacity before paid dispatches).
+| Coordinator | main chat | conversation, intake, permissions, compact briefs, bounded preflight, routing, targeted verification and reporting | routine implementation, qualified review, operator-owned decisions |
+| Builder | Goose on an approved qualified route | executable repository, project, setup, system work, tests and bounded fixes | child agents, operator questions, unapproved actions; credential or secret access is forbidden by default unless the exact action is explicitly operator-approved under applicable platform policy |
+| Qualified reviewer | separate fresh Goose dispatch | read-only review of final snapshot | review own authorship, implement, grant approvals |
+| Mechanical worker | Goose light route when sufficient and approved | record shaping, bulk edits, format fixes, summaries | qualified review, architecture calls, child agents |
+| Researcher | Manus, when explicitly approved and free-tier gates hold | bounded public-data research, sourced advisory digests | repository access, credentials, paid usage, publication, unapproved connectors |
+
+Every brief names the role and route; parallel work needs disjoint scopes, shared budget and reliable isolation. The coordinator verifies returned claims. Other task classes require a recorded authorization before first use.
+
 ## Where the project-specific procedure lives
 
 The shared skill keeps the generic dispatch contract: the brief and report
@@ -798,7 +770,8 @@ above.
 - No credential, key or personal datum travels in a brief, a task file or a
   report.
 - No push, merge, release or publication happens on a proposal alone; the
-  operator approves each of them explicitly.
+  operator approves each of them explicitly. An authorized executor may carry
+  out a separately approved exact action, but cannot approve it.
 - Two agents never write to the same file in the same round.
 - When the operator changes a decision mid-flight, the dispatch stops and is
   re-briefed.
@@ -824,12 +797,7 @@ generalize; the spend policy they motivated lives in
   implementation dispatches were interrupted by their runtime bound and their
   unfinished state had to be reconciled coordinator-side. Dispatches are now
   sized to finish inside their bound, or split.
-- **Briefs must state subagent authorization explicitly.** One dispatch
-  attempted to spawn its own review subagent although its brief did not permit
-  it; the subagent was terminated with the parent and the reviewers of the
-  final snapshot explicitly checked whether its output had entered the tree.
-  The existing rule (subagents only when the brief permits) is now also part
-  of the review checklist.
+- **Historical subagent incident.** One dispatch attempted to spawn its own review subagent although its brief did not permit it; the subagent was terminated with the parent and reviewers checked whether its output entered the tree. The earlier conditional permission is superseded: current briefs prohibit Goose child agents and Agora subagents.
 - **A failed review is the process working.** Two review rounds returned FAIL
   before PASS-with-notes; each FAIL produced concrete, tested remedies. The
   cost of the rounds is part of the quality, and the spend loop (doc 37)

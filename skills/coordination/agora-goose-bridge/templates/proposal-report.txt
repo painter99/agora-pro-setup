@@ -7,8 +7,10 @@ DISPATCHED
 - Impact tier: <low | medium | high>
 - Authorisation: <who confirmed this dispatch>
 - Scope: <what was in scope>
+- Base revision: <verified revision or not applicable with reason>
 - Model route: <route identifier>
-- Delegated subagents used: <none | what was permitted and what was actually used>
+- Child agents: <none; report any violation>
+- Task accounting: <attempts used / maximum; review rounds used / maximum; running / maximum; review capacity; unknown states>
 - Artifacts: <paths touched or written>
 
 RESULT
@@ -23,6 +25,8 @@ WHAT WAS PROPOSED (ideate mode)
 - Recommendation: <option> — <reason>
 
 FINDINGS (review mode)
+- Reviewed final snapshot: <digest algorithm and digest, distinct from base revision>
+- Verdict for that snapshot: <PASS | PASS-with-notes | FAIL>
 - <finding> — <evidence>
 
 VALIDATION

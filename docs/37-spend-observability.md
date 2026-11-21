@@ -22,8 +22,9 @@ retrospect:
    never money. Nothing logged tokens per request, so nobody could have
    reported cumulative spend even in principle.
 2. **Route selection by capability, not by cost.** Every dispatch of the day,
-   including ones that were mostly mechanical, ran on the most expensive
-   approved route because that route also held the review qualification.
+   including ones that were mostly mechanical, ran on the approved route
+   that held the review qualification. Token outliers are not proven cost
+   rankings without verified applicable prices and measured usage.
 3. **Waste modes were unpriced.** A dispatch killed by a time bound, a start
    that fails on a foreseeable scope conflict, and an extra review round all
    cost real money while counting as ordinary process.
@@ -37,11 +38,19 @@ retrospect:
   the information channel.
 - **Cheapest sufficient route.** The specialist route is reserved for
   qualified fresh-context review and genuinely complex implementation.
-  Mechanical work, record shaping, bulk edits and short summaries go to the
-  light route or are done coordinator-side without a dispatch.
+  Mechanical execution, record shaping, bulk edits and short summaries go to
+  an approved sufficient Goose light route, not routinely coordinator-side.
+  Conversation and bounded coordinator preflight and verification stay direct.
+  Unknown route, applicable allowance or permissions means stop affected work
+  and report; never silently implement it in Agora.
+- **Separate allocations.** Apply the operator's private working allocations by task class: coding/projects separately from necessary setup and system work. Do not infer available spend from route availability or the provider cap.
 - **Brief economy.** Briefs point to files and line ranges instead of ordering
-  full-file reads; turn bounds are kept low; every brief states its cost
-  ceiling (this field already exists in the bridge brief template).
+  full-file reads, except that required independent reviewers must read the
+  final contents of all touched files fully. Turn bounds stay low without
+  narrowing review coverage; every brief states its cost ceiling.
+- **Review-round cap.** At most two independent review rounds per task, within
+  the shared delegated-context budget; if required review remains incomplete
+  at the cap, report UNREVIEWED, never done.
 - **Pre-flight scope checks.** Before any implementation dispatch, the
   coordinator verifies with cheap local inspection (grep the touched modules
   and their readers/validators) that the declared file scope can actually
@@ -50,17 +59,13 @@ retrospect:
 - **Dispatch sizing.** A dispatch is sized so that its time bound does not
   kill it mid-run; a killed dispatch is paid waste. Long work is split into
   commits-sized dispatches instead of one long run.
-- **Free capacity first.** Public-data research goes to a free-tier external
-  research agent before any paid dispatch. Each new use class of the external
-  agent is recorded before first use, and its per-task credit consumption is
-  checked after every run (see [`docs/34`](34-agora-goose-bridge.md) Part 1
-  for the product case study).
+- **Bounded free research.** Manus is optional and free-tier-only for explicitly authorized public-data research. Record each new use class before first use; verify applicable account and request restrictions, actual access, connectors, retention and remaining credits before each dispatch, then check per-task consumption and report surprises. Never send credentials or private data, authorize paid use, or assume a prompt enforces restrictions. If gates fail or are unknown stop that route and report; use Goose only when independently authorized (see [`docs/34`](34-agora-goose-bridge.md) Part 2).
 
 ## 3. The observability loop
 
 Spend is managed exactly like a development feedback loop:
 
-1. **Track.** The local forward proxy records one JSON line per request:
+1. **Track.** Where an authorized, verified local forward proxy is in use, it can record one JSON line per request:
    timestamp, path, status, model, byte counts, and the token usage extracted
    from the response (input, output, cached, reasoning). Response bodies are
    not persisted and the API key is never logged. A small stdlib aggregator
@@ -80,8 +85,9 @@ Spend is managed exactly like a development feedback loop:
 - Token counts are measured; **money is not**. Per-token prices for the
   deployed routes were not verified at adoption time, so the aggregator
   reports tokens and computes cost estimates only from an operator-supplied
-  price table. A token report already exposes the structural outliers; the
-  price table only rescales them.
+  price table. Token reports can expose usage outliers, but price tables may
+  change rankings across models or token classes. Token outliers do not prove
+  cost rankings without measured usage and applicable verified prices.
 - The proxy sees only traffic that flows through it. A dispatch path that
   bypasses the proxy is invisible to this loop; adding one requires an
   operator decision, not a silent shortcut.

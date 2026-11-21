@@ -34,7 +34,7 @@ defines the tiers and their decision rights.
 
 | Role | Decision rights | Explicitly NOT authorized |
 |---|---|---|
-| **Coordinator + junior** (main conversation model) | context, planning, worker briefs, operator communication, mechanical execution (file ops, git mechanics after an approved GO), small bounded edits; may write first-draft code | no merge decisions, no architecture calls, must not override specialist evidence |
+| **Coordinator** (main conversation model) | direct conversation, intake, permissions, compact briefs, bounded preflight, routing, targeted verification and operator communication | no routine implementation, no merge decisions, must not override specialist evidence |
 | **Code reviewer** (mid tier) | code review of junior-written code in a **separate fresh context**, test design, bounded fix-round verdicts | no merge decisions, no cross-module architecture |
 | **Specialist / architect** (top tier) | architecture, cross-module design, qualified fresh review (final instance), product decisions, process/Skill proposals, **merge GO where a project overlay delegates it** | not routine loop work (last resort only); no authority beyond explicitly delegated repos |
 | **Light worker** (cheapest approved model per the instance overlay — may be another instance of the coordinator's own model class) | mechanical, easily verifiable tasks, research fan-out with strict output contracts, routine lookups and file edits | no design, review, or merge authority; results are verified by the orchestrator before use |
@@ -48,10 +48,7 @@ higher tiers only when the task requires them. Fan-out to multiple light
 workers draws from the same shared task budget, and every light-worker
 result is verified by the orchestrator before it is used.
 
-The default division of labor for coding: the junior role writes the code,
-the reviewer role reviews it — always from a self-contained, high-quality
-brief. A project overlay may delegate the whole loop (implementation,
-tests, review, fix rounds) to the mid tier where the operator approved it.
+The default division of labor routes executable work that can be performed outside Agora, including repository, project, setup and system work, to Goose, on the cheapest qualified approved route; a separate qualified fresh Goose dispatch reviews non-trivial work. Manus is optional for explicitly approved public-data research only, within its free-tier, access and credit gates. The coordinator retains conversation, necessary permissions, bounded preflight, compact handoffs and verification. Unavailable routes or unknown budgets or permissions stop affected work, not trigger coordinator implementation. A project overlay cannot waive author–reviewer separation.
 
 ## Exact-route resolution
 
@@ -65,8 +62,8 @@ tests, review, fix rounds) to the mid tier where the operator approved it.
 ## Author–reviewer separation
 
 - A context that produced an artifact **never independently reviews it**;
-  review runs in a fresh context (see `docs/32`, and the coding-loop
-  Skill). An optional bounded-checker scan (see the role matrix) is not
+  review runs in a separate, qualified fresh Goose shell dispatch (see
+  `docs/32` and the coding-loop Skill). An optional bounded-checker scan (see the role matrix) is not
   review and does not satisfy this requirement.
 - A merge-GO decision by the specialist is a gate decision, **not** a
   substitute for a mandatory code review.
@@ -86,11 +83,7 @@ tests, review, fix rounds) to the mid tier where the operator approved it.
   default, library installation, deletions (branches, files, tasks,
   memory), publication, releasing operational data, secrets/keys, rule
   changes.
-- Budgets: **one shared operator-approved budget per user task** (kernel
-  default: at most 2 spawn attempts including failures and reviews, 1
-  running worker); continuation does **not** reset it. Budget exhaustion
-  leaves required review **pending**, never waived — report
-  partial/unreviewed work.
+- Budgets: **one shared operator-approved budget per user task**: at most six Goose/Manus dispatch attempts including failures and reviews and at most four running contexts; independent review is capped at two rounds per task within that budget. Reserve qualified review capacity; if required review remains incomplete at the cap, report UNREVIEWED, never done. Continuation of the same verified context does **not** reset it; stricter task bounds apply. Unknown accounting or exhausted budget leaves affected work stopped and required review **pending**, never waived — report partial/unreviewed work. No Agora subagents or Goose child agents.
 - Workers stay retained until the operator confirms task completion;
   retention grants no additional execution, slots, or permissions.
 

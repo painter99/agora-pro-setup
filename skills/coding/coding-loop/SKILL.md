@@ -41,9 +41,9 @@ Run the tests and read the report; an exit code is not evidence, the test output
 
 ### 4. Second-agent review
 
-Before declaring a non-trivial change done, obtain qualified review in a separate fresh context. Supply the specification, final diff, final contents of touched files, relevant tests, and acceptance criteria — not the implementation reasoning or author conversation. The reviewer checks specification compliance, test adequacy, hard-coded behavior, weakened assertions, and scope violations.
+Before declaring a non-trivial change or a file-changing dispatch done, obtain qualified review in a separate fresh context. Independent review is capped at two rounds per task within the shared dispatch budget; if required review remains incomplete at the cap, report UNREVIEWED, never done. Supply the specification, final diff, final contents of touched files, relevant tests, and acceptance criteria — not the implementation reasoning or author conversation. The reviewer checks specification compliance, test adequacy, hard-coded behavior, weakened assertions, and scope violations.
 
-**Reviewer mechanics (Agora).** Use an available, approved subagent mechanism under the kernel's role, permission, spawn-budget, and concurrency rules. Verify exact tool names against the live schema. A Loop or self-review in the author conversation is not independent review. If no qualified fresh-context reviewer is available, or the approved budget is exhausted, stop and report the work as unreviewed. Do not use scheduled Tasks, Loops, providers, or direct APIs as a review fallback or budget bypass. A trivial change may use self-review with deterministic evidence; mandatory review for non-trivial changes is not waived. The reviewer reads existing evidence instead of running side-effecting commands; any needed new verification is handed back to the phase owner, never simulated (ported from Manus `mobile-code-review`, 2026-11-15).
+**Reviewer mechanics (Agora).** Use a separate, qualified fresh-context Goose shell dispatch under the kernel's role, permission, shared attempt-budget, and concurrency rules. Do not create Agora subagents or authorize Goose child agents. Verify the exact route against the live schema. A Loop or self-review in the author conversation is not independent review. If no qualified fresh-context reviewer is available, or the approved budget is exhausted, stop and report the work as unreviewed. Do not use scheduled Tasks, Loops, providers, or direct APIs as a review fallback or budget bypass. For a trivial change outside a file-changing dispatch and any other mandatory review requirement, self-checks with deterministic evidence may be used; they never substitute for required independent review. The reviewer reads existing evidence instead of running side-effecting commands; any needed new verification is handed back to the phase owner, never simulated (ported from Manus `mobile-code-review`, 2026-11-15).
 
 **Freshness and lifecycle.** Immediately before reviewer dispatch, inspect the live artifacts and verify that the supplied final contents and diff match them. Record the reviewed revision or content hashes. Treat the supplied review inputs as immutable. Wait for the terminal result; a timeout permits another wait, not a duplicate spawn. Verify the verdict and follow the kernel's worker lifecycle policy.
 
@@ -74,7 +74,7 @@ The coordinator verifies the verdict, resolves findings, and records remaining l
 ### 5. Bounded fix loop
 For a non-obvious bug, record before fixing: candidate hypotheses, the supporting observation for each, and the discriminating test that separates them. Use the test result to narrow the hypotheses; apply the smallest justified fix and verify it against the reproduction and regression tests. A numerical confidence is optional and only with a defensible basis.
 
-Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap. Fix-round review policy: fixes for minor findings need re-tests and a fix-diff artifact; fixes that change behavior or the spec need a fresh re-review with a new fresh-context reviewer using an available approved subagent mechanism; if unavailable, report the updated work as unreviewed.
+Fix rounds follow the tool-call budget: after two consecutive failed rounds on the same problem, change the approach; after three failed rounds, stop, report honestly what fails and what was tried, and hand back to the user. Never iterate silently past the cap. Fix-round review policy: every fix needs re-tests and a fix-diff artifact. Any change to a snapshot requiring independent review, including a minor fix, invalidates the previous verdict for the changed snapshot. Obtain a new qualified fresh-context review of the final snapshot using a separate approved Goose shell dispatch; no author review or self-check substitutes. If unavailable or out of budget, report the updated work as unreviewed.
 
 ### 6. Acceptance against reality
 The final gate is acceptance on real input, not green tests: run the change on the actual data or environment it targets (or a faithful copy) and show the observable result. Nothing is done until this gate passes — never report completion without it. Verify with an independent second method (checksum, grep, a second tool); a mismatch between two methods is a loud report, not a silent choice.
@@ -84,7 +84,7 @@ Recurring fix patterns, review comments, and user corrections become system rule
 
 ## Hard limits
 - Maximum 3 fix rounds per problem (then honest handback).
-- Second-agent review is mandatory for every non-trivial change.
+- Second-agent review is mandatory for every non-trivial change and every file-changing dispatch.
 - No done claim without: test evidence + review pass + acceptance against reality.
 
 ## Anti-reward-hacking guards
@@ -98,7 +98,7 @@ Recurring fix patterns, review comments, and user corrections become system rule
 - Never report a coding task as done based on "tests green" alone.
 - Never weaken, skip, delete, or special-case an assertion to force a pass.
 - Never iterate past the fix-round budget without reporting.
-- Never skip the second-agent review on non-trivial changes.
+- Never skip required second-agent review, including for a changed final snapshot after a minor fix.
 - Never run an unscanned agent-written script on real data (script safety gate in `process-design`).
 - Never put secrets or personal data into code, tests, or commit messages.
 
