@@ -5,7 +5,7 @@ description: Request authorized Git operations through a controlled broker; neve
 
 # goose-git-ops
 
-> **Draft skill.** This document is not adopted, is not an executable control, and grants no authority. Use only when the project has an approved controlled path.
+> **Adopted 2026-11-21 (ADR-0022).** The live Skill is [`skills/shell/goose-git-ops`](../skills/shell/goose-git-ops/SKILL.md); this draft is retained as the draft of record. Advisory mode only until the broker infrastructure is verified.
 
 ## Purpose
 

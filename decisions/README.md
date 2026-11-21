@@ -50,3 +50,4 @@ Superseded ADRs are never deleted; their Status line points to the successor.
 | [0019](0019-budget-capped-expertise-routing.md) | Budget-capped expertise routing with worker-initiated delegation requests | accepted 2026-11-06 |
 | [0020](0020-worker-retention-until-task-completion.md) | Retain worker context until operator-confirmed task completion | accepted 2026-11-10 |
 | [0021](0021-skill-licensing-and-provenance-records.md) | Skill licensing lives in the root LICENSE and frontmatter; Sources sections only for genuine external adoption | accepted 2026-11-17 |
+| [0022](0022-controlled-git-operations-adoption.md) | Controlled Git operations adopted as the goose-git-ops Skill (advisory mode until broker verification) | accepted 2026-11-21 |

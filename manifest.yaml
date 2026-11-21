@@ -39,15 +39,15 @@ components:
     target: "Agora > System Prompts > Compact"
   - name: skill-set
     kind: skill-set
-    # 35 skills; one directory per Skill, Agent Skills layout
+    # 36 skills; one directory per Skill, Agent Skills layout
     source: "skills/**/SKILL.md"
-    files: 35
+    files: 36
     target: "Agora > Saved Skills (flat namespace)"
   - name: agent-skill-set
     kind: skill-set
     # Same Agent Skills layout, deployed to the coding agent
     source: "skills/**/SKILL.md"
-    files: 35
+    files: 36
     target: "Goose > ~/.agents/skills (project copies in .agents/skills)"
   - name: task-cards
     kind: task-card-set
@@ -81,9 +81,9 @@ components:
   # --- reference only ---
   - name: decision-records
     kind: reference
-    # 21 ADRs (0001-0021) + README index
+    # 22 ADRs (0001-0022) + README index
     source: "decisions/*.md"
-    files: 22
+    files: 23
     target: none
   - name: architecture-docs
     kind: reference

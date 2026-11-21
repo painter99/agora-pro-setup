@@ -1,6 +1,6 @@
 # Controlled Git Operations for Coding Agents
 
-> **Status: PROPOSAL / DRAFT — not adopted, not implemented, and grants no authority.**
+> **Status: ADOPTED as design reference 2026-11-21 (ADR-0022).** The workflow is adopted via the `goose-git-ops` Skill; the broker/authorization infrastructure described here is not implemented — advisory mode only.
 > All implementation, credential, account, repository-setting, commit, push, and merge changes require their own authorization. Design claims marked **UNVERIFIED** require testing before reliance.
 
 ## 1. Problem statement
