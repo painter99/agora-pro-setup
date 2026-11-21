@@ -83,6 +83,10 @@ Spend rules that travel with every dispatch:
 4. **Cheapest qualified route.** The `<approved specialist>` role is reserved for qualified fresh-context review and last-instance escalation; default work and mechanical execution go to the `<approved light worker>` role, as resolved by the approved routing overlay. If the route, applicable budget or permissions are unknown or unavailable, stop affected execution and report rather than doing the work in Agora.
 5. **Budget classification.** The provider-side cap is a fire-drill limit, never the working budget. Apply the operator's separate lower working allocations and classify coding/projects separately from necessary setup and system work. Unknown allowance or exceeded target means stop affected work and report; private amounts stay in the instance overlay.
 
+### Parallel dispatch isolation (worktrees, 2026-11-21)
+
+Parallel Goose dispatches that touch the same repository MUST each run in their own worktree created via `scripts/goose-worktree.sh`, and the brief pins the worktree path as the working directory. The coordinator merges each worktree's branch per owned-file scope and removes the worktree only after the merge is verified.
+
 ## Workflow
 
 0. Route first. Keep conversation and essential coordinator checks direct; route executable work as above. Record the impact tier and authorization; ask when essential information or an exact-action approval is missing. Never silently substitute coordinator implementation for an unavailable route.
