@@ -5,10 +5,14 @@ Mode:            execute | ideate | review
 Impact tier:     low | medium | high
 Authorisation:   <who confirmed this dispatch: an operator instruction, an operator GO, or the coordinating agent under the delegation policy>
 Working dir:     <absolute path>
+Base revision:   <verified revision or not applicable with reason>
+Review snapshot: <review mode: digest algorithm and digest of the final snapshot under review, distinct from base revision; otherwise not applicable>
 Model route:     <route identifier, no credentials>
 Budget:          <turn limit and cost ceiling for this dispatch; when no monetary ceiling applies, say so and name the outer bound that applies>
 Time bound:      <the dispatch must finish inside this bound; size the work to fit, or split it>
-Delegated subagents: <none | named sub-analyses with a numerical cap and boundaries>
+Child agents:    none — no Agora subagents or Goose child agents
+Role:            <author | independent qualified reviewer | researcher | other approved role>
+Task accounting: <attempts used / maximum; review rounds used / maximum; running / maximum; reserved review capacity; unknown states>
 Output file:     <path the agent must write, if any>
 
 GOAL
@@ -34,16 +38,20 @@ PERMITTED TOOLS
 OUTPUT CONTRACT
 - <what the final report must contain, in order>
 - <what the report must not contain>
+- Review mode: report the reviewed final snapshot digest and verdict (PASS, PASS-with-notes, or FAIL); do not treat the base revision as the reviewed snapshot.
 
 FORBIDDEN ACTIONS
-- No commits, pushes or merges unless stated here.
-- No credentials, keys or personal data in any file.
+- No commits, pushes or merges unless the exact action is separately authorized and stated here. An authorized executor may carry out an explicitly separately approved push or merge, but cannot approve it.
+- ADR-0022 controlled Git operations are advisory until the broker path is implemented and its isolation independently demonstrated; they grant no permissions or security boundary.
+- Worker credential or secret access is forbidden by default; an exception requires explicit approval of the exact action under applicable platform policy and is never assumed. No credentials, keys or personal data in any file.
+- No Agora subagents or Goose child agents; no operator interaction or persistent automation.
 - No changes outside the scope above.
 - No deletions.
 
 STOP CONDITIONS
 - Stop and report when: <condition that ends the dispatch without a full result>
-- Stop and report when the task needs a decision the operator owns.
+- Stop and report when the task needs a decision the operator owns or an exact-action approval is missing.
+- Stop affected execution when route, applicable budget or permissions are unknown or unavailable; do not silently implement in Agora.
 
 PERMITTED FILES
 - <exact list of files the agent may create or modify, one per line>

@@ -24,9 +24,11 @@ auto-merge — every layer here is human-gated (ADR-0016).
 3. **Tests as reviewable artifacts.** The test report is evidence; assertions
    are never weakened to force a pass; test-suite or CI edits require
    justification and approval.
-4. **Second-agent review.** Non-trivial diffs are reviewed in a fresh context
-   (a new conversation or a task agent) that sees the spec and the diff, not
-   the implementation reasoning.
+4. **Second-agent review.** Non-trivial diffs are reviewed by a separate,
+   qualified fresh-context Goose shell dispatch that reads the final contents
+   of touched files, the spec and the diff, not the implementation reasoning.
+   No task agent or self-review substitutes; if unavailable or the review
+   budget is exhausted, report UNREVIEWED, never done.
 5. **Bounded fix rounds.** Two consecutive failed rounds on one problem →
    change the approach; three → honest report and handback (tool-call budget,
    `docs/21`).

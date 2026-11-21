@@ -28,10 +28,9 @@ requirements and the coding workflow for the single-agent implementation loop.
 
 ## Roles and authority
 
-- **Coordinator:** routes the work, prepares the handoff, checks returned
-  artifacts, and reports to the operator.
-- **Coding agent:** works only within the authorized brief, verifies its own
-  changes, and returns evidence and unresolved issues.
+- **Coordinator:** handles conversation, intake and necessary permissions, prepares compact handoffs, performs bounded preflight and targeted verification, routes executable work and reports to the operator. Unavailable routes or unknown applicable budgets or permissions stop affected work; they are not a reason for routine coordinator implementation.
+- **Coding agent (Goose):** default route for executable work that can be performed outside Agora, including repository, project, setup and system work; works only within the authorized brief, verifies its own changes, and returns compact evidence and unresolved issues. No Goose child agents or Agora subagents. Required independent review is a separate qualified fresh Goose shell dispatch.
+- **Manus:** optional, only for explicitly approved public-data research within verified free-tier, account, request, access, retention and credit gates; see the shared contract.
 - **Operator:** owns decisions and approvals reserved to the operator, sets or
   confirms authorization, and receives the coordinator's report.
 
@@ -67,7 +66,7 @@ What a session needs before work starts, and where each item comes from:
 ## The seven-step task cycle
 
 This outline shows the shape of a dispatch from intake through operator
-handoff. Each step also identifies the local information the private adapter
+handoff. Simple conversation and essential coordinator checks stay direct; not every request requires dispatch. Each step also identifies the local information the private adapter
 must supply; the named contract sections hold the binding rules.
 
 1. **Intake and routing.** Clarify the outcome, owning repository, and relevant
