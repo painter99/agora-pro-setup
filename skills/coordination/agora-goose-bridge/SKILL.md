@@ -123,6 +123,15 @@ For medium and complex changes, the review pipeline recorded in the `model-escal
 - **Budgets.** Closure runs on a low thinking budget (at most medium) for latency and has no forced sequential-thinking MCP requirement. Parallel fix/final runs may use medium to high thinking budgets while still following the forced reasoning-aid rule above. All contexts count against the shared task budget; continuation does not reset an attempt.
 - **Critical infrastructure.** When the change touches authentication, secrets, deploy keys, CI, system services, exchange or gateway components, parallel fan-out is forbidden: one qualified run plus the mandatory review rounds.
 
+## Worker system protocol (2026-11-21, operator decision)
+
+A mandatory system protocol governs every dispatched worker so that reasoning discipline, evidence-only output and the sequential-thinking audit are uniform across routes and roles. The protocol text lives at `templates/worker-system-protocol.txt` (with a `{MIN_THOUGHTS}` placeholder).
+
+1. Every `goose run` dispatch MUST include `--system` with the content of `templates/worker-system-protocol.txt`, with `{MIN_THOUGHTS}` substituted by the brief's minimum (typically 3–4).
+2. Every `delegate` subagent call MUST receive the protocol via the delegate `context` parameter (plus task-specific constraints in `instructions`).
+3. Coordinator verification of every dispatch MUST include a log audit: the count of `sequentialthinking` occurrences in the run log must be greater than or equal to the brief's minimum; a miss is a failed verification.
+4. Goose-only execution rule: Agora is an observatory and communication layer only. If the Goose route is unavailable or a dispatch cannot start, the coordinator stops the affected work and reports the blocker; it NEVER performs the delegated work itself. The only resumption lever is an explicit operator appeal for the specific case.
+
 ## Forbidden behavior
 
 - Never ask the operator a technical question that can be resolved within delegated authority; ask when essential information or exact-action approval is missing.
