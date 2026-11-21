@@ -3,7 +3,7 @@
 Agora 2.1 uses **System / User / Assistant**, not the former **System / Prefix / Suffix** arrangement.
 
 ## System
-
+ The current full main-prompt text (subagent-free variant, operator-approved 2026-11-21) is maintained in [`docs/40`](40-coordinator-system-prompt-subagent-free.md); this section describes its composition.
 System is the complete provider-visible system message. It contains the compact kernel, `{skill_catalog}`, and the permanent safety/tool policy (the maintained instance replaces `{active_memory}` with the file-based-AM pointer sentence, see `docs/4`) — including the memory gate (the one procedure the kernel states itself; see `docs/20-memory-gate.md`) and the tool-call budget rule (`docs/21-tool-call-budget.md`), plus the budgeted coordination rule — a delegation spawn budget with role routing (`decisions/0019-budget-capped-expertise-routing.md`).
 
 ## User
