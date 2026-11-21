@@ -6,6 +6,8 @@ versioning is semantic (MAJOR.MINOR.PATCH) and tagged. Each release records
 the Agora app baseline it was maintained against.
 
 ## [Unreleased]
+### Changed
+- `system-prompt/1-system-template.md` (2026-11-21, operator decision): subagent-free replacement of the main System template - Agora subagents are removed from the operating model and disabled in the app; delegated work runs exclusively through the established shell-dispatch routes (Goose, Manus); independent qualified review is a separate Goose dispatch on the specialist route (UNREVIEWED fallback when unavailable); new tool-economy and targeted-reading rules keep the context window lean. The 2026-11-20 coordinator/builder/reviewer/researcher swarm wording is superseded; the six-attempt coordination budget and spend discipline are retained, with subagent contexts no longer counted. A misplaced `docs/40` side copy and its `docs/3` pointer were reverted in the same change.
 
 ### Added
 - `skills/coordination/agora-goose-bridge` (2026-11-20, operator request): the Skill now matches the operating reality — swarm role table (swarm lead / builder / qualified reviewer / mechanical worker / free-tier researcher) with assignment rules, the six-attempt / four-running-contexts coordination budget with spend discipline (pre-flight scope check, dispatch sizing, brief economy, cheapest-sufficient-route, two-numbers budget), explicit delegated-subagent authorisation and time bound in the brief template, a delegated-subagents line in the report template, and matching verification and forbidden-behavior items. `docs/34` decision log records the change.
