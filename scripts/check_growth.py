@@ -13,7 +13,9 @@ checks. It never weakens or replaces an existing check; it only adds rules:
    - else FAIL with a clear message naming the remedy (set GROWTH_BASE to
      a verified base commit). There is no fallback to HEAD, because that
      could hide additions.
-2. The changeset is the diff between the base commit and the PROPOSED TREE:
+2. The changeset is the union of staged and working-tree additions against
+   the base commit, preserving rename metadata from both snapshots. The
+   PROPOSED TREE is:
    the working tree as it would be committed (the ACTUAL index state,
    including force-added ignored files that are staged, plus unstaged
    changes to tracked files plus untracked non-ignored files),
@@ -243,10 +245,11 @@ def load_baseline(root, base, failures):
         return set(), set()
     rc, out, _ = git(root, "show", base + ":scripts/growth-baseline.txt")
     if rc != 0:
-        return set(), set(), {}
-    entries, docs = parse_baseline(out.splitlines(), failures,
-                                   "scripts/growth-baseline.txt (base "
-                                   + base[:12] + ")")
+        entries, docs = [], set()
+    else:
+        entries, docs = parse_baseline(out.splitlines(), failures,
+                                       "scripts/growth-baseline.txt (base "
+                                       + base[:12] + ")")
     rc, lst, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
                        "--", "skills")
     if rc != 0:
@@ -255,7 +258,7 @@ def load_baseline(root, base, failures):
     base_paths = set()
     by_name = {}
     for line in lst.split("\0"):
-        rel = line.strip()
+        rel = line
         if not rel:
             continue
         name = skill_name_of(rel)
@@ -320,7 +323,19 @@ def load_retired(root, base, failures, warnings):
         retired = parse_retired(out.splitlines(), failures,
                                 "scripts/docs-retired-numbers.txt (base "
                                 + base[:12] + ")")
-    path = root / "scripts" / "docs-retired-numbers.txt"
+    registry = "scripts/docs-retired-numbers.txt"
+    rc, staged_blob, _ = git(root, "show", ":" + registry)
+    staged = (parse_retired(staged_blob.splitlines(), failures,
+                            registry + " (index)") if rc == 0 else set())
+    missing_staged = retired - staged
+    if missing_staged:
+        failures.append(
+            registry + " (index) removes retired number(s) "
+            + ", ".join(str(n) for n in sorted(missing_staged))
+            + " that are registered at the base commit; registry entries "
+            "may only be added, never removed (fail-closed)."
+        )
+    path = root / registry
     if path.is_file():
         working = parse_retired(
             path.read_text(encoding="utf-8").splitlines(), failures,
@@ -405,39 +420,51 @@ def proposed_tree(root, failures):
 
 
 def changed_entries(root, base, failures):
-    """Diff the base commit against the PROPOSED TREE (working tree incl.
-    untracked non-ignored files), so staged, unstaged and uncommitted
-    untracked additions are all visible; returns (status, src, dst)."""
+    """Union the staged and working snapshots, preserving rename metadata."""
     tree = proposed_tree(root, failures)
     if tree is None:
         return None
-    rc, out, err = git(root, "diff", "--name-status", "-z", "-M", base, tree)
+    rc, index_tree, err = git(root, "write-tree")
     if rc != 0:
-        failures.append("git diff failed: " + err.strip())
+        failures.append("git write-tree failed: " + err.strip())
         return None
-    entries = []
-    # NUL-delimited parsing (-z): quoted or exotic paths (spaces, unicode,
-    # quotes) cannot evade detection.
-    tokens = out.split("\0")
-    i = 0
-    while i < len(tokens):
-        head = tokens[i]
-        i += 1
-        if not head:
-            continue
-        status = "".join(ch for ch in head if ch.isalpha())
-        if status == "A":
-            if i < len(tokens) and tokens[i]:
-                entries.append(("A", None, tokens[i]))
+    entries = {}
+    for target in (tree, index_tree.strip()):
+        rc, out, err = git(root, "diff", "--name-status", "-z", "-M", base, target)
+        if rc != 0:
+            failures.append("git diff failed: " + err.strip())
+            return None
+        tokens = out.split("\0")
+        i = 0
+        while i < len(tokens) and tokens[i]:
+            status = "".join(ch for ch in tokens[i] if ch.isalpha())
             i += 1
-        elif status in ("R", "C"):
-            if i + 1 < len(tokens) and tokens[i] and tokens[i + 1]:
-                entries.append((status, tokens[i], tokens[i + 1]))
-            i += 2
-        else:
-            # D/M/T and every other status carry one path token; skipped.
-            i += 1
-    return entries
+            if status in ("R", "C"):
+                src, dst = tokens[i:i + 2]
+                i += 2
+                entries[dst] = (status, src, dst)
+            else:
+                dst = tokens[i]
+                i += 1
+                if status == "A":
+                    entries.setdefault(dst, ("A", None, dst))
+    # Explicitly include every staged and untracked path absent at the base,
+    # even when a later working-tree edit erased a staged addition.
+    rc, base_out, err = git(root, "ls-tree", "-r", "--name-only", "-z", base)
+    if rc != 0:
+        failures.append("git ls-tree failed: " + err.strip())
+        return None
+    base_paths = set(base_out.split("\0"))
+    for args in (("ls-files", "--cached", "-z"),
+                 ("ls-files", "--others", "--exclude-standard", "-z")):
+        rc, out, err = git(root, *args)
+        if rc != 0:
+            failures.append("git ls-files failed: " + err.strip())
+            return None
+        for path in out.split("\0"):
+            if path and path not in base_paths:
+                entries.setdefault(path, ("A", None, path))
+    return [entries[path] for path in sorted(entries)]
 
 
 def skill_name_of(path):
@@ -733,5 +760,31 @@ def main():
     return 0
 
 
+def run_with_index_snapshot():
+    """Use one private index snapshot for all staged reads during the run."""
+    rc, out, err = git(Path.cwd(), "rev-parse", "--git-path", "index")
+    if rc != 0 or not out.strip():
+        print("GROWTH CHECK FAILED\nFAIL: cannot locate git index: " + err.strip())
+        return 1
+    source = Path(out.strip())
+    if not source.is_absolute():
+        source = Path.cwd() / source
+    with tempfile.TemporaryDirectory(prefix="growth-snapshot-") as directory:
+        snapshot = Path(directory) / "index"
+        try:
+            if source.is_file():
+                shutil.copyfile(source, snapshot)
+            else:
+                os.environ["GIT_INDEX_FILE"] = str(snapshot)
+                rc, _, err = git(Path.cwd(), "read-tree", "HEAD")
+                if rc != 0:
+                    raise OSError(err.strip())
+            os.environ["GIT_INDEX_FILE"] = str(snapshot)
+            return main()
+        except OSError as exc:
+            print("GROWTH CHECK FAILED\nFAIL: cannot snapshot git index: " + str(exc))
+            return 1
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(run_with_index_snapshot())

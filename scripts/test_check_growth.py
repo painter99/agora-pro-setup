@@ -380,6 +380,20 @@ class GrowthCheckerTest(unittest.TestCase):
             proc,
             "missing justification file 'skills/justifications/beta.md'",
         )
+        git(self.repo, "add", "skills/fam/beta/SKILL.md")
+        skill = self.repo / "skills" / "fam" / "beta" / "SKILL.md"
+        skill.unlink()
+        proc = self.run_checker()
+        self.assert_fail(proc, "missing justification file 'skills/justifications/beta.md'")
+        self.assertIn("skills/fam/beta/SKILL.md", proc.stdout)
+        write(skill, "modified working-tree content\n")
+        self.justification("beta", omit="Eval")
+        git(self.repo, "add", "skills/justifications/beta.md")
+        self.justification("beta")  # the staged blob remains incomplete
+        self.assert_fail(self.run_checker(), "is missing field 'Eval'")
+        git(self.repo, "add", "skills/justifications/beta.md")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
     def test_untracked_skill_with_staged_justification_passes(self):
         """R1 #1: proposed-tree semantics - staged justification accepted."""
@@ -547,10 +561,18 @@ class GrowthCheckerTest(unittest.TestCase):
         """R2 #4: diff --name-status -z parsing for exotic paths (unicode
         and spaces); the exact unquoted justification name matches."""
         self.default_baseline()
-        name = "naïve skill"
+        name = 'naïve "skill"'
         write(self.repo / "skills" / "fam" / name / "SKILL.md", skill_md())
         self.justification(name)
         self.commit("add a skill with a unicode name containing a space")
+        path = self.repo / "skills" / "justifications" / (name + ".md")
+        path.unlink()
+        git(self.repo, "add", "-u")
+        proc = self.run_checker()
+        self.assert_fail(proc, "missing justification file")
+        self.assertIn("skills/fam/" + name + "/SKILL.md", proc.stdout)
+        self.justification(name)
+        git(self.repo, "add", str(path.relative_to(self.repo)))
         proc = self.run_checker()
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("GROWTH CHECK PASSED", proc.stdout)
@@ -559,6 +581,14 @@ class GrowthCheckerTest(unittest.TestCase):
         """R2 #5: a new skill reusing a skill dir name that exists anywhere
         in the FULL tree at the base fails, even outside the changeset."""
         self.default_baseline()  # base tree has skills/fam/alpha
+        # Remove the baseline at the base, then introduce it in this change.
+        baseline = self.repo / "scripts" / "growth-baseline.txt"
+        baseline.unlink()
+        git(self.repo, "add", "-u")
+        git(self.repo, "commit", "-m", "remove baseline before base")
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        self.write_baseline()
         self.seed_skill("alpha", family="other")
         self.justification("alpha")
         self.commit("add skills/other/alpha reusing the name alpha")
@@ -574,6 +604,12 @@ class GrowthCheckerTest(unittest.TestCase):
         self.pin_base()  # registry at the base lists 19
         write(self.repo / "scripts" / "docs-retired-numbers.txt",
               "# 19 removed in this changeset\n")
+        git(self.repo, "add", "scripts/docs-retired-numbers.txt")
+        self.write_retired_file()  # staged removal, intact working tree
+        self.assert_fail(self.run_checker(), "may only be added, never removed")
+        git(self.repo, "add", "scripts/docs-retired-numbers.txt")
+        write(self.repo / "scripts" / "docs-retired-numbers.txt", "# removed\n")
+        self.assert_fail(self.run_checker(), "may only be added, never removed")
         self.commit("remove 19 from the registry")
         self.assert_fail(
             self.run_checker(),
