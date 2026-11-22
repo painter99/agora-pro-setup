@@ -133,15 +133,31 @@ def main():
     root = Path(__file__).resolve().parent.parent
     skills = root / "skills"
     files = sorted(skills.rglob("SKILL.md"))
+    skill_names = {path.parent.name for path in files}
     strays = sorted(
         p
         for p in skills.rglob("*.md")
-        if p.name != "SKILL.md" and p.name not in AUTHOR_DOCS
+        if p.name != "SKILL.md"
+        and p.name not in AUTHOR_DOCS
+        # skills/justifications/ is the growth-governance directory
+        # (STACK-UNIFY phase 2): its files are enforced by
+        # scripts/check_growth.py. Only the exact expected file names are
+        # exempt - TEMPLATE.md, README.md, docs-<number>.md and
+        # <skill-dir-name>.md - so arbitrary other Markdown in that
+        # directory remains a stray.
+        and not (
+            len(p.relative_to(skills).parts) == 2
+            and p.relative_to(skills).parts[0] == "justifications"
+            and (
+                p.name in ("TEMPLATE.md", "README.md")
+                or re.fullmatch(r"docs-\d+\.md", p.name)
+                or p.name[: -len(".md")] in skill_names
+            )
+        )
     )
     if not files:
         print("FAIL: no SKILL.md files found")
         return 1
-    skill_names = {path.parent.name for path in files}
     failures = 0
     for path in files:
         errors = check_file(path, skill_names)

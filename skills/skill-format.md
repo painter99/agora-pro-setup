@@ -77,6 +77,21 @@ Add only when they carry real weight; an empty section is worse than none.
 - Domain-specific Skills follow the same template plus the domain-package
   pattern in `docs/18-domain-routing.md`.
 
+## Growth justification
+
+New Skills and new numbered docs carry a growth justification, enforced by
+`scripts/check_growth.py` (with the tracked baseline in
+`scripts/growth-baseline.txt` and the retired-number registry in
+`scripts/docs-retired-numbers.txt`):
+
+- A new `skills/**/SKILL.md` requires `skills/justifications/<skill-dir-name>.md`.
+- A new `docs/<number>-*.md` requires `skills/justifications/docs-<number>.md`.
+- Copy the fields from `skills/justifications/TEMPLATE.md`; every field must be
+  nonempty (the explicit word `UNKNOWN` is allowed). The checker verifies
+  presence, not truth; review assesses the content.
+- At most one new Skill and one new doc per changeset; larger proposals are
+  split into independently reviewable increments.
+
 ## Example skeleton
 
 ```markdown

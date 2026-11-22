@@ -27,5 +27,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Growth checker needs the base commit.
       - name: Run repository checks
         run: ./scripts/check.sh
