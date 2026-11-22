@@ -515,6 +515,16 @@ class GrowthCheckerTest(unittest.TestCase):
             "'skills/justifications/docs-justification-3.md'",
         )
 
+    def test_root_commit_tip_fails_closed(self):
+        """R2 finding: when HEAD is a root commit and origin/main == HEAD,
+        the tip commit has no parent to pin as the base; the checker must
+        fail closed instead of comparing the tip commit's tree with
+        itself."""
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        proc = self.run_checker()
+        self.assert_fail(proc, "tip is a root commit")
+
     def test_growth_base_head_fails(self):
         """R1 #2: GROWTH_BASE resolving to HEAD must fail."""
         self.default_baseline()

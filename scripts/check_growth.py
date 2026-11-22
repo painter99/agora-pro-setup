@@ -147,7 +147,9 @@ def get_base(root, failures):
     has a parent, the base is pinned to the tip commit's first parent
     (HEAD~1, or the first parent of a merge commit), so the tip commit's
     own additions are always checked instead of being invisible. A root
-    commit has no parent; only there the merge-base (== HEAD) is kept.
+    commit has no parent to pin; there the checker fails closed instead
+    of keeping the merge-base (== HEAD), which would compare the tip
+    commit's tree with itself.
     """
     env_base = os.environ.get("GROWTH_BASE", "").strip()
     if env_base:
@@ -208,6 +210,16 @@ def get_base(root, failures):
                 return parent.strip(), (
                     "merge-base HEAD " + candidate + " (== HEAD; pinned to "
                     "the tip commit's first parent for push-to-main)")
+            # Root commit: the tip commit has no parent to pin as the
+            # base. Returning the merge-base (== HEAD) would compare the
+            # tip commit's tree with itself and hide its additions.
+            failures.append(
+                "Repository tip is a root commit (git rev-parse HEAD^ "
+                "resolves no parent); growth checking requires a parent "
+                "commit; set GROWTH_BASE to a verified base. Refusing to "
+                "compare the tip commit's tree with itself (fail-closed)."
+            )
+            return None, None
         return base, "merge-base HEAD " + candidate
     failures.append(
         "No growth base available: set GROWTH_BASE to a verified ancestor, "
