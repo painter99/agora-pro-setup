@@ -1,0 +1,2 @@
+# Retired docs numbers are never reused; a retired number keeps its number unused.
+19

@@ -136,7 +136,15 @@ def main():
     strays = sorted(
         p
         for p in skills.rglob("*.md")
-        if p.name != "SKILL.md" and p.name not in AUTHOR_DOCS
+        if p.name != "SKILL.md"
+        and p.name not in AUTHOR_DOCS
+        # skills/justifications/ is the growth-governance directory
+        # (STACK-UNIFY phase 2): its files are enforced by
+        # scripts/check_growth.py, so they are not strays.
+        and not (
+            len(p.relative_to(skills).parts) == 2
+            and p.relative_to(skills).parts[0] == "justifications"
+        )
     )
     if not files:
         print("FAIL: no SKILL.md files found")
