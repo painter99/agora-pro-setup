@@ -142,15 +142,15 @@ def main():
         # skills/justifications/ is the growth-governance directory
         # (STACK-UNIFY phase 2): its files are enforced by
         # scripts/check_growth.py. Only the exact expected file names are
-        # exempt - TEMPLATE.md, README.md, docs-<number>.md and
-        # <skill-dir-name>.md - so arbitrary other Markdown in that
+        # exempt - TEMPLATE.md, README.md, docs-justification-<number>.md
+        # and <skill-dir-name>.md - so arbitrary other Markdown in that
         # directory remains a stray.
         and not (
             len(p.relative_to(skills).parts) == 2
             and p.relative_to(skills).parts[0] == "justifications"
             and (
                 p.name in ("TEMPLATE.md", "README.md")
-                or re.fullmatch(r"docs-\d+\.md", p.name)
+                or re.fullmatch(r"docs-justification-\d+\.md", p.name)
                 or p.name[: -len(".md")] in skill_names
             )
         )

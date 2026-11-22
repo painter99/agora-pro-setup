@@ -5,7 +5,9 @@ Every new Skill (`skills/**/SKILL.md`) and every new numbered doc
 enforced by `scripts/check_growth.py`:
 
 - New Skill: `skills/justifications/<skill-dir-name>.md`
-- New doc: `skills/justifications/docs-<number>.md`
+- New doc: `skills/justifications/docs-justification-<number>.md`
+  (the ambiguous `docs-<number>.md` form is rejected: it collides with the
+  skill-justification namespace)
 
 Copy the matching block below into the new file, keep every field label
 exactly as written, and keep the value on the same line as the label. Values

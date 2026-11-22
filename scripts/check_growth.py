@@ -14,9 +14,19 @@ checks. It never weakens or replaces an existing check; it only adds rules:
    - else FAIL with a clear message naming the remedy (set GROWTH_BASE to
      a verified base commit). There is no fallback to HEAD, because that
      could hide additions.
+   - Push-to-main rule: when the resolved merge-base equals HEAD (HEAD and
+     the candidate point at the same commit, as after a push to main) and
+     HEAD has a parent, the base is pinned to the tip commit's first
+     parent (HEAD~1, or the first parent of a merge commit), so the tip
+     commit's own additions are always checked. A root commit has no
+     parent; only there the merge-base (== HEAD) is kept. The GROWTH_BASE
+     override and the fail-closed behavior are unchanged.
 2. The changeset is the union of staged and working-tree additions against
    the base commit, preserving rename metadata from both snapshots. The
-   PROPOSED TREE is:
+   staged (index) snapshot and the working-tree snapshot are ALSO validated
+   independently (rule 3 and the skill rules below), so an indexed retitle
+   cannot mask a working-tree addition and a violation in either snapshot
+   fails. The PROPOSED TREE is:
    the working tree as it would be committed (the ACTUAL index state,
    including force-added ignored files that are staged, plus unstaged
    changes to tracked files plus untracked non-ignored files),
@@ -25,11 +35,17 @@ checks. It never weakens or replaces an existing check; it only adds rules:
    touching the real index.
    Every newly added or renamed-to skills/**/SKILL.md requires
    skills/justifications/<skill-dir-name>.md with all required fields
-   nonempty, and the justification file must be tracked or at least staged
-   in the index (untracked-only justifications are rejected). Skills listed
-   in the reviewed baseline as of the base commit are grandfathered only
-   when they appear as plain additions of the same full skill path (status
-   A); the baseline is read and duplicate-checked at the base commit, so a
+   nonempty. A required justification is validated in BOTH snapshots: it
+   must exist as a tracked/staged blob whose content satisfies every field
+   (the index blob is authoritative for what a commit would carry), AND
+   its working-tree file must still exist with content that satisfies
+   every field - a working-tree deletion or emptying of a required
+   justification fails. Justification files must be tracked or at least
+   staged in the index (untracked-only justifications are rejected);
+   symlinked justification files are rejected. Skills listed in the
+   reviewed baseline as of the base commit are grandfathered only when
+   they appear as plain additions of the same full skill path (status A);
+   the baseline is read and duplicate-checked at the base commit, so a
    changeset cannot grandfather its own additions by editing the baseline
    in the same commit; a rename or copy from any path always requires a
    justification for the new path, so renames cannot hide additions.
@@ -39,13 +55,29 @@ checks. It never weakens or replaces an existing check; it only adds rules:
    destinations, except a same-number rename (a pure retitle): the number
    must be unique, must not appear in the retired-numbers registry as of
    the base commit, and must be the next free number above the current
-   maximum. A companion skills/justifications/docs-<number>.md with
-   nonempty fields is required.
-4. Proposal budget: at most 1 new skill AND at most 1 new doc per changeset;
-   more must be split into independently reviewable increments.
+   maximum. Doc numbering (unique/retired/next-free/budget) and skill
+   additions are validated for the staged snapshot and the working-tree
+   snapshot INDEPENDENTLY; a violation in either snapshot fails.
+   A companion skills/justifications/docs-justification-<number>.md with
+   nonempty fields is required. The justification namespace is split
+   deterministically: doc justifications MUST be named
+   docs-justification-<number>.md and skill justifications
+   <skill-dir-name>.md; the ambiguous docs-<number>.md form (it collides
+   with the skill-justification namespace) is rejected with a clear
+   message.
+4. Proposal budget: at most 1 new skill AND at most 1 new doc per changeset
+   (checked per snapshot and on the union of both snapshots); more must be
+   split into independently reviewable increments.
 5. Every skills/**/SKILL.md in the index and working tree is limited to
    500 lines (baseline items are never exempt). Tracked justifications must
    correspond to a skill or doc at the base or in the changeset.
+
+The baseline file scripts/growth-baseline.txt is validated in THREE
+snapshots, each fail-closed: at the base commit (the grandfathering
+source), in the git index (staged), and in the working tree. Duplicates
+fail in every snapshot, and a staged or working-tree baseline that removes
+an entry present at the base commit fails: baseline entries are add-only
+(monotonic), mirroring the retired-numbers registry.
 
 The checker verifies presence and structure, not truth; review assesses
 content. Stdlib only, deterministic, fail-closed.
@@ -83,6 +115,7 @@ DOC_FIELDS = [
 
 FIELD_RE = re.compile(r"^\s*(?:[-*]\s*)?\*{0,2}(.+?)\*{0,2}\s*:\s*(.*)$")
 DOC_NUM_RE = re.compile(r"^docs/(\d+)-.+\.md$")
+DOC_JUST_RE = re.compile(r"^docs-justification-(\d+)$")
 
 
 def git(root, *args):
@@ -108,7 +141,16 @@ def find_root(failures):
 
 
 def get_base(root, failures):
-    """Resolve the comparison base. Fail-closed; never falls back to HEAD."""
+    """Resolve the comparison base. Fail-closed; never falls back to HEAD.
+
+    Push-to-main rule: when the resolved merge-base equals HEAD and HEAD
+    has a parent, the base is pinned to the tip commit's first parent
+    (HEAD~1, or the first parent of a merge commit), so the tip commit's
+    own additions are always checked instead of being invisible. A root
+    commit has no parent to pin; there the checker fails closed instead
+    of keeping the merge-base (== HEAD), which would compare the tip
+    commit's tree with itself.
+    """
     env_base = os.environ.get("GROWTH_BASE", "").strip()
     if env_base:
         rc, out, _ = git(root, "rev-parse", "--verify", "--quiet",
@@ -155,7 +197,30 @@ def get_base(root, failures):
                 + err.strip() + "; refusing to fall back to HEAD (fail-closed)."
             )
             return None, None
-        return merge_base.strip(), "merge-base HEAD " + candidate
+        base = merge_base.strip()
+        rc2, head, _ = git(root, "rev-parse", "--verify", "--quiet", "HEAD")
+        if rc2 == 0 and head.strip() and base == head.strip():
+            # Push-to-main: HEAD and the candidate point at the same
+            # commit, so the merge-base equals HEAD and the tip commit's
+            # own additions would be invisible. Pin the tip commit's
+            # first parent as the base.
+            rc3, parent, _ = git(root, "rev-parse", "--verify", "--quiet",
+                                 "HEAD^")
+            if rc3 == 0 and parent.strip():
+                return parent.strip(), (
+                    "merge-base HEAD " + candidate + " (== HEAD; pinned to "
+                    "the tip commit's first parent for push-to-main)")
+            # Root commit: the tip commit has no parent to pin as the
+            # base. Returning the merge-base (== HEAD) would compare the
+            # tip commit's tree with itself and hide its additions.
+            failures.append(
+                "Repository tip is a root commit (git rev-parse HEAD^ "
+                "resolves no parent); growth checking requires a parent "
+                "commit; set GROWTH_BASE to a verified base. Refusing to "
+                "compare the tip commit's tree with itself (fail-closed)."
+            )
+            return None, None
+        return base, "merge-base HEAD " + candidate
     failures.append(
         "No growth base available: set GROWTH_BASE to a verified ancestor, "
         "fetch origin/main, or configure a resolvable upstream. Refusing "
@@ -219,18 +284,45 @@ def parse_baseline(lines, failures, source):
     return skill_entries, docs
 
 
-def load_baseline(root, base, failures):
-    """Grandfathering baseline: always validated, grandfathered at the base.
+def baseline_entries(skill_entries, docs):
+    """Tagged (kind, value) set of baseline entries for add-only checks."""
+    entries = {("skill", value) for _, value in skill_entries}
+    entries |= {("doc", str(number)) for number in docs}
+    return entries
 
-    The baseline file must exist in the working tree and parse cleanly
-    (fail-closed). Grandfathering, however, uses the baseline as of the base
-    commit, so a changeset cannot grandfather its own additions by editing
+
+def check_baseline_removal(base_set, snapshot_set, source, failures):
+    """Baseline entries are add-only: a snapshot that removes an entry
+    present at the base commit fails (fail-closed)."""
+    if not base_set:
+        return
+    missing = base_set - snapshot_set
+    if missing:
+        failures.append(
+            source + " removes baseline entries "
+            + ", ".join(kind + ":" + value
+                        for kind, value in sorted(missing))
+            + " that exist at the base commit; baseline entries may only "
+            "be added, never removed (fail-closed)."
+        )
+
+
+def load_baseline(root, base, failures):
+    """Grandfathering baseline: validated in THREE snapshots, fail-closed.
+
+    The baseline file is validated in the working tree, in the git index
+    (staged), and at the base commit; duplicates fail in every snapshot,
+    and the staged and working-tree baselines may only add entries relative
+    to the base commit (add-only, mirroring the retired-numbers registry),
+    so a corrupted staged baseline cannot slip through. Grandfathering,
+    however, uses the baseline as of the base commit, so a changeset
+    cannot grandfather its own additions by editing
     scripts/growth-baseline.txt in the same commit. Baseline entries are
-    resolved to full skill paths in the base tree, so additions are compared
-    by full skill path, not by bare directory name. When the file does not
-    exist at the base (the baseline is being introduced by this very
-    changeset), the grandfather set is empty: every added skill then needs
-    its own justification.
+    resolved to full skill paths in the base tree, so additions are
+    compared by full skill path, not by bare directory name. When the file
+    does not exist at the base (the baseline is being introduced by this
+    very changeset), the grandfather set is empty: every added skill then
+    needs its own justification.
 
     Returns (baseline skill paths, baseline doc numbers, and a mapping of
     skill directory name -> base-tree paths for EVERY skill in the base
@@ -243,22 +335,38 @@ def load_baseline(root, base, failures):
             "run without a reviewed baseline (fail-closed)."
         )
         return None
-    parse_baseline(path.read_text(encoding="utf-8").splitlines(), failures,
-                   "scripts/growth-baseline.txt (working tree)")
+    working_skills, working_docs = parse_baseline(
+        path.read_text(encoding="utf-8").splitlines(), failures,
+        "scripts/growth-baseline.txt (working tree)")
+    working_set = baseline_entries(working_skills, working_docs)
     if base is None:
-        return set(), set()
+        return set(), set(), {}
     rc, out, _ = git(root, "show", base + ":scripts/growth-baseline.txt")
     if rc != 0:
-        entries, docs = [], set()
+        base_skills_entries, base_docs = [], set()
     else:
-        entries, docs = parse_baseline(out.splitlines(), failures,
-                                       "scripts/growth-baseline.txt (base "
-                                       + base[:12] + ")")
+        base_skills_entries, base_docs = parse_baseline(
+            out.splitlines(), failures,
+            "scripts/growth-baseline.txt (base " + base[:12] + ")")
+    base_set = baseline_entries(base_skills_entries, base_docs)
+    rc, staged_blob, _ = git(root, "show", ":scripts/growth-baseline.txt")
+    if rc != 0:
+        staged_skills, staged_docs = [], set()
+    else:
+        staged_skills, staged_docs = parse_baseline(
+            staged_blob.splitlines(), failures,
+            "scripts/growth-baseline.txt (index)")
+    staged_set = baseline_entries(staged_skills, staged_docs)
+    check_baseline_removal(base_set, staged_set,
+                           "scripts/growth-baseline.txt (index)", failures)
+    check_baseline_removal(base_set, working_set,
+                           "scripts/growth-baseline.txt (working tree)",
+                           failures)
     rc, lst, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
                        "--", "skills")
     if rc != 0:
         failures.append("git ls-tree failed: " + err.strip())
-        return set(), docs, {}
+        return set(), base_docs, {}
     base_paths = set()
     by_name = {}
     for line in lst.split("\0"):
@@ -270,7 +378,7 @@ def load_baseline(root, base, failures):
             base_paths.add(rel)
             by_name.setdefault(name, []).append(rel)
     skills = set()
-    for _, value in entries:
+    for _, value in base_skills_entries:
         if "/" in value:
             full = "skills/" + value + "/SKILL.md"
             if full in base_paths:
@@ -287,7 +395,7 @@ def load_baseline(root, base, failures):
                     + "); list the full path to disambiguate."
                 )
             skills.update(matches)
-    return skills, docs, by_name
+    return skills, base_docs, by_name
 
 
 def parse_retired(lines, failures, source):
@@ -423,8 +531,42 @@ def proposed_tree(root, failures):
             pass
 
 
+def snapshot_diff(root, base, tree, failures):
+    """Added / renamed-to / copied paths of ONE snapshot tree vs the base,
+    preserving rename metadata."""
+    rc, out, err = git(root, "diff", "--name-status", "-z", "-M", base, tree)
+    if rc != 0:
+        failures.append("git diff failed: " + err.strip())
+        return None
+    entries = []
+    tokens = out.split("\0")
+    i = 0
+    while i < len(tokens) and tokens[i]:
+        status = "".join(ch for ch in tokens[i] if ch.isalpha())
+        i += 1
+        if status in ("R", "C"):
+            src, dst = tokens[i:i + 2]
+            i += 2
+            entries.append((status, src, dst))
+        else:
+            dst = tokens[i]
+            i += 1
+            if status == "A":
+                entries.append(("A", None, dst))
+    return entries
+
+
 def changed_entries(root, base, failures):
-    """Union the staged and working snapshots, preserving rename metadata."""
+    """Union the staged and working snapshots, preserving rename metadata.
+
+    Returns (union_entries, working_entries, staged_entries) or None. The
+    union additionally includes every staged and untracked path absent at
+    the base, even when a later working-tree edit erased a staged addition.
+    The two snapshots are returned separately because they are validated
+    INDEPENDENTLY (doc numbering and skill additions): an indexed retitle
+    must not be able to override a working-tree addition and hide duplicate
+    doc numbers, and a violation in either snapshot fails.
+    """
     tree = proposed_tree(root, failures)
     if tree is None:
         return None
@@ -432,26 +574,17 @@ def changed_entries(root, base, failures):
     if rc != 0:
         failures.append("git write-tree failed: " + err.strip())
         return None
+    working = snapshot_diff(root, base, tree, failures)
+    staged = snapshot_diff(root, base, index_tree.strip(), failures)
+    if working is None or staged is None:
+        return None
     entries = {}
-    for target in (tree, index_tree.strip()):
-        rc, out, err = git(root, "diff", "--name-status", "-z", "-M", base, target)
-        if rc != 0:
-            failures.append("git diff failed: " + err.strip())
-            return None
-        tokens = out.split("\0")
-        i = 0
-        while i < len(tokens) and tokens[i]:
-            status = "".join(ch for ch in tokens[i] if ch.isalpha())
-            i += 1
+    for snapshot in (working, staged):
+        for status, src, dst in snapshot:
             if status in ("R", "C"):
-                src, dst = tokens[i:i + 2]
-                i += 2
                 entries[dst] = (status, src, dst)
             else:
-                dst = tokens[i]
-                i += 1
-                if status == "A":
-                    entries.setdefault(dst, ("A", None, dst))
+                entries.setdefault(dst, ("A", None, dst))
     # Explicitly include every staged and untracked path absent at the base,
     # even when a later working-tree edit erased a staged addition.
     rc, base_out, err = git(root, "ls-tree", "-r", "--name-only", "-z", base)
@@ -468,7 +601,8 @@ def changed_entries(root, base, failures):
         for path in out.split("\0"):
             if path and path not in base_paths:
                 entries.setdefault(path, ("A", None, path))
-    return [entries[path] for path in sorted(entries)]
+    union = [entries[path] for path in sorted(entries)]
+    return union, working, staged
 
 
 def skill_name_of(path):
@@ -479,17 +613,42 @@ def skill_name_of(path):
     return None
 
 
-def check_fields(root, relpath, fields, failures, prefix):
-    """Validate a justification file by its STAGED/COMMITTED blob content.
+def parsed_fields(text):
+    parsed = {}
+    for line in text.splitlines():
+        match = FIELD_RE.match(line)
+        if match:
+            label = match.group(1).strip()
+            if label not in parsed:
+                parsed[label] = match.group(2)
+    return parsed
 
-    The blob recorded in the git index - the content a commit would carry
-    (git cat-file) - is authoritative: working-tree content is never
-    validated, so an edit after staging cannot change the verdict in
-    either direction. Symlinked justification files are rejected (an
-    index entry with mode 120000, or a working-tree symlink), because a
-    symlink could point outside skills/justifications/. A file that is
-    neither tracked nor staged is rejected: untracked-only justification
-    files are not accepted (fail-closed).
+
+def require_fields(parsed, relpath, fields, failures, prefix):
+    for field in fields:
+        if field not in parsed:
+            failures.append(prefix + ": '" + relpath + "' is missing field '"
+                            + field + "'.")
+        elif not parsed[field].strip():
+            failures.append(prefix + ": '" + relpath + "' field '" + field
+                            + "' is empty.")
+
+
+def check_fields(root, relpath, fields, failures, prefix):
+    """Validate a justification file in BOTH snapshots (fail-closed).
+
+    Staged/committed snapshot: the blob recorded in the git index - the
+    content a commit would carry (git cat-file) - is authoritative, so an
+    edit after staging cannot change the committed verdict in either
+    direction. Working-tree snapshot: the file on disk must still exist and
+    its content must still satisfy every required field - a staged
+    justification that is deleted or emptied in the working tree fails,
+    because the proposed tree would otherwise carry an unjustified
+    addition. Symlinked justification files are rejected (an index entry
+    with mode 120000, or a working-tree symlink), because a symlink could
+    point outside skills/justifications/. A file that is neither tracked
+    nor staged is rejected: untracked-only justification files are not
+    accepted (fail-closed).
     """
     path = root / relpath
     rc, out, _ = git(root, "ls-files", "--cached", "--stage", "-z", "--",
@@ -536,20 +695,45 @@ def check_fields(root, relpath, fields, failures, prefix):
         failures.append(prefix + ": cannot read the staged blob for '"
                         + relpath + "': " + err.strip() + " (fail-closed).")
         return
-    parsed = {}
-    for line in blob.splitlines():
-        match = FIELD_RE.match(line)
-        if match:
-            label = match.group(1).strip()
-            if label not in parsed:
-                parsed[label] = match.group(2)
-    for field in fields:
-        if field not in parsed:
-            failures.append(prefix + ": '" + relpath + "' is missing field '"
-                            + field + "'.")
-        elif not parsed[field].strip():
-            failures.append(prefix + ": '" + relpath + "' field '" + field
-                            + "' is empty.")
+    require_fields(parsed_fields(blob), relpath, fields, failures, prefix)
+    # Working-tree snapshot: a staged justification that is deleted or
+    # emptied in the working tree fails too (dual-snapshot validation,
+    # fail-closed).
+    if not path.is_file():
+        failures.append(prefix + ": '" + relpath + "' is staged but missing "
+                        "from the working tree (deleted after staging); "
+                        "the working-tree snapshot of the justification is "
+                        "invalid (fail-closed).")
+        return
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        failures.append(prefix + ": cannot read the working-tree file '"
+                        + relpath + "': " + str(exc) + " (fail-closed).")
+        return
+    require_fields(parsed_fields(text), relpath, fields, failures, prefix)
+
+
+def check_ambiguous_doc_form(root, number, failures, prefix):
+    """Reject the ambiguous 'docs-<number>.md' justification form.
+
+    The justification namespace is split deterministically: doc
+    justifications must be named docs-justification-<number>.md and skill
+    justifications <skill-dir-name>.md; the legacy docs-<number>.md form
+    collides with the skill-justification namespace and is rejected with a
+    clear message (fail-closed).
+    """
+    ambiguous = "docs-" + str(number) + ".md"
+    rc, out, _ = git(root, "ls-files", "--cached", "-z", "--",
+                     JUST_DIR + "/" + ambiguous)
+    staged = bool(rc == 0 and any(p for p in out.split("\0") if p))
+    if staged or (root / JUST_DIR / ambiguous).exists():
+        failures.append(
+            prefix + ": justification 'skills/justifications/" + ambiguous
+            + "' uses the ambiguous 'docs-<number>.md' form, which collides "
+            "with the skill-justification namespace; doc justifications "
+            "must be named 'skills/justifications/docs-justification-"
+            + str(number) + ".md' (fail-closed).")
 
 
 def collect_doc_numbers(root, base, added_paths, failures):
@@ -583,6 +767,27 @@ def collect_doc_numbers(root, base, added_paths, failures):
     return used
 
 
+def doc_additions(snapshot):
+    """(number, path) for every added / renamed-to / copied doc in one
+    snapshot, excluding a same-number rename (a pure retitle): the number
+    is freed and re-used 1:1, so the destination is not an addition (a
+    same-number copy keeps the source and stays an addition)."""
+    adds = []
+    for status, src, path in snapshot:
+        match = DOC_NUM_RE.match(path)
+        if not match:
+            continue
+        if status == "A":
+            adds.append((int(match.group(1)), path))
+        elif status in ("R", "C") and src is not None:
+            src_match = DOC_NUM_RE.match(src)
+            if (status == "R" and src_match
+                    and src_match.group(1) == match.group(1)):
+                continue
+            adds.append((int(match.group(1)), path))
+    return adds
+
+
 def check_orphan_justifications(root, entries, failures):
     """Every indexed justification must name a skill or doc that still
     exists in the PROPOSED tree (or is newly added by the changeset).
@@ -591,7 +796,9 @@ def check_orphan_justifications(root, entries, failures):
     it would be committed - plus the changeset's additions (which cover
     staged additions later erased from the working tree). A tracked
     justification whose skill or doc no longer exists in the proposed
-    tree is an orphan (e.g. left behind by a rename or deletion).
+    tree is an orphan (e.g. left behind by a rename or deletion). Only
+    docs-justification-<number>.md names are read as doc justifications;
+    the ambiguous docs-<number>.md form is not exempt.
     """
     proposed = proposed_tree(root, failures)
     if proposed is None:
@@ -629,7 +836,7 @@ def check_orphan_justifications(root, entries, failures):
         if relative in ("TEMPLATE.md", "README.md"):
             continue
         name = relative[:-3]
-        match = re.fullmatch(r"docs-(\d+)", name)
+        match = DOC_JUST_RE.match(name)
         if name not in names and not (match and int(match.group(1)) in numbers):
             orphans.append(path)
     if orphans:
@@ -672,6 +879,128 @@ def check_line_limits(root, failures):
                             + str(MAX_SKILL_LINES) + "-line Skill limit (staged).")
 
 
+def check_changeset(root, base, snapshot, failures, baseline, retired, label,
+                    just_targets):
+    """Skill-addition and doc-numbering rules for ONE snapshot, validated
+    independently of the other snapshot (fail-closed in either).
+
+    Records (kind, path, arg) justification targets in just_targets so the
+    caller validates each required justification file exactly once.
+    """
+    base_skills, base_docs, base_names = baseline
+    suffix = " (snapshot: " + label + ")"
+
+    # --- New / renamed-to skills -------------------------------------
+    new_skills = []
+    for status, src, path in snapshot:
+        name = skill_name_of(path)
+        if name is not None:
+            new_skills.append((status, src, path, name))
+
+    by_name = {}
+    for _, _, path, name in new_skills:
+        by_name.setdefault(name, []).append(path)
+    for name, paths in sorted(by_name.items()):
+        if len(paths) > 1:
+            failures.append(
+                "Duplicate skill name '" + name + "' claimed by "
+                + ", ".join(sorted(paths))
+                + "; each skill needs its own justification (1:1)."
+                + suffix
+            )
+
+    # 1:1 against the FULL tree at the base, not just the changeset: a
+    # new (added, renamed-to or copied) skill path must not reuse a
+    # skill directory name that already exists anywhere in the base
+    # tree.
+    for status, src, path, name in new_skills:
+        if status not in ("A", "R", "C") or name not in base_names:
+            continue
+        if status == "R" and src in base_names[name]:
+            continue  # a pure move keeps the 1:1 name mapping
+        failures.append(
+            "Skill '" + path + "' reuses the skill directory name '"
+            + name + "' which already exists in the full tree at the "
+            "base commit (" + ", ".join(sorted(base_names[name]))
+            + "); skill directory names must be unique across the "
+            "whole tree (1:1, fail-closed)." + suffix
+        )
+
+    for status, src, path, name in new_skills:
+        if status == "A" and path in base_skills:
+            continue  # baseline grandfathering: a plain re-add of a
+            # baseline path (compared by full skill path); renames and
+            # copies are never grandfathered
+        just_targets.add(("skill", path, name))
+
+    budget_new_skills = sorted(
+        {path for _, _, path, _ in new_skills if path not in base_skills}
+    )
+    if len(budget_new_skills) > 1:
+        failures.append(
+            "Proposal budget exceeded: " + str(len(budget_new_skills))
+            + " new skills in one changeset ("
+            + ", ".join(budget_new_skills)
+            + "); at most 1 is allowed - split into independently "
+            "reviewable increments." + suffix
+        )
+
+    # --- New docs -----------------------------------------------------
+    doc_adds = doc_additions(snapshot)
+
+    by_number = {}
+    for number, path in doc_adds:
+        by_number.setdefault(number, []).append(path)
+    for number, paths in sorted(by_number.items()):
+        if len(paths) > 1:
+            failures.append(
+                "Duplicate docs number " + str(number) + " added in the "
+                "same changeset: " + ", ".join(sorted(paths)) + "."
+                + suffix
+            )
+
+    added_paths = {path for _, path in doc_adds}
+    used = collect_doc_numbers(root, base, added_paths, failures)
+    if used is None:
+        used = {}
+    for number, path in sorted(doc_adds):
+        if retired is not None and number in retired:
+            failures.append(
+                "Docs number " + str(number) + " ('" + path
+                + "') is retired and may never be reused." + suffix
+            )
+        elif used.get(number):
+            failures.append(
+                "Duplicate docs number " + str(number) + ": '" + path
+                + "' conflicts with already-used number "
+                "(by " + ", ".join(sorted(used[number])) + ")." + suffix
+            )
+        just_targets.add(("doc", path, number))
+
+    all_current = set(base_docs) | set(used)
+    current_max = max(all_current) if all_current else 0
+    expected = current_max + 1
+    while retired is not None and expected in retired:
+        expected += 1
+    for number, path in sorted(doc_adds):
+        if number != expected:
+            failures.append(
+                "'" + path + "' is not the next free docs number "
+                "(expected " + str(expected) + "; current maximum is "
+                + str(current_max)
+                + "; retired numbers are never reused)." + suffix
+            )
+
+    if len(doc_adds) > 1:
+        failures.append(
+            "Proposal budget exceeded: " + str(len(doc_adds))
+            + " new docs in one changeset ("
+            + ", ".join(sorted(p for _, p in doc_adds))
+            + "); at most 1 is allowed - split into independently "
+            "reviewable increments." + suffix
+        )
+
+
 def main():
     failures = []
     warnings = []
@@ -686,145 +1015,76 @@ def main():
         if base is not None:
             retired = load_retired(root, base, failures, warnings)
 
-    entries = None
+    entries = working = staged = None
     if base is not None:
-        entries = changed_entries(root, base, failures)
+        entries, working, staged = changed_entries(root, base, failures)
 
     if not failures and entries is not None and baseline is not None:
         base_skills, base_docs, base_names = baseline
 
         check_orphan_justifications(root, entries, failures)
 
-        # --- New / renamed-to skills -------------------------------------
-        new_skills = []
-        for status, src, path in entries:
-            name = skill_name_of(path)
-            if name is not None:
-                new_skills.append((status, src, path, name))
+        # Dual-snapshot validation (fail-closed): the working-tree and
+        # staged (index) snapshots are checked INDEPENDENTLY for skill
+        # additions and doc numbering (unique/retired/next-free/budget),
+        # so an indexed retitle cannot override a working-tree addition
+        # and hide duplicate doc numbers; a violation in either snapshot
+        # fails.
+        just_targets = set()
+        for label, snapshot in (("working tree", working),
+                                ("staged index", staged)):
+            check_changeset(root, base, snapshot, failures, baseline,
+                            retired, label, just_targets)
 
-        by_name = {}
-        for _, _, path, name in new_skills:
-            by_name.setdefault(name, []).append(path)
-        for name, paths in sorted(by_name.items()):
-            if len(paths) > 1:
-                failures.append(
-                    "Duplicate skill name '" + name + "' claimed by "
-                    + ", ".join(sorted(paths))
-                    + "; each skill needs its own justification (1:1)."
-                )
-
-        # 1:1 against the FULL tree at the base, not just the changeset: a
-        # new (added, renamed-to or copied) skill path must not reuse a
-        # skill directory name that already exists anywhere in the base
-        # tree.
-        for status, src, path, name in new_skills:
-            if status not in ("A", "R", "C") or name not in base_names:
-                continue
-            if status == "R" and src in base_names[name]:
-                continue  # a pure move keeps the 1:1 name mapping
-            failures.append(
-                "Skill '" + path + "' reuses the skill directory name '"
-                + name + "' which already exists in the full tree at the "
-                "base commit (" + ", ".join(sorted(base_names[name]))
-                + "); skill directory names must be unique across the "
-                "whole tree (1:1, fail-closed)."
-            )
-
-        for status, src, path, name in new_skills:
-            if status == "A" and path in base_skills:
-                continue  # baseline grandfathering: a plain re-add of a
-                # baseline path (compared by full skill path); renames and
-                # copies are never grandfathered
-            prefix = "New/renamed skill '" + path + "'"
-            check_fields(root, JUST_DIR + "/" + name + ".md", SKILL_FIELDS,
-                         failures, prefix)
-
-        budget_new_skills = sorted(
-            {path for _, _, path, _ in new_skills if path not in base_skills}
+        # Union budget: one addition visible only in the staged snapshot
+        # and a different one only in the working tree still count
+        # together against the per-changeset budget.
+        union_new_skills = sorted(
+            {path for _, _, path in entries
+             if skill_name_of(path) is not None and path not in base_skills}
         )
-        if len(budget_new_skills) > 1:
+        if len(union_new_skills) > 1:
             failures.append(
-                "Proposal budget exceeded: " + str(len(budget_new_skills))
+                "Proposal budget exceeded: " + str(len(union_new_skills))
                 + " new skills in one changeset ("
-                + ", ".join(budget_new_skills)
+                + ", ".join(union_new_skills)
                 + "); at most 1 is allowed - split into independently "
                 "reviewable increments."
             )
-
-        # --- New docs -----------------------------------------------------
-        doc_adds = []
-        for status, src, path in entries:
-            match = DOC_NUM_RE.match(path)
-            if not match:
-                continue
-            if status == "A":
-                doc_adds.append((int(match.group(1)), path))
-            elif status in ("R", "C") and src is not None:
-                src_match = DOC_NUM_RE.match(src)
-                if (status == "R" and src_match
-                        and src_match.group(1) == match.group(1)):
-                    continue  # same-number rename: a pure retitle; the
-                    # number is freed and re-used 1:1, so the destination
-                    # is not an addition (a same-number copy keeps the
-                    # source and stays an addition)
-                doc_adds.append((int(match.group(1)), path))
-
-        by_number = {}
-        for number, path in doc_adds:
-            by_number.setdefault(number, []).append(path)
-        for number, paths in sorted(by_number.items()):
-            if len(paths) > 1:
-                failures.append(
-                    "Duplicate docs number " + str(number) + " added in the "
-                    "same changeset: " + ", ".join(sorted(paths)) + "."
-                )
-
-        added_paths = {path for _, path in doc_adds}
-        used = collect_doc_numbers(root, base, added_paths, failures)
-        if used is None:
-            used = {}
-        for number, path in sorted(doc_adds):
-            if retired is not None and number in retired:
-                failures.append(
-                    "Docs number " + str(number) + " ('" + path
-                    + "') is retired and may never be reused."
-                )
-            elif used.get(number):
-                failures.append(
-                    "Duplicate docs number " + str(number) + ": '" + path
-                    + "' conflicts with already-used number "
-                    + "(by " + ", ".join(sorted(used[number])) + ")."
-                )
-            check_fields(root, JUST_DIR + "/docs-" + str(number) + ".md",
-                         DOC_FIELDS, failures,
-                         "New doc '" + path + "'")
-
-        all_current = set(base_docs) | set(used)
-        current_max = max(all_current) if all_current else 0
-        expected = current_max + 1
-        while retired is not None and expected in retired:
-            expected += 1
-        for number, path in sorted(doc_adds):
-            if number != expected:
-                failures.append(
-                    "'" + path + "' is not the next free docs number "
-                    "(expected " + str(expected) + "; current maximum is "
-                    + str(current_max)
-                    + "; retired numbers are never reused)."
-                )
-
-        if len(doc_adds) > 1:
+        union_doc_adds = doc_additions(entries)
+        if len(union_doc_adds) > 1:
             failures.append(
-                "Proposal budget exceeded: " + str(len(doc_adds))
+                "Proposal budget exceeded: " + str(len(union_doc_adds))
                 + " new docs in one changeset ("
-                + ", ".join(sorted(p for _, p in doc_adds))
+                + ", ".join(sorted(p for _, p in union_doc_adds))
                 + "); at most 1 is allowed - split into independently "
                 "reviewable increments."
             )
+
+        # Justifications are validated once per required file; each check
+        # covers BOTH snapshots (staged blob and working tree).
+        for kind, path, arg in sorted(just_targets):
+            if kind == "skill":
+                check_fields(root, JUST_DIR + "/" + arg + ".md",
+                             SKILL_FIELDS, failures,
+                             "New/renamed skill '" + path + "'")
+            else:
+                prefix = "New doc '" + path + "'"
+                check_ambiguous_doc_form(root, arg, failures, prefix)
+                check_fields(root, JUST_DIR + "/docs-justification-"
+                             + str(arg) + ".md", DOC_FIELDS, failures,
+                             prefix)
 
     # --- 500-line limit for every skill in the tree ----------------------
     if not failures and root is not None:
         check_line_limits(root, failures)
+
+    # Identical failures from the two snapshot passes are reported once.
+    deduped = []
+    for failure in failures:
+        if failure not in deduped:
+            deduped.append(failure)
+    failures = deduped
 
     for warning in warnings:
         print("WARN: " + warning)
