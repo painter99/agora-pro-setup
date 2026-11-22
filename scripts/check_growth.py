@@ -583,16 +583,33 @@ def collect_doc_numbers(root, base, added_paths, failures):
     return used
 
 
-def check_orphan_justifications(root, base, entries, base_names, failures):
-    """Every indexed justification must name a base or changeset item."""
-    rc, out, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
+def check_orphan_justifications(root, entries, failures):
+    """Every indexed justification must name a skill or doc that still
+    exists in the PROPOSED tree (or is newly added by the changeset).
+
+    Allowed names are seeded from the proposed tree - the working tree as
+    it would be committed - plus the changeset's additions (which cover
+    staged additions later erased from the working tree). A tracked
+    justification whose skill or doc no longer exists in the proposed
+    tree is an orphan (e.g. left behind by a rename or deletion).
+    """
+    proposed = proposed_tree(root, failures)
+    if proposed is None:
+        return
+    rc, out, err = git(root, "ls-tree", "-r", "--name-only", "-z", proposed,
                        "--", "docs")
     if rc != 0:
         failures.append("git ls-tree failed: " + err.strip())
         return
     numbers = {int(m.group(1)) for path in out.split("\0")
                if (m := DOC_NUM_RE.match(path))}
-    names = set(base_names)
+    rc, out, err = git(root, "ls-tree", "-r", "--name-only", "-z", proposed,
+                       "--", "skills")
+    if rc != 0:
+        failures.append("git ls-tree failed: " + err.strip())
+        return
+    names = {skill_name_of(path) for path in out.split("\0")}
+    names.discard(None)
     for _, _, path in entries:
         name = skill_name_of(path)
         if name is not None:
@@ -676,7 +693,7 @@ def main():
     if not failures and entries is not None and baseline is not None:
         base_skills, base_docs, base_names = baseline
 
-        check_orphan_justifications(root, base, entries, base_names, failures)
+        check_orphan_justifications(root, entries, failures)
 
         # --- New / renamed-to skills -------------------------------------
         new_skills = []

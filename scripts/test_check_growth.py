@@ -389,6 +389,30 @@ class GrowthCheckerTest(unittest.TestCase):
         self.assertIn("skills/justifications/orphan.md", proc.stdout)
         self.assertIn("skills/justifications/docs-99.md", proc.stdout)
 
+    def test_rename_leaves_orphan_justification_fails_then_passes(self):
+        self.default_baseline()
+        self.justification("alpha")
+        self.pin_base()
+        # Rename the skill; leave the old justification behind.
+        git(self.repo, "mv", "skills/fam/alpha", "skills/fam/gamma")
+        self.justification("gamma")
+        self.commit("rename alpha to gamma")
+        proc = self.run_checker()
+        self.assert_fail(proc, "Orphan justifications")
+        self.assertIn("skills/justifications/alpha.md", proc.stdout)
+        # Renaming the justification too resolves the orphan. The target
+        # already exists on disk (it was committed above), so `git mv`
+        # would refuse; rename on the filesystem and stage both paths.
+        alpha = self.repo / "skills" / "justifications" / "alpha.md"
+        gamma = self.repo / "skills" / "justifications" / "gamma.md"
+        alpha.rename(gamma)
+        git(self.repo, "add", "skills/justifications/alpha.md",
+            "skills/justifications/gamma.md")
+        self.commit("rename the justification too")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GROWTH CHECK PASSED", proc.stdout)
+
     def test_upstream_base_when_origin_main_missing(self):
         self.default_baseline()
         git(self.repo, "update-ref", "refs/remotes/other/main", git(self.repo, "rev-parse", "HEAD").stdout.strip())
