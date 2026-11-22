@@ -749,11 +749,11 @@ This table describes the current repository contract, not verified runtime state
 |---|---|---|---|
 | Coordinator | main chat | conversation, intake, permissions, compact briefs, bounded preflight, routing, targeted verification and reporting | routine implementation, qualified review, operator-owned decisions |
 | Builder | Goose on a default light route; the specialist route is reserved for last-instance escalation and independent qualified review only | executable repository, project, setup, system work, tests and bounded fixes | Agora subagents, Goose delegate subagents outside the brief caps, operator questions, unapproved actions; credential or secret access is forbidden by default unless the exact action is explicitly operator-approved under applicable platform policy |
-| Qualified reviewer | separate fresh Goose dispatch on the specialist route (qualified review) | read-only review of final snapshot | review own authorship, implement, grant approvals |
+| Qualified reviewer | separate fresh Goose dispatch; the specialist route is the default qualified reviewer, a later review round may go to a light route only under the operator-directed diversity decision, exactly one reviewer per round (qualified review) | read-only review of final snapshot | review own authorship, implement, grant approvals |
 | Mechanical worker | Goose light route when sufficient and approved | record shaping, bulk edits, format fixes, summaries | qualified review, architecture calls, Agora subagents, Goose delegate subagents outside the brief caps |
 | Researcher | Manus, when explicitly approved and free-tier gates hold | bounded public-data research, sourced advisory digests | repository access, credentials, paid usage, publication, unapproved connectors |
 
-Every brief names the role and route; parallel work needs disjoint scopes, shared budget and reliable isolation. Review rounds carry reviewer diversity: the specialist route is never the only reviewer, and the light routes participate in review rounds. The coordinator verifies returned claims. Other task classes require a recorded authorization before first use.
+Every brief names the role and route; parallel work needs disjoint scopes, shared budget and reliable isolation. Review rounds carry reviewer diversity only under the operator-directed reviewer-assignment rule: the specialist route is the default qualified reviewer, a later review round may go to a light route only under the operator-directed diversity decision, and each round has exactly one reviewer. The coordinator verifies returned claims. Other task classes require a recorded authorization before first use.
 
 ## Where the project-specific procedure lives
 
