@@ -142,9 +142,17 @@ class GrowthCheckerTest(unittest.TestCase):
         return git(self.repo, "rev-parse", "HEAD").stdout.strip()
 
     def pin_base(self):
-        """Commit the baseline and pin it as origin/main."""
+        """Commit the baseline, pin it as origin/main, then advance HEAD.
+
+        The empty commit after the pin models the normal post-pin working
+        state (origin/main behind HEAD). Without it, HEAD would equal
+        origin/main and the push-to-main rule would pin the base to the
+        pin commit's parent, re-checking the pin commit itself.
+        """
         sha = self.commit("baseline")
         git(self.repo, "update-ref", "refs/remotes/origin/main", sha)
+        git(self.repo, "commit", "--allow-empty", "-m",
+            "advance HEAD past the pin")
         return sha
 
     def seed_skill(self, name, family="fam", lines=12):
@@ -188,7 +196,8 @@ class GrowthCheckerTest(unittest.TestCase):
             del values[omit]
         body = "".join(key + ": " + values[key] + "\n" for key in DOC_FIELDS
                        if key in values)
-        write(self.repo / "skills" / "justifications" / ("docs-%d.md" % number),
+        write(self.repo / "skills" / "justifications"
+              / ("docs-justification-%d.md" % number),
               "# justification\n\n" + body)
 
     def run_checker(self, growth_base=None):
@@ -387,7 +396,8 @@ class GrowthCheckerTest(unittest.TestCase):
         proc = self.run_checker()
         self.assert_fail(proc, "Orphan justifications")
         self.assertIn("skills/justifications/orphan.md", proc.stdout)
-        self.assertIn("skills/justifications/docs-99.md", proc.stdout)
+        self.assertIn("skills/justifications/docs-justification-99.md",
+                      proc.stdout)
 
     def test_rename_leaves_orphan_justification_fails_then_passes(self):
         self.default_baseline()
@@ -459,8 +469,9 @@ class GrowthCheckerTest(unittest.TestCase):
         proc = self.run_checker()
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
-    def test_untracked_skill_with_staged_justification_passes(self):
-        """R1 #1: proposed-tree semantics - staged justification accepted."""
+    def test_staged_skill_with_staged_justification_passes(self):
+        """R1 #1: proposed-tree semantics - a staged new skill with a
+        staged justification is accepted."""
         self.default_baseline()
         self.seed_skill("beta")
         self.justification("beta")
@@ -468,6 +479,41 @@ class GrowthCheckerTest(unittest.TestCase):
         proc = self.run_checker()
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("GROWTH CHECK PASSED", proc.stdout)
+
+    def test_genuinely_untracked_skill_detected(self):
+        """R1 finding 6: a skill file that is present but never git-added
+        is still checked via the proposed tree; with its justification
+        staged (tracked content) the same untracked skill passes."""
+        self.default_baseline()
+        self.seed_skill("beta")  # written to disk, never git-added
+        proc = self.run_checker()
+        self.assert_fail(
+            proc,
+            "missing justification file 'skills/justifications/beta.md'",
+        )
+        self.assertIn("skills/fam/beta/SKILL.md", proc.stdout)
+        self.justification("beta")
+        git(self.repo, "add", "skills/justifications/beta.md")  # staged only
+        proc = self.run_checker()  # the skill file is still untracked
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GROWTH CHECK PASSED", proc.stdout)
+
+    def test_push_to_main_tip_commit_additions_detected(self):
+        """R1 finding 1 regression: after a push to main, HEAD and
+        origin/main point at the same commit and the merge-base equals
+        HEAD; the tip commit's own additions must still be checked (the
+        base is pinned to the tip commit's first parent)."""
+        self.default_baseline()
+        write(self.repo / "docs" / "3-next-topic.md", "content\n")
+        self.commit("add doc 3 without a justification")  # tip commit
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        proc = self.run_checker()  # origin/main == HEAD now
+        self.assert_fail(
+            proc,
+            "missing justification file "
+            "'skills/justifications/docs-justification-3.md'",
+        )
 
     def test_growth_base_head_fails(self):
         """R1 #2: GROWTH_BASE resolving to HEAD must fail."""
@@ -564,6 +610,77 @@ class GrowthCheckerTest(unittest.TestCase):
         proc = self.run_checker()
         self.assert_fail(proc, "neither tracked nor staged")
 
+    def test_working_tree_justification_deletion_fails(self):
+        """R1 finding 2: a required justification that is deleted from the
+        working tree after staging fails even though the staged blob is
+        still valid."""
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.justification("beta")
+        git(self.repo, "add", "-A")
+        (self.repo / "skills" / "justifications" / "beta.md").unlink()
+        proc = self.run_checker()
+        self.assert_fail(
+            proc,
+            "'skills/justifications/beta.md' is staged but missing from "
+            "the working tree",
+        )
+
+    def test_indexed_retitle_cannot_mask_working_tree_addition(self):
+        """R1 finding 3: an indexed same-number retitle must not hide a
+        working-tree doc addition with a duplicate number."""
+        self.seed_doc(7, "seven")
+        self.pin_base()
+        # Index: a same-number retitle of docs/7-seven.md (not an
+        # addition). Working tree: a second, untracked doc reusing
+        # number 7 - visible only in the working-tree snapshot.
+        write(self.repo / "docs" / "7-retitled.md", "retitled\n")
+        git(self.repo, "add", "docs/7-seven.md", "docs/7-retitled.md")
+        (self.repo / "docs" / "7-seven.md").unlink()
+        write(self.repo / "docs" / "7-duplicate.md", "duplicate\n")
+        proc = self.run_checker()
+        self.assert_fail(
+            proc,
+            "Duplicate docs number 7 added in the same changeset",
+        )
+
+    def test_ambiguous_doc_justification_name_rejected(self):
+        """R1 finding 4: the ambiguous docs-<number>.md form is rejected;
+        doc justifications must be named docs-justification-<number>.md."""
+        self.default_baseline()
+        write(self.repo / "docs" / "3-next-topic.md", "content\n")
+        self.doc_justification(3)
+        target = self.repo / "skills" / "justifications" / "docs-justification-3.md"
+        target.rename(self.repo / "skills" / "justifications" / "docs-3.md")
+        git(self.repo, "add", "-A")
+        proc = self.run_checker()
+        self.assert_fail(
+            proc,
+            "must be named 'skills/justifications/docs-justification-3.md'",
+        )
+
+    def test_baseline_entry_removal_fails(self):
+        """R1 finding 5: removing a baseline entry that exists at the base
+        commit fails in the staged and in the working-tree snapshot."""
+        self.seed_skill("alpha")
+        self.seed_doc(1, "one")
+        self.pin_base()
+        # Staged removal with an intact working tree.
+        write(self.repo / "scripts" / "growth-baseline.txt",
+              "# baseline\ndoc:1\n")
+        git(self.repo, "add", "scripts/growth-baseline.txt")
+        self.write_baseline()  # working tree still lists skill:alpha
+        self.assert_fail(
+            self.run_checker(),
+            "(index) removes baseline entries skill:alpha",
+        )
+        # Working-tree removal.
+        write(self.repo / "scripts" / "growth-baseline.txt",
+              "# baseline\ndoc:1\n")
+        self.assert_fail(
+            self.run_checker(),
+            "(working tree) removes baseline entries skill:alpha",
+        )
 
     # -- R2 review-fix coverage ----------------------------------------------
 
@@ -683,7 +800,8 @@ class GrowthCheckerTest(unittest.TestCase):
 
 class CheckFormatTest(unittest.TestCase):
     """R2 #7: the skills/justifications/ stray-file exemption is narrow:
-    only the exact expected file names are exempt."""
+    only the exact expected file names are exempt. The ambiguous legacy
+    docs-<number>.md form is not exempt (R1 finding 4)."""
 
     def test_justification_stray_exemption_is_narrow(self):
         tmp = tempfile.TemporaryDirectory()
@@ -693,9 +811,11 @@ class CheckFormatTest(unittest.TestCase):
         scripts.mkdir()
         shutil.copy(SCRIPTS / "check_format.py", scripts / "check_format.py")
         write(root / "skills" / "beta" / "SKILL.md", FORMAT_SKILL_MD)
-        for name in ("TEMPLATE.md", "README.md", "docs-3.md", "beta.md"):
+        for name in ("TEMPLATE.md", "README.md", "docs-justification-3.md",
+                     "beta.md"):
             write(root / "skills" / "justifications" / name, "x\n")
-        write(root / "skills" / "justifications" / "random-notes.md", "x\n")
+        for name in ("random-notes.md", "docs-3.md"):
+            write(root / "skills" / "justifications" / name, "x\n")
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
@@ -709,7 +829,9 @@ class CheckFormatTest(unittest.TestCase):
                        if "(stray Markdown file" in line]
         self.assertEqual(
             stray_lines,
-            ["FAIL skills/justifications/random-notes.md (stray Markdown "
+            ["FAIL skills/justifications/docs-3.md (stray Markdown "
+             "file; Skills live in <dir>/SKILL.md)",
+             "FAIL skills/justifications/random-notes.md (stray Markdown "
              "file; Skills live in <dir>/SKILL.md)"],
         )
 
