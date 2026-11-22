@@ -360,6 +360,46 @@ class GrowthCheckerTest(unittest.TestCase):
             self.run_checker(), "split into independently reviewable increments"
         )
 
+    def test_two_new_skills_budget_fails(self):
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.seed_skill("gamma")
+        self.justification("beta")
+        self.justification("gamma")
+        git(self.repo, "add", "skills")
+        self.assert_fail(self.run_checker(), "Proposal budget exceeded: 2 new skills")
+
+    def test_staged_overlong_skill_fails_with_short_working_tree(self):
+        self.default_baseline()
+        path = self.repo / "skills/fam/alpha/SKILL.md"
+        write(path, skill_md(501))
+        git(self.repo, "add", str(path))
+        write(path, skill_md(12))
+        proc = self.run_checker()
+        self.assert_fail(proc, "skills/fam/alpha/SKILL.md:501 lines")
+        self.assertIn("(staged)", proc.stdout)
+
+    def test_orphan_justifications_fail(self):
+        self.default_baseline()
+        self.justification("orphan")
+        self.doc_justification(99)
+        git(self.repo, "add", "skills/justifications")
+        proc = self.run_checker()
+        self.assert_fail(proc, "Orphan justifications")
+        self.assertIn("skills/justifications/orphan.md", proc.stdout)
+        self.assertIn("skills/justifications/docs-99.md", proc.stdout)
+
+    def test_upstream_base_when_origin_main_missing(self):
+        self.default_baseline()
+        git(self.repo, "update-ref", "refs/remotes/other/main", git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        git(self.repo, "config", "remote.other.fetch", "+refs/heads/*:refs/remotes/other/*")
+        git(self.repo, "config", "branch.main.remote", "other")
+        git(self.repo, "config", "branch.main.merge", "refs/heads/main")
+        git(self.repo, "update-ref", "-d", "refs/remotes/origin/main")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("other/main", proc.stdout)
+
     def test_overlong_skill_fails(self):
         self.seed_skill("big", lines=501)
         self.seed_doc(1, "one")

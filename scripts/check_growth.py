@@ -10,6 +10,7 @@ checks. It never weakens or replaces an existing check; it only adds rules:
      must be an ancestor of HEAD (git merge-base --is-ancestor); a base
      outside HEAD's history would compare unrelated trees;
    - else git merge-base HEAD origin/main, if the origin/main ref exists;
+   - else git merge-base HEAD HEAD@{upstream}, if the upstream exists;
    - else FAIL with a clear message naming the remedy (set GROWTH_BASE to
      a verified base commit). There is no fallback to HEAD, because that
      could hide additions.
@@ -42,8 +43,9 @@ checks. It never weakens or replaces an existing check; it only adds rules:
    nonempty fields is required.
 4. Proposal budget: at most 1 new skill AND at most 1 new doc per changeset;
    more must be split into independently reviewable increments.
-5. Every skills/**/SKILL.md in the tree is limited to 500 lines (baseline
-   items are exempt from justifications, never from this limit).
+5. Every skills/**/SKILL.md in the index and working tree is limited to
+   500 lines (baseline items are never exempt). Tracked justifications must
+   correspond to a skill or doc at the base or in the changeset.
 
 The checker verifies presence and structure, not truth; review assesses
 content. Stdlib only, deterministic, fail-closed.
@@ -140,22 +142,24 @@ def get_base(root, failures):
         return resolved, "GROWTH_BASE"
     rc, out, _ = git(root, "rev-parse", "--verify", "--quiet",
                      "refs/remotes/origin/main")
-    if rc == 0 and out.strip():
-        rc2, merge_base, err2 = git(root, "merge-base", "HEAD", "origin/main")
-        if rc2 != 0 or not merge_base.strip():
+    candidate = "origin/main" if rc == 0 and out.strip() else None
+    if candidate is None:
+        rc, out, _ = git(root, "rev-parse", "--abbrev-ref", "HEAD@{upstream}")
+        if rc == 0 and out.strip():
+            candidate = out.strip()
+    if candidate is not None:
+        rc, merge_base, err = git(root, "merge-base", "HEAD", candidate)
+        if rc != 0 or not merge_base.strip():
             failures.append(
-                "Cannot compute git merge-base HEAD origin/main: "
-                + err2.strip()
-                + "; refusing to fall back to HEAD (fail-closed)."
+                "Cannot compute git merge-base HEAD " + candidate + ": "
+                + err.strip() + "; refusing to fall back to HEAD (fail-closed)."
             )
             return None, None
-        return merge_base.strip(), "merge-base HEAD origin/main"
+        return merge_base.strip(), "merge-base HEAD " + candidate
     failures.append(
-        "No growth base available: set GROWTH_BASE to a verified base "
-        "commit (a commit that is an ancestor of HEAD), or ensure the "
-        "'origin/main' ref exists (e.g. after a shallow or PR checkout, "
-        "fetch the base). Refusing to fall back to HEAD, because that "
-        "could hide additions (fail-closed)."
+        "No growth base available: set GROWTH_BASE to a verified ancestor, "
+        "fetch origin/main, or configure a resolvable upstream. Refusing "
+        "to fall back to HEAD (fail-closed)."
     )
     return None, None
 
@@ -579,20 +583,76 @@ def collect_doc_numbers(root, base, added_paths, failures):
     return used
 
 
+def check_orphan_justifications(root, base, entries, base_names, failures):
+    """Every indexed justification must name a base or changeset item."""
+    rc, out, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
+                       "--", "docs")
+    if rc != 0:
+        failures.append("git ls-tree failed: " + err.strip())
+        return
+    numbers = {int(m.group(1)) for path in out.split("\0")
+               if (m := DOC_NUM_RE.match(path))}
+    names = set(base_names)
+    for _, _, path in entries:
+        name = skill_name_of(path)
+        if name is not None:
+            names.add(name)
+        match = DOC_NUM_RE.match(path)
+        if match:
+            numbers.add(int(match.group(1)))
+    rc, out, err = git(root, "ls-files", "--cached", "-z", "--", JUST_DIR)
+    if rc != 0:
+        failures.append("git ls-files failed: " + err.strip())
+        return
+    orphans = []
+    for path in sorted(out.split("\0")):
+        if not path.endswith(".md"):
+            continue
+        relative = path[len(JUST_DIR) + 1:]
+        if relative in ("TEMPLATE.md", "README.md"):
+            continue
+        name = relative[:-3]
+        match = re.fullmatch(r"docs-(\d+)", name)
+        if name not in names and not (match and int(match.group(1)) in numbers):
+            orphans.append(path)
+    if orphans:
+        failures.append("Orphan justifications: " + ", ".join(orphans))
+
+
 def check_line_limits(root, failures):
     skills_dir = root / "skills"
     if not skills_dir.is_dir():
         failures.append("skills/ directory is missing (fail-closed).")
+    else:
+        for path in sorted(skills_dir.rglob("SKILL.md")):
+            with path.open("rb") as handle:
+                count = sum(1 for _ in handle)
+            if count > MAX_SKILL_LINES:
+                failures.append(
+                    str(path.relative_to(root)) + ":" + str(count)
+                    + " lines exceeds the " + str(MAX_SKILL_LINES)
+                    + "-line Skill limit (working tree)."
+                )
+    rc, out, err = git(root, "ls-files", "--cached", "--stage", "-z", "--", "skills")
+    if rc != 0:
+        failures.append("git ls-files failed: " + err.strip())
         return
-    for path in sorted(skills_dir.rglob("SKILL.md")):
-        with path.open("rb") as handle:
-            count = sum(1 for _ in handle)
+    for entry in out.split("\0"):
+        if not entry:
+            continue
+        metadata, path = entry.split("\t", 1)
+        if skill_name_of(path) is None:
+            continue
+        sha = metadata.split()[1]
+        proc = subprocess.run(["git", "-C", str(root), "cat-file", "blob", sha],
+                              capture_output=True)
+        if proc.returncode != 0:
+            failures.append("git cat-file failed for " + path + " (fail-closed).")
+            continue
+        count = proc.stdout.count(b"\n") + bool(proc.stdout and not proc.stdout.endswith(b"\n"))
         if count > MAX_SKILL_LINES:
-            rel = path.relative_to(root)
-            failures.append(
-                str(rel) + ":" + str(count) + " lines exceeds the "
-                + str(MAX_SKILL_LINES) + "-line Skill limit."
-            )
+            failures.append(path + ":" + str(count) + " lines exceeds the "
+                            + str(MAX_SKILL_LINES) + "-line Skill limit (staged).")
 
 
 def main():
@@ -615,6 +675,8 @@ def main():
 
     if not failures and entries is not None and baseline is not None:
         base_skills, base_docs, base_names = baseline
+
+        check_orphan_justifications(root, base, entries, base_names, failures)
 
         # --- New / renamed-to skills -------------------------------------
         new_skills = []
