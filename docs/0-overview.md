@@ -123,3 +123,28 @@ New content
   in a private project adapter.
 - Proposed coordination and external research architecture: `docs/36` (draft,
   not independently reviewed after revision or deployed).
+
+## Stack layers and owners
+
+The stack has four layers: **Agora** (the governed agent application),
+**Goose** (the second, coding-side agent, bridged by `docs/34`), and two
+optional, unverified components: **Manus** (external research, `docs/36`
+draft) and **Obsidian** (private operator vault, last row below). This
+section is an owner index, not a second authority: every linked document
+remains the sole owner of its facts. Private (instance-side) owners are
+named only as generic classes — this repository never holds live prompts,
+schedules, instance paths or private records. "Optional" means the
+component is not part of the verified setup; nothing here implies
+deployment or new runtime behavior.
+
+| Artifact class | Canonical owner | Public / private boundary | Derivation / verification |
+|---|---|---|---|
+| Architecture, boundaries, data flows | `docs/0-overview.md` (this map) plus each domain doc for its own facts (`docs/17`, `docs/28`, `docs/29`, `docs/30`, `docs/33`, `docs/34`, `docs/37`); approved decisions in `decisions/README.md` | Generic and public; instance-specific component facts live in the private instance overlay, described generically by `docs/30` | `README.md` and `AGENTS.md` are audience-specific navigation indexes — update when an owner changes; verify targets and sample claims, not only links |
+| Role and permission policy | `system-prompt/` templates, `docs/17`, `docs/33`, Part 2 of `docs/34` (binding bridge contract); Skill `agora-goose-bridge` implements the workflow | Part 1 of `docs/34` is a dated case study, not policy; actual instance restrictions may tighten but never loosen these floors | `README.md`, `AGENTS.md` and this document navigate only; none creates a competing role policy |
+| Skills | `skills/<family>/<name>/SKILL.md`; format `skills/skill-format.md`; catalog `skills/skill-catalog.md`; inventory `manifest.yaml` | Deployed Skill stores and Goose copies are deployment observations, not alternative policy owners | Catalog entries derive from each Skill's frontmatter description; verify against a fresh complete store export (name, bytes, direction); mismatches are reported, not overwritten |
+| Tasks (automation) | `tasks/*.md` generic reference cards (`tasks/README.md`); automation model `docs/16` | Live task prompts, permissions and schedules are private runtime state; the live original stays authority until any verified cutover — none is assumed | Private run briefs and configurations, where they exist, derive clause-by-clause from securely captured live prompts and are reviewed before use; a live scheduler read proves current state, a snapshot only a past state |
+| Spend | `docs/37` (generic policy) | Observed budgets, gateway usage and dispatch ledgers are private instance records | Bounded private rollups with time window and provenance; token counts do not prove cost |
+| Run evidence and memory | Governance is public: `docs/4`, `docs/13`, `docs/20`, `docs/29`; content is private | Original reports, gateway logs, working state and Saved Memory files each own their own observed facts | Dated summaries cite immutable source identity and status; a derived summary never becomes the primary record |
+| Two-agent bridge (Goose) | Part 2 of `docs/34` with Skill `agora-goose-bridge`; generic adaptation guide `docs/35` | Dispatch and review records are private runtime evidence; local details live in a private project adapter | Briefs and reports follow the binding contract; the shared Skill templates never override it |
+| External research (Manus) — optional, unverified | `docs/36` is a preservation draft, explicitly not operating policy | Any approved public-data use registry and access records are private | Nothing derives from this layer today; no new external dispatch is implied by this map |
+| Operator vault (Obsidian) — optional, unverified | No owner here: any such view is derived, never authority; exchange transport is `docs/27` | A view is a sanitized export of private approved sources; vault edits are annotations only and cannot update sources or execute tasks | A derived view carries source identifiers, generation timestamp and an explicit derived marker, and is regenerated from its owners; delivery is not verified viewing |
