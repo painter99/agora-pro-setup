@@ -7,6 +7,7 @@ and runs the real checker as a subprocess against that repository. Tests are
 independent, need no network, and write nothing outside their temp directory.
 """
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -40,6 +41,45 @@ DOC_FIELDS = [
     "Maintenance owner",
     "Expected reader",
 ]
+
+
+# Minimal valid SKILL.md for the CheckFormatTest fixture (finding R2 #7).
+FORMAT_SKILL_MD = (
+    "---\n"
+    "name: beta\n"
+    "description: A test skill\n"
+    "license: MIT\n"
+    "---\n"
+    "\n"
+    "# Skill: beta\n"
+    "\n"
+    "## Catalog description\n"
+    "A test skill\n"
+    "\n"
+    "## Purpose\n"
+    "p\n"
+    "\n"
+    "## Load when\n"
+    "l\n"
+    "\n"
+    "## Do not load when\n"
+    "d\n"
+    "\n"
+    "## Dependencies\n"
+    "None.\n"
+    "\n"
+    "## Workflow\n"
+    "w\n"
+    "\n"
+    "## Forbidden behavior\n"
+    "f\n"
+    "\n"
+    "## Verification\n"
+    "v\n"
+    "\n"
+    "## Output contract\n"
+    "o\n"
+)
 
 
 def git(cwd, *args):
@@ -419,7 +459,7 @@ class GrowthCheckerTest(unittest.TestCase):
         self.doc_justification(19)
         self.commit("un-retire 19 and reuse it")
         self.assert_fail(self.run_checker(),
-                         "is retired and may never be reused")
+                         "removes retired number")
 
     def test_registry_absent_at_base_warns_and_treats_empty(self):
         """R1 #5: registry newly introduced - empty set with a warning."""
@@ -445,6 +485,133 @@ class GrowthCheckerTest(unittest.TestCase):
         git(self.repo, "add", "skills/fam/beta/SKILL.md")
         proc = self.run_checker()
         self.assert_fail(proc, "neither tracked nor staged")
+
+
+    # -- R2 review-fix coverage ----------------------------------------------
+
+    def test_growth_base_non_ancestor_fails(self):
+        """R2 #1: GROWTH_BASE must be an ancestor of HEAD (fail-closed)."""
+        self.default_baseline()
+        base = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "commit", "--allow-empty", "-m", "advance HEAD")
+        git(self.repo, "checkout", "--orphan", "unrelated")
+        git(self.repo, "commit", "--allow-empty", "-m", "unrelated root")
+        sibling = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "checkout", "main")
+        proc = self.run_checker(growth_base=sibling)
+        self.assert_fail(proc, "is not an ancestor of HEAD")
+        self.assertIn("GROWTH_BASE", proc.stdout)
+        # a verified base (a real ancestor of HEAD) still passes
+        proc = self.run_checker(growth_base=base)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+
+    def test_force_added_ignored_staged_file_survives(self):
+        """R2 #2: staged force-added ignored files stay in the proposed
+        tree (seeded from the real index, not from HEAD)."""
+        write(self.repo / ".gitignore", "secret-skill/\n")
+        self.default_baseline()
+        write(self.repo / "skills" / "fam" / "secret-skill" / "SKILL.md",
+              skill_md())
+        git(self.repo, "add", "-f", "skills/fam/secret-skill/SKILL.md")
+        self.assert_fail(
+            self.run_checker(),
+            "missing justification file "
+            "'skills/justifications/secret-skill.md'",
+        )
+
+    def test_justification_blob_authoritative_symlink_rejected(self):
+        """R2 #3: validate the staged blob, not working-tree content;
+        symlinked justification files are rejected."""
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.justification("beta")
+        path = self.repo / "skills" / "justifications" / "beta.md"
+        complete = path.read_text(encoding="utf-8")
+        path.write_text("# justification\n\nProblem: p\n", encoding="utf-8")
+        git(self.repo, "add", "skills/justifications/beta.md")
+        path.write_text(complete, encoding="utf-8")
+        git(self.repo, "commit", "-m",
+            "stage an incomplete justification blob")
+        # a justification staged as a symlink is rejected outright
+        self.seed_skill("gamma")
+        target = self.repo / "outside-gamma.md"
+        target.write_text(complete, encoding="utf-8")
+        os.symlink(target,
+                   self.repo / "skills" / "justifications" / "gamma.md")
+        git(self.repo, "add", "skills/justifications/gamma.md")
+        proc = self.run_checker()
+        self.assert_fail(proc, "is missing field 'Eval'")
+        self.assertIn("symlink", proc.stdout)
+
+    def test_exotic_path_z_parsing(self):
+        """R2 #4: diff --name-status -z parsing for exotic paths (unicode
+        and spaces); the exact unquoted justification name matches."""
+        self.default_baseline()
+        name = "naïve skill"
+        write(self.repo / "skills" / "fam" / name / "SKILL.md", skill_md())
+        self.justification(name)
+        self.commit("add a skill with a unicode name containing a space")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GROWTH CHECK PASSED", proc.stdout)
+
+    def test_skill_name_reuse_across_categories_fails(self):
+        """R2 #5: a new skill reusing a skill dir name that exists anywhere
+        in the FULL tree at the base fails, even outside the changeset."""
+        self.default_baseline()  # base tree has skills/fam/alpha
+        self.seed_skill("alpha", family="other")
+        self.justification("alpha")
+        self.commit("add skills/other/alpha reusing the name alpha")
+        self.assert_fail(
+            self.run_checker(),
+            "reuses the skill directory name 'alpha'",
+        )
+
+    def test_registry_number_removal_fails(self):
+        """R2 #6: a number present at the base but missing from the
+        working-tree registry fails (entries may only be added)."""
+        self.seed_doc(1, "one")
+        self.pin_base()  # registry at the base lists 19
+        write(self.repo / "scripts" / "docs-retired-numbers.txt",
+              "# 19 removed in this changeset\n")
+        self.commit("remove 19 from the registry")
+        self.assert_fail(
+            self.run_checker(),
+            "may only be added, never removed",
+        )
+
+
+class CheckFormatTest(unittest.TestCase):
+    """R2 #7: the skills/justifications/ stray-file exemption is narrow:
+    only the exact expected file names are exempt."""
+
+    def test_justification_stray_exemption_is_narrow(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = Path(tmp.name)
+        scripts = root / "scripts"
+        scripts.mkdir()
+        shutil.copy(SCRIPTS / "check_format.py", scripts / "check_format.py")
+        write(root / "skills" / "beta" / "SKILL.md", FORMAT_SKILL_MD)
+        for name in ("TEMPLATE.md", "README.md", "docs-3.md", "beta.md"):
+            write(root / "skills" / "justifications" / name, "x\n")
+        write(root / "skills" / "justifications" / "random-notes.md", "x\n")
+        env = dict(os.environ)
+        env["PYTHONDONTWRITEBYTECODE"] = "1"
+        proc = subprocess.run(
+            [sys.executable, str(scripts / "check_format.py")],
+            cwd=str(root),
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        stray_lines = [line for line in proc.stdout.splitlines()
+                       if "(stray Markdown file" in line]
+        self.assertEqual(
+            stray_lines,
+            ["FAIL skills/justifications/random-notes.md (stray Markdown "
+             "file; Skills live in <dir>/SKILL.md)"],
+        )
 
 
 if __name__ == "__main__":

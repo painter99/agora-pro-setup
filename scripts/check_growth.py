@@ -6,14 +6,20 @@ checks. It never weakens or replaces an existing check; it only adds rules:
 
 1. Base selection (fail-closed, never HEAD):
    - env GROWTH_BASE, if set, must resolve to a commit that differs from
-     HEAD (a pinned base equal to HEAD would hide every addition);
+     HEAD (a pinned base equal to HEAD would hide every addition) and
+     must be an ancestor of HEAD (git merge-base --is-ancestor); a base
+     outside HEAD's history would compare unrelated trees;
    - else git merge-base HEAD origin/main, if the origin/main ref exists;
-   - else FAIL with a clear message. There is no fallback to HEAD, because
-     that could hide additions.
+   - else FAIL with a clear message naming the remedy (set GROWTH_BASE to
+     a verified base commit). There is no fallback to HEAD, because that
+     could hide additions.
 2. The changeset is the diff between the base commit and the PROPOSED TREE:
-   the working tree as it would be committed (tracked files with staged and
-   unstaged changes plus untracked non-ignored files), materialized through
-   a temporary copy of the index, so uncommitted additions are visible.
+   the working tree as it would be committed (the ACTUAL index state,
+   including force-added ignored files that are staged, plus unstaged
+   changes to tracked files plus untracked non-ignored files),
+   materialized through a temporary index file seeded from the real index
+   (GIT_INDEX_FILE), so uncommitted additions are visible without ever
+   touching the real index.
    Every newly added or renamed-to skills/**/SKILL.md requires
    skills/justifications/<skill-dir-name>.md with all required fields
    nonempty, and the justification file must be tracked or at least staged
@@ -42,6 +48,7 @@ content. Stdlib only, deterministic, fail-closed.
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -118,6 +125,16 @@ def get_base(root, failures):
                 "addition (fail-closed)."
             )
             return None, None
+        rc3, _, _ = git(root, "merge-base", "--is-ancestor", resolved, "HEAD")
+        if rc3 != 0:
+            failures.append(
+                "GROWTH_BASE '" + env_base + "' (" + resolved[:12]
+                + ") is not an ancestor of HEAD (git merge-base "
+                "--is-ancestor); a base outside the current history would "
+                "compare unrelated trees. Set GROWTH_BASE to a verified "
+                "base commit that is an ancestor of HEAD (fail-closed)."
+            )
+            return None, None
         return resolved, "GROWTH_BASE"
     rc, out, _ = git(root, "rev-parse", "--verify", "--quiet",
                      "refs/remotes/origin/main")
@@ -132,9 +149,11 @@ def get_base(root, failures):
             return None, None
         return merge_base.strip(), "merge-base HEAD origin/main"
     failures.append(
-        "No growth base available: set GROWTH_BASE to a pinned base commit, or "
-        "ensure the 'origin/main' ref exists. Refusing to fall back to HEAD, "
-        "because that could hide additions (fail-closed)."
+        "No growth base available: set GROWTH_BASE to a verified base "
+        "commit (a commit that is an ancestor of HEAD), or ensure the "
+        "'origin/main' ref exists (e.g. after a shallow or PR checkout, "
+        "fetch the base). Refusing to fall back to HEAD, because that "
+        "could hide additions (fail-closed)."
     )
     return None, None
 
@@ -206,6 +225,10 @@ def load_baseline(root, base, failures):
     exist at the base (the baseline is being introduced by this very
     changeset), the grandfather set is empty: every added skill then needs
     its own justification.
+
+    Returns (baseline skill paths, baseline doc numbers, and a mapping of
+    skill directory name -> base-tree paths for EVERY skill in the base
+    tree, used for full-tree 1:1 name enforcement).
     """
     path = root / "scripts" / "growth-baseline.txt"
     if not path.is_file():
@@ -220,19 +243,21 @@ def load_baseline(root, base, failures):
         return set(), set()
     rc, out, _ = git(root, "show", base + ":scripts/growth-baseline.txt")
     if rc != 0:
-        return set(), set()
+        return set(), set(), {}
     entries, docs = parse_baseline(out.splitlines(), failures,
                                    "scripts/growth-baseline.txt (base "
                                    + base[:12] + ")")
-    rc, lst, err = git(root, "ls-tree", "-r", "--name-only", base, "--",
-                       "skills")
+    rc, lst, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
+                       "--", "skills")
     if rc != 0:
         failures.append("git ls-tree failed: " + err.strip())
-        return set(), docs
+        return set(), docs, {}
     base_paths = set()
     by_name = {}
-    for line in lst.splitlines():
+    for line in lst.split("\0"):
         rel = line.strip()
+        if not rel:
+            continue
         name = skill_name_of(rel)
         if name is not None:
             base_paths.add(rel)
@@ -255,7 +280,7 @@ def load_baseline(root, base, failures):
                     + "); list the full path to disambiguate."
                 )
             skills.update(matches)
-    return skills, docs
+    return skills, docs, by_name
 
 
 def parse_retired(lines, failures, source):
@@ -277,7 +302,9 @@ def parse_retired(lines, failures, source):
 def load_retired(root, base, failures, warnings):
     """Retired docs numbers, read at the base commit (same rule as the
     baseline): a changeset cannot un-retire a number by editing the registry
-    in the same changeset. When the registry does not exist at the base (it
+    in the same changeset. The registry is add-only: a number registered at
+    the base commit may never be removed from the working-tree registry.
+    When the registry does not exist at the base (it
     is newly introduced by this very changeset), the retired set is empty
     with a warning, not an error."""
     rc, out, _ = git(root, "show",
@@ -295,9 +322,18 @@ def load_retired(root, base, failures, warnings):
                                 + base[:12] + ")")
     path = root / "scripts" / "docs-retired-numbers.txt"
     if path.is_file():
-        parse_retired(path.read_text(encoding="utf-8").splitlines(),
-                      failures,
-                      "scripts/docs-retired-numbers.txt (working tree)")
+        working = parse_retired(
+            path.read_text(encoding="utf-8").splitlines(), failures,
+            "scripts/docs-retired-numbers.txt (working tree)")
+        missing = retired - working
+        if missing:
+            failures.append(
+                "scripts/docs-retired-numbers.txt (working tree) removes "
+                "retired number(s) "
+                + ", ".join(str(n) for n in sorted(missing))
+                + " that are registered at the base commit; registry "
+                "entries may only be added, never removed (fail-closed)."
+            )
     elif retired:
         failures.append(
             "scripts/docs-retired-numbers.txt is missing from the working "
@@ -311,22 +347,42 @@ def load_retired(root, base, failures, warnings):
 def proposed_tree(root, failures):
     """Materialize the PROPOSED TREE and return its tree sha.
 
-    The proposed tree is the working tree as it would be committed: tracked
-    files with their staged and unstaged changes plus untracked non-ignored
-    files. It is built in a temporary copy of the index (read-tree HEAD,
-    then add -A, which respects .gitignore), so the real index is left
-    untouched and the result is deterministic. Any git error is fail-closed.
+    The proposed tree is the working tree as it would be committed: the
+    ACTUAL index state (staged entries, including force-added ignored
+    files) plus unstaged changes to tracked files plus untracked
+    non-ignored files. It is built in a temporary index file
+    (GIT_INDEX_FILE) seeded as a byte copy of the real index - never from
+    HEAD, because read-tree HEAD would drop force-added staged entries
+    that .gitignore hides from git add -A. The real index is left
+    untouched (no race with concurrent index writes) and the result is
+    deterministic. Any git error is fail-closed.
     """
+    rc, out, err = git(root, "rev-parse", "--git-path", "index")
+    if rc != 0 or not out.strip():
+        failures.append(
+            "git rev-parse --git-path index failed while locating the "
+            "index: " + (err or out).strip() + " (fail-closed)."
+        )
+        return None
+    source = Path(out.strip())
+    if not source.is_absolute():
+        source = root / source
     fd, index_path = tempfile.mkstemp(prefix="growth-index-")
     os.close(fd)
     try:
         env = dict(os.environ)
         env["GIT_INDEX_FILE"] = index_path
-        steps = (
-            (("read-tree", "HEAD"), "git read-tree HEAD", False),
-            (("add", "-A", "--", "."), "git add -A", False),
-            (("write-tree",), "git write-tree", True),
-        )
+        steps = []
+        if source.is_file():
+            # Seed from the real index: preserves every staged entry,
+            # including force-added ignored files.
+            shutil.copyfile(str(source), index_path)
+        else:
+            # No index file yet (fresh checkout): fall back to HEAD; a
+            # missing HEAD then fails closed on read-tree below.
+            steps.append((("read-tree", "HEAD"), "git read-tree HEAD", False))
+        steps.append((("add", "-A", "--", "."), "git add -A", False))
+        steps.append((("write-tree",), "git write-tree", True))
         tree = None
         for args, label, needs_output in steps:
             proc = subprocess.run(["git", "-C", str(root)] + list(args),
@@ -355,22 +411,32 @@ def changed_entries(root, base, failures):
     tree = proposed_tree(root, failures)
     if tree is None:
         return None
-    rc, out, err = git(root, "diff", "--name-status", "-M", base, tree)
+    rc, out, err = git(root, "diff", "--name-status", "-z", "-M", base, tree)
     if rc != 0:
         failures.append("git diff failed: " + err.strip())
         return None
     entries = []
-    for line in out.splitlines():
-        if not line.strip():
+    # NUL-delimited parsing (-z): quoted or exotic paths (spaces, unicode,
+    # quotes) cannot evade detection.
+    tokens = out.split("\0")
+    i = 0
+    while i < len(tokens):
+        head = tokens[i]
+        i += 1
+        if not head:
             continue
-        parts = line.split("\t")
-        if len(parts) < 2:
-            continue
-        status = "".join(ch for ch in parts[0] if ch.isalpha())
+        status = "".join(ch for ch in head if ch.isalpha())
         if status == "A":
-            entries.append((status, None, parts[1]))
-        elif status in ("R", "C") and len(parts) >= 3:
-            entries.append((status, parts[1], parts[2]))
+            if i < len(tokens) and tokens[i]:
+                entries.append(("A", None, tokens[i]))
+            i += 1
+        elif status in ("R", "C"):
+            if i + 1 < len(tokens) and tokens[i] and tokens[i + 1]:
+                entries.append((status, tokens[i], tokens[i + 1]))
+            i += 2
+        else:
+            # D/M/T and every other status carry one path token; skipped.
+            i += 1
     return entries
 
 
@@ -383,19 +449,64 @@ def skill_name_of(path):
 
 
 def check_fields(root, relpath, fields, failures, prefix):
+    """Validate a justification file by its STAGED/COMMITTED blob content.
+
+    The blob recorded in the git index - the content a commit would carry
+    (git cat-file) - is authoritative: working-tree content is never
+    validated, so an edit after staging cannot change the verdict in
+    either direction. Symlinked justification files are rejected (an
+    index entry with mode 120000, or a working-tree symlink), because a
+    symlink could point outside skills/justifications/. A file that is
+    neither tracked nor staged is rejected: untracked-only justification
+    files are not accepted (fail-closed).
+    """
     path = root / relpath
-    if not path.is_file():
-        failures.append(prefix + ": missing justification file '" + relpath
-                        + "'.")
-        return
-    rc, _, _ = git(root, "ls-files", "--error-unmatch", "--", relpath)
+    rc, out, _ = git(root, "ls-files", "--cached", "--stage", "-z", "--",
+                     relpath)
     if rc != 0:
-        failures.append(prefix + ": '" + relpath + "' is neither tracked nor "
-                        "staged in the git index (git ls-files); untracked-"
-                        "only justification files are not accepted "
-                        "(fail-closed).")
+        failures.append(prefix + ": git ls-files failed for '" + relpath
+                        + "' (fail-closed).")
+        return
+    entries = [entry for entry in out.split("\0") if entry]
+    if not entries:
+        if path.is_file() or path.is_symlink():
+            failures.append(prefix + ": '" + relpath + "' is neither tracked "
+                            "nor staged in the git index (git ls-files); "
+                            "untracked-only justification files are not "
+                            "accepted (fail-closed).")
+        else:
+            failures.append(prefix + ": missing justification file '"
+                            + relpath + "'.")
+        return
+    meta, _, _ = entries[0].partition("\t")
+    parts = meta.split()
+    if len(parts) != 3:
+        failures.append(prefix + ": cannot parse the git index entry for '"
+                        + relpath + "' (fail-closed).")
+        return
+    mode, sha, stage = parts
+    if stage != "0":
+        failures.append(prefix + ": '" + relpath + "' is unmerged in the "
+                        "git index (stage " + stage + "); resolve the "
+                        "conflict and re-stage (fail-closed).")
+        return
+    if mode == "120000":
+        failures.append(prefix + ": '" + relpath + "' is staged as a "
+                        "symlink; symlinked justification files are "
+                        "rejected (fail-closed).")
+        return
+    if path.is_symlink():
+        failures.append(prefix + ": '" + relpath + "' is a symlink in the "
+                        "working tree; symlinked justification files are "
+                        "rejected (fail-closed).")
+        return
+    rc, blob, err = git(root, "cat-file", "blob", sha)
+    if rc != 0:
+        failures.append(prefix + ": cannot read the staged blob for '"
+                        + relpath + "': " + err.strip() + " (fail-closed).")
+        return
     parsed = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in blob.splitlines():
         match = FIELD_RE.match(line)
         if match:
             label = match.group(1).strip()
@@ -417,15 +528,18 @@ def collect_doc_numbers(root, base, added_paths, failures):
     def add(number, label):
         used.setdefault(number, set()).add(label)
 
-    rc, out, err = git(root, "ls-tree", "-r", "--name-only", base, "--",
-                       "docs")
+    rc, out, err = git(root, "ls-tree", "-r", "--name-only", "-z", base,
+                       "--", "docs")
     if rc != 0:
         failures.append("git ls-tree failed: " + err.strip())
         return None
-    for path in out.splitlines():
-        match = DOC_NUM_RE.match(path.strip())
+    for path in out.split("\0"):
+        path = path.strip()
+        if not path:
+            continue
+        match = DOC_NUM_RE.match(path)
         if match:
-            add(int(match.group(1)), path.strip() + " (in base)")
+            add(int(match.group(1)), path + " (in base)")
     docs_dir = root / "docs"
     if docs_dir.is_dir():
         for path in sorted(docs_dir.glob("*.md")):
@@ -473,7 +587,7 @@ def main():
         entries = changed_entries(root, base, failures)
 
     if not failures and entries is not None and baseline is not None:
-        base_skills, base_docs = baseline
+        base_skills, base_docs, base_names = baseline
 
         # --- New / renamed-to skills -------------------------------------
         new_skills = []
@@ -492,6 +606,23 @@ def main():
                     + ", ".join(sorted(paths))
                     + "; each skill needs its own justification (1:1)."
                 )
+
+        # 1:1 against the FULL tree at the base, not just the changeset: a
+        # new (added, renamed-to or copied) skill path must not reuse a
+        # skill directory name that already exists anywhere in the base
+        # tree.
+        for status, src, path, name in new_skills:
+            if status not in ("A", "R", "C") or name not in base_names:
+                continue
+            if status == "R" and src in base_names[name]:
+                continue  # a pure move keeps the 1:1 name mapping
+            failures.append(
+                "Skill '" + path + "' reuses the skill directory name '"
+                + name + "' which already exists in the full tree at the "
+                "base commit (" + ", ".join(sorted(base_names[name]))
+                + "); skill directory names must be unique across the "
+                "whole tree (1:1, fail-closed)."
+            )
 
         for status, src, path, name in new_skills:
             if status == "A" and path in base_skills:
