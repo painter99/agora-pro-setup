@@ -179,4 +179,4 @@ of this Skill. The canonical Skill directory is
 - `docs/34-agora-goose-bridge.md` — the shared workflow record read by both agents, including the swarm role table and the lessons from the full-cycle day.
 - `docs/37-spend-observability.md` — the spend policy the budget section implements.
 - `skills/coordination/context-management/SKILL.md` — the brief construction rules this Skill relies on.
-- The project-specific operating procedure lives in the project repository (for the AIPT project: `docs/collaboration-workflow.md`), together with the project adapter under `.agents/skills/`. The generic contract stays here; the project specifics stay there.
+- The project-specific operating procedure lives in the project repository (for a specific project: `docs/collaboration-workflow.md`), together with the project adapter under `.agents/skills/`. The generic contract stays here; the project specifics stay there.
