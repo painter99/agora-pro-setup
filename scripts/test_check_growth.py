@@ -205,6 +205,8 @@ class GrowthCheckerTest(unittest.TestCase):
         self.default_baseline()
         git(self.repo, "update-ref", "-d", "refs/remotes/origin/main")
         base = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        # R1 #2: a pinned base must differ from HEAD, so advance HEAD first
+        git(self.repo, "commit", "--allow-empty", "-m", "advance HEAD")
         proc = self.run_checker(growth_base=base)
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
@@ -326,6 +328,123 @@ class GrowthCheckerTest(unittest.TestCase):
             self.run_checker(),
             "501 lines exceeds the 500-line Skill limit",
         )
+
+    # -- R1 review-fix coverage ----------------------------------------------
+
+    def test_uncommitted_untracked_addition_detected(self):
+        """R1 #1: an untracked, uncommitted new skill must be visible."""
+        self.default_baseline()
+        self.seed_skill("beta")  # untracked; no justification anywhere
+        proc = self.run_checker()
+        self.assert_fail(
+            proc,
+            "missing justification file 'skills/justifications/beta.md'",
+        )
+
+    def test_untracked_skill_with_staged_justification_passes(self):
+        """R1 #1: proposed-tree semantics - staged justification accepted."""
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.justification("beta")
+        git(self.repo, "add", "-A")  # staged, never committed
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GROWTH CHECK PASSED", proc.stdout)
+
+    def test_growth_base_head_fails(self):
+        """R1 #2: GROWTH_BASE resolving to HEAD must fail."""
+        self.default_baseline()
+        head = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        for value in ("HEAD", head):
+            proc = self.run_checker(growth_base=value)
+            self.assert_fail(proc, "resolves to HEAD")
+
+    def test_duplicate_baseline_entry_fails(self):
+        """R1 #3: duplicated baseline entries fail at the base commit."""
+        self.seed_skill("alpha")
+        self.seed_doc(1, "one")
+        write(self.repo / "scripts" / "growth-baseline.txt",
+              "# baseline\nskill:alpha\nskill:alpha\ndoc:1\n")
+        git(self.repo, "add", "-A")
+        git(self.repo, "commit", "-m", "baseline with duplicate entry")
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        self.assert_fail(self.run_checker(),
+                         "duplicate baseline entry 'skill:alpha'")
+        # the same dir name under two spellings is also a duplicate
+        write(self.repo / "scripts" / "growth-baseline.txt",
+              "# baseline\nskill:alpha\nskill:fam/alpha\ndoc:1\n")
+        git(self.repo, "add", "-A")
+        git(self.repo, "commit", "-m", "baseline with name duplicate")
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        self.assert_fail(self.run_checker(),
+                         "duplicate baseline skill directory name 'alpha'")
+
+    def test_doc_rename_to_duplicate_number_fails(self):
+        """R1 #4: a rename onto an already-used docs number fails."""
+        self.default_baseline()
+        (self.repo / "docs" / "1-one.md").rename(self.repo / "docs" / "2-x.md")
+        self.commit("rename doc 1 onto used number 2")
+        self.assert_fail(self.run_checker(), "Duplicate docs number 2")
+
+    def test_doc_rename_to_retired_number_fails(self):
+        """R1 #4: a rename onto a retired docs number fails."""
+        self.seed_doc(1, "one")
+        self.seed_doc(2, "two")
+        self.pin_base()
+        (self.repo / "docs" / "1-one.md").rename(
+            self.repo / "docs" / "19-new-topic.md")
+        self.commit("rename doc 1 onto retired number 19")
+        self.assert_fail(self.run_checker(),
+                         "is retired and may never be reused")
+
+    def test_doc_retitle_same_number_passes(self):
+        """R1 #4: a same-number rename (pure retitle) stays allowed."""
+        self.default_baseline()
+        (self.repo / "docs" / "1-one.md").rename(
+            self.repo / "docs" / "1-renamed-title.md")
+        self.commit("retitle doc 1 in place")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+
+    def test_registry_self_edit_does_not_bypass(self):
+        """R1 #5: un-retiring a number in the same changeset has no effect."""
+        self.seed_doc(1, "one")
+        self.seed_doc(2, "two")
+        self.pin_base()  # registry at the base still lists 19
+        write(self.repo / "scripts" / "docs-retired-numbers.txt",
+              "# edited in the changeset; 19 removed\n")
+        write(self.repo / "docs" / "19-reused.md", "content\n")
+        self.doc_justification(19)
+        self.commit("un-retire 19 and reuse it")
+        self.assert_fail(self.run_checker(),
+                         "is retired and may never be reused")
+
+    def test_registry_absent_at_base_warns_and_treats_empty(self):
+        """R1 #5: registry newly introduced - empty set with a warning."""
+        self.seed_skill("alpha")
+        self.seed_doc(1, "one")
+        (self.repo / "scripts" / "docs-retired-numbers.txt").unlink()
+        self.commit("drop the registry before the base")
+        git(self.repo, "update-ref", "refs/remotes/origin/main",
+            git(self.repo, "rev-parse", "HEAD").stdout.strip())
+        write(self.repo / "docs" / "2-next.md", "content\n")
+        self.doc_justification(2)
+        self.commit("add doc 2 while the registry is absent at base")
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("WARN:", proc.stdout)
+        self.assertIn("docs-retired-numbers.txt", proc.stdout)
+
+    def test_untracked_only_justification_fails(self):
+        """R1 #6: justification files must be tracked or staged."""
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.justification("beta")  # written but never added
+        git(self.repo, "add", "skills/fam/beta/SKILL.md")
+        proc = self.run_checker()
+        self.assert_fail(proc, "neither tracked nor staged")
 
 
 if __name__ == "__main__":
