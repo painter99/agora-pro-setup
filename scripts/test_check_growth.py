@@ -6,6 +6,7 @@ subprocess git, commits a baseline, pins it as origin/main, applies changes,
 and runs the real checker as a subprocess against that repository. Tests are
 independent, need no network, and write nothing outside their temp directory.
 """
+import json
 import os
 import shutil
 import subprocess
@@ -146,8 +147,7 @@ class GrowthCheckerTest(unittest.TestCase):
 
         The empty commit after the pin models the normal post-pin working
         state (origin/main behind HEAD). Without it, HEAD would equal
-        origin/main and the push-to-main rule would pin the base to the
-        pin commit's parent, re-checking the pin commit itself.
+        origin/main, leaving no pending committed changes.
         """
         sha = self.commit("baseline")
         git(self.repo, "update-ref", "refs/remotes/origin/main", sha)
@@ -200,12 +200,24 @@ class GrowthCheckerTest(unittest.TestCase):
               / ("docs-justification-%d.md" % number),
               "# justification\n\n" + body)
 
-    def run_checker(self, growth_base=None):
+    def run_checker(self, growth_base=None, event_name=None, event=None,
+                    extra_env=None):
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         env.pop("GROWTH_BASE", None)
+        env.pop("GITHUB_EVENT_NAME", None)
+        env.pop("GITHUB_EVENT_PATH", None)
+        env.pop("GITHUB_ACTIONS", None)
+        env.pop("CI", None)
         if growth_base is not None:
             env["GROWTH_BASE"] = growth_base
+        if event_name is not None:
+            event_path = self.repo / "event.json"
+            event_path.write_text(json.dumps(event), encoding="utf-8")
+            env["GITHUB_EVENT_NAME"] = event_name
+            env["GITHUB_EVENT_PATH"] = str(event_path)
+        if extra_env:
+            env.update(extra_env)
         return subprocess.run(
             [sys.executable, str(CHECKER)],
             cwd=str(self.repo),
@@ -430,6 +442,8 @@ class GrowthCheckerTest(unittest.TestCase):
         git(self.repo, "config", "branch.main.remote", "other")
         git(self.repo, "config", "branch.main.merge", "refs/heads/main")
         git(self.repo, "update-ref", "-d", "refs/remotes/origin/main")
+        git(self.repo, "commit", "--allow-empty", "-m",
+            "advance HEAD beyond upstream base")
         proc = self.run_checker()
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("other/main", proc.stdout)
@@ -498,32 +512,100 @@ class GrowthCheckerTest(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("GROWTH CHECK PASSED", proc.stdout)
 
-    def test_push_to_main_tip_commit_additions_detected(self):
-        """R1 finding 1 regression: after a push to main, HEAD and
-        origin/main point at the same commit and the merge-base equals
-        HEAD; the tip commit's own additions must still be checked (the
-        base is pinned to the tip commit's first parent)."""
+    def test_push_event_base_detects_complete_multi_commit_push(self):
+        """The push event's before SHA covers every pushed commit and does
+        not infer HEAD^ (which is lossy for multi-commit pushes)."""
         self.default_baseline()
+        before = git(self.repo, "rev-parse", "HEAD").stdout.strip()
         write(self.repo / "docs" / "3-next-topic.md", "content\n")
-        self.commit("add doc 3 without a justification")  # tip commit
-        git(self.repo, "update-ref", "refs/remotes/origin/main",
-            git(self.repo, "rev-parse", "HEAD").stdout.strip())
-        proc = self.run_checker()  # origin/main == HEAD now
+        self.commit("first pushed commit adds doc without justification")
+        git(self.repo, "commit", "--allow-empty", "-m",
+            "second pushed commit")
+        head = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "update-ref", "refs/remotes/origin/main", head)
+        proc = self.run_checker(event_name="push", event={"before": before})
         self.assert_fail(
             proc,
             "missing justification file "
             "'skills/justifications/docs-justification-3.md'",
         )
+        proc = self.run_checker(growth_base="HEAD^", event_name="push",
+                                event={"before": before})
+        self.assert_fail(proc, "missing justification file")
+        self.doc_justification(3)
+        git(self.repo, "add", "skills/justifications/docs-justification-3.md")
+        proc = self.run_checker(event_name="push", event={"before": before})
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GitHub push event before SHA", proc.stdout)
+        # An override must not truncate the event to the last commit.
+        proc = self.run_checker(growth_base="HEAD^", event_name="push",
+                                event={"before": before})
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GitHub push event before SHA", proc.stdout)
 
-    def test_root_commit_tip_fails_closed(self):
-        """R2 finding: when HEAD is a root commit and origin/main == HEAD,
-        the tip commit has no parent to pin as the base; the checker must
-        fail closed instead of comparing the tip commit's tree with
-        itself."""
+    def test_equal_remote_head_without_event_passes_locally(self):
+        self.default_baseline()
+        head = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "update-ref", "refs/remotes/origin/main", head)
+        proc = self.run_checker()
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("no pending commits", proc.stdout)
+        write(self.repo / "docs" / "3-next-topic.md", "content\n")
+        self.assert_fail(self.run_checker(), "missing justification file")
+        git(self.repo, "add", "docs/3-next-topic.md")
+        self.assert_fail(self.run_checker(), "missing justification file")
+
+    def test_ci_missing_or_tampered_event_evidence_fails_closed(self):
+        self.default_baseline()
+        head = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "update-ref", "refs/remotes/origin/main", head)
+        for env in ({"CI": "true"}, {"GITHUB_EVENT_NAME": "push"},
+                    {"GITHUB_ACTIONS": "true"}):
+            self.assert_fail(self.run_checker(extra_env=env),
+                             "Missing GitHub event payload")
+        self.assert_fail(self.run_checker(
+            extra_env={"GITHUB_EVENT_NAME": "push",
+                       "GITHUB_EVENT_PATH": str(self.repo / "missing.json")}),
+            "Cannot read GitHub event payload")
+        self.assert_fail(self.run_checker(event_name="push", event={},
+                                          growth_base="HEAD^"),
+                         "does not resolve to a commit")
+        malformed = self.repo / "malformed.json"
+        malformed.write_text("{bad json", encoding="utf-8")
+        self.assert_fail(self.run_checker(extra_env={
+            "GITHUB_EVENT_NAME": "push", "GITHUB_EVENT_PATH": str(malformed)}),
+            "Cannot read GitHub event payload")
+        self.assert_fail(self.run_checker(event_name="push", event={"before": head}),
+                         "resolves to HEAD")
+        self.assert_fail(self.run_checker(event_name="push", event={"before": "bad-sha"}),
+                         "does not resolve to a commit")
+
+    def test_local_remote_ahead_needs_explicit_base(self):
+        self.default_baseline()
+        old = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "commit", "--allow-empty", "-m", "remote advances")
+        remote = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "update-ref", "refs/remotes/origin/main", remote)
+        git(self.repo, "reset", "--hard", old)
+        self.assert_fail(self.run_checker(), "is not equal to HEAD")
+        base = git(self.repo, "rev-parse", "HEAD^").stdout.strip()
+        proc = self.run_checker(growth_base=base)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+
+    def test_pull_request_event_base_is_used(self):
+        self.default_baseline()
+        base = git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        git(self.repo, "commit", "--allow-empty", "-m", "PR commit")
+        proc = self.run_checker(event_name="pull_request",
+                                event={"pull_request": {"base": {"sha": base}}})
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("GitHub pull_request base SHA", proc.stdout)
+
+    def test_root_commit_push_without_base_fails_closed(self):
         git(self.repo, "update-ref", "refs/remotes/origin/main",
             git(self.repo, "rev-parse", "HEAD").stdout.strip())
-        proc = self.run_checker()
-        self.assert_fail(proc, "tip is a root commit")
+        proc = self.run_checker(event_name="push", event={"before": "0" * 40})
+        self.assert_fail(proc, "does not resolve to a commit")
 
     def test_growth_base_head_fails(self):
         """R1 #2: GROWTH_BASE resolving to HEAD must fail."""
@@ -635,6 +717,19 @@ class GrowthCheckerTest(unittest.TestCase):
             "'skills/justifications/beta.md' is staged but missing from "
             "the working tree",
         )
+
+    def test_working_tree_justification_content_is_validated(self):
+        """An intact staged justification cannot mask empty working-tree
+        content for an addition in the proposed snapshot."""
+        self.default_baseline()
+        self.seed_skill("beta")
+        self.justification("beta")
+        git(self.repo, "add", "skills/fam/beta/SKILL.md",
+            "skills/justifications/beta.md")
+        path = self.repo / "skills/justifications/beta.md"
+        path.write_text("# emptied after staging\n", encoding="utf-8")
+        proc = self.run_checker()
+        self.assert_fail(proc, "is missing field 'Problem'")
 
     def test_indexed_retitle_cannot_mask_working_tree_addition(self):
         """R1 finding 3: an indexed same-number retitle must not hide a

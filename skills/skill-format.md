@@ -85,7 +85,7 @@ New Skills and new numbered docs carry a growth justification, enforced by
 `scripts/docs-retired-numbers.txt`):
 
 - A new `skills/**/SKILL.md` requires `skills/justifications/<skill-dir-name>.md`.
-- A new `docs/<number>-*.md` requires `skills/justifications/docs-<number>.md`.
+- A new `docs/<number>-*.md` requires `skills/justifications/docs-justification-<number>.md`.
 - Copy the fields from `skills/justifications/TEMPLATE.md`; every field must be
   nonempty (the explicit word `UNKNOWN` is allowed). The checker verifies
   presence, not truth; review assesses the content.
