@@ -4,23 +4,17 @@
 Additive deterministic gate, hooked into scripts/check.sh after the existing
 checks. It never weakens or replaces an existing check; it only adds rules:
 
-1. Base selection (fail-closed, never HEAD):
-   - env GROWTH_BASE, if set, must resolve to a commit that differs from
-     HEAD (a pinned base equal to HEAD would hide every addition) and
-     must be an ancestor of HEAD (git merge-base --is-ancestor); a base
-     outside HEAD's history would compare unrelated trees;
-   - else git merge-base HEAD origin/main, if the origin/main ref exists;
-   - else git merge-base HEAD HEAD@{upstream}, if the upstream exists;
-   - else FAIL with a clear message naming the remedy (set GROWTH_BASE to
-     a verified base commit). There is no fallback to HEAD, because that
-     could hide additions.
-   - Push-to-main rule: when the resolved merge-base equals HEAD (HEAD and
-     the candidate point at the same commit, as after a push to main) and
-     HEAD has a parent, the base is pinned to the tip commit's first
-     parent (HEAD~1, or the first parent of a merge commit), so the tip
-     commit's own additions are always checked. A root commit has no
-     parent; only there the merge-base (== HEAD) is kept. The GROWTH_BASE
-     override and the fail-closed behavior are unchanged.
+1. Base selection (fail-closed):
+   - GitHub events use their before/base SHA; otherwise GROWTH_BASE may
+     provide an explicit boundary. It must resolve to a distinct ancestor
+     of HEAD. Missing or invalid CI event evidence fails.
+   - Locally, compare against the merge-base with origin/main or upstream.
+     If the remote ref exactly equals HEAD, HEAD is the local boundary: there
+     are no pending committed changes, but both index and worktree additions
+     are still checked. This does not verify any previous push event; run
+     with its actual before SHA for that. A remote ahead of HEAD is not the
+     same situation and requires an explicit base.
+   - Never guess the first parent or use a missing/unresolvable base.
 2. The changeset is the union of staged and working-tree additions against
    the base commit, preserving rename metadata from both snapshots. The
    staged (index) snapshot and the working-tree snapshot are ALSO validated
@@ -82,6 +76,7 @@ an entry present at the base commit fails: baseline entries are add-only
 The checker verifies presence and structure, not truth; review assesses
 content. Stdlib only, deterministic, fail-closed.
 """
+import json
 import os
 import re
 import shutil
@@ -141,92 +136,105 @@ def find_root(failures):
 
 
 def get_base(root, failures):
-    """Resolve the comparison base. Fail-closed; never falls back to HEAD.
-
-    Push-to-main rule: when the resolved merge-base equals HEAD and HEAD
-    has a parent, the base is pinned to the tip commit's first parent
-    (HEAD~1, or the first parent of a merge commit), so the tip commit's
-    own additions are always checked instead of being invisible. A root
-    commit has no parent to pin; there the checker fails closed instead
-    of keeping the merge-base (== HEAD), which would compare the tip
-    commit's tree with itself.
-    """
+    """Resolve an event or pending local changeset without guessing HEAD^."""
     env_base = os.environ.get("GROWTH_BASE", "").strip()
-    if env_base:
+    source = "GROWTH_BASE"
+    event_path = os.environ.get("GITHUB_EVENT_PATH", "").strip()
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "").strip()
+    in_ci = bool(os.environ.get("CI")) or os.environ.get("GITHUB_ACTIONS") == "true"
+    if event_path or event_name or in_ci:
+        if not event_path:
+            failures.append("Missing GitHub event payload; an event-specific "
+                            "base is required (fail-closed).")
+            return None, None
+        try:
+            event = json.loads(Path(event_path).read_text(encoding="utf-8"))
+            if event_name == "push":
+                env_base = str(event.get("before", "")).strip()
+                source = "GitHub push event before SHA"
+            elif event_name == "pull_request":
+                env_base = str(event.get("pull_request", {}).get(
+                    "base", {}).get("sha", "")).strip()
+                source = "GitHub pull_request base SHA"
+            else:
+                failures.append(
+                    "Unsupported GitHub event '" + event_name
+                    + "'; expected push or pull_request (fail-closed)."
+                )
+                return None, None
+        except (OSError, ValueError, AttributeError) as exc:
+            failures.append(
+                "Cannot read GitHub event payload '" + event_path
+                + "': " + str(exc) + " (fail-closed)."
+            )
+            return None, None
+    elif not env_base:
+        # Only an exactly equal local remote ref establishes that no
+        # committed changes are pending; it says nothing about a push.
         rc, out, _ = git(root, "rev-parse", "--verify", "--quiet",
-                         env_base + "^{commit}")
-        if rc != 0 or not out.strip():
+                         "refs/remotes/origin/main")
+        candidate = "origin/main" if rc == 0 and out.strip() else None
+        if candidate is None:
+            rc, out, _ = git(root, "rev-parse", "--abbrev-ref",
+                             "HEAD@{upstream}")
+            if rc == 0 and out.strip():
+                candidate = out.strip()
+        if candidate is None:
             failures.append(
-                "GROWTH_BASE '" + env_base + "' does not resolve to a commit; "
-                "refusing to run without a valid base (fail-closed)."
+                "No growth base available: set GROWTH_BASE to a verified "
+                "event-specific base, or fetch a tracked remote. Refusing "
+                "to fall back to HEAD or its first parent (fail-closed)."
             )
             return None, None
-        resolved = out.strip()
-        rc2, head, _ = git(root, "rev-parse", "--verify", "--quiet", "HEAD")
-        if rc2 == 0 and head.strip() and resolved == head.strip():
-            failures.append(
-                "GROWTH_BASE '" + env_base + "' resolves to HEAD ("
-                + resolved[:12] + "); a pinned base must differ from HEAD, "
-                "because comparing HEAD with itself would hide every "
-                "addition (fail-closed)."
-            )
+        rc, env_base, err = git(root, "merge-base", "HEAD", candidate)
+        if rc != 0 or not env_base.strip():
+            failures.append("Cannot compute git merge-base HEAD "
+                            + candidate + ": " + err.strip()
+                            + " (fail-closed).")
             return None, None
-        rc3, _, _ = git(root, "merge-base", "--is-ancestor", resolved, "HEAD")
-        if rc3 != 0:
-            failures.append(
-                "GROWTH_BASE '" + env_base + "' (" + resolved[:12]
-                + ") is not an ancestor of HEAD (git merge-base "
-                "--is-ancestor); a base outside the current history would "
-                "compare unrelated trees. Set GROWTH_BASE to a verified "
-                "base commit that is an ancestor of HEAD (fail-closed)."
-            )
+        env_base = env_base.strip()
+        source = "merge-base HEAD " + candidate
+        rc, head, _ = git(root, "rev-parse", "--verify", "--quiet", "HEAD")
+        if rc != 0 or not head.strip():
+            failures.append("Cannot resolve HEAD (fail-closed).")
             return None, None
-        return resolved, "GROWTH_BASE"
+        if env_base == head.strip():
+            rc, remote, _ = git(root, "rev-parse", "--verify", "--quiet",
+                                candidate + "^{commit}")
+            if rc != 0 or remote.strip() != head.strip():
+                failures.append("Remote " + candidate + " is not equal to HEAD; "
+                                "cannot establish a pending changeset base "
+                                "(fail-closed).")
+                return None, None
+            return env_base, "local synchronized " + candidate + "; no pending commits"
+
     rc, out, _ = git(root, "rev-parse", "--verify", "--quiet",
-                     "refs/remotes/origin/main")
-    candidate = "origin/main" if rc == 0 and out.strip() else None
-    if candidate is None:
-        rc, out, _ = git(root, "rev-parse", "--abbrev-ref", "HEAD@{upstream}")
-        if rc == 0 and out.strip():
-            candidate = out.strip()
-    if candidate is not None:
-        rc, merge_base, err = git(root, "merge-base", "HEAD", candidate)
-        if rc != 0 or not merge_base.strip():
-            failures.append(
-                "Cannot compute git merge-base HEAD " + candidate + ": "
-                + err.strip() + "; refusing to fall back to HEAD (fail-closed)."
-            )
-            return None, None
-        base = merge_base.strip()
-        rc2, head, _ = git(root, "rev-parse", "--verify", "--quiet", "HEAD")
-        if rc2 == 0 and head.strip() and base == head.strip():
-            # Push-to-main: HEAD and the candidate point at the same
-            # commit, so the merge-base equals HEAD and the tip commit's
-            # own additions would be invisible. Pin the tip commit's
-            # first parent as the base.
-            rc3, parent, _ = git(root, "rev-parse", "--verify", "--quiet",
-                                 "HEAD^")
-            if rc3 == 0 and parent.strip():
-                return parent.strip(), (
-                    "merge-base HEAD " + candidate + " (== HEAD; pinned to "
-                    "the tip commit's first parent for push-to-main)")
-            # Root commit: the tip commit has no parent to pin as the
-            # base. Returning the merge-base (== HEAD) would compare the
-            # tip commit's tree with itself and hide its additions.
-            failures.append(
-                "Repository tip is a root commit (git rev-parse HEAD^ "
-                "resolves no parent); growth checking requires a parent "
-                "commit; set GROWTH_BASE to a verified base. Refusing to "
-                "compare the tip commit's tree with itself (fail-closed)."
-            )
-            return None, None
-        return base, "merge-base HEAD " + candidate
-    failures.append(
-        "No growth base available: set GROWTH_BASE to a verified ancestor, "
-        "fetch origin/main, or configure a resolvable upstream. Refusing "
-        "to fall back to HEAD (fail-closed)."
-    )
-    return None, None
+                     env_base + "^{commit}")
+    if rc != 0 or not out.strip():
+        failures.append("Growth base '" + env_base
+                        + "' does not resolve to a commit (" + source
+                        + "); refusing to run (fail-closed).")
+        return None, None
+    resolved = out.strip()
+    rc, head, _ = git(root, "rev-parse", "--verify", "--quiet", "HEAD")
+    if rc != 0 or not head.strip():
+        failures.append("Cannot resolve HEAD while validating growth base "
+                        "(fail-closed).")
+        return None, None
+    if resolved == head.strip():
+        failures.append("Growth base from " + source + " resolves to HEAD ("
+                        + resolved[:12] + "); it would hide additions. Supply "
+                        "the actual changeset/event base, not HEAD or its "
+                        "first parent (fail-closed).")
+        return None, None
+    rc, _, _ = git(root, "merge-base", "--is-ancestor", resolved, "HEAD")
+    if rc != 0:
+        failures.append("Growth base '" + resolved[:12]
+                        + "' from " + source
+                        + " is not an ancestor of HEAD; refusing to compare "
+                        "unrelated trees (fail-closed).")
+        return None, None
+    return resolved, source
 
 
 def parse_baseline(lines, failures, source):
