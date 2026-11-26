@@ -78,6 +78,7 @@ Cross-cutting: **capability gating** (verify tools at runtime) and the
 | Generic two-agent operating-procedure adaptation guide | `docs/35` | — |
 | Coordination and optional external research architecture | `docs/36` — preservation draft, not operating policy | — |
 | Models | `docs/10` | — |
+| ST-enforcement gate on Goose dispatches | `docs/40` | `sequential-thinking-workflow` |
 
 ## Decision tree: where does new content belong?
 
