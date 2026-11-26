@@ -128,3 +128,7 @@ The workflow combines adaptive planning, tool-grounded observation, composable a
 - https://arxiv.org/abs/2210.03629
 - https://www.anthropic.com/engineering/building-effective-agents
 - https://developers.openai.com/api/docs/guides/reasoning-best-practices
+
+## Cross-reference: deterministic dispatch gate
+
+Beyond this adaptive workflow, a deterministic enforcement gate applies to dispatched Goose shell runs: an approved wrapper verifies structured evidence (paired sequential-thinking calls, workflow load before the first thought, a dispatch canary token, and a per-thought minimum length) before a dispatch is accepted. The gate verifies process evidence only — it does not block actions in Agora chat, does not guarantee reasoning quality, and leaves delegate subagents instruction-level; the deployed wrapper supervises runs with a thread watchdog (absolute deadline of `timeout-sec + 30` seconds armed first), a single teardown owner (TERM group → 5 s grace → KILL → reap child → kill sentinel → retire slot), a group-identity sentinel, a fail-closed `SIGCHLD` restore to the default disposition at startup, terminal-record dedup with ledger read-back reconciliation, an outer exception boundary with fail-closed exit 2, and documented limits (external SIGTERM/SIGINT bypass, SIGKILL/storage loss/grandchildren/blocked syscalls out of scope); see `docs/40-st-enforcement-process-card.md`.

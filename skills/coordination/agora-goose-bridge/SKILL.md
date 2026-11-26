@@ -114,7 +114,7 @@ The operator-approved instance policy determines legal routes and roles; route a
 
 Default roles (operator decision 2026-11-21, aligned 2026-11-21/22): work, coordination and implementation use the role assigned by the approved routing overlay; the `<approved specialist>` role is reserved for last-instance escalation and independent qualified review only. Agora subagents remain forbidden. A separate qualified fresh-context Goose shell dispatch reviews every file-changing dispatch and any other required final snapshot, independently of its author, within the shared budget. Supply the artifact, goal, constraints and checklist, not the author's reasoning. Review rounds carry reviewer diversity: the `<approved specialist>` role is never the only reviewer, and the light routes participate only in a later review round under an explicit operator-directed diversity decision recorded for that case; never for R1; a light-route review round is valid only through that recorded decision. The authoritative route-qualification source is the instance role policy, whose reconciliation with these records is explicitly open; nothing here generalizes light-route review qualification. If review is unavailable report UNREVIEWED, never done. Route choice never widens scope, permissions or approvals.
 
-Delegated subagents (Goose) — canonical delegation rule (2026-11-21, operator decision): an orchestrator dispatched on an approved light-worker route may use the Goose builtin `delegate` by default within the brief caps. Subagents use approved light-worker routes for swarm opinions, mechanical fan-out and checks, with small max_turns (3-6), restricted extensions and a working directory inside the parent working directory. A subagent cannot spawn further delegates. Subagent output is evidence, never a verdict or review, and never replaces qualified fresh-context review. Every delegate counts as an attempt against the shared task budget.
+Delegated subagents (Goose) — canonical delegation rule (2026-11-21, operator decision): an orchestrator dispatched on an approved light-worker route may use the Goose builtin `delegate` by default within the brief caps. Subagents use approved light-worker routes for swarm opinions, mechanical fan-out and checks, with small max_turns (3-6), restricted extensions and a working directory inside the parent working directory. A subagent cannot spawn further delegates. Subagent output is evidence, never a verdict or review, and never replaces qualified fresh-context review. Every delegate counts as an attempt against the shared task budget. Delegate subagents are outside wrapper enforcement: their ST obligations are instruction-level only and are not independently audited by the wrapper.
 
 ## Parallel review-and-fix pipeline (2026-11-21, operator decision)
 
@@ -131,10 +131,11 @@ For medium and complex changes, the review pipeline recorded in the `model-escal
 
 A mandatory system protocol governs every dispatched worker so that reasoning discipline, evidence-only output and the sequential-thinking audit are uniform across routes and roles. The protocol text lives at `templates/worker-system-protocol.txt` (with a `{MIN_THOUGHTS}` placeholder).
 
-1. Every `goose run` dispatch MUST include `--system` with the content of `templates/worker-system-protocol.txt`, with `{MIN_THOUGHTS}` substituted by the brief's minimum (typically 3–4).
-2. Every `delegate` subagent call MUST receive the protocol via the delegate `context` parameter (plus task-specific constraints in `instructions`).
-3. Coordinator verification of every dispatch MUST include a log audit: the count of `sequentialthinking` occurrences in the run log must be greater than or equal to the brief's minimum; a miss is a failed verification.
-4. Goose-only execution rule: Agora is an observatory and communication layer only. If the Goose route is unavailable or a dispatch cannot start, the coordinator stops the affected work and reports the blocker; it NEVER performs the delegated work itself. The only resumption lever is an explicit operator appeal for the specific case.
+1. Every Goose shell dispatch (including scheduled and review runs) MUST go through the approved ST-enforcement wrapper: the wrapper injects the sequential-thinking extension flag plus the worker system protocol, runs a fail-closed preflight probe, and audits the structured event stream (paired successful tool calls, `load_skill` of the sequential-thinking workflow before the first thought, the canary token in the first thought, and the per-thought minimum length).
+2. Every `delegate` subagent call MUST receive the worker protocol via the delegate `context` parameter (plus task-specific constraints in `instructions`); delegate ST compliance is instruction-level only and is not wrapper-audited.
+3. A dispatch result is accepted only when the wrapper exits 0 with a matching ledger RESULT record. Exit code 2 or missing audit evidence is a failed dispatch; the coordinator reports the blocker and never retries through the direct route.
+4. Count the structured paired tool calls in the audit record, never prose occurrences of the tool name in run logs. There is no direct goose fallback: if the wrapper is unavailable, the affected work stops and is reported.
+5. Goose-only execution rule: Agora is an observatory and communication layer only. If the Goose route is unavailable or a dispatch cannot start, the coordinator stops the affected work and reports the blocker; it NEVER performs the delegated work itself. The only resumption lever is an explicit operator appeal for the specific case.
 
 ## Forbidden behavior
 
@@ -158,6 +159,8 @@ A mandatory system protocol governs every dispatched worker so that reasoning di
 - a pre-flight scope check of the touched modules and their validators preceded the dispatch;
 - the number of delegated contexts used on the task is within the budget, and the accounting is recorded;
 - the returned report satisfies the output contract;
+- every dispatch ran through the ST-enforcement wrapper, and the wrapper exit code was 0 with a matching ledger RESULT record; a wrapper exit 2 or missing audit evidence fails the verification;
+- the audit record shows the required paired sequential-thinking calls, the workflow `load_skill` before the first thought, the canary token in the first thought, and the per-thought minimum length; counts come from structured paired calls, never prose occurrences;
 - every claimed change is visible in the working tree, and every claimed test result is reproducible;
 - the operator-facing report separates proposal and assessment.
 

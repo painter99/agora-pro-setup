@@ -16,8 +16,8 @@
 #   skills/, the name equals the directory name (docs/2-installation.md).
 
 meta:
-  inventory_version: 7
-  last_verified: "2026-11-17"
+  inventory_version: 8
+  last_verified: "2026-11-26"
 
 components:
   # --- deployed into the Agora app ---
@@ -77,6 +77,12 @@ components:
     kind: tooling
     source: skills/research/multi-source-research/scripts/evidence_check.py
     target: /home/agora/tools/evidence_check.py
+  - name: st-enforce-wrapper
+    kind: tooling
+    # wrapper + MCP shim + audit + ledger + test suite + fixtures (byte-identical mirror of the reviewed deployed copy)
+    source: "scripts/st-enforce/**"
+    files: 10
+    target: "/home/agora/scripts/ + test workspace"
 
   # --- reference only ---
   - name: decision-records
@@ -87,9 +93,9 @@ components:
     target: none
   - name: architecture-docs
     kind: reference
-    # number 19 is retired; 38+39 are proposal drafts (2026-11-20)
+    # number 19 is retired; 38+39 are proposal drafts (2026-11-20); 40 is the ST-enforcement process card (2026-11-25)
     source: "docs/*.md"
-    files: 39
+    files: 40
     target: none
   - name: author-docs
     kind: reference
